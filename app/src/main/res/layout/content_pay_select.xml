@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.PaySelectActivity"
+    tools:showIn="@layout/activity_pay_select">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@mipmap/wave">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="订单总金额"
+                    android:textColor="@color/black_alpha1"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/content_pay_select__price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/magin_5"
+                    android:layout_marginRight="@dimen/magin_5"
+                    android:text="120"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_18" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="元"
+                    android:textColor="@color/black_alpha1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/magin_10"
+                android:layout_marginRight="@dimen/magin_10"
+                android:background="@drawable/line_dash" />
+
+            <LinearLayout
+                android:id="@+id/content_pay_select__add_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/padding_10"
+                android:paddingBottom="@dimen/padding_10"/>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/content_pay_select__tab_layout"
+            style="@style/PayCustomTabLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_50"
+            android:background="@color/bg"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:tabMode="fixed" />
+
+        <com.yyjlr.tickets.viewutils.LockableViewPager
+            android:id="@+id/content_pay_select__viewpager"
+            style="@style/MatchMatch" />
+
+    </LinearLayout>
+
+</LinearLayout>

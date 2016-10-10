@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:id="@+id/ll_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg_gray" />
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+
+            <TextView
+                android:id="@+id/item_popupwindows_camera"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:gravity="center"
+                android:text="拍照"
+                android:textSize="@dimen/text_18" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg_gray" />
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/item_popupwindows_Photo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:gravity="center"
+                android:text="从相册中选取"
+                android:textSize="@dimen/text_18" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg_gray" />
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/item_popupwindows_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:gravity="center"
+                android:text="取消"
+                android:textSize="@dimen/text_18" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+</LinearLayout>

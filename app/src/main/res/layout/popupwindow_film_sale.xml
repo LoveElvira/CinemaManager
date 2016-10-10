@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/ll_popup"
+        style="@style/MatchWrap">
+
+        <LinearLayout
+            android:id="@+id/content_film_sale__cancel_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/magin_5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                style="@style/WrapWrap"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <ImageView
+                    android:id="@+id/content_film_sale__cancel"
+                    android:layout_width="@dimen/height_25"
+                    android:layout_height="@dimen/height_25"
+                    android:src="@mipmap/sale_cancel" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/height_20"
+                android:background="@color/gray" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/content_film_sale__listview"
+            style="@style/MatchWrap"
+            android:layout_below="@id/content_film_sale__cancel_"
+            android:background="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

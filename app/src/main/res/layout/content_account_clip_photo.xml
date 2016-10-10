@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="#ccc"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.setting.ClipPhotoActivity"
+    tools:showIn="@layout/activity_account_clip_photo">
+
+    <com.yyjlr.tickets.viewutils.cilpphoto.ClipImageLayout
+        android:id="@+id/clip_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <Button
+                android:id="@+id/clip_photo_confirm"
+                style="@style/MatchMatch"
+                android:text="确定" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <Button
+                android:id="@+id/clip_photo_cancel"
+                style="@style/MatchMatch"
+                android:text="取消" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+</RelativeLayout>

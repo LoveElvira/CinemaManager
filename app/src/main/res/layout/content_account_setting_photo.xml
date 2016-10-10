@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapMatch"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/padding_5"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <ImageView
+                android:id="@+id/back"
+                style="@style/MatchMatch"
+                android:src="@mipmap/left_arrow" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapMatch"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/padding_10"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <ImageView
+                android:id="@+id/select_photo"
+                style="@style/MatchMatch"
+                android:layout_gravity="center"
+                android:src="@mipmap/point" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </RelativeLayout>
+
+    <com.yyjlr.tickets.viewutils.cilpphoto.ClipImageLayout
+        android:id="@+id/content_setting_photo__show"
+        style="@style/MatchMatch"
+        android:layout_below="@id/layout" />
+</RelativeLayout>

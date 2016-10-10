@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch"
+    android:background="@mipmap/bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_20"
+        android:paddingTop="@dimen/padding_40">
+
+        <RelativeLayout style="@style/WrapWrap">
+
+            <com.yyjlr.tickets.viewutils.CircleImageView
+                android:id="@+id/fragment_setting__head_img"
+                android:layout_width="@dimen/height_80"
+                android:layout_height="@dimen/height_80"
+                android:src="@mipmap/image_2"
+                app:civ_border_color="@color/gray"
+                app:civ_border_width="1dp" />
+
+            <ImageView
+                android:id="@+id/fragment_setting__sex"
+                style="@style/WrapWrap"
+                android:layout_alignBottom="@+id/fragment_setting__head_img"
+                android:layout_alignRight="@+id/fragment_setting__head_img"
+                android:src="@mipmap/girl" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/fragment_setting__username"
+            style="@style/WrapWrap"
+            android:layout_marginTop="@dimen/magin_5"
+            android:padding="@dimen/padding_5"
+            android:text="@string/text_name"
+            android:textSize="@dimen/text_14" />
+
+    </LinearLayout>
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapWrap"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true">
+        <LinearLayout
+            android:id="@+id/fragment_setting__service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/right_circle_gray"
+            android:padding="@dimen/padding_7">
+            <ImageView
+                android:layout_width="@dimen/height_20"
+                android:layout_height="@dimen/height_20"
+                android:src="@mipmap/service"
+                android:tint="@color/white"
+                android:layout_marginLeft="@dimen/magin_5"
+                android:layout_marginRight="@dimen/magin_5"/>
+            <TextView
+                style="@style/WrapWrap"
+                android:text="联系客服"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </RelativeLayout>l
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_20"
+        android:paddingRight="@dimen/padding_20">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/fragment_setting__myaccount"
+                style="@style/MatchMatch"
+                android:background="@drawable/selector_btn_white_alpha"
+                android:drawableTop="@mipmap/my_account"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_10"
+                android:text="@string/text_my_account"
+                android:textColor="@color/white" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/magin_5"
+            android:layout_marginRight="@dimen/magin_5"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/fragment_setting__myorder"
+                style="@style/MatchMatch"
+                android:background="@drawable/selector_btn_white_alpha"
+                android:drawableTop="@mipmap/my_order"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_10"
+                android:text="@string/text_my_order"
+                android:textColor="@color/white" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/fragment_setting__vip"
+                style="@style/MatchMatch"
+                android:background="@drawable/selector_btn_white_alpha"
+                android:drawableTop="@mipmap/huiyuan"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_10"
+                android:text="@string/text_huiyuan"
+                android:textColor="@color/white" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100"
+        android:layout_marginTop="@dimen/magin_5"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_20"
+        android:paddingRight="@dimen/padding_20">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/fragment_setting__points"
+                style="@style/MatchMatch"
+                android:background="@drawable/selector_btn_white_alpha"
+                android:drawableTop="@mipmap/points"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_10"
+                android:text="我的积分"
+                android:textColor="@color/white" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/magin_5"
+            android:layout_marginRight="@dimen/magin_5"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/fragment_setting__message"
+                style="@style/MatchMatch"
+                android:background="@drawable/selector_btn_white_alpha"
+                android:drawableTop="@mipmap/message"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_10"
+                android:text="@string/text_message"
+                android:textColor="@color/white" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/fragment_setting__follow"
+                style="@style/MatchMatch"
+                android:background="@drawable/selector_btn_white_alpha"
+                android:drawableTop="@mipmap/guanzhu"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_10"
+                android:text="@string/text_guanzhu"
+                android:textColor="@color/white" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+</LinearLayout>

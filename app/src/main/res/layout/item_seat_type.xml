@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/WrapWrap"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/padding_5"
+    android:paddingRight="@dimen/padding_5">
+    <ImageView
+        android:id="@+id/item_seat_type__iamge"
+        style="@style/WrapWrap"/>
+    <TextView
+        android:id="@+id/item_seat_type__text"
+        style="@style/WrapWrap"
+        android:textSize="@dimen/text_14"
+        android:textColor="@color/gray_alpha1"
+        android:layout_marginLeft="@dimen/magin_5"
+        android:text="未选"/>
+</LinearLayout>

@@ -1,0 +1,872 @@
+﻿{
+    "messageId": null,
+    "requestId": "074da51a-70d6-11e6-b56f-005056c00001",
+    "error": null,
+    "statusCode": 0,
+    "cmd": "movie/querySeat",
+    "response": {
+        "movieId": 1760,
+        "movieName": "",
+        "hallName": "6号厅",
+        "hallType": null,
+        "language": "英语",
+        "movieType": "3D",
+        "planId": "0100000000000027209247",
+        "playStartTime": 1461893400000,
+        "price": 30,
+        "seatType": [
+            {
+                "name": "普通",
+                "type": "0",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/0.png",
+                "isShow": "1"
+            },
+            {
+                "name": "已选",
+                "type": "0-1",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/0-1.png",
+                "isShow": "1"
+            },
+            {
+                "name": "已售",
+                "type": "0-2",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/0-2.png",
+                "isShow": "1"
+            },
+            {
+                "name": "普通维修",
+                "type": "0-3",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/0-3.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣首座可选",
+                "type": "1",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/1.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣首座已选",
+                "type": "1-1",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/1-1.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣首座已售",
+                "type": "1-2",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/1-2.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣首座维修",
+                "type": "1-3",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/1-3.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣次座可选",
+                "type": "2",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/2.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣次座已选",
+                "type": "2-1",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/2-1.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣次座已售",
+                "type": "2-2",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/2-2.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣次座维修",
+                "type": "2-3",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/2-3.png",
+                "isShow": "0"
+            },
+            {
+                "name": "特殊人群",
+                "type": "3",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/3.png",
+                "isShow": "1"
+            },
+            {
+                "name": "特殊人群已选",
+                "type": "3-1",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/3-1.png",
+                "isShow": "0"
+            },
+            {
+                "name": "特殊人群已售",
+                "type": "3-2",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/3-2.png",
+                "isShow": "0"
+            },
+            {
+                "name": "特殊人群维修",
+                "type": "3-3",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/3-3.png",
+                "isShow": "0"
+            },
+            {
+                "name": "VIP座",
+                "type": "4",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/4.png",
+                "isShow": "1"
+            },
+            {
+                "name": "VIP已选",
+                "type": "4-1",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/4-1.png",
+                "isShow": "0"
+            },
+            {
+                "name": "VIP已售",
+                "type": "4-2",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/4-2.png",
+                "isShow": "0"
+            },
+            {
+                "name": "VIP维修",
+                "type": "4-3",
+                "seats": 1,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/4-3.png",
+                "isShow": "0"
+            },
+            {
+                "name": "情侣座",
+                "type": "5",
+                "seats": 2,
+                "icon": "http://yyjlr.img-cn-shanghai.aliyuncs.com/seatType/5.png",
+                "isShow": "1"
+            }
+        ],
+        "seatList": [
+            {
+                "id": "20365",
+                "row": "1",
+                "col": "9",
+                "gRow": 2,
+                "gCol": 1,
+                "type": "1",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20365",
+                    "20366"
+                ]
+            },
+            {
+                "id": "20366",
+                "row": "1",
+                "col": "8",
+                "gRow": 2,
+                "gCol": 2,
+                "type": "2",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20365",
+                    "20366"
+                ]
+            },
+            {
+                "id": "20367",
+                "row": "1",
+                "col": "7",
+                "gRow": 2,
+                "gCol": 3,
+                "type": "1",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20367",
+                    "20368"
+                ]
+            },
+            {
+                "id": "20368",
+                "row": "1",
+                "col": "6",
+                "gRow": 2,
+                "gCol": 4,
+                "type": "2",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20367",
+                    "20368"
+                ]
+            },
+            {
+                "id": "20369",
+                "row": "1",
+                "col": "5",
+                "gRow": 2,
+                "gCol": 5,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20370",
+                "row": "1",
+                "col": "4",
+                "gRow": 2,
+                "gCol": 6,
+                "type": "0-2",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20371",
+                "row": "1",
+                "col": "3",
+                "gRow": 2,
+                "gCol": 7,
+                "type": "0-2",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20372",
+                "row": "1",
+                "col": "2",
+                "gRow": 2,
+                "gCol": 8,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20373",
+                "row": "1",
+                "col": "1",
+                "gRow": 2,
+                "gCol": 9,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20374",
+                "row": "2",
+                "col": "9",
+                "gRow": 3,
+                "gCol": 1,
+                "type": "1",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20374",
+                    "20375"
+                ]
+            },
+            {
+                "id": "20375",
+                "row": "2",
+                "col": "8",
+                "gRow": 3,
+                "gCol": 2,
+                "type": "2",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20374",
+                    "20375"
+                ]
+            },
+            {
+                "id": "20376",
+                "row": "2",
+                "col": "7",
+                "gRow": 3,
+                "gCol": 3,
+                "type": "1",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20376",
+                    "20377"
+                ]
+            },
+            {
+                "id": "20377",
+                "row": "2",
+                "col": "6",
+                "gRow": 3,
+                "gCol": 4,
+                "type": "2",
+                "flag": "0",
+                "price": 30,
+                "relevance": [
+                    "20376",
+                    "20377"
+                ]
+            },
+            {
+                "id": "20378",
+                "row": "2",
+                "col": "5",
+                "gRow": 3,
+                "gCol": 5,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20379",
+                "row": "2",
+                "col": "4",
+                "gRow": 3,
+                "gCol": 6,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20380",
+                "row": "2",
+                "col": "3",
+                "gRow": 3,
+                "gCol": 7,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20381",
+                "row": "2",
+                "col": "2",
+                "gRow": 3,
+                "gCol": 8,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20382",
+                "row": "2",
+                "col": "1",
+                "gRow": 3,
+                "gCol": 9,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20383",
+                "row": "3",
+                "col": "9",
+                "gRow": 4,
+                "gCol": 1,
+                "type": "3",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20384",
+                "row": "3",
+                "col": "8",
+                "gRow": 4,
+                "gCol": 2,
+                "type": "3",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20385",
+                "row": "3",
+                "col": "7",
+                "gRow": 4,
+                "gCol": 3,
+                "type": "3-3",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20386",
+                "row": "3",
+                "col": "6",
+                "gRow": 4,
+                "gCol": 4,
+                "type": "4",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20387",
+                "row": "3",
+                "col": "5",
+                "gRow": 4,
+                "gCol": 5,
+                "type": "4",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20388",
+                "row": "3",
+                "col": "4",
+                "gRow": 4,
+                "gCol": 6,
+                "type": "4-3",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20389",
+                "row": "3",
+                "col": "3",
+                "gRow": 4,
+                "gCol": 7,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20390",
+                "row": "3",
+                "col": "2",
+                "gRow": 4,
+                "gCol": 8,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20391",
+                "row": "3",
+                "col": "1",
+                "gRow": 4,
+                "gCol": 9,
+                "type": "0-2",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20392",
+                "row": "4",
+                "col": "9",
+                "gRow": 5,
+                "gCol": 1,
+                "type": "1-3",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20393",
+                "row": "4",
+                "col": "8",
+                "gRow": 5,
+                "gCol": 2,
+                "type": "2-2",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20394",
+                "row": "4",
+                "col": "7",
+                "gRow": 5,
+                "gCol": 3,
+                "type": "1-3",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20395",
+                "row": "4",
+                "col": "6",
+                "gRow": 5,
+                "gCol": 4,
+                "type": "2-3",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20396",
+                "row": "4",
+                "col": "5",
+                "gRow": 5,
+                "gCol": 5,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20397",
+                "row": "4",
+                "col": "4",
+                "gRow": 5,
+                "gCol": 6,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20398",
+                "row": "4",
+                "col": "3",
+                "gRow": 5,
+                "gCol": 7,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20399",
+                "row": "4",
+                "col": "2",
+                "gRow": 5,
+                "gCol": 8,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20400",
+                "row": "4",
+                "col": "1",
+                "gRow": 5,
+                "gCol": 9,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20401",
+                "row": "5",
+                "col": "9",
+                "gRow": 6,
+                "gCol": 1,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20402",
+                "row": "5",
+                "col": "8",
+                "gRow": 6,
+                "gCol": 2,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20403",
+                "row": "5",
+                "col": "7",
+                "gRow": 6,
+                "gCol": 3,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20404",
+                "row": "5",
+                "col": "6",
+                "gRow": 6,
+                "gCol": 4,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20405",
+                "row": "5",
+                "col": "5",
+                "gRow": 6,
+                "gCol": 5,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20406",
+                "row": "5",
+                "col": "4",
+                "gRow": 6,
+                "gCol": 6,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20407",
+                "row": "5",
+                "col": "3",
+                "gRow": 6,
+                "gCol": 7,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20408",
+                "row": "5",
+                "col": "2",
+                "gRow": 6,
+                "gCol": 8,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20409",
+                "row": "5",
+                "col": "1",
+                "gRow": 6,
+                "gCol": 9,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20410",
+                "row": "6",
+                "col": "9",
+                "gRow": 7,
+                "gCol": 1,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20411",
+                "row": "6",
+                "col": "8",
+                "gRow": 7,
+                "gCol": 2,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20412",
+                "row": "6",
+                "col": "7",
+                "gRow": 7,
+                "gCol": 3,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20413",
+                "row": "6",
+                "col": "6",
+                "gRow": 7,
+                "gCol": 4,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20414",
+                "row": "6",
+                "col": "5",
+                "gRow": 7,
+                "gCol": 5,
+                "type": "0-2",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20415",
+                "row": "6",
+                "col": "4",
+                "gRow": 7,
+                "gCol": 6,
+                "type": "0-2",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20416",
+                "row": "6",
+                "col": "3",
+                "gRow": 7,
+                "gCol": 7,
+                "type": "0-2",
+                "flag": "1",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20417",
+                "row": "6",
+                "col": "2",
+                "gRow": 7,
+                "gCol": 8,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20418",
+                "row": "6",
+                "col": "1",
+                "gRow": 7,
+                "gCol": 9,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20420",
+                "row": "7",
+                "col": "7",
+                "gRow": 8,
+                "gCol": 2,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20421",
+                "row": "7",
+                "col": "6",
+                "gRow": 8,
+                "gCol": 3,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20422",
+                "row": "7",
+                "col": "5",
+                "gRow": 8,
+                "gCol": 4,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20423",
+                "row": "7",
+                "col": "4",
+                "gRow": 8,
+                "gCol": 5,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20424",
+                "row": "7",
+                "col": "3",
+                "gRow": 8,
+                "gCol": 6,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20425",
+                "row": "7",
+                "col": "2",
+                "gRow": 8,
+                "gCol": 7,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            },
+            {
+                "id": "20426",
+                "row": "7",
+                "col": "1",
+                "gRow": 8,
+                "gCol": 8,
+                "type": "0",
+                "flag": "0",
+                "price": 30,
+                "relevance": null
+            }
+        ]
+    },
+    "responseTime": "2016-09-02 14:25:25",
+    "responseTimestamp": 1472797525462,
+    "duration": 2540,
+    "debugInfo": null,
+    "clientIp": "0:0:0:0:0:0:0:1",
+    "usedCache": false,
+    "extraInfo": {},
+    "auth": {}
+}

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.RegisterActivity"
+    tools:showIn="@layout/activity_register">
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="@dimen/height_20"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_10">
+
+        <TextView
+            style="@style/WrapWrap"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/magin_10"
+            android:padding="5dp"
+            android:text="@string/text_phone"
+            android:textSize="@dimen/text_14" />
+
+        <EditText
+            android:id="@+id/content_register__phone"
+            style="@style/AutoMatch"
+            android:layout_marginLeft="@dimen/magin_5"
+            android:background="@null"
+            android:gravity="center|left"
+            android:inputType="number"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingLeft="@dimen/padding_10"
+        android:paddingTop="@dimen/padding_10">
+
+        <TextView
+            style="@style/WrapWrap"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/magin_10"
+            android:padding="5dp"
+            android:text="@string/text_code"
+            android:textSize="@dimen/text_14" />
+
+        <EditText
+            android:id="@+id/content_register__code"
+            style="@style/AutoMatch"
+            android:layout_marginLeft="@dimen/magin_5"
+            android:background="@null"
+            android:gravity="center|left"
+            android:inputType="number"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:textSize="@dimen/text_14" />
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapWrap"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <Button
+                android:id="@+id/content_register__getcode"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_30"
+                android:background="@drawable/selector_btn_code_orange"
+                android:text="@string/text_get_code"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_13" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_10">
+
+        <TextView
+            style="@style/WrapWrap"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/magin_10"
+            android:padding="5dp"
+            android:text="@string/text_password"
+            android:textSize="@dimen/text_14" />
+
+        <EditText
+            android:id="@+id/content_register__password"
+            style="@style/AutoMatch"
+            android:layout_marginLeft="@dimen/magin_20"
+            android:background="@null"
+            android:gravity="center|left"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_10">
+
+        <TextView
+            style="@style/WrapWrap"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="@string/text_confirm_password"
+            android:textSize="@dimen/text_14" />
+
+        <EditText
+            android:id="@+id/content_register__confirm_password"
+            style="@style/AutoMatch"
+            android:layout_marginLeft="@dimen/magin_5"
+            android:background="@null"
+            android:gravity="center|left"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="@dimen/height_10"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_10">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapWrap"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <LinearLayout
+                android:id="@+id/content_regster__have_account"
+                style="@style/MatchMatch"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:padding="5dp"
+                    android:text="@string/text_have_account"
+                    android:textSize="@dimen/text_13" />
+
+                <ImageView
+                    android:layout_width="@dimen/height_20"
+                    android:layout_height="@dimen/height_20"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/right_arrow" />
+            </LinearLayout>
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="@dimen/magin_10"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_20"
+        android:paddingRight="@dimen/padding_20">
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/AutoMatch"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+        <Button
+            android:id="@+id/content_register__register"
+            style="@style/MatchMatch"
+            android:background="@drawable/selector_btn_blue"
+            android:text="@string/text_register"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+</LinearLayout>

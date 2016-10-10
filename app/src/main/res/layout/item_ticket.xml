@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="5dp">
+    <ImageView
+        android:id="@+id/item_ticket__background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/item_ticket__shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"/>
+    <LinearLayout
+        android:id="@+id/item_ticket__layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:gravity="center">
+
+        <com.yyjlr.tickets.viewutils.countdown.CountdownView
+            android:id="@+id/item_ticket__time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:isShowMillisecond="true"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:suffixGravity="center"
+            app:suffixTextColor="#fff"
+            app:suffixTextSize="16sp"
+            app:timeTextColor="#fff"
+            app:timeTextSize="16sp"/>
+        <TextView
+            android:id="@+id/item_ticket__title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="《谍影重重》零点首映超前预售"/>
+        <TextView
+            android:id="@+id/item_ticket__date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:text="09-18~09-30"/>
+        <TextView
+            android:id="@+id/item_ticket__price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:text="人均15元"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

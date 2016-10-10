@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch"
+    android:orientation="vertical"
+    android:background="@mipmap/bg">
+    <include layout="@layout/base_toolbar_"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_film__refresh"
+        style="@style/MatchMatch">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_film__listview"
+            style="@style/MatchMatch"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

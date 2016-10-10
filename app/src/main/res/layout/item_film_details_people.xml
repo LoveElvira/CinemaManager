@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/WrapWrap"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="@dimen/padding_10"
+    android:layout_margin="@dimen/magin_10">
+    <TextView style="@style/WrapWrap"
+        android:id="@+id/item_film_details__people_name"
+        android:textSize="@dimen/text_14"
+        android:textColor="@color/black_alpha"/>
+    <TextView style="@style/WrapWrap"
+        android:id="@+id/item_film_details__people_position"
+        android:textSize="@dimen/text_10"
+        android:layout_marginTop="@dimen/magin_10"
+        android:textColor="@color/gray"/>
+</LinearLayout>

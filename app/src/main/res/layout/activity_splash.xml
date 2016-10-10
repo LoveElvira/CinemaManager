@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    tools:context=".activity.SplashActivity">
+
+    <RelativeLayout style="@style/MatchMatch">
+
+        <com.yyjlr.tickets.viewutils.banner.BGABanner xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/splash__banner_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:banner_pointAutoPlayAble="false"
+            app:banner_pointTopBottomMargin="15dp" />
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapWrap"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/splash__banner_jump"
+                style="@style/MatchMatch"
+                android:background="@drawable/circle_border"
+                android:gravity="center"
+                android:text="@string/text_jump" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

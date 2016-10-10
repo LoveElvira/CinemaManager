@@ -1,0 +1,11 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    tools:context=".activity.setting.SettingOrderActivity">
+
+    <include layout="@layout/base_toolbar" />
+
+    <include layout="@layout/content_mysetting_order" />
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/padding_10">
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/magin_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_order_sale_details__package_name"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_20"
+                android:text="卖品XX套餐"
+                android:textColor="@color/black_alpha1"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/item_order_sale_details__package_content"
+                style="@style/WrapWrap"
+                android:layout_marginTop="@dimen/magin_10"
+                android:text="中份爆米花1份+可乐2杯"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/item_order_sale_details__package_image"
+            android:layout_width="@dimen/height_50"
+            android:layout_height="@dimen/height_60"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/mihua" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/line_dash"
+        android:layerType="software"/>
+
+</LinearLayout>

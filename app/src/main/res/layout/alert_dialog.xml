@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/magin_40"
+    android:layout_marginRight="@dimen/magin_40"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_btn_white_radius_10"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/alert_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/magin_10"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_16" />
+
+        <TextView
+            android:id="@+id/alert_dialog_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/magin_10"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black_alpha"
+            android:textSize="@dimen/text_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="@dimen/padding_10"
+                android:paddingTop="@dimen/padding_10"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <TextView
+                    android:id="@+id/alert_dialog__cancel"
+                    style="@style/MatchMatch"
+                    android:gravity="center"
+                    android:text="取消"
+                    android:textColor="@color/black_alpha"
+                    android:textSize="@dimen/text_18" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray" />
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="@dimen/padding_10"
+                android:paddingTop="@dimen/padding_10"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <TextView
+                    android:id="@+id/alert_dialog__submit"
+                    style="@style/MatchMatch"
+                    android:gravity="center"
+                    android:text="呼叫"
+                    android:textColor="@color/black_alpha"
+                    android:textSize="@dimen/text_18" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="@mipmap/bg"
+    android:orientation="vertical"
+    tools:context="com.yyjlr.tickets.MainActivity">
+
+    <include layout="@layout/base_toolbar_" />
+
+    <com.yyjlr.tickets.viewutils.TicketFrameLayout
+        android:id="@+id/fragment_grab__layout"
+        style="@style/MatchMatch" />
+</LinearLayout>

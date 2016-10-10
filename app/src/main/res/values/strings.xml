@@ -1,0 +1,120 @@
+<resources>
+    <string name="app_name">"影院经理人"</string>
+    <string name="text_jump">跳过</string>
+    <string name="text_enter_main">进入主界面</string>
+
+    <string name="text_phone">手机号</string>
+    <string name="text_password">密码</string>
+    <string name="text_login">登陆</string>
+    <string name="text_register">注册</string>
+    <!--登陆-->
+    <string name="text_forget_password">忘记密码</string>
+    <string name="text_example_login">第三方登录</string>
+    <string name="text_weixin">微信</string>
+    <string name="text_qq">QQ</string>
+    <string name="text_xinlang">新浪微博</string>
+    <!--注册-->
+    <string name="text_code">验证码</string>
+    <string name="text_get_code">获取验证码</string>
+    <string name="text_confirm_password">确认密码</string>
+    <string name="text_have_account">已有账号</string>
+    <!--抢票电影名-->
+    <string name="text_grab_title">抢票</string>
+    <string name="title1">God of War Ascension</string>
+    <string name="title2">Assassin\'s Creed III</string>
+    <string name="title3">Hitman Absolution</string>
+    <string name="title4">Dishonored</string>
+    <!--我的-->
+    <string name="text_name">小蛮缠</string>
+    <string name="text_my_account">我的账号</string>
+    <string name="text_my_order">我的订单</string>
+    <string name="text_huiyuan">会员中心</string>
+    <string name="text_message">我的消息</string>
+    <string name="text_guanzhu">我的关注</string>
+    <string name="text_kefu">拨打客服电话</string>
+    <!--精选-->
+    <string name="text_time">时间：</string>
+    <string name="text_price">费用：</string>
+    <string name="text_enter">报名</string>
+    <string name="text_address">地点：</string>
+    <!--影片-->
+    <string name="text_film_title">影片</string>
+    <string name="text_film_details_title">影片详情</string>
+    <string name="text_buy_ticket">购票</string>
+    <string name="text_director">导演：</string>
+    <string name="text_star">主演：</string>
+    <string name="text_showtime">上映：</string>
+    <!--卖品-->
+    <string name="text_sale_title">卖品</string>
+    <string name="text_original_price">原价：</string>
+    <string name="text_app_price">APP价格：</string>
+    <string name="text_vip_price">会员价：</string>
+    <string name="text_money_unit">元</string>
+    <!--影片详情-->
+    <string name="text_film_details">
+        该片改编自同名手游，讲述了一群不会飞的小鸟挤在一座热带小岛上，
+        生活和睦宁静，但当神秘的绿色小猪登陆岛屿时，
+        小鸟们平静的生活被打破的故事。\n
+        在一座与世隔绝的美丽小岛上，住这一群乐天知命的鸟。
+        作为一只天生拥有黑粗眉的小鸟，“胖红”走到哪里都被嘲笑或是无视，
+        它对在家门外踢球的捣蛋鬼毫不客气，暴脾气让它更加孤僻。
+        不过即便是暴躁的“胖红”也有脾气相投的死党，
+        “飞镖黄”恰克与“炸弹黑”就是它的好基友。
+        不过易怒的胖红、亢奋的恰克和容易爆炸的炸弹总是因为各自的怪性格而不被其他的鸟接纳。
+        当“绿猪”初到小鸟岛时，正是敏锐的“胖红”发现了蹊跷之处，
+        然而法官大人却无视“胖红”的忠告，导致蠢萌“绿猪”诡计得逞。
+    </string>
+    <string name="text_film_collection">收藏</string>
+    <string name="text_film_share">分享</string>
+    <string name="text_film_select_seat">选座购票</string>
+    <!--影院详情-->
+    <string name="text_cinema_name">SFC上影-世博店</string>
+    <string name="text_cinema_introduction">
+        上海影城-世博国际影城建筑面积达1,645平方米，
+        是设有6个全数字化的放映厅（含1个VIP厅），
+        共计721个座位高端专业影院。</string>
+    <string name="text_cinema_address">
+        上海市浦东新区\n
+        世博大道1200号梅赛德斯奔驰文化中心6楼
+    </string>
+    <string name="text_cinema_subway">
+        1、乘坐地铁一号线南延线→南京交院站（向西北600米）\n
+        2、大学城内循环3路（10:00-22:30）→UTTC商贸中心（二十分钟一班）
+    </string>
+    <string name="text_cinema_transit">
+        江阴202路、江阴203路、江阴25路、
+        江阴301路、江阴302路、
+        江阴502 3 8 12 16 25 26路在银都花苑站下车，
+        步行192米至鹦鹉之城；
+    </string>
+    <string name="text_cinema_park">地下停车位</string>
+    <string name="text_cinema_popcorn">香甜爆米花，冰霜可口，美味小食等</string>
+    <string name="text_cinema_lover">影院提供情侣座服务</string>
+    <string name="text_cinema_children">儿童享受半价（VIP厅除外），需在售票处登记</string>
+    <string name="text_cinema_glasses">影院提供3D眼镜</string>
+    <!--我的订单-->
+    <string name="text_complete">已完成</string>
+    <string name="text_uncomplete">未完成</string>
+    <string name="text_order_num">订单号：</string>
+    <string name="text_order_package">套  餐：</string>
+    <string name="text_order_film">电  影：</string>
+    <string name="text_order_pay">支付</string>
+    <string name="text_order_lose">已失效</string>
+    <!--我的订单详情-->
+    <string name="text_success">交易成功</string>
+    <string name="text_film_ticket_code">电影取票码：</string>
+    <string name="text_package_ticket_code">卖品兑换券：</string>
+    <string name="text_pay_phone">付款电话：</string>
+    <string name="text_pay_way">付款方式：</string>
+    <string name="text_pay_time">付款时间：</string>
+    <string name="text_pay_price">支付金额</string>
+    <!--活动-->
+    <string name="text_want_to">我要参加</string>
+    <!--会员卡-->
+    <string name="text_card_title">我的会员卡</string>
+    <string name="text_card_bound_title">绑定会员卡</string>
+    <string name="text_card_num">卡号</string>
+    <string name="text_card_money">余额</string>
+    <string name="text_date_confirm">确定</string>
+    <string name="text_date_cancel">取消</string>
+</resources>

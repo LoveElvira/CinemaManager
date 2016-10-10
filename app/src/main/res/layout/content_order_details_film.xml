@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:layout_marginTop="@dimen/magin_10"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_10">
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/magin_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/content_order_details__film_name"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_20"
+                android:text="愤怒的小鸟"
+                android:textColor="@color/black_alpha1"
+                android:textSize="@dimen/text_14" />
+
+
+            <LinearLayout
+                style="@style/MatchWrap"
+                android:layout_marginTop="@dimen/magin_5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/content_order_details__film_date"
+                    style="@style/WrapWrap"
+                    android:layout_marginRight="@dimen/magin_5"
+                    android:text="2016-08-16"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_11" />
+
+                <TextView
+                    android:id="@+id/content_order_details__film_time"
+                    style="@style/WrapWrap"
+                    android:layout_marginRight="@dimen/magin_5"
+                    android:text="19:00~20:30"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_11" />
+
+                <TextView
+                    android:id="@+id/content_order_details__film_type"
+                    style="@style/WrapWrap"
+                    android:text="(英语3D)"
+                    android:textColor="@color/gray_alpha1"
+                    android:textSize="@dimen/text_11" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/content_order_details__film_hall"
+                style="@style/WrapWrap"
+                android:layout_marginTop="@dimen/magin_5"
+                android:text="SFC(世博店)5号厅"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_11" />
+
+            <TextView
+                android:id="@+id/content_order_details__film_seat"
+                style="@style/WrapWrap"
+                android:layout_marginTop="@dimen/magin_5"
+                android:text="4排3座 4排4座"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_11" />
+
+
+            <TextView
+                android:id="@+id/content_order_details__film_phone"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_10"
+                android:layout_marginTop="@dimen/magin_5"
+                android:text="150****1234"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_11" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/content_order_details__film_image"
+            android:layout_width="@dimen/height_60"
+            android:layout_height="@dimen/height_80"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bird" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/line_dash"
+        android:layerType="software"/>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="@dimen/magin_10"
+        android:background="@drawable/selector_btn_gray_alpha"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_10">
+
+        <TextView
+            style="@style/WrapWrap"
+            android:text="@string/text_film_ticket_code"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_12" />
+
+        <TextView
+            android:id="@+id/content_order_details__film_ticket_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black_alpha"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+</LinearLayout>

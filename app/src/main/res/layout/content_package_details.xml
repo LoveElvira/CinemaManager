@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.PackageDetailsActivity"
+    tools:showIn="@layout/activity_package_details">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/image_2" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/content_package_details__nested_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/content_package_details__relayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="?attr/actionBarSize"
+            android:paddingTop="@dimen/height_300">
+
+            <include layout="@layout/content_package_details_" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/content_package_details__layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black_"
+        android:alpha="0.9"
+        android:orientation="horizontal">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/content_package_details__collect"
+                style="@style/MatchMatch"
+                android:drawablePadding="-10dp"
+                android:drawableTop="@mipmap/collect"
+                android:gravity="center"
+                android:text="@string/text_film_collection"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_13" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/content_package_details__share"
+                style="@style/MatchMatch"
+                android:drawablePadding="-10dp"
+                android:drawableTop="@mipmap/share"
+                android:gravity="center"
+                android:text="@string/text_film_share"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_13" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/content_package_details__buy"
+                style="@style/MatchMatch"
+                android:background="@color/btn_orange"
+                android:gravity="center"
+                android:text="购买"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_15" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+</RelativeLayout>

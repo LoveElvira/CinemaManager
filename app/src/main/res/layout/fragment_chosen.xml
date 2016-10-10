@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="@mipmap/bg"
+    tools:context="com.yyjlr.tickets.MainActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <include layout="@layout/base_toolbar_"/>
+
+    <TextView
+         style="@style/WrapWrap"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_11"
+        android:layout_marginTop="@dimen/magin_5"
+        android:text="上海市浦东新区 世博大道1200号梅赛德斯奔驰文化中心6楼"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_chosen__listview"
+        style="@style/WrapWrap"
+        android:layout_marginTop="@dimen/magin_5"/>
+
+    <com.yyjlr.tickets.viewutils.chosen.SwipeFlingAdapterView
+        android:id="@+id/fragment_chosen__fling"
+        style="@style/MatchMatch"
+        swipe:max_visible="4"
+        swipe:min_adapter_stack="4"
+        swipe:y_offset_step="28dp"/>
+</LinearLayout>

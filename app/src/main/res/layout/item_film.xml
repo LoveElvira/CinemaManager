@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    app:mrl_rippleAlpha="0.2"
+    app:mrl_rippleColor="@color/bg_shadow"
+    app:mrl_rippleHover="true"
+    app:mrl_rippleOverlay="true"
+    android:layout_marginBottom="@dimen/magin_5"
+    android:layout_marginLeft="@dimen/magin_10"
+    android:layout_marginRight="@dimen/magin_10"
+    android:layout_marginTop="@dimen/magin_5">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_film__cardview"
+        style="@style/MatchWrap"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="2dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_100"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_5">
+
+            <ImageView
+                android:id="@+id/item_film__image"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.3"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/item_film__name"
+                    style="@style/WrapWrap"
+                    android:layout_marginBottom="@dimen/magin_5"
+                    android:layout_marginLeft="@dimen/magin_10"
+                    android:textColor="@color/black_alpha"
+                    android:textSize="@dimen/text_14" />
+
+                <LinearLayout
+                    style="@style/MatchWrap"
+                    android:layout_marginLeft="@dimen/magin_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/WrapWrap"
+                        android:text="@string/text_director"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/item_film__director"
+                        style="@style/WrapWrap"
+                        android:textColor="@color/black_alpha"
+                        android:textSize="@dimen/text_12" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/MatchWrap"
+                    android:layout_marginLeft="@dimen/magin_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/WrapWrap"
+                        android:text="@string/text_star"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/item_film__star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:textColor="@color/black_alpha"
+                        android:textSize="@dimen/text_12" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/MatchWrap"
+                    android:layout_marginLeft="@dimen/magin_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/WrapWrap"
+                        android:text="@string/text_showtime"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/item_film__showtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black_alpha"
+                        android:textSize="@dimen/text_12" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                style="@style/WrapWrap"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <TextView
+                    android:id="@+id/item_film__buy_ticket"
+                    android:layout_width="@dimen/height_60"
+                    android:layout_height="@dimen/height_30"
+                    android:background="@drawable/selector_btn_orange"
+                    android:gravity="center"
+                    android:text="@string/text_buy_ticket"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_14" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</com.yyjlr.tickets.viewutils.MaterialRippleLayout>

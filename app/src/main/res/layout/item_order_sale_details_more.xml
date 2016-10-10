@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    app:mrl_rippleAlpha="0.2"
+    app:mrl_rippleColor="@color/bg_shadow"
+    app:mrl_rippleHover="true"
+    app:mrl_rippleOverlay="true">
+<LinearLayout
+    android:id="@+id/item_order_sale_details__more_layout"
+    style="@style/MatchWrap"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_10">
+
+    <ImageView
+        android:id="@+id/item_order_sale_details_more__down"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_20"
+        android:src="@mipmap/more_down"/>
+    <TextView
+        android:id="@+id/item_order_sale_details_more__text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/text_12"
+        android:text="展开更多卖品"/>
+</LinearLayout>
+    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>

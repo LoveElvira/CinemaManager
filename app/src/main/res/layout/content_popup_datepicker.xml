@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <RelativeLayout
+        style="@style/MatchWrap"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapWrap"
+            android:layout_alignParentLeft="true"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/date_cancel"
+                style="@style/WrapWrap"
+                android:gravity="center"
+                android:padding="@dimen/padding_10"
+                android:text="@string/text_date_cancel"
+                android:textColor="@color/tab_text_select" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapWrap"
+            android:layout_alignParentRight="true"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/date_submit"
+                style="@style/WrapWrap"
+                android:gravity="center"
+                android:padding="@dimen/padding_10"
+                android:text="@string/text_date_confirm"
+                android:textColor="@color/tab_text_select" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <DatePicker
+                android:id="@+id/content_popup_datepicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"></DatePicker>
+
+            <TimePicker
+                android:id="@+id/content_popup_timepicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>

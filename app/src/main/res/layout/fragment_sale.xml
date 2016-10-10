@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch"
+    android:background="@mipmap/bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar_" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_70"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <LinearLayout
+                android:id="@+id/fragment_sale__package_layout"
+                style="@style/MatchMatch"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/padding_5">
+
+                <ImageView
+                    android:id="@+id/fragment_sale__package_image"
+                    style="@style/WrapWrap"
+                    android:background="@mipmap/sale_package_select" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:paddingTop="@dimen/padding_5"
+                    android:text="套餐"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_10" />
+            </LinearLayout>
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <LinearLayout
+                android:id="@+id/fragment_sale__sale_layout"
+                style="@style/MatchMatch"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/padding_5">
+
+                <ImageView
+                    android:id="@+id/fragment_sale__sale_image"
+                    style="@style/WrapWrap"
+                    android:background="@mipmap/sale_sale" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:paddingTop="@dimen/padding_5"
+                    android:text="卖品"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_10" />
+            </LinearLayout>
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_sale__refresh"
+        style="@style/MatchMatch">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_sale__listview"
+            style="@style/MatchMatch" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity"
+    tools:showIn="@layout/activity_order_details">
+
+    <ScrollView style="@style/MatchMatch">
+
+        <LinearLayout
+            style="@style/MatchMatch"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/MatchWrap"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_10">
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:text="@string/text_order_num"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/item_order_details__order_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2565263322"
+                    android:textColor="@color/black_alpha"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:text="@string/text_success"
+                    android:textColor="@color/btn_orange"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+
+            <include
+                android:id="@+id/content_order_details_film"
+                layout="@layout/content_order_details_film" />
+
+            <include
+                android:id="@+id/content_order_details_package"
+                layout="@layout/content_order_details_package" />
+
+            <LinearLayout
+                style="@style/MatchWrap"
+                android:layout_marginTop="@dimen/magin_10"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_10">
+
+                <LinearLayout
+                    style="@style/MatchWrap"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        style="@style/MatchWrap"
+                        android:layout_marginBottom="@dimen/magin_5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/WrapWrap"
+                            android:text="@string/text_pay_phone"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/text_12" />
+
+                        <TextView
+                            android:id="@+id/item_order_details__pay_phone"
+                            style="@style/WrapWrap"
+                            android:layout_marginLeft="@dimen/magin_10"
+                            android:text="150****1234"
+                            android:textColor="@color/gray_alpha1"
+                            android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/MatchWrap"
+                        android:layout_marginBottom="@dimen/magin_5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/WrapWrap"
+                            android:text="@string/text_pay_way"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/text_12" />
+
+                        <TextView
+                            android:id="@+id/item_order_details__pay_way"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/magin_10"
+                            android:text="微信支付"
+                            android:textColor="@color/gray_alpha1"
+                            android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/MatchWrap"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/WrapWrap"
+                            android:text="@string/text_pay_time"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/text_12" />
+
+                        <TextView
+                            android:id="@+id/item_order_details__pay_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/magin_10"
+                            android:text="2016-08-16 17:30:20"
+                            android:textColor="@color/gray_alpha1"
+                            android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/magin_10"
+                    android:layout_marginTop="@dimen/magin_10"
+                    android:layerType="software"
+                    android:background="@drawable/line_dash" />
+
+                <LinearLayout
+                    style="@style/MatchWrap"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/WrapWrap"
+                        android:text="@string/text_pay_price"
+                        android:textColor="@color/black_alpha1"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/item_order_details__pay_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="120"
+                        android:textColor="@color/black_alpha1"
+                        android:textSize="@dimen/text_14" />
+
+                    <TextView
+                        style="@style/WrapWrap"
+                        android:text="元"
+                        android:textColor="@color/black_alpha1"
+                        android:textSize="@dimen/text_12" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

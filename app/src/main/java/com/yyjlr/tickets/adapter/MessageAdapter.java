@@ -1,0 +1,37 @@
+package com.yyjlr.tickets.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.model.FilmEntity;
+import com.yyjlr.tickets.model.MessageEntity;
+import com.yyjlr.tickets.service.OnRecyclerViewItemClickListener;
+
+import java.util.List;
+
+/**
+ * Created by Elvira on 2016/8/3.
+ * 消息Adapter
+ */
+public class MessageAdapter extends BaseAdapter<MessageEntity>{
+
+    public MessageAdapter(List<MessageEntity> data) {
+        super(R.layout.item_message, data);
+    }
+
+    @Override
+    protected void convert(BaseViewHolder helper, MessageEntity item, int position) {
+        helper.setText(R.id.item_message__title,item.getTitle())
+                .setText(R.id.item_message__time,item.getTime())
+                .setOnClickListener(R.id.item_message__layout,new OnItemChildClickListener());
+    }
+
+}

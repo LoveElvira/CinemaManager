@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchWrap"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.FilmCompleteActivity"
+    tools:showIn="@layout/activity_film_complete_seat">
+
+    <ScrollView
+        style="@style/MatchWrap">
+
+        <LinearLayout
+            style="@style/MatchMatch"
+            android:orientation="vertical">
+
+            <include layout="@layout/content_film_complete_seat_top" />
+
+            <LinearLayout
+                style="@style/MatchMatch"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_10">
+
+                <RelativeLayout
+                    style="@style/MatchWrap"
+                    android:layout_marginBottom="@dimen/magin_10">
+
+                    <TextView
+                        style="@style/WrapWrap"
+                        android:layout_centerVertical="true"
+                        android:text="卖品"
+                        android:textColor="@color/black_alpha1"
+                        android:textSize="@dimen/text_14" />
+
+                    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                        style="@style/WrapWrap"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/magin_10"
+                        app:mrl_rippleAlpha="0.2"
+                        app:mrl_rippleColor="@color/bg_shadow"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true">
+
+                        <ImageView
+                            android:id="@+id/content_film_complete_seat__add"
+                            android:layout_width="@dimen/height_30"
+                            android:layout_height="@dimen/height_30"
+                            android:src="@mipmap/sale_add" />
+                    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/content_film_complete_seat__sale_layout"
+                    style="@style/MatchWrap"
+                    android:orientation="vertical"></LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/line_dash" />
+
+                <RelativeLayout
+                    style="@style/MatchWrap"
+                    android:layout_marginTop="@dimen/magin_20">
+
+                    <TextView
+                        style="@style/WrapWrap"
+                        android:layout_centerVertical="true"
+                        android:text="应付金额"
+                        android:textColor="@color/black_alpha1"
+                        android:textSize="@dimen/text_14" />
+
+                    <TextView
+                        android:id="@+id/content_film_complete_seat__pay_price"
+                        style="@style/WrapWrap"
+                        android:layout_alignParentRight="true"
+                        android:text="¥120"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/text_15" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <include layout="@layout/content_sale_bill" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

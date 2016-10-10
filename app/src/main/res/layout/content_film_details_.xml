@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch"
+    android:layout_marginTop="@dimen/magin_125"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="@dimen/magin_5"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="106dp"
+                android:layout_height="136dp"
+                android:layout_marginLeft="17dp"
+                android:background="@color/gray"/>
+            <ImageView
+                android:id="@+id/content_film_details__image"
+                android:layout_width="@dimen/height_100"
+                android:layout_height="@dimen/height_130"
+                android:layout_marginLeft="@dimen/magin_20"
+                android:layout_marginTop="3dp"
+                android:scaleType="centerCrop"
+                android:background="@color/gray"
+                android:src="@mipmap/bird" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            style="@style/MatchWrap"
+            android:layout_marginLeft="@dimen/magin_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_film_details__name"
+                style="@style/WrapWrap"
+                android:text="愤怒的小鸟"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_15" />
+
+            <TextView
+                android:id="@+id/content_film_details__english_name"
+                style="@style/WrapWrap"
+                android:text="Angle Bird"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_10" />
+
+            <RatingBar
+                android:id="@+id/content_film_details__star"
+                style="@style/myRatingBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/magin_5"
+                android:numStars="5"
+                android:rating="5"/>
+
+            <LinearLayout
+                style="@style/MatchWrap"
+                android:layout_marginBottom="@dimen/magin_5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/content_film_details__type"
+                    style="@style/WrapWrap"
+                    android:layout_marginRight="@dimen/magin_5"
+                    android:background="@drawable/selector_btn_blue_alpha"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/padding_5"
+                    android:paddingTop="2dp"
+                    android:text="动画/喜剧/动作"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/content_film_details__duration"
+                    style="@style/WrapWrap"
+                    android:layout_marginRight="@dimen/magin_5"
+                    android:background="@drawable/selector_btn_blue_alpha"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/padding_5"
+                    android:paddingTop="2dp"
+                    android:text="97分钟"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/content_film_details__degree"
+                    style="@style/WrapWrap"
+                    android:background="@drawable/selector_btn_blue_alpha"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/padding_5"
+                    android:paddingTop="2dp"
+                    android:text="2D"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MatchWrap"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/content_film_details__country"
+                    style="@style/WrapWrap"
+                    android:layout_marginRight="@dimen/magin_5"
+                    android:background="@drawable/selector_btn_blue_alpha"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/padding_5"
+                    android:paddingTop="2dp"
+                    android:text="美国"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/content_film_details__showtime"
+                    style="@style/WrapWrap"
+                    android:layout_marginRight="@dimen/magin_5"
+                    android:background="@drawable/selector_btn_blue_alpha"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/padding_5"
+                    android:paddingRight="@dimen/padding_5"
+                    android:paddingTop="2dp"
+                    android:text="上映"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_20"
+        android:paddingRight="@dimen/padding_20"
+        android:paddingTop="@dimen/padding_20">
+
+        <TextView
+            android:id="@+id/content_film_details__introduce"
+            style="@style/WrapWrap"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:singleLine="false"
+            android:text="@string/text_film_details"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_12" />
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapWrap"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <ImageView
+                android:id="@+id/content_film_details__down"
+                android:layout_width="@dimen/height_40"
+                android:layout_height="@dimen/height_40"
+                android:background="@mipmap/down_arrow" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/content_film_details__listview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_100" />
+
+</LinearLayout>

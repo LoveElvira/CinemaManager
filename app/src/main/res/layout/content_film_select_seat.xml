@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.FilmSelectSeatActivity"
+    tools:showIn="@layout/activity_film_select_seat">
+
+    <LinearLayout
+        android:id="@+id/content_film_seat__time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/content_film_seat__date"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_5"
+                android:text="08月20日"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_12" />
+
+            <TextView
+                android:id="@+id/content_film_seat__time"
+                style="@style/WrapWrap"
+                android:text="07:00"
+                android:textColor="@color/black_alpha"
+                android:textSize="@dimen/text_16" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/content_film_seat__hall"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_5"
+                android:text="5号厅"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_12" />
+
+            <TextView
+                android:id="@+id/content_film_seat__hall_type"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_5"
+                android:background="@drawable/bg_green"
+                android:paddingLeft="@dimen/padding_5"
+                android:paddingRight="@dimen/padding_5"
+                android:text="巨幕厅"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/content_film_seat__film_language"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_5"
+                android:text="英语"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_12" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/height_5"
+                android:layout_marginRight="@dimen/magin_5"
+                android:background="@color/gray_alpha1" />
+
+            <TextView
+                android:id="@+id/content_film_seat__film_type"
+                style="@style/WrapWrap"
+                android:layout_marginRight="@dimen/magin_5"
+                android:text="3D"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/content_film_seat__type_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content_film_seat__time_layout"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingLeft="@dimen/padding_20"
+        android:paddingRight="@dimen/padding_20"
+        android:paddingTop="@dimen/padding_10" />
+
+    <View
+        android:id="@+id/content_film_seat__line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/content_film_seat__type_listview"
+        android:layout_marginLeft="@dimen/magin_20"
+        android:layout_marginRight="@dimen/magin_20"
+        android:background="@color/gray" />
+
+
+    <LinearLayout
+        android:id="@+id/content_film_seat__confirm_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_5"
+            android:paddingTop="@dimen/padding_5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="共计："
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:id="@+id/content_film_seat__price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/magin_5"
+                android:text="100"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="元"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/magin_5"
+                android:text="(50+50)"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_13" />
+
+
+        </LinearLayout>
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/content_film_seat__confirm_seat"
+                style="@style/MatchMatch"
+                android:background="@color/btn_orange"
+                android:gravity="center"
+                android:text="确认选座"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_15" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/content_film_seat__select_seat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/content_film_seat__confirm_layout"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/content_film_seat__seat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/magin_5"
+            android:padding="@dimen/padding_10"
+            android:text="已选座位："
+            android:textSize="@dimen/text_16" />
+
+        <LinearLayout
+            android:id="@+id/content_film_seat__seat_recommend_layout"
+            style="@style/MatchWrap"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_10">
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <TextView
+                    android:id="@+id/content_film_seat__seat_recommend_one"
+                    style="@style/MatchMatch"
+                    android:background="@drawable/border_gray"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_10"
+                    android:text="1人座"
+                    android:textColor="@color/gray_alpha1"
+                    android:textSize="@dimen/text_14" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true"
+                android:layout_marginLeft="@dimen/magin_5"
+                android:layout_marginRight="@dimen/magin_5">
+
+                <TextView
+                    android:id="@+id/content_film_seat__seat_recommend_two"
+                    style="@style/MatchMatch"
+                    android:background="@drawable/border_gray"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_10"
+                    android:text="2人座"
+                    android:textColor="@color/gray_alpha1"
+                    android:textSize="@dimen/text_14" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true"
+                android:layout_marginRight="@dimen/magin_5">
+
+                <TextView
+                    android:id="@+id/content_film_seat__seat_recommend_three"
+                    style="@style/MatchMatch"
+                    android:background="@drawable/border_gray"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_10"
+                    android:text="3人座"
+                    android:textColor="@color/gray_alpha1"
+                    android:textSize="@dimen/text_14" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+            <TextView
+                android:id="@+id/content_film_seat__seat_recommend_four"
+                style="@style/MatchMatch"
+                android:background="@drawable/border_gray"
+                android:gravity="center"
+                android:padding="@dimen/padding_10"
+                android:text="4人座"
+                android:textColor="@color/gray_alpha1"
+                android:textSize="@dimen/text_14" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        </LinearLayout>
+
+        <com.yyjlr.tickets.viewutils.ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/content_film_seat__show_select_seat_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_10"
+                android:paddingLeft="@dimen/padding_10"
+                android:paddingRight="@dimen/padding_10">
+
+            </LinearLayout>
+
+        </com.yyjlr.tickets.viewutils.ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray" />
+
+    </LinearLayout>
+
+
+    <com.yyjlr.tickets.viewutils.SeatTableView
+        android:id="@+id/content_film_seat__show_seat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/content_film_seat__select_seat_layout"
+        android:layout_below="@id/content_film_seat__line"
+        android:background="@color/bg_gray" />
+</RelativeLayout>

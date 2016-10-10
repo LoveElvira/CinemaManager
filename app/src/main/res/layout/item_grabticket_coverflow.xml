@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/height_130"
+    android:layout_height="@dimen/height_200"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:foreground="@drawable/grab_selector_cover">
+
+    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        style="@style/WrapWrap"
+        app:mrl_rippleAlpha="0.2"
+        app:mrl_rippleColor="@color/bg_shadow"
+        app:mrl_rippleHover="true"
+        app:mrl_rippleOverlay="true">
+
+        <ImageView
+            android:id="@+id/item_grab__image"
+            style="@style/MatchMatch"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            tools:src="@mipmap/image_1" />
+    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+    <TextView
+        android:id="@+id/item_grab__title"
+        style="@style/MatchWrap"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/grab_label_background"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textAppearance="?android:attr/textAppearanceSmallInverse"
+        android:visibility="gone"
+        tools:text="@string/title1" />
+
+</FrameLayout>

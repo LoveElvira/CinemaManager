@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:orientation="vertical"
+    android:background="@color/bg_gray"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.setting.AccountNameActivity"
+    tools:showIn="@layout/activity_account_name">
+
+    <EditText
+        android:id="@+id/content_account_name__name"
+        style="@style/MatchWrap"
+        android:background="@color/white"
+        android:gravity="center|left"
+        android:maxLength="11"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/magin_10"
+        android:padding="@dimen/padding_10"
+        android:textSize="@dimen/text_14" />
+
+</LinearLayout>

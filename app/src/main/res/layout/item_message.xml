@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    app:mrl_rippleAlpha="0.2"
+    app:mrl_rippleColor="@color/bg_shadow"
+    app:mrl_rippleHover="true"
+    app:mrl_rippleOverlay="true">
+
+    <LinearLayout
+        android:id="@+id/item_message__layout"
+        style="@style/MatchWrap"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            style="@style/MatchWrap"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_10">
+
+            <TextView
+                android:id="@+id/item_message__title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/item_message__time"
+                style="@style/WrapWrap"
+                android:text="2016-08-08"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_12" />
+
+            <ImageView
+                style="@style/WrapWrap"
+                android:src="@mipmap/right_arrow" />
+        </LinearLayout>
+        <View
+            style="@style/MatchOne"
+            android:background="@color/gray" />
+    </LinearLayout>
+</com.yyjlr.tickets.viewutils.MaterialRippleLayout>

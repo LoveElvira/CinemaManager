@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginBottom="@dimen/magin_5">
+
+    <TextView
+        android:id="@+id/item_pay_select_filmorsale__name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="名称"
+        android:textColor="@color/gray_alpha1"
+        android:textSize="@dimen/text_12"
+        android:layout_marginLeft="@dimen/magin_10"
+        android:layout_marginRight="@dimen/magin_5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="原价："
+        android:textColor="@color/gray_alpha1"
+        android:textSize="@dimen/text_12" />
+
+    <TextView
+        android:id="@+id/item_pay_select_filmorsale__original_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50元"
+        android:textColor="@color/gray_alpha1"
+        android:textSize="@dimen/text_12"
+        android:layout_marginRight="@dimen/magin_5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="优惠价："
+        android:textColor="@color/gray_alpha1"
+        android:textSize="@dimen/text_12" />
+
+    <TextView
+        android:id="@+id/item_pay_select_filmorsale__discount_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="40元"
+        android:textColor="@color/gray_alpha1"
+        android:textSize="@dimen/text_12" />
+</LinearLayout>

@@ -1,0 +1,117 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionMenuTextColor">@color/white_alpha_0</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyHomePageTextAppearance</item>
+        <!--<item name="tabSelectedTextColor">@color/tab_text_select</item>-->
+        <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@null</item>
+        <!--<item name="tabPaddingStart">@dimen/padding_30</item>-->
+        <!--<item name="tabPaddingEnd">@dimen/padding_30</item>-->
+        <item name="tabPaddingTop">@dimen/padding_5</item>
+    </style>
+
+    <style name="MyHomePageTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/text_11</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="PayCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/PayTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/tab_text_select</item>
+        <item name="tabTextColor">@color/black_alpha1</item>
+        <item name="tabIndicatorColor">@color/tab_text_select</item>
+    </style>
+
+    <style name="PayTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="myRatingBarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:maxHeight">20dp</item>
+    </style>
+
+    <style name="mypopwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+        <!-- 指定显示的动画xml -->
+
+        <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
+        <!-- 指定消失的动画xml -->
+    </style>
+
+
+    <declare-styleable name="CountdownView">
+        <attr name="isHideTimeBackground" format="boolean" />
+        <attr name="isShowTimeBgDivisionLine" format="boolean" />
+        <attr name="timeBgDivisionLineColor" format="color" />
+        <attr name="timeBgDivisionLineSize" format="dimension" />
+        <attr name="timeBgColor" format="color" />
+        <attr name="timeBgSize" format="dimension" />
+        <attr name="timeBgRadius" format="dimension" />
+
+        <attr name="isTimeTextBold" format="boolean" />
+        <attr name="timeTextSize" format="dimension" />
+        <attr name="timeTextColor" format="color" />
+        <attr name="isShowDay" format="boolean" />
+        <attr name="isShowHour" format="boolean" />
+        <attr name="isShowMinute" format="boolean" />
+        <attr name="isShowSecond" format="boolean" />
+        <attr name="isShowMillisecond" format="boolean" />
+
+        <attr name="isSuffixTextBold" format="boolean" />
+        <attr name="suffixTextSize" format="dimension" />
+        <attr name="suffixTextColor" format="color" />
+        <attr name="suffix" format="string" />
+        <attr name="suffixDay" format="string" />
+        <attr name="suffixHour" format="string" />
+        <attr name="suffixMinute" format="string" />
+        <attr name="suffixSecond" format="string" />
+        <attr name="suffixMillisecond" format="string" />
+        <attr name="suffixGravity">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+        <attr name="suffixLRMargin" format="dimension" />
+        <attr name="suffixDayLeftMargin" format="dimension" />
+        <attr name="suffixDayRightMargin" format="dimension" />
+        <attr name="suffixHourLeftMargin" format="dimension" />
+        <attr name="suffixHourRightMargin" format="dimension" />
+        <attr name="suffixMinuteLeftMargin" format="dimension" />
+        <attr name="suffixMinuteRightMargin" format="dimension" />
+        <attr name="suffixSecondLeftMargin" format="dimension" />
+        <attr name="suffixSecondRightMargin" format="dimension" />
+        <attr name="suffixMillisecondLeftMargin" format="dimension" />
+
+        <attr name="isShowTimeBgBorder" format="boolean" />
+        <attr name="timeBgBorderColor" format="color" />
+        <attr name="timeBgBorderSize" format="dimension" />
+        <attr name="timeBgBorderRadius" format="dimension" />
+    </declare-styleable>
+
+    <style name="text_gray">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">@dimen/text_10</item>
+    </style>
+</resources>
