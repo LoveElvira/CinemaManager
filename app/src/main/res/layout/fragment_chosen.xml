@@ -22,10 +22,18 @@
         style="@style/WrapWrap"
         android:layout_marginTop="@dimen/magin_5"/>
 
-    <com.yyjlr.tickets.viewutils.chosen.SwipeFlingAdapterView
-        android:id="@+id/fragment_chosen__fling"
-        style="@style/MatchMatch"
-        swipe:max_visible="4"
-        swipe:min_adapter_stack="4"
-        swipe:y_offset_step="28dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/padding_5"
+        android:paddingLeft="@dimen/padding_20"
+        android:paddingRight="@dimen/padding_20"
+        android:paddingBottom="@dimen/padding_10">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_chosen__fling"
+            style="@style/MatchMatch"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
 </LinearLayout>
