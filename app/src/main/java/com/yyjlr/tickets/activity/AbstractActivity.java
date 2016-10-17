@@ -30,6 +30,8 @@ public class AbstractActivity extends AppCompatActivity {
 
     protected InputMethodManager imm;
 
+    protected boolean flag = true;
+
     @Override
     protected void onResume() {
         super.onResume();

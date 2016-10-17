@@ -39,7 +39,6 @@ public class ChosenAdapter extends BaseAdapter<ChosenFilmEntity> {
                 .setOnClickListener(R.id.item_chosen__enter,new OnItemChildClickListener());
         Picasso.with(context)
                 .load(item.getChosenFilmImage())
-//                .resize(cardWidth, cardHeight)
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView)helper.getView(R.id.item_chosen__image));
     }

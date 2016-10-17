@@ -3,11 +3,11 @@
     android:fillAfter="true"
     android:fillEnabled="true">
     <alpha
-        android:duration="500"
+        android:duration="300"
         android:fromAlpha="1.0"
         android:toAlpha="0" />
     <translate
-        android:duration="500"
+        android:duration="300"
         android:fromYDelta="0"
         android:interpolator="@android:anim/decelerate_interpolator"
         android:toYDelta="100%" />

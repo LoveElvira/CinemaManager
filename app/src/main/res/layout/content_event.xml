@@ -88,7 +88,7 @@
             app:mrl_rippleOverlay="true">
 
             <TextView
-                android:id="@+id/content_film_details__select_seat"
+                android:id="@+id/content_event__join"
                 style="@style/MatchMatch"
                 android:background="@color/btn_orange"
                 android:gravity="center"

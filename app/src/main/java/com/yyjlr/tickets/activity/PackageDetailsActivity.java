@@ -2,6 +2,7 @@ package com.yyjlr.tickets.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
     private TextView collectPackage;
     private TextView sharePackage;
     private TextView buyPackage;
+    private boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         title = (TextView) findViewById(R.id.base_toolbar__text);
-        title.setText("《某某某》活动套餐");
+        title.setText("活动套餐");
 
         collectPackage = (TextView) findViewById(R.id.content_package_details__collect);
         sharePackage = (TextView) findViewById(R.id.content_package_details__share);
@@ -72,8 +75,18 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         }
         switch (v.getId()) {
             case R.id.content_package_details__collect:
+                Drawable drawable = null;
+                if (flag) {
+                    drawable = getResources().getDrawable(R.mipmap.collect_select);
+                }else {
+                    drawable = getResources().getDrawable(R.mipmap.collect);
+                }
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                collectPackage.setCompoundDrawables(null, drawable, null, null);
+                flag = !flag;
                 break;
             case R.id.content_package_details__share:
+                sharePopupWindow();
                 break;
             case R.id.content_package_details__buy:
                 selectPopupWindow();
@@ -90,6 +103,22 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
             case R.id.popup_sale__add://增加数量
                 saleNum.setText((num + 1) + "");
                 break;
+            case R.id.popup_share__weixin:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__friend_circle:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__xinlangweibo:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__qq_kongjian:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__cancel:
+                mPopupWindow.dismiss();
+                break;
+
         }
     }
 
@@ -139,6 +168,51 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         buy.setOnClickListener(this);
         lost.setOnClickListener(this);
         add.setOnClickListener(this);
+
+    }
+
+    //弹出分享选择
+    private void sharePopupWindow() {
+
+        View parent = View
+                .inflate(PackageDetailsActivity.this, R.layout.activity_event, null);
+        View view = View
+                .inflate(PackageDetailsActivity.this, R.layout.popupwindows_share, null);
+        view.startAnimation(AnimationUtils.loadAnimation(PackageDetailsActivity.this,
+                R.anim.fade_in));
+        mPopupWindow = new PopupWindow(view);
+        mPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setContentView(view);
+        // 设置背景颜色变暗
+        final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+
+        mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                lp.alpha = 1.0f;
+                Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+            }
+        });
+
+
+        LinearLayout weixin = (LinearLayout) view.findViewById(R.id.popup_share__weixin);
+        LinearLayout friendCircle = (LinearLayout) view.findViewById(R.id.popup_share__friend_circle);
+        LinearLayout xinlangweibo = (LinearLayout) view.findViewById(R.id.popup_share__xinlangweibo);
+        LinearLayout qqkongjian = (LinearLayout) view.findViewById(R.id.popup_share__qq_kongjian);
+        TextView cancel = (TextView) view.findViewById(R.id.popup_share__cancel);
+
+        weixin.setOnClickListener(this);
+        friendCircle.setOnClickListener(this);
+        xinlangweibo.setOnClickListener(this);
+        qqkongjian.setOnClickListener(this);
+        cancel.setOnClickListener(this);
 
     }
 

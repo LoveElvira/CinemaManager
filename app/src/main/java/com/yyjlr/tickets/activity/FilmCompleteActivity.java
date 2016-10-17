@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yyjlr.tickets.AppManager;
@@ -50,6 +51,9 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
     private List<FilmSaleEntity> partDate = new ArrayList<FilmSaleEntity>();
     private FilmSaleAdapter filmSaleAdapter;
 
+    private RelativeLayout addLayout;
+    private LinearLayout discountLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +72,8 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         phone = (EditText) findViewById(R.id.content_sale_bill__phone);
         deletePhone = (ImageView) findViewById(R.id.content_sale_bill__delete_phone);
         confirmOrder = (Button) findViewById(R.id.content_sale_bill__confirm_order);
+        addLayout = (RelativeLayout) findViewById(R.id.content_film_complete_seat__add_layout);
+        discountLayout = (LinearLayout) findViewById(R.id.content_film_complete_seat__discount_layout);
         deletePhone.setOnClickListener(this);
         phone.addTextChangedListener(textWatcher);
         confirmOrder.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +93,18 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         allDate = Application.getiDataService().getFileSaleList();
         partDate.add(allDate.get(0));
         partDate.add(allDate.get(1));
-        initAddPackage(0);
+
+
+        if (flag){
+            discountLayout.setVisibility(View.VISIBLE);
+            addLayout.setVisibility(View.GONE);
+            initAddDiscountPackage();
+        }else {
+            discountLayout.setVisibility(View.GONE);
+            addLayout.setVisibility(View.VISIBLE);
+            initAddPackage(0);
+        }
+        flag = !flag;
     }
 
 
@@ -111,6 +128,38 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
             }
         }
     };
+
+    private void initAddDiscountPackage(){
+        View view = LayoutInflater.from(FilmCompleteActivity.this).inflate(R.layout.item_film_sale_package_, null, false);
+        final ImageView selectImage = (ImageView) view.findViewById(R.id.item_film_sale__select);
+        ImageView saleImage = (ImageView) view.findViewById(R.id.item_film_sale__image);
+        TextView salePackage = (TextView) view.findViewById(R.id.item_film_sale__package);
+        TextView salePackagePrice = (TextView) view.findViewById(R.id.item_film_sale__price);
+        TextView salePackageContent = (TextView) view.findViewById(R.id.item_film_sale__package_content);
+        TextView saleDiscount = (TextView) view.findViewById(R.id.item_film_sale__discount);
+
+        saleImage.setImageResource(R.mipmap.mihua);
+        salePackage.setText(partDate.get(0).getSalePackage());
+        salePackagePrice.setText("￥" + partDate.get(0).getSalePrice());
+        salePackageContent.setText(partDate.get(0).getSalePackageContent());
+//        saleDiscount.setText("");
+        selectImage.setImageResource(R.mipmap.sale_no_select);
+        selectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (partDate.get(0).isSaleSelect()) {
+                    selectImage.setImageResource(R.mipmap.sale_no_select);
+                    partDate.get(0).setSaleSelect(false);
+                } else {
+                    selectImage.setImageResource(R.mipmap.sale_select);
+                    partDate.get(0).setSaleSelect(true);
+                }
+            }
+        });
+
+        addPackageLayout.addView(view);
+    }
 
 
     //添加套餐

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.FilmDetailsActivity;
+import com.yyjlr.tickets.activity.FilmScheduleActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FilmAdapter;
 import com.yyjlr.tickets.model.FilmEntity;
@@ -153,9 +154,9 @@ public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRe
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.item_film__buy_ticket:
-                intent.setClass(getInstance().getCurrentActivity(), FilmDetailsActivity.class);
+                intent.setClass(getInstance().getCurrentActivity(), FilmScheduleActivity.class);
                 break;
-            case R.id.item_film__cardview:
+            case R.id.item_film__image:
                 intent.setClass(getInstance().getCurrentActivity(), FilmDetailsActivity.class);
                 break;
         }

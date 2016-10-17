@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
+import com.yyjlr.tickets.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +131,7 @@ public class TicketFrameLayout extends FrameLayout {
         }
 
         layBottomContainer.setTranslationY(bottomTranslateY);
-        layBottomContainer.setBackgroundColor(Color.BLUE);
+        layBottomContainer.setBackgroundColor(getResources().getColor(R.color.white));
         addView(layBottomContainer);
     }
 

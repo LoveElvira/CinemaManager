@@ -58,7 +58,9 @@
 
                 <TextView
                     android:id="@+id/item_film_sale__package"
-                    style="@style/WrapWrap"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:text="套餐1"
                     android:textColor="@color/black_alpha"
                     android:textSize="@dimen/text_14" />
@@ -81,82 +83,14 @@
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_film_sale__time"
+                android:id="@+id/item_film_sale__discount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/magin_5"
-                android:text="2016-08-09~2016-08-16"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_12" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/item_film_sale__add_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <LinearLayout
-            style="@style/WrapWrap"
-            android:background="@drawable/border_gray"
-            android:orientation="horizontal"
-            android:layout_marginLeft="@dimen/magin_40">
-
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <TextView
-                    android:id="@+id/item_film_sale__lost"
-                    android:layout_width="@dimen/height_40"
-                    android:layout_height="@dimen/height_30"
-                    android:gravity="center"
-                    android:text="-"
-                    android:textColor="@color/gray_alpha1"
-                    android:textSize="@dimen/text_18" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
-
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="match_parent"
-                android:background="@color/gray" />
-
-            <TextView
-                android:id="@+id/item_film_sale__num"
-                android:layout_width="@dimen/height_40"
-                android:layout_height="@dimen/height_30"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@color/black_alpha1"
-                android:textSize="@dimen/text_14" />
-
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="match_parent"
-                android:background="@color/gray" />
-
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <TextView
-                    android:id="@+id/item_film_sale__add"
-                    android:layout_width="@dimen/height_40"
-                    android:layout_height="@dimen/height_30"
-                    android:gravity="center"
-                    android:text="+"
-                    android:textColor="@color/gray_alpha1"
-                    android:textSize="@dimen/text_18" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                android:text="每张影票立减1元"
+                android:textColor="@color/white"
+                android:background="@color/red"
+                android:textSize="@dimen/text_10" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

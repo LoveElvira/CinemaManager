@@ -1,14 +1,21 @@
 package com.yyjlr.tickets.activity;
 
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -48,6 +55,7 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
     private static final int SHRINK_UP_STATE = 1;
     private static final int SPREAD_STATE = 2;
     private static int mState = SHRINK_UP_STATE;
+    private boolean flag = true;
 
 
     @Override
@@ -109,14 +117,87 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
 
                 break;
             case R.id.content_film_details__collect://收藏
+                Drawable drawable = null;
+                if (flag) {
+                    drawable = getResources().getDrawable(R.mipmap.collect_select);
+                }else {
+                    drawable = getResources().getDrawable(R.mipmap.collect);
+                }
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                collect.setCompoundDrawables(null, drawable, null, null);
+                flag = !flag;
                 break;
             case R.id.content_film_details__share://分享
+                sharePopupWindow();
                 break;
             case R.id.content_film_details__select_seat://选座购票
                 startActivity(FilmScheduleActivity.class);
                 break;
+            case R.id.popup_share__weixin:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__friend_circle:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__xinlangweibo:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__qq_kongjian:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_share__cancel:
+                mPopupWindow.dismiss();
+                break;
         }
     }
+
+    PopupWindow mPopupWindow;
+
+    //弹出分享选择
+    private void sharePopupWindow() {
+
+        View parent = View
+                .inflate(FilmDetailsActivity.this, R.layout.activity_film_details, null);
+        View view = View
+                .inflate(FilmDetailsActivity.this, R.layout.popupwindows_share, null);
+        view.startAnimation(AnimationUtils.loadAnimation(FilmDetailsActivity.this,
+                R.anim.fade_in));
+        mPopupWindow = new PopupWindow(view);
+        mPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setContentView(view);
+        // 设置背景颜色变暗
+        final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+
+        mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                lp.alpha = 1.0f;
+                Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+            }
+        });
+
+
+        LinearLayout weixin = (LinearLayout) view.findViewById(R.id.popup_share__weixin);
+        LinearLayout friendCircle = (LinearLayout) view.findViewById(R.id.popup_share__friend_circle);
+        LinearLayout xinlangweibo = (LinearLayout) view.findViewById(R.id.popup_share__xinlangweibo);
+        LinearLayout qqkongjian = (LinearLayout) view.findViewById(R.id.popup_share__qq_kongjian);
+        TextView cancel = (TextView) view.findViewById(R.id.popup_share__cancel);
+
+        weixin.setOnClickListener(this);
+        friendCircle.setOnClickListener(this);
+        xinlangweibo.setOnClickListener(this);
+        qqkongjian.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+
+    }
+
 
 
     @Override

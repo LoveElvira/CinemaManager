@@ -37,7 +37,7 @@ public class FilmAdapter extends BaseAdapter<FilmEntity> {
                 .setText(R.id.item_film__star,item.getFilmStar())
                 .setText(R.id.item_film__showtime,item.getFilmShowTime())
                 .setOnClickListener(R.id.item_film__buy_ticket,new OnItemChildClickListener())
-                .setOnClickListener(R.id.item_film__cardview,new OnItemChildClickListener());
+                .setOnClickListener(R.id.item_film__image,new OnItemChildClickListener());
         boolean f = false;
 
         if (position == first) {
