@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yyjlr.tickets.Application;
@@ -27,17 +29,20 @@ import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.SaleAdapter;
 import com.yyjlr.tickets.adapter.SalePackageAdapter;
 import com.yyjlr.tickets.model.SaleEntity;
+import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Elvira on 2016/7/28.
  * 卖品页面
  */
-public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, View.OnClickListener {
+public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, View.OnClickListener, SuperSwipeRefreshLayout.OnPullRefreshListener {
     private View view;
     private RecyclerView listView;//列表
-    private SwipeRefreshLayout refresh;//刷新
+    private SuperSwipeRefreshLayout refresh;//刷新
     private List<SaleEntity> saleEntityList;
     private SaleAdapter saleAdapter;
     private SalePackageAdapter salePackageAdapter;
@@ -48,7 +53,8 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
 
     protected int delayMillis = 1000;
 
-    protected int mCurrentCounter = 0;
+    protected int mSaleCounter = 0;
+    protected int mPackageCounter = 0;
 
     protected View notLoadingView;
     private TextView title;
@@ -58,6 +64,10 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
     private ImageView packageImage;
     private ImageView saleImage;
     private boolean flag = true;
+
+    private ImageView headerImage;
+    private ProgressBar headerProgressBar;
+    private TextView headerSta/*, headerTime*/;
 
 
     public SaleContent(Context context) {
@@ -77,15 +87,16 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
         saleImage = (ImageView) view.findViewById(R.id.fragment_sale__sale_image);
 
         listView = (RecyclerView) view.findViewById(R.id.fragment_sale__listview);
-        refresh = (SwipeRefreshLayout) view.findViewById(R.id.fragment_sale__refresh);
-        refresh.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        refresh.setOnRefreshListener(this);
+        refresh = (SuperSwipeRefreshLayout) view.findViewById(R.id.fragment_sale__refresh);
+        refresh.setHeaderView(createHeaderView());// add headerView
+        refresh.setTargetScrollWithLayout(true);
+        refresh.setOnPullRefreshListener(this);
+
         saleEntityList = Application.getiDataService().getSaleList();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Application.getInstance().getCurrentActivity());
         listView.setLayoutManager(linearLayoutManager);
         initAdapter();
+        notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
 
         packageLayout.setOnClickListener(this);
         saleLayout.setOnClickListener(this);
@@ -104,10 +115,6 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
                     //获取第一个可见view的位置
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
                     int first = linearManager.findFirstCompletelyVisibleItemPosition();
-                    /*if (foodsArrayList.get(firstItemPosition) instanceof Foods) {
-                        int foodTypePosion = ((Foods) foodsArrayList.get(firstItemPosition)).getFood_stc_posion();
-                        FoodsTypeListview.getChildAt(foodTypePosion).setBackgroundResource(R.drawable.choose_item_selected);
-                    }*/
                     if (flag) {
                         salePackageAdapter.changeBgFristAndLast(firstItemPosition, lastItemPosition, first);
                     } else {
@@ -129,28 +136,20 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
         listView.post(new Runnable() {
             @Override
             public void run() {
-                if (mCurrentCounter >= TOTAL_COUNTER) {
+                if (mSaleCounter >= TOTAL_COUNTER && !flag) {
                     saleAdapter.notifyDataChangedAfterLoadMore(false);
-                    if (notLoadingView == null) {
-                        notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
-                    }
-                    if (flag) {
-                        salePackageAdapter.notifyDataChangedAfterLoadMore(false);
-                        salePackageAdapter.addFooterView(notLoadingView);
-                    } else {
-                        saleAdapter.notifyDataChangedAfterLoadMore(false);
-                        saleAdapter.addFooterView(notLoadingView);
-                    }
+                } else if (mPackageCounter >= TOTAL_COUNTER && flag) {
+                    salePackageAdapter.notifyDataChangedAfterLoadMore(false);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (flag) {
                                 salePackageAdapter.notifyDataChangedAfterLoadMore(saleEntityList, true);
-                                mCurrentCounter = salePackageAdapter.getData().size();
+                                mPackageCounter = salePackageAdapter.getData().size();
                             } else {
                                 saleAdapter.notifyDataChangedAfterLoadMore(saleEntityList, true);
-                                mCurrentCounter = saleAdapter.getData().size();
+                                mSaleCounter = saleAdapter.getData().size();
                             }
 
                         }
@@ -163,6 +162,9 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
+        headerSta.setText("正在刷新数据中");
+        headerImage.setVisibility(View.GONE);
+        headerProgressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -170,15 +172,33 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
                     salePackageAdapter.setNewData(saleEntityList);
                     salePackageAdapter.openLoadMore(PAGE_SIZE, true);
                     salePackageAdapter.removeAllFooterView();
+                    mPackageCounter = PAGE_SIZE;
                 } else {
                     saleAdapter.setNewData(saleEntityList);
                     saleAdapter.openLoadMore(PAGE_SIZE, true);
                     saleAdapter.removeAllFooterView();
+                    mSaleCounter = PAGE_SIZE;
                 }
-                mCurrentCounter = PAGE_SIZE;
+
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                Date curDate = new Date(System.currentTimeMillis());
+//                headerTime.setText("最后更新：今天"+formatter.format(curDate));
                 refresh.setRefreshing(false);
+                headerProgressBar.setVisibility(View.GONE);
             }
         }, delayMillis);
+    }
+
+    @Override
+    public void onPullDistance(int distance) {
+
+    }
+
+    @Override
+    public void onPullEnable(boolean enable) {
+        headerSta.setText(enable ? "松开立即刷新" : "下拉刷新");
+        headerImage.setVisibility(View.VISIBLE);
+        headerImage.setRotation(enable ? 180 : 0);
     }
 
     private void initAdapter() {
@@ -187,7 +207,7 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
             salePackageAdapter = new SalePackageAdapter(saleEntityList);
             salePackageAdapter.openLoadAnimation();
             listView.setAdapter(salePackageAdapter);
-            mCurrentCounter = salePackageAdapter.getData().size();
+            mPackageCounter = salePackageAdapter.getData().size();
             salePackageAdapter.setOnLoadMoreListener(this);
             salePackageAdapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
             salePackageAdapter.setOnRecyclerViewItemChildClickListener(this);
@@ -195,12 +215,13 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
             saleAdapter = new SaleAdapter(saleEntityList);
             saleAdapter.openLoadAnimation();
             listView.setAdapter(saleAdapter);
-            mCurrentCounter = saleAdapter.getData().size();
+            mSaleCounter = saleAdapter.getData().size();
             saleAdapter.setOnLoadMoreListener(this);
             saleAdapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
             saleAdapter.setOnRecyclerViewItemChildClickListener(this);
         }
 
+        Log.i("ee",mSaleCounter+"--------------------------"+mPackageCounter);
     }
 
     @Override
@@ -212,9 +233,28 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
             case R.id.item_sale__shopping_cart:
                 selectPopupWindow(saleEntityList.get(position));
                 break;
+            case R.id.item_sale_package__cardview:
+                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), PackageDetailsActivity.class));
+                break;
+            case R.id.item_sale__cardview:
+                selectPopupWindow(saleEntityList.get(position));
+                break;
         }
 
 
+    }
+
+    private View createHeaderView() {
+        View headerView = LayoutInflater.from(getContext())
+                .inflate(R.layout.header_loading, null);
+        headerProgressBar = (ProgressBar) headerView.findViewById(R.id.header_loading_progress);
+        headerSta = (TextView) headerView.findViewById(R.id.header_loading_text);
+//        headerTime = (TextView) headerView.findViewById(R.id.header_loading_time);
+        headerSta.setText("下拉刷新");
+        headerImage = (ImageView) headerView.findViewById(R.id.header_loading_image);
+        headerImage.setVisibility(View.VISIBLE);
+        headerProgressBar.setVisibility(View.GONE);
+        return headerView;
     }
 
     TextView price;
@@ -239,7 +279,8 @@ public class SaleContent extends LinearLayout implements SwipeRefreshLayout.OnRe
         mPopupWindow.setContentView(view);
         // 设置背景颜色变暗
         final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
-        lp.alpha = 0.5f;
+        lp.alpha = 0.6f;
+        Application.getInstance().getCurrentActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
 
         mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);

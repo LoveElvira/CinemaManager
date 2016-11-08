@@ -5,27 +5,27 @@
     android:background="@color/bg_gray"
     android:orientation="vertical"
     android:layout_gravity="bottom"
-    android:padding="@dimen/padding_20">
+    android:padding="@dimen/size_20">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_40"
+        android:layout_height="@dimen/size_40"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="@drawable/border_gray">
+        android:background="@drawable/radius_border_gray">
 
         <EditText
             android:id="@+id/content_sale_bill__phone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:hint="请输入接受订单信息的手机号码"
+            android:hint="@string/text_sale_bill_phone"
             android:background="@null"
             android:inputType="number"
             android:maxLength="11"
             android:maxLines="1"
-            android:paddingLeft="@dimen/padding_10"
-            android:textColorHint="@color/gray_alpha1"
+            android:paddingLeft="@dimen/size_10"
+            android:textColorHint="@color/gray_929292"
             android:textSize="@dimen/text_14" />
 
         <ImageView
@@ -33,24 +33,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/seat_cancel"
-            android:padding="@dimen/padding_5"
+            android:padding="@dimen/size_5"
             android:visibility="gone"/>
 
     </LinearLayout>
 
     <com.yyjlr.tickets.viewutils.MaterialRippleLayout
         style="@style/MatchWrap"
-        android:layout_marginTop="@dimen/magin_10"
+        android:layout_marginTop="@dimen/size_10"
         app:mrl_rippleAlpha="0.2"
         app:mrl_rippleColor="@color/bg_shadow"
         app:mrl_rippleHover="true"
         app:mrl_rippleOverlay="true">
 
-        <Button
+        <TextView
             android:id="@+id/content_sale_bill__confirm_order"
             style="@style/MatchWrap"
-            android:background="@drawable/selector_btn_blue"
-            android:text="确认订单"
+            android:background="@drawable/radius_blue_4"
+            android:text="@string/text_sale_bill_confirm"
+            android:gravity="center"
+            android:padding="@dimen/size_12"
             android:textColor="@color/white"
             android:textSize="@dimen/text_15" />
     </com.yyjlr.tickets.viewutils.MaterialRippleLayout>

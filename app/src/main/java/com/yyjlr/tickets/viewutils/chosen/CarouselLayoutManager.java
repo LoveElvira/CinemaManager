@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yyjlr.tickets.R;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -411,9 +413,7 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager {
             final int start = centerViewStart + offset;
             final int end = start + mDecoratedChildWidth;
 
-            Log.i("ee", "top:" + top + "---bottom:" + bottom + "---start:" + start + "---end:" + end + "----i:" + i);
-
-            fillChildItem(start, top/4, end, bottom + bottom/6 , layoutOrder, recycler, i, childMeasuringNeeded);
+            fillChildItem(start, top/4, end, bottom + bottom/6, layoutOrder, recycler, i, childMeasuringNeeded);
         }
     }
 
@@ -442,6 +442,7 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager {
     @SuppressWarnings("MethodWithTooManyParameters")
     private void fillChildItem(final int start, final int top, final int end, final int bottom, @NonNull final LayoutOrder layoutOrder, @NonNull final RecyclerView.Recycler recycler, final int i, final boolean childMeasuringNeeded) {
         final View view = bindChild(layoutOrder.mItemAdapterPosition, recycler, childMeasuringNeeded);
+        View white = view.findViewById(R.id.item_chosen__white);
         ViewCompat.setElevation(view, i);
         ItemTransformation transformation = null;
         if (null != mViewPostLayout) {
@@ -452,9 +453,14 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager {
         } else {
             view.layout(Math.round(start + transformation.mTranslationX), Math.round(top + transformation.mTranslationY),
                     Math.round(end + transformation.mTranslationX), Math.round(bottom + transformation.mTranslationY));
-//            view.setAlpha(transformation.mScaleX);
-            Log.i("ee","transformation.mScaleX：----"+transformation.mScaleX
-            +"transformation.mScaleY:----"+transformation.mScaleY);
+            if (transformation.mScaleX==1.0){
+                white.setAlpha(0);
+            }else if(transformation.mScaleX<0.7){
+                white.setAlpha(1);
+            }else {
+                white.setAlpha(1-transformation.mScaleX);
+            }
+            view.setAlpha(transformation.mScaleX);
             ViewCompat.setScaleX(view, transformation.mScaleX);
             ViewCompat.setScaleY(view, transformation.mScaleY);
         }

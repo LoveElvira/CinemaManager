@@ -3,23 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:layout_marginBottom="@dimen/magin_5">
+    android:layout_marginBottom="@dimen/size_5">
 
     <TextView
         android:id="@+id/item_pay_select_filmorsale__name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="名称"
-        android:textColor="@color/gray_alpha1"
+        android:textColor="@color/black_363636"
         android:textSize="@dimen/text_12"
-        android:layout_marginLeft="@dimen/magin_10"
-        android:layout_marginRight="@dimen/magin_5"/>
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_5"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="原价："
-        android:textColor="@color/gray_alpha1"
+        android:text="@string/text_original_price"
+        android:textColor="@color/gray_929292"
         android:textSize="@dimen/text_12" />
 
     <TextView
@@ -27,15 +27,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="50元"
-        android:textColor="@color/gray_alpha1"
+        android:textColor="@color/black_363636"
         android:textSize="@dimen/text_12"
-        android:layout_marginRight="@dimen/magin_5"/>
+        android:layout_marginRight="@dimen/size_5"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="优惠价："
-        android:textColor="@color/gray_alpha1"
+        android:text="@string/text_discount_price"
+        android:textColor="@color/gray_929292"
         android:textSize="@dimen/text_12" />
 
     <TextView
@@ -43,6 +43,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="40元"
-        android:textColor="@color/gray_alpha1"
+        android:textColor="@color/black_363636"
         android:textSize="@dimen/text_12" />
 </LinearLayout>

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
-    android:background="@mipmap/bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.yyjlr.tickets.MainActivity">
 
     <include layout="@layout/base_toolbar_" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_70"
+        android:layout_height="@dimen/size_70"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -27,7 +28,7 @@
                 style="@style/MatchMatch"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/padding_5">
+                android:paddingTop="@dimen/size_5">
 
                 <ImageView
                     android:id="@+id/fragment_sale__package_image"
@@ -36,8 +37,8 @@
 
                 <TextView
                     style="@style/WrapWrap"
-                    android:paddingTop="@dimen/padding_5"
-                    android:text="套餐"
+                    android:paddingTop="@dimen/size_5"
+                    android:text="@string/text_sale_package"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_10" />
             </LinearLayout>
@@ -57,7 +58,7 @@
                 style="@style/MatchMatch"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/padding_5">
+                android:paddingTop="@dimen/size_5">
 
                 <ImageView
                     android:id="@+id/fragment_sale__sale_image"
@@ -66,21 +67,21 @@
 
                 <TextView
                     style="@style/WrapWrap"
-                    android:paddingTop="@dimen/padding_5"
-                    android:text="卖品"
+                    android:paddingTop="@dimen/size_5"
+                    android:text="@string/text_sale_sale"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_10" />
             </LinearLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
         android:id="@+id/fragment_sale__refresh"
         style="@style/MatchMatch">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_sale__listview"
             style="@style/MatchMatch" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
 
 </LinearLayout>

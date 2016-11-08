@@ -21,6 +21,7 @@ public class AccountSexActivity extends AbstractActivity implements View.OnClick
     private TextView title;
     private LinearLayout boyLayout;
     private LinearLayout girlLayout;
+    private ImageView leftArrow;
     private ImageView boyImage;
     private ImageView grilImage;
 
@@ -28,12 +29,14 @@ public class AccountSexActivity extends AbstractActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_sex);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+    private void initView(){
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("性别");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
         boyLayout = (LinearLayout) findViewById(R.id.content_account_sex__boy_layout);
         girlLayout = (LinearLayout) findViewById(R.id.content_account_sex__girl_layout);
         boyImage = (ImageView) findViewById(R.id.content_account_sex__boy);
@@ -54,6 +57,9 @@ public class AccountSexActivity extends AbstractActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.base_toolbar__left:
+                AccountSexActivity.this.finish();
+                break;
             case R.id.content_account_sex__boy_layout:
                 boyImage.setVisibility(View.VISIBLE);
                 grilImage.setVisibility(View.GONE);
@@ -68,21 +74,4 @@ public class AccountSexActivity extends AbstractActivity implements View.OnClick
                 break;
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                AccountSexActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

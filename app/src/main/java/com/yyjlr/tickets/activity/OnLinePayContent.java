@@ -31,6 +31,9 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
     public OnLinePayContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_online_pay_way, this);
+        initView();
+    }
+    private void initView(){
         zhifubaoLayout = (LinearLayout) findViewById(R.id.content_pay_select__zhifubao);
         weinxinLayout = (LinearLayout) findViewById(R.id.content_pay_select__weixin);
         zhifubaoImage = (ImageView) findViewById(R.id.content_pay_select__zhifubao_select);

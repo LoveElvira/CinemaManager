@@ -8,7 +8,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_30"
+        android:layout_height="@dimen/size_30"
         android:gravity="center"
         android:textColor="@color/black"
         android:text="-- end --" />

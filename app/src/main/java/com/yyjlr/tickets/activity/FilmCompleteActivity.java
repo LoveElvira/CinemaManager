@@ -40,11 +40,12 @@ import java.util.List;
 public class FilmCompleteActivity extends AbstractActivity implements BaseAdapter.OnRecyclerViewItemChildClickListener, View.OnClickListener {
 
     private TextView title;
+    private ImageView leftArrow;
     private TextView payPrice;//应付金额
     private ImageView addPackage;//添加套餐
     private LinearLayout addPackageLayout;
     private EditText phone;
-    private Button confirmOrder;
+    private TextView confirmOrder;
     private ImageView deletePhone;//清除号码
 
     private List<FilmSaleEntity> allDate;
@@ -58,20 +59,23 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_complete_seat);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         AppManager.getInstance().initWidthHeight(getBaseContext());
+        initView();
+    }
+
+    private void initView() {
 
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("完成选座");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
         payPrice = (TextView) findViewById(R.id.content_film_complete_seat__pay_price);
         addPackage = (ImageView) findViewById(R.id.content_film_complete_seat__add);
         addPackageLayout = (LinearLayout) findViewById(R.id.content_film_complete_seat__sale_layout);
         phone = (EditText) findViewById(R.id.content_sale_bill__phone);
         deletePhone = (ImageView) findViewById(R.id.content_sale_bill__delete_phone);
-        confirmOrder = (Button) findViewById(R.id.content_sale_bill__confirm_order);
+        confirmOrder = (TextView) findViewById(R.id.content_sale_bill__confirm_order);
         addLayout = (RelativeLayout) findViewById(R.id.content_film_complete_seat__add_layout);
         discountLayout = (LinearLayout) findViewById(R.id.content_film_complete_seat__discount_layout);
         deletePhone.setOnClickListener(this);
@@ -95,11 +99,11 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         partDate.add(allDate.get(1));
 
 
-        if (flag){
+        if (flag) {
             discountLayout.setVisibility(View.VISIBLE);
             addLayout.setVisibility(View.GONE);
             initAddDiscountPackage();
-        }else {
+        } else {
             discountLayout.setVisibility(View.GONE);
             addLayout.setVisibility(View.VISIBLE);
             initAddPackage(0);
@@ -129,7 +133,8 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         }
     };
 
-    private void initAddDiscountPackage(){
+    //添加优惠活动产品
+    private void initAddDiscountPackage() {
         View view = LayoutInflater.from(FilmCompleteActivity.this).inflate(R.layout.item_film_sale_package_, null, false);
         final ImageView selectImage = (ImageView) view.findViewById(R.id.item_film_sale__select);
         ImageView saleImage = (ImageView) view.findViewById(R.id.item_film_sale__image);
@@ -137,6 +142,7 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         TextView salePackagePrice = (TextView) view.findViewById(R.id.item_film_sale__price);
         TextView salePackageContent = (TextView) view.findViewById(R.id.item_film_sale__package_content);
         TextView saleDiscount = (TextView) view.findViewById(R.id.item_film_sale__discount);
+        LinearLayout saleParent = (LinearLayout) view.findViewById(R.id.item_film_sale__layout);
 
         saleImage.setImageResource(R.mipmap.mihua);
         salePackage.setText(partDate.get(0).getSalePackage());
@@ -144,6 +150,19 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         salePackageContent.setText(partDate.get(0).getSalePackageContent());
 //        saleDiscount.setText("");
         selectImage.setImageResource(R.mipmap.sale_no_select);
+        saleParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (partDate.get(0).isSaleSelect()) {
+                    selectImage.setImageResource(R.mipmap.sale_no_select);
+                    partDate.get(0).setSaleSelect(false);
+                } else {
+                    selectImage.setImageResource(R.mipmap.sale_select);
+                    partDate.get(0).setSaleSelect(true);
+                }
+            }
+        });
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,7 +193,7 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         TextView salePackagePrice = (TextView) view.findViewById(R.id.item_film_sale__price);
         TextView salePackageContent = (TextView) view.findViewById(R.id.item_film_sale__package_content);
         TextView saleTime = (TextView) view.findViewById(R.id.item_film_sale__time);
-//            LinearLayout saleLayout = (LinearLayout) view.findViewById(R.id.item_film_sale__layout);
+        LinearLayout saleLayout = (LinearLayout) view.findViewById(R.id.item_film_sale__layout);
         final LinearLayout addLayout = (LinearLayout) view.findViewById(R.id.item_film_sale__add_layout);
         TextView saleLost = (TextView) view.findViewById(R.id.item_film_sale__lost);
         final TextView saleNum = (TextView) view.findViewById(R.id.item_film_sale__num);
@@ -210,6 +229,22 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
             }
         });
         final int finalI = i;
+        saleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (partDate.get(finalI).isSaleSelect()) {
+                    selectImage.setImageResource(R.mipmap.sale_no_select);
+                    partDate.get(finalI).setSaleSelect(false);
+                    addLayout.setVisibility(View.GONE);
+                } else {
+                    selectImage.setImageResource(R.mipmap.sale_select);
+                    partDate.get(finalI).setSaleSelect(true);
+                    addLayout.setVisibility(View.VISIBLE);
+                    saleNum.setText("1");
+                }
+            }
+        });
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,7 +290,7 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
 
         // 设置背景颜色变暗
         final WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.5f;
+        lp.alpha = 0.6f;
         getWindow().setAttributes(lp);
         mPopupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -277,7 +312,7 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onClick(View view) {
                 WindowManager.LayoutParams lp = getWindow().getAttributes();
-                lp.alpha = 1f;
+                lp.alpha = 1.0f;
                 getWindow().setAttributes(lp);
                 restAddPackage();
                 mPopupWindow.dismiss();
@@ -317,23 +352,6 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         initAddPackage(0);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                FilmCompleteActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
         if (allDate.get(position).isSaleSelect()) {
@@ -347,6 +365,9 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                FilmCompleteActivity.this.finish();
+                break;
             case R.id.content_sale_bill__delete_phone:
                 phone.setText("");
                 break;

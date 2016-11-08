@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
     private TextView confirmSeat;
     private TextView title;
+    private ImageView leftArrow;
     private TextView seatTitle;
     private TextView seatTime;
     private SeatTableView seatTableView;
@@ -57,12 +59,15 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_select_seat);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
-        title.setText("XXX特价观影活动");
+        title.setText("愤怒的小鸟特价观影活动");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -78,7 +83,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         seatTwo = (TextView) findViewById(R.id.content_film_seat__seat_recommend_two);
         seatThree = (TextView) findViewById(R.id.content_film_seat__seat_recommend_three);
         seatFour = (TextView) findViewById(R.id.content_film_seat__seat_recommend_four);
-        seatTitle.setText("专座推荐");
+        seatTitle.setText("快速选座");
 
         AssetManager assetManager = getBaseContext().getAssets();
         Typeface font = Typeface.createFromAsset(assetManager, "fonts/Digital2.ttf");
@@ -182,10 +187,10 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     private void addSelectSeatText() {
 
         addSelectSeatLayout.removeAllViews();
-        if (seatSelectList.size()<=0){
-            seatTitle.setText("专座推荐");
+        if (seatSelectList.size() <= 0) {
+            seatTitle.setText("快速选座");
             showSeatRecommendLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             seatTitle.setText("已选座位");
             showSeatRecommendLayout.setVisibility(View.GONE);
         }
@@ -235,26 +240,12 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                FilmSelectSeatActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                FilmSelectSeatActivity.this.finish();
+                break;
             case R.id.content_film_seat__seat_recommend_one://1人座
                 seatRecommend(1);
                 break;
@@ -268,12 +259,27 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 seatRecommend(4);
                 break;
             case R.id.content_film_seat__confirm_seat:
+                List<Boolean> list = new ArrayList<Boolean>();
+                for (int i = 0; i < seatSelectList.size(); i++) {
+                    int row = seatSelectList.get(i).getgRow() - 1;
+                    int column = seatSelectList.get(i).getgCol() - 1;
+                    list.add(seatTableView.isSelect(row, column));
+                }
+
+                Log.i("ee",list.toString()+"-------------------");
+
+                if (list.contains(false)) {
+                    showShortToast("中间不可空一个座位");
+                    return;
+                }
+
+
                 startActivity(FilmCompleteActivity.class);
                 break;
         }
     }
 
-    private void seatRecommend(int num){
+    private void seatRecommend(int num) {
         seatTitle.setText("已选座位");
         showSeatRecommendLayout.setVisibility(View.GONE);
         seatTableView.selectSeatRecommend(num);

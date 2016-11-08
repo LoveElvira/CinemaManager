@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_60"
+        android:layout_height="@dimen/size_60"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -29,27 +29,27 @@
                 style="@style/MatchMatch"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/padding_5">
+                android:paddingTop="@dimen/size_5">
 
                 <ImageView
                     android:id="@+id/content_setting_order__complete"
-                    android:layout_width="@dimen/height_30"
-                    android:layout_height="@dimen/height_30"
+                    android:layout_width="@dimen/size_30"
+                    android:layout_height="@dimen/size_30"
                     android:background="@mipmap/complete_select" />
 
                 <TextView
                     android:id="@+id/content_setting_order__complete_title"
                     style="@style/WrapWrap"
                     android:text="@string/text_complete"
-                    android:textColor="@color/gray_alpha1"
+                    android:textColor="@color/orange_ff7a0f"
                     android:textSize="@dimen/text_10" />
             </LinearLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
         <View
             android:layout_width="1dp"
-            android:layout_height="@dimen/height_20"
-            android:background="@color/gray_alpha1" />
+            android:layout_height="@dimen/size_20"
+            android:background="@color/gray_c3c3c3" />
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             android:layout_width="0dp"
@@ -65,25 +65,25 @@
                 style="@style/MatchMatch"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/padding_5">
+                android:paddingTop="@dimen/size_5">
 
                 <ImageView
                     android:id="@+id/content_setting_order__uncomplete"
-                    android:layout_width="@dimen/height_30"
-                    android:layout_height="@dimen/height_30"
+                    android:layout_width="@dimen/size_30"
+                    android:layout_height="@dimen/size_30"
                     android:background="@mipmap/uncomplete" />
 
                 <TextView
                     android:id="@+id/content_setting_order__uncomplete_title"
                     style="@style/WrapWrap"
                     android:text="@string/text_uncomplete"
-                    android:textColor="@color/gray_alpha1"
+                    android:textColor="@color/gray_c3c3c3"
                     android:textSize="@dimen/text_10" />
             </LinearLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
         android:id="@+id/content_setting_order__refresh"
         style="@style/MatchMatch">
 
@@ -91,5 +91,5 @@
             android:id="@+id/content_setting_order__listview"
             style="@style/MatchMatch"
             android:background="@color/white" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
 </LinearLayout>

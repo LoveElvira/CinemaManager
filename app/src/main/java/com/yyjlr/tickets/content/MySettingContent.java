@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,50 +36,48 @@ import static com.yyjlr.tickets.R.mipmap.phone;
 public class MySettingContent extends LinearLayout implements View.OnClickListener {
 
     private View view;
-    private TextView myAccount;
-    private TextView myOrder;
-    private TextView myVip;
-    private TextView myMessage;
-    private TextView myFollow;
-    private TextView myPoints;
     private LinearLayout myService;
     public static CircleImageView headImage;
     public static ImageView sex;
     public static TextView userName;
 
+    //我的账号 我的订单 我的VIP 我的消息 我的关注 我的积分
+    private RelativeLayout myAccountLayout, myOrderLayout, myVipLayout, myMessageLayout, myFollowLayout, myPointsLayout;
+
 
     public MySettingContent(Context context) {
-        this(context,null);
+        this(context, null);
     }
+
     public MySettingContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_mysetting, this);
         headImage = (CircleImageView) view.findViewById(R.id.fragment_setting__head_img);
         sex = (ImageView) view.findViewById(R.id.fragment_setting__sex);
         userName = (TextView) view.findViewById(R.id.fragment_setting__username);
-        myAccount = (TextView) view.findViewById(R.id.fragment_setting__myaccount);
-        myOrder = (TextView) view.findViewById(R.id.fragment_setting__myorder);
-        myVip = (TextView) view.findViewById(R.id.fragment_setting__vip);
-        myMessage = (TextView) view.findViewById(R.id.fragment_setting__message);
-        myFollow = (TextView) view.findViewById(R.id.fragment_setting__follow);
-        myPoints = (TextView) view.findViewById(R.id.fragment_setting__points);
+        myAccountLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__myaccount);
+        myOrderLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__myorder);
+        myVipLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__vip);
+        myMessageLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__message);
+        myFollowLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__follow);
+        myPointsLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__points);
         myService = (LinearLayout) view.findViewById(R.id.fragment_setting__service);
 
         headImage.setOnClickListener(this);
-        myAccount.setOnClickListener(this);
-        myOrder.setOnClickListener(this);
-        myVip.setOnClickListener(this);
-        myMessage.setOnClickListener(this);
-        myFollow.setOnClickListener(this);
+        myAccountLayout.setOnClickListener(this);
+        myOrderLayout.setOnClickListener(this);
+        myVipLayout.setOnClickListener(this);
+        myMessageLayout.setOnClickListener(this);
+        myFollowLayout.setOnClickListener(this);
         myService.setOnClickListener(this);
-        myPoints.setOnClickListener(this);
+        myPointsLayout.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
         Intent intent = new Intent();
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.fragment_setting__myaccount:
                 intent.setClass(Application.getInstance().getCurrentActivity(), LoginActivity.class);
                 Application.getInstance().getCurrentActivity().startActivity(intent);
@@ -87,11 +87,11 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
                 Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
             case R.id.fragment_setting__vip:
-                intent.setClass(Application.getInstance().getCurrentActivity(),SettingVipActivity.class);
+                intent.setClass(Application.getInstance().getCurrentActivity(), SettingVipActivity.class);
                 Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
             case R.id.fragment_setting__message:
-                intent.setClass(Application.getInstance().getCurrentActivity(),SettingMessageActivity.class);
+                intent.setClass(Application.getInstance().getCurrentActivity(), SettingMessageActivity.class);
                 Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
             case R.id.fragment_setting__follow:
@@ -109,7 +109,7 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
                 break;
             case R.id.fragment_setting__head_img:
                 intent.setClass(Application.getInstance().getCurrentActivity(), SettingAccountActivity.class);
-                intent.putExtra("userName",userName.getText().toString());
+                intent.putExtra("userName", userName.getText().toString());
                 Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
         }
@@ -118,8 +118,8 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
 
     /**
      * show Dialog 呼叫服务电话
-     * */
-    private void showPhoneService(){
+     */
+    private void showPhoneService() {
         final String phoneNumber = "15802171337";
         LayoutInflater inflater = LayoutInflater.from(Application.getInstance().getCurrentActivity());
         View layout = inflater.inflate(R.layout.alert_dialog, null);

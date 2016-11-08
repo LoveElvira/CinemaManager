@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:swipe="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
-    android:background="@mipmap/bg"
-    tools:context="com.yyjlr.tickets.MainActivity"
+    android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center">
+    tools:context="com.yyjlr.tickets.MainActivity">
 
-    <include layout="@layout/base_toolbar_"/>
+    <include layout="@layout/base_toolbar_" />
 
     <TextView
-         style="@style/WrapWrap"
+        style="@style/WrapWrap"
+        android:layout_marginTop="@dimen/size_5"
+        android:text="@string/text_chosen_address"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_11"
-        android:layout_marginTop="@dimen/magin_5"
-        android:text="上海市浦东新区 世博大道1200号梅赛德斯奔驰文化中心6楼"/>
+        android:textSize="@dimen/text_12" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_chosen__listview"
         style="@style/WrapWrap"
-        android:layout_marginTop="@dimen/magin_5"/>
+        android:layout_marginTop="@dimen/size_5" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/padding_5"
-        android:paddingLeft="@dimen/padding_20"
-        android:paddingRight="@dimen/padding_20"
-        android:paddingBottom="@dimen/padding_10">
+        android:paddingLeft="@dimen/size_20"
+        android:paddingRight="@dimen/size_20"
+        android:paddingTop="@dimen/size_5">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_chosen__fling"
             style="@style/MatchMatch"
+            android:layout_centerInParent="true"
             android:overScrollMode="never"
-            android:scrollbars="none"
-            android:layout_centerInParent="true"/>
+            android:scrollbars="none" />
     </RelativeLayout>
 </LinearLayout>

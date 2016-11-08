@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -26,8 +27,10 @@ import com.yyjlr.tickets.R;
 public class PackageDetailsActivity extends AbstractActivity implements View.OnClickListener {
 
     private TextView title;
-    private TextView collectPackage;
-    private TextView sharePackage;
+    private ImageView leftArrow;
+    private LinearLayout collectPackage;
+    private LinearLayout sharePackage;
+    private ImageView collectImage;
     private TextView buyPackage;
     private boolean flag = true;
 
@@ -35,36 +38,23 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_package_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+
+    }
+    private void initView(){
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("活动套餐");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
 
-        collectPackage = (TextView) findViewById(R.id.content_package_details__collect);
-        sharePackage = (TextView) findViewById(R.id.content_package_details__share);
+        collectPackage = (LinearLayout) findViewById(R.id.content_package_details__collect);
+        sharePackage = (LinearLayout) findViewById(R.id.content_package_details__share);
+        collectImage = (ImageView) findViewById(R.id.content_package_details__collect_image);
         buyPackage = (TextView) findViewById(R.id.content_package_details__buy);
         collectPackage.setOnClickListener(this);
         sharePackage.setOnClickListener(this);
         buyPackage.setOnClickListener(this);
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                PackageDetailsActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -74,15 +64,20 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
             num = Integer.parseInt(saleNum.getText().toString());
         }
         switch (v.getId()) {
+            case R.id.base_toolbar__left:
+                PackageDetailsActivity.this.finish();
+                break;
             case R.id.content_package_details__collect:
-                Drawable drawable = null;
+//                Drawable drawable = null;
                 if (flag) {
-                    drawable = getResources().getDrawable(R.mipmap.collect_select);
+//                    drawable = getResources().getDrawable(R.mipmap.collect_select);
+                    collectImage.setImageResource(R.mipmap.collect_select);
                 }else {
-                    drawable = getResources().getDrawable(R.mipmap.collect);
+//                    drawable = getResources().getDrawable(R.mipmap.collect);
+                    collectImage.setImageResource(R.mipmap.collect);
                 }
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                collectPackage.setCompoundDrawables(null, drawable, null, null);
+//                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//                collectPackage.setCompoundDrawables(null, drawable, null, null);
                 flag = !flag;
                 break;
             case R.id.content_package_details__share:
@@ -143,9 +138,10 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setContentView(view);
         // 设置背景颜色变暗
-        final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
-        lp.alpha = 0.5f;
-        Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+        final WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.6f;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
 
         mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -188,9 +184,10 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setContentView(view);
         // 设置背景颜色变暗
-        final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
+        final WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.5f;
-        Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
 
         mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -215,6 +212,4 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         cancel.setOnClickListener(this);
 
     }
-
-
 }

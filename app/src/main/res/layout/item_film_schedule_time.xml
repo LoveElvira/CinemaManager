@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="@dimen/height_30"
-    android:layout_width="@dimen/height_110"
     android:id="@+id/item_film_schedule__layout_parent"
-    android:layout_marginLeft="@dimen/magin_5">
+    android:layout_width="@dimen/size_120"
+    android:layout_height="@dimen/size_30">
+
     <LinearLayout
         android:id="@+id/item_film_schedule__layout"
-        android:orientation="horizontal"
         style="@style/WrapWrap"
-        android:layout_margin="3dp"
+        android:layout_margin="@dimen/size_3"
         android:background="@drawable/circle_border_gray"
-        android:paddingLeft="@dimen/padding_10"
-        android:paddingRight="@dimen/padding_10"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/size_2"
+        android:paddingLeft="@dimen/size_10"
+        android:paddingRight="@dimen/size_10"
+        android:paddingTop="@dimen/size_2">
+
         <TextView
             android:id="@+id/item_schedule__time"
             style="@style/WrapWrap"
-            android:textSize="@dimen/text_12"
-            android:textColor="@color/black_alpha"
-            android:text="07月06日"/>
+            android:text="07月06日"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_12" />
+
         <TextView
             android:id="@+id/item_schedule__date"
             style="@style/WrapWrap"
-            android:textSize="@dimen/text_8"
-            android:textColor="@color/gray_alpha1"
-            android:layout_marginLeft="2dp"
-            android:text="星期一"/>
+            android:layout_marginLeft="@dimen/size_2"
+            android:text="星期一"
+            android:textColor="@color/gray_c3c3c3"
+            android:textSize="@dimen/text_9" />
     </LinearLayout>
+
     <ImageView
         android:id="@+id/item_film_schedule__confirm"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:src="@mipmap/confirm"
-        android:layout_marginRight="-8dp"
-        android:layout_alignRight="@id/item_film_schedule__layout"
+        android:layout_width="@dimen/size_15"
+        android:layout_height="@dimen/size_15"
         android:layout_alignBottom="@id/item_film_schedule__layout"
-        android:visibility="gone"/>
+        android:layout_alignRight="@id/item_film_schedule__layout"
+        android:layout_marginRight="-8dp"
+        android:src="@mipmap/confirm" />
 </RelativeLayout>

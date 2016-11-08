@@ -19,36 +19,38 @@
             style="@style/MatchWrap"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 style="@style/WrapWrap"
                 android:layout_gravity="center"
                 android:padding="5dp"
                 android:text="@string/text_card_num"
-                android:textSize="@dimen/text_14" />
+                android:textSize="@dimen/text_14"
+                android:textColor="@color/gray_929292"/>
 
             <EditText
                 android:id="@+id/content_setting_vip__card"
                 style="@style/AutoMatch"
-                android:layout_marginLeft="@dimen/magin_5"
+                android:layout_marginLeft="@dimen/size_5"
                 android:background="@null"
                 android:gravity="center|right"
                 android:inputType="number"
                 android:maxLength="11"
                 android:maxLines="1"
-                android:textSize="@dimen/text_14" />
+                android:textSize="@dimen/text_14"
+                android:textColor="@color/black_363636"/>
         </LinearLayout>
 
         <View
             style="@style/MatchOne"
-            android:background="@color/gray_alpha" />
+            android:background="@color/gray_f4f4f4" />
 
         <LinearLayout
             style="@style/MatchWrap"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 android:id="@+id/content_setting_vip__password"
@@ -56,25 +58,27 @@
                 android:layout_gravity="center"
                 android:padding="5dp"
                 android:text="@string/text_card_money"
-                android:textSize="@dimen/text_14" />
+                android:textSize="@dimen/text_14"
+                android:textColor="@color/gray_929292"/>
 
             <EditText
                 android:id="@+id/content_setting_vip__money"
                 style="@style/AutoMatch"
-                android:layout_marginLeft="@dimen/magin_5"
+                android:layout_marginLeft="@dimen/size_5"
                 android:background="@null"
                 android:gravity="center|right"
                 android:maxLength="11"
                 android:maxLines="1"
-                android:textSize="@dimen/text_14" />
+                android:textSize="@dimen/text_14"
+                android:textColor="@color/black_363636"/>
         </LinearLayout>
 
         <TextView
             android:id="@+id/content_setting_vip__tip"
             style="@style/WrapWrap"
-            android:layout_marginTop="@dimen/magin_20"
-            android:text="忘记密码请联系影院"
-            android:textColor="@color/gray"
+            android:layout_marginTop="@dimen/size_20"
+            android:text="@string/text_bound_vip_call_cinema"
+            android:textColor="@color/gray_929292"
             android:textSize="@dimen/text_13" />
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
@@ -83,15 +87,16 @@
             app:mrl_rippleColor="@color/bg_shadow"
             app:mrl_rippleHover="true"
             app:mrl_rippleOverlay="true"
-            android:layout_margin="@dimen/magin_30">
+            android:layout_margin="@dimen/size_30">
 
             <TextView
                 android:id="@+id/content_setting_vip__unbound_or_bound"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_50"
-                android:background="@drawable/selector_btn_blue"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius_blue_4"
                 android:gravity="center"
-                android:text="确认绑定"
+                android:text="@string/text_bound_vip_confirm"
+                android:padding="@dimen/size_12"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_16" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>

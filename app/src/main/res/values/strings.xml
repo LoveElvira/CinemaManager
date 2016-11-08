@@ -30,7 +30,7 @@
     <string name="text_my_order">我的订单</string>
     <string name="text_huiyuan">会员中心</string>
     <string name="text_message">我的消息</string>
-    <string name="text_guanzhu">我的关注</string>
+    <string name="text_collect">我的收藏</string>
     <string name="text_kefu">拨打客服电话</string>
     <!--精选-->
     <string name="text_time">时间：</string>
@@ -68,6 +68,8 @@
     <string name="text_film_share">分享</string>
     <string name="text_film_select_seat">选座购票</string>
     <!--影院详情-->
+    <string name="text_start_and_end_time">营业时间：</string>
+    <string name="text_cinema_phone">热线电话：</string>
     <string name="text_cinema_name">SFC上影-世博店</string>
     <string name="text_cinema_introduction">
         上海影城-世博国际影城建筑面积达1,645平方米，
@@ -115,6 +117,72 @@
     <string name="text_card_bound_title">绑定会员卡</string>
     <string name="text_card_num">卡号</string>
     <string name="text_card_money">余额</string>
-    <string name="text_date_confirm">确定</string>
-    <string name="text_date_cancel">取消</string>
+
+
+    <!--公用-->
+    <string name="text_confirm">确定</string>
+    <string name="text_cancel">取消</string>
+    <!--主页底部tab-->
+    <string name="text_call_phone">呼叫</string>
+    <string name="text_chosen">精选</string>
+    <string name="text_film">影片</string>
+    <string name="text_grab">抢票</string>
+    <string name="text_sale">卖品</string>
+    <string name="text_my">我的</string>
+    <string name="text_sex_boy">男</string>
+    <string name="text_sex_girl">女</string>
+    <!--套餐-->
+    <string name="text_sale_big_package">超值套餐</string>
+    <string name="text_sale_discount">购买套餐立享影票优惠</string>
+    <string name="text_sale_more">更多卖品</string>
+    <string name="text_pay_money">应付金额</string>
+    <!--选座-->
+    <string name="text_select_seat">已选座位：</string>
+    <string name="text_select_seat_one">1人座</string>
+    <string name="text_select_seat_two">2人座</string>
+    <string name="text_select_seat_three">3人座</string>
+    <string name="text_select_seat_four">4人座</string>
+    <string name="text_select_seat_price">共计：</string>
+    <string name="text_select_seat_confirm">确认选座</string>
+    <!--找回密码-->
+    <string name="text_find_pwd_old">旧密码</string>
+    <string name="text_find_pwd_new">新密码</string>
+    <string name="text_find_pwd_new_confirm">确认密码</string>
+    <!--个人信息-->
+    <string name="text_account_head_image">头像</string>
+    <string name="text_account_username">昵称</string>
+    <string name="text_sex">性别</string>
+    <string name="text_account_birthday">生日</string>
+    <string name="text_account_phone">手机号码</string>
+    <string name="text_account_update_pwd">修改密码</string>
+    <!--绑定银行卡-->
+    <string name="text_bound_vip_call_cinema">忘记密码请联系影院</string>
+    <string name="text_bound_vip_confirm">确认绑定</string>
+    <!--我的积分-->
+    <string name="text_points_present">当前积分</string>
+    <string name="text_points_history">历史积分</string>
+    <string name="text_points_all">积分明细</string>
+    <string name="text_bound_vip">绑定会员卡</string>
+    <string name="text_package_buy">购买</string>
+    <string name="text_pay_confirm">确认支付</string>
+    <string name="text_sale_bill_phone">请输入接受订单信息的手机号码</string>
+    <string name="text_sale_bill_confirm">确认订单</string>
+    <string name="text_loading">加载更多</string>
+    <string name="text_chosen_address">上海市浦东新区 世博大道1200号梅赛德斯奔驰文化中心6楼</string>
+    <string name="text_call_service">联系客服</string>
+    <string name="text_sale_package">套餐</string>
+    <string name="text_sale_sale">卖品</string>
+    <string name="text_refresh">松开立即刷新</string>
+    <string name="text_delete">删 除</string>
+    <string name="text_details_more">展开更多卖品</string>
+    <string name="text_discount_price">优惠价：</string>
+    <string name="text_phonto_camero">拍照</string>
+    <string name="text_phonto_picture">从相册中选取</string>
+    <string name="text_buy_num">购买数量</string>
+    <string name="text_share_to">分享至</string>
+    <string name="text_friend">朋友圈</string>
+    <string name="text_xinlangweibo">新浪微博</string>
+    <string name="text_qq_kongjian">QQ空间</string>
+    <string name="text_next">下一步</string>
+
 </resources>

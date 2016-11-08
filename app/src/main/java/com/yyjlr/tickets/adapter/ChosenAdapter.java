@@ -18,16 +18,14 @@ import java.util.List;
 public class ChosenAdapter extends BaseAdapter<ChosenFilmEntity> {
 
     private int cardWidth,cardHeight;
-    private Context context;
 
     public ChosenAdapter(List<ChosenFilmEntity> data) {
         super(R.layout.item_chosen_film,data);
     }
 
-    public void setImageSize(Context context, int cardWidth, int cardHeight) {
+    public void setImageSize(int cardWidth, int cardHeight) {
         this.cardWidth = cardWidth;
         this.cardHeight = cardHeight;
-        this.context = context;
     }
 
     @Override
@@ -37,9 +35,9 @@ public class ChosenAdapter extends BaseAdapter<ChosenFilmEntity> {
                 .setText(R.id.item_chosen__showtime, item.getChosenFilmShowTime())
                 .setText(R.id.item_chosen__price,item.getChosenFilmPrice())
                 .setOnClickListener(R.id.item_chosen__enter,new OnItemChildClickListener());
-        Picasso.with(context)
+        Picasso.with(helper.getConvertView().getContext())
                 .load(item.getChosenFilmImage())
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.icon_logo)
                 .into((ImageView)helper.getView(R.id.item_chosen__image));
     }
 

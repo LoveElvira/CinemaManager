@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/WrapWrap"
     android:id="@+id/item_seat_select__layout"
-    android:background="@drawable/border_gray"
+    android:background="@drawable/radius_border_gray"
     android:orientation="horizontal"
-    android:padding="@dimen/padding_10"
+    android:padding="@dimen/size_10"
     android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/item_seat_select__text"
         style="@style/WrapWrap"
         android:text="1排1座"
-        android:textColor="@color/gray_alpha1"
+        android:textColor="@color/gray_929292"
         android:textSize="@dimen/text_14"
-        android:layout_marginRight="@dimen/magin_5"/>
+        android:layout_marginRight="@dimen/size_5"/>
     <ImageView
-        android:layout_width="@dimen/height_10"
-        android:layout_height="@dimen/height_10"
+        android:layout_width="@dimen/size_10"
+        android:layout_height="@dimen/size_10"
         android:src="@mipmap/seat_cancel"/>
 </LinearLayout>

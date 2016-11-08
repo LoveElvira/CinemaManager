@@ -28,29 +28,28 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_10">
+                android:padding="@dimen/size_10">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="支付宝支付"
-                    android:textColor="@color/black_alpha1"
+                    android:textColor="@color/black_363636"
                     android:textSize="@dimen/text_14" />
 
                 <ImageView
                     android:id="@+id/content_pay_select__zhifubao_select"
-                    android:layout_width="@dimen/height_20"
-                    android:layout_height="@dimen/height_20"
+                    android:layout_width="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
                     android:src="@mipmap/sale_select" />
 
             </LinearLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray" />
+            style="@style/MatchOne"
+            android:background="@color/gray_f4f4f4" />
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             style="@style/MatchWrap"
@@ -65,20 +64,20 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_10">
+                android:padding="@dimen/size_10">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="微信支付"
-                    android:textColor="@color/black_alpha1"
+                    android:textColor="@color/black_363636"
                     android:textSize="@dimen/text_14" />
 
                 <ImageView
                     android:id="@+id/content_pay_select__weixin_select"
-                    android:layout_width="@dimen/height_20"
-                    android:layout_height="@dimen/height_20"
+                    android:layout_width="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
                     android:src="@mipmap/sale_no_select" />
 
             </LinearLayout>

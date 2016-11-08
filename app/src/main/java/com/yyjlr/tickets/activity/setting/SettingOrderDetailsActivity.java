@@ -19,21 +19,26 @@ import com.yyjlr.tickets.activity.AbstractActivity;
  */
 public class SettingOrderDetailsActivity extends AbstractActivity implements View.OnClickListener {
     private TextView title;
+    private ImageView leftArrow;
     private LinearLayout saleLayout;
     private LinearLayout moreLayout;
     private ImageView moreImage;
     private TextView moreText;
     private boolean flag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("订单详情");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
 
         saleLayout = (LinearLayout) findViewById(R.id.content_order_details__package_layout);
         moreLayout = (LinearLayout) findViewById(R.id.item_order_sale_details__more_layout);
@@ -43,18 +48,17 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         moreLayout.setOnClickListener(this);
 
 
-        initSaleList(4,flag);
-
+        initSaleList(4, flag);
     }
 
 
     //卖品列表
-    private void initSaleList(int num,boolean flag){
+    private void initSaleList(int num, boolean flag) {
         saleLayout.removeAllViews();
-        if (!flag && num>2) {
+        if (!flag && num > 2) {
             num = 2;
         }
-        for (int i=0;i<num;i++) {
+        for (int i = 0; i < num; i++) {
             View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_order_sale_details, null);
             TextView salePackageName = (TextView) view.findViewById(R.id.item_order_sale_details__package_name);
             TextView salePackageContent = (TextView) view.findViewById(R.id.item_order_sale_details__package_content);
@@ -64,36 +68,23 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.base_toolbar__left:
                 SettingOrderDetailsActivity.this.finish();
                 break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
             case R.id.item_order_sale_details__more_layout:
-                if (!flag){
+                if (!flag) {
                     moreImage.setImageResource(R.mipmap.more_up);
                     moreText.setText("隐藏部分卖品");
                     flag = true;
-                }else if (flag){
+                } else if (flag) {
                     moreImage.setImageResource(R.mipmap.more_down);
                     moreText.setText("显示更多卖品");
                     flag = false;
                 }
 
-                initSaleList(4,flag);
+                initSaleList(4, flag);
 
                 break;
         }

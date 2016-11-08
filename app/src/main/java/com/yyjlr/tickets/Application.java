@@ -5,9 +5,12 @@ import android.app.Activity;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.service.IDataService;
 import com.yyjlr.tickets.service.MockupDataServiceImp;
 import com.yyjlr.tickets.service.RealDataServiceImp;
+
+import java.util.ArrayList;
 
 /**
  * Created by Elvira on 2016/7/28.
@@ -19,6 +22,8 @@ public class Application extends android.app.Application {
     private static Application sInstance;
     private Activity currentActivity;
     private static IDataService iDataService;
+    private ArrayList<AbstractActivity> activitys;          // 全局Activity集合
+
 
     static {
         if (Config.DEBUG) {
@@ -33,6 +38,7 @@ public class Application extends android.app.Application {
         super.onCreate();
         sInstance = this;
         Fresco.initialize(this, createFrescoConfig());
+        activitys = new ArrayList<AbstractActivity>();
     }
 
     private ImagePipelineConfig createFrescoConfig() {
@@ -49,6 +55,20 @@ public class Application extends android.app.Application {
                 .build();
     }
 
+    /**
+     * 添加Activity到全局activity管理集合
+     */
+    public void addActivity(AbstractActivity activity) {
+        String className = activity.getClass().getName();
+        for (Activity at : activitys) {
+            if (className.equals(at.getClass().getName())) {
+                activitys.remove(at);
+                break;
+            }
+        }
+        activitys.add(activity);
+    }
+
 
     /**
      * @return Application singleton instance
@@ -58,7 +78,7 @@ public class Application extends android.app.Application {
     }
 
     public Activity getCurrentActivity() {
-        return currentActivity;
+        return this.currentActivity;
     }
 
     public void setCurrentActivity(Activity currentActivity) {

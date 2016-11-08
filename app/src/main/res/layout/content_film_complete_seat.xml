@@ -19,7 +19,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <LinearLayout
                 android:id="@+id/content_film_complete_seat__discount_layout"
@@ -27,22 +27,22 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/magin_10"
+                android:layout_marginBottom="@dimen/size_10"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/magin_10"
-                    android:text="超值套餐"
-                    android:textColor="@color/black_alpha"
-                    android:textSize="@dimen/text_15" />
+                    android:layout_marginRight="@dimen/size_10"
+                    android:text="@string/text_sale_big_package"
+                    android:textColor="@color/black_363636"
+                    android:textSize="@dimen/text_14" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="购买套餐立享影票优惠"
-                    android:textColor="@color/gray"
+                    android:text="@string/text_sale_discount"
+                    android:textColor="@color/gray_929292"
                     android:textSize="@dimen/text_12" />
 
             </LinearLayout>
@@ -50,19 +50,19 @@
             <RelativeLayout
                 android:id="@+id/content_film_complete_seat__add_layout"
                 style="@style/MatchWrap"
-                android:layout_marginBottom="@dimen/magin_10">
+                android:layout_marginBottom="@dimen/size_10">
 
                 <TextView
                     style="@style/WrapWrap"
                     android:layout_centerVertical="true"
-                    android:text="更多卖品"
-                    android:textColor="@color/black_alpha1"
+                    android:text="@string/text_sale_more"
+                    android:textColor="@color/black_363636"
                     android:textSize="@dimen/text_14" />
 
                 <com.yyjlr.tickets.viewutils.MaterialRippleLayout
                     style="@style/WrapWrap"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/magin_10"
+                    android:layout_marginRight="@dimen/size_10"
                     app:mrl_rippleAlpha="0.2"
                     app:mrl_rippleColor="@color/bg_shadow"
                     app:mrl_rippleHover="true"
@@ -70,8 +70,8 @@
 
                     <ImageView
                         android:id="@+id/content_film_complete_seat__add"
-                        android:layout_width="@dimen/height_30"
-                        android:layout_height="@dimen/height_30"
+                        android:layout_width="@dimen/size_30"
+                        android:layout_height="@dimen/size_30"
                         android:src="@mipmap/sale_add" />
                 </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
             </RelativeLayout>
@@ -93,14 +93,14 @@
             <RelativeLayout
                 style="@style/MatchWrap"
                 android:layout_gravity="bottom"
-                android:layout_marginTop="@dimen/padding_20"
-                android:layout_marginBottom="@dimen/magin_10">
+                android:layout_marginTop="@dimen/size_20"
+                android:layout_marginBottom="@dimen/size_10">
 
                 <TextView
                     style="@style/WrapWrap"
                     android:layout_centerVertical="true"
-                    android:text="应付金额"
-                    android:textColor="@color/black_alpha1"
+                    android:text="@string/text_pay_money"
+                    android:textColor="@color/black_363636"
                     android:textSize="@dimen/text_14" />
 
                 <TextView
@@ -108,8 +108,8 @@
                     style="@style/WrapWrap"
                     android:layout_alignParentRight="true"
                     android:text="¥120"
-                    android:textColor="@color/red"
-                    android:textSize="@dimen/text_15" />
+                    android:textColor="@color/red_de2500"
+                    android:textSize="@dimen/text_18" />
             </RelativeLayout>
         </LinearLayout>
 

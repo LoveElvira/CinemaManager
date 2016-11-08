@@ -16,11 +16,11 @@
 
             <TextView
                 android:id="@+id/item_order__delete"
-                android:layout_width="@dimen/height_80"
+                android:layout_width="@dimen/size_80"
                 android:layout_height="match_parent"
-                android:background="@color/red"
+                android:background="@color/red_de2500"
                 android:gravity="center"
-                android:text="删 除"
+                android:text="@string/text_delete"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_14" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
@@ -29,13 +29,13 @@
             android:id="@+id/item_order_complete__rl_layout"
             style="@style/MatchWrap">
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                style="@style/MatchWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+                <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                <!--style="@style/MatchWrap"-->
+                <!--app:mrl_rippleAlpha="0.2"-->
+                <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                <!--app:mrl_rippleHover="true"-->
+                <!--app:mrl_rippleOverlay="true">-->
 
                 <LinearLayout
                     android:id="@+id/item_order_complete__ll_layout"
@@ -43,7 +43,7 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="@dimen/padding_10">
+                    android:padding="@dimen/size_10">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -53,19 +53,19 @@
 
                         <LinearLayout
                             style="@style/MatchWrap"
-                            android:layout_marginBottom="@dimen/magin_10"
+                            android:layout_marginBottom="@dimen/size_10"
                             android:orientation="horizontal">
 
                             <TextView
                                 style="@style/WrapWrap"
                                 android:text="@string/text_order_num"
-                                android:textColor="@color/gray"
+                                android:textColor="@color/gray_c3c3c3"
                                 android:textSize="@dimen/text_12" />
 
                             <TextView
                                 android:id="@+id/item_order_complete__order_num"
                                 style="@style/WrapWrap"
-                                android:textColor="@color/black_alpha"
+                                android:textColor="@color/black_363636"
                                 android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
@@ -76,7 +76,7 @@
                             <TextView
                                 style="@style/WrapWrap"
                                 android:text="@string/text_order_film"
-                                android:textColor="@color/gray"
+                                android:textColor="@color/gray_c3c3c3"
                                 android:textSize="@dimen/text_12" />
 
                             <TextView
@@ -84,26 +84,26 @@
                                 style="@style/WrapWrap"
                                 android:ellipsize="end"
                                 android:singleLine="true"
-                                android:textColor="@color/black_alpha"
+                                android:textColor="@color/black_363636"
                                 android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/item_order_complete__package_layout"
                             style="@style/MatchWrap"
-                            android:layout_marginTop="@dimen/magin_10"
+                            android:layout_marginTop="@dimen/size_10"
                             android:orientation="horizontal">
 
                             <TextView
                                 style="@style/WrapWrap"
                                 android:text="@string/text_order_package"
-                                android:textColor="@color/gray"
+                                android:textColor="@color/gray_c3c3c3"
                                 android:textSize="@dimen/text_12" />
 
                             <TextView
                                 android:id="@+id/item_order_complete__package"
                                 style="@style/WrapWrap"
-                                android:textColor="@color/black_alpha"
+                                android:textColor="@color/black_363636"
                                 android:textSize="@dimen/text_12" />
                         </LinearLayout>
                     </LinearLayout>
@@ -112,7 +112,7 @@
                     <TextView
                         style="@style/WrapWrap"
                         android:text="@string/text_complete"
-                        android:textColor="@color/btn_orange"
+                        android:textColor="@color/orange_ffb171"
                         android:textSize="@dimen/text_13" />
 
                     <ImageView
@@ -120,9 +120,7 @@
                         style="@style/WrapWrap"
                         android:src="@mipmap/right_arrow" />
                 </LinearLayout>
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
         </RelativeLayout>
     </RelativeLayout>
 </com.yyjlr.tickets.viewutils.SlidingButtonView>
-
-    <!--<View--><!--style="@style/MatchOne"--><!--android:background="@color/gray" />--><!--</LinearLayout>--><!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->

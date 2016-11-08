@@ -29,18 +29,22 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
     private LinearLayout xinlangLogin;
     private LinearLayout forgetPassword;
     private TextView title;
+    private ImageView leftArrow;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_login));
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
         phoneNum = (EditText) findViewById(R.id.content_login__phone);
         password = (EditText) findViewById(R.id.content_login__password);
         register = (Button) findViewById(R.id.content_login__register);
@@ -61,6 +65,9 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                LoginActivity.this.finish();
+                break;
             case R.id.content_login__register:
                 startActivity(RegisterActivity.class);
                 break;
@@ -74,24 +81,8 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
             case R.id.content_login__xinlang:
                 break;
             case R.id.content_login__forger_password:
+                startActivity(FindPasswordActivity.class);
                 break;
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                LoginActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
-    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".activity.SplashActivity">
+
+    <View android:id="@+id/splash__view"
+        android:layout_width="1px"
+        android:layout_height="1px"/>
 
     <RelativeLayout style="@style/MatchMatch">
 
-        <com.yyjlr.tickets.viewutils.banner.BGABanner xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/splash__banner_pager"
+        <com.yyjlr.tickets.viewutils.LockableViewPager
+            android:id="@+id/splsh__viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:banner_pointAutoPlayAble="false"
-            app:banner_pointTopBottomMargin="15dp" />
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:id="@+id/splsh__dot_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black_alpha_3"/>
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             style="@style/WrapWrap"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_25"
             app:mrl_rippleAlpha="0.2"
             app:mrl_rippleColor="@color/bg_shadow"
             app:mrl_rippleHover="true"
             app:mrl_rippleOverlay="true">
 
             <TextView
-                android:id="@+id/splash__banner_jump"
+                android:id="@+id/splash__jump"
                 style="@style/MatchMatch"
                 android:background="@drawable/circle_border"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:text="@string/text_jump" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </RelativeLayout>

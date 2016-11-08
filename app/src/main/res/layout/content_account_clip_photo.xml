@@ -32,7 +32,7 @@
             <Button
                 android:id="@+id/clip_photo_confirm"
                 style="@style/MatchMatch"
-                android:text="确定" />
+                android:text="@string/text_confirm" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
@@ -47,7 +47,7 @@
             <Button
                 android:id="@+id/clip_photo_cancel"
                 style="@style/MatchMatch"
-                android:text="取消" />
+                android:text="@string/text_cancel" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -103,5 +103,37 @@
         <attr name="txt_color" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="WGallery">
+
+        <!-- Item的对齐方式 -->
+        <attr name="wGallery_gravity" format="integer" />
+
+        <!-- 切换到选中的Item动画的时长 -->
+        <attr name="wGallery_animationDuration" format="integer" />
+
+        <!-- 未选中的Item的透明度 -->
+        <attr name="wGallery_unselectedAlpha" format="float" />
+
+        <!-- Item 之间的间距 -->
+        <attr name="wGallery_spacing" format="dimension" />
+
+        <!-- 选中的Item缩放的倍数 -->
+        <attr name="wGallery_selectedScale" format="float" />
+
+        <!-- 选中的Item缩放时中心点的位置 -->
+        <attr name="wGallery_scalePivot" format="integer">
+
+            <!-- 选中的Item以中心点进行缩放 -->
+            <enum name="center" value="0" />
+
+            <!-- 选中的Item以顶部中心点进行缩放 -->
+            <enum name="top" value="1" />
+
+            <!-- 选中的Item以底部中心点进行缩放 -->
+            <enum name="bottom" value="2" />
+        </attr>
+
+    </declare-styleable>
+
 </resources>
 

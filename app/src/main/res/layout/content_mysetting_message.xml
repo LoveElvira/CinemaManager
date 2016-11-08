@@ -8,14 +8,14 @@
     tools:context="com.yyjlr.tickets.activity.setting.SettingMessageActivity"
     tools:showIn="@layout/activity_mysetting_message">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
         android:id="@+id/content_setting_message__refresh"
         style="@style/MatchMatch">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/content_setting_message__listview"
             style="@style/MatchWrap"
-            android:layout_marginTop="@dimen/magin_5" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_marginTop="@dimen/size_5" />
+    </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
 
 </LinearLayout>

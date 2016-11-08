@@ -3,25 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
-    android:background="@mipmap/bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.yyjlr.tickets.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/content_main_tab_layout"
-        style="@style/MyCustomTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_55"
-        android:layout_alignParentBottom="true"
-        android:minHeight="?attr/actionBarSize"
-        app:tabMode="fixed"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <com.yyjlr.tickets.viewutils.LockableViewPager
         android:id="@+id/content_main_viewpager"
         style="@style/MatchMatch"
-        android:layout_above="@+id/content_main_tab_layout" />
+        android:layout_marginBottom="@dimen/size_50" />
+
+    <include layout="@layout/bottom_button" />
+
 
 </RelativeLayout>
 

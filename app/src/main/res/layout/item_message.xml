@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchWrap"
-    app:mrl_rippleAlpha="0.2"
-    app:mrl_rippleColor="@color/bg_shadow"
-    app:mrl_rippleHover="true"
-    app:mrl_rippleOverlay="true">
+<!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--style="@style/MatchWrap"-->
+    <!--app:mrl_rippleAlpha="0.2"-->
+    <!--app:mrl_rippleColor="@color/bg_shadow"-->
+    <!--app:mrl_rippleHover="true"-->
+    <!--app:mrl_rippleOverlay="true">-->
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/item_message__layout"
         style="@style/MatchWrap"
         android:background="@color/white"
@@ -18,21 +19,24 @@
             style="@style/MatchWrap"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 android:id="@+id/item_message__title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_14" />
+                android:textColor="@color/black_363636"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:textSize="@dimen/text_14"
+                android:layout_marginRight="@dimen/size_10"/>
 
             <TextView
                 android:id="@+id/item_message__time"
                 style="@style/WrapWrap"
                 android:text="2016-08-08"
-                android:textColor="@color/gray"
+                android:textColor="@color/gray_c3c3c3"
                 android:textSize="@dimen/text_12" />
 
             <ImageView
@@ -41,6 +45,6 @@
         </LinearLayout>
         <View
             style="@style/MatchOne"
-            android:background="@color/gray" />
+            android:background="@color/gray_f4f4f4" />
     </LinearLayout>
-</com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+<!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->

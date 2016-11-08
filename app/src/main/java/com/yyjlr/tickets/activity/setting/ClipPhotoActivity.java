@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
@@ -25,6 +27,8 @@ import java.util.UUID;
 public class ClipPhotoActivity extends BasePhotoActivity implements View.OnClickListener {
 
     private ClipImageLayout mClipImageLayout;
+    private TextView title;
+    private ImageView leftArrow;
 
     public static void startActivity(Activity activity, String path, int code) {
         Intent intent = new Intent(activity, ClipPhotoActivity.class);
@@ -36,9 +40,14 @@ public class ClipPhotoActivity extends BasePhotoActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_clip_photo);
+        title = (TextView) findViewById(R.id.base_toolbar__text);
+        title.setText("裁剪图片");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
         mClipImageLayout = (ClipImageLayout) findViewById(R.id.clip_photo);
         mClipImageLayout.mClipImageView.COLOR_BORDER = R.color.white;
-        mClipImageLayout.mClipImageView.COLOR_BACKGROUND = R.color.gray_alpha_a;
+        mClipImageLayout.mClipImageView.COLOR_BACKGROUND = R.color.black_alpha_3;
         String path = getIntent().getStringExtra("path");
         try {
             mClipImageLayout.setImageBitmap(BitmapUtils.revitionImageSize(path));

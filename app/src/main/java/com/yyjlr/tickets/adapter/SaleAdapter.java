@@ -37,7 +37,8 @@ public class SaleAdapter extends BaseAdapter<SaleEntity> {
                 .setText(R.id.item_sale__app_price, item.getAppPrice())
                 .setText(R.id.item_sale__time, item.getSaleTime())
                 .setImageResource(R.id.item_sale__image, R.mipmap.mihua)
-                .setOnClickListener(R.id.item_sale__shopping_cart, new OnItemChildClickListener());
+                .setOnClickListener(R.id.item_sale__shopping_cart, new OnItemChildClickListener())
+                .setOnClickListener(R.id.item_sale__cardview, new OnItemChildClickListener());
         LinearLayout priceLayout = helper.getView(R.id.item_sale__price_layout);
         priceLayout.measure(0, 0);
         int width = priceLayout.getMeasuredWidth();

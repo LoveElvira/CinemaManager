@@ -3,10 +3,10 @@
     style="@style/MatchWrap"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/padding_20"
-    android:paddingLeft="@dimen/padding_10"
-    android:paddingRight="@dimen/padding_10"
-    android:paddingTop="@dimen/padding_20">
+    android:paddingBottom="@dimen/size_20"
+    android:paddingLeft="@dimen/size_10"
+    android:paddingRight="@dimen/size_10"
+    android:paddingTop="@dimen/size_20">
 
     <LinearLayout
         style="@style/MatchWrap"
@@ -15,85 +15,85 @@
         <TextView
             android:id="@+id/content_film_complete_seat__film_name"
             style="@style/WrapWrap"
-            android:layout_marginRight="@dimen/magin_20"
+            android:layout_marginRight="@dimen/size_20"
             android:text="愤怒的小鸟"
-            android:textColor="@color/black_alpha1"
-            android:textSize="@dimen/text_14" />
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_15" />
 
         <TextView
             android:id="@+id/content_film_complete_seat__type"
             style="@style/WrapWrap"
-            android:layout_marginRight="@dimen/magin_10"
+            android:layout_marginRight="@dimen/size_10"
             android:text="英语3D"
-            android:textColor="@color/gray_alpha1"
-            android:textSize="@dimen/text_12" />
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_13" />
     </LinearLayout>
 
     <LinearLayout
         style="@style/MatchWrap"
-        android:layout_marginTop="@dimen/magin_5"
+        android:layout_marginTop="@dimen/size_5"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/content_film_complete_seat__date"
             style="@style/WrapWrap"
-            android:layout_marginRight="@dimen/magin_10"
+            android:layout_marginRight="@dimen/size_10"
             android:text="2016-08-16"
-            android:textColor="@color/red"
-            android:textSize="@dimen/text_11" />
+            android:textColor="@color/red_de2500"
+            android:textSize="@dimen/text_12" />
 
         <TextView
             android:id="@+id/content_film_complete_seat__time"
             style="@style/WrapWrap"
-            android:layout_marginRight="@dimen/magin_10"
+            android:layout_marginRight="@dimen/size_10"
             android:text="19:00~20:30"
-            android:textColor="@color/red"
-            android:textSize="@dimen/text_11" />
+            android:textColor="@color/red_de2500"
+            android:textSize="@dimen/text_12" />
     </LinearLayout>
 
     <LinearLayout
         style="@style/MatchWrap"
-        android:layout_marginTop="@dimen/magin_5"
+        android:layout_marginTop="@dimen/size_5"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/content_film_complete_seat__hall"
             style="@style/WrapWrap"
-            android:layout_marginRight="@dimen/magin_10"
+            android:layout_marginRight="@dimen/size_10"
             android:text="6号厅"
-            android:textColor="@color/gray_alpha1"
-            android:textSize="@dimen/text_11" />
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_12" />
 
         <TextView
             android:id="@+id/content_film_complete_seat__seat"
             style="@style/WrapWrap"
-            android:layout_marginRight="@dimen/magin_10"
+            android:layout_marginRight="@dimen/size_12"
             android:text="4排3座，4排4座"
-            android:textColor="@color/gray_alpha1"
-            android:textSize="@dimen/text_11" />
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_12" />
     </LinearLayout>
 
     <LinearLayout
         style="@style/MatchWrap"
-        android:layout_marginTop="@dimen/magin_5"
+        android:layout_marginTop="@dimen/size_5"
         android:orientation="horizontal"
         android:gravity="center">
 
         <TextView
             android:id="@+id/content_film_complete_seat__unit_price"
             style="@style/WrapWrap"
-            android:layout_marginRight="@dimen/magin_10"
+            android:layout_marginRight="@dimen/size_10"
             android:text="单价：60元，共2张"
-            android:textColor="@color/gray_alpha1"
-            android:textSize="@dimen/text_11" />
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_12" />
 
         <TextView
             android:id="@+id/content_film_complete_seat__price"
             style="@style/MatchWrap"
-            android:layout_marginRight="@dimen/magin_10"
+            android:layout_marginRight="@dimen/size_10"
             android:text="¥120"
             android:gravity="right"
-            android:textColor="@color/red"
-            android:textSize="@dimen/text_13" />
+            android:textColor="@color/red_de2500"
+            android:textSize="@dimen/text_16" />
     </LinearLayout>
 </LinearLayout>

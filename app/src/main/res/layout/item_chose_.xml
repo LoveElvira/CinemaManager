@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     style="@style/WrapWrap"
-    android:layout_margin="3dp">
+    android:layout_margin="@dimen/size_3">
+
     <TextView
         android:id="@+id/item_cinema__type"
         style="@style/WrapWrap"
         android:textSize="@dimen/text_10"
-        android:background="@drawable/selector_btn_white_radius_10"
         android:textColor="@color/white"
-        android:paddingLeft="@dimen/padding_5"
-        android:paddingRight="@dimen/padding_5"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
-</LinearLayout>
+        android:paddingLeft="@dimen/size_5"
+        android:paddingRight="@dimen/size_5"
+        android:paddingTop="@dimen/size_2"
+        android:paddingBottom="@dimen/size_2"
+        android:background="@drawable/radius_white_10_alpha_2"/>
+</RelativeLayout>

@@ -60,8 +60,8 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
         title = (TextView) view.findViewById(R.id.base_toolbar__text);
         enterCinema = (ImageView) findViewById(R.id.base_toolbar__right);
         title.setText(getResources().getText(R.string.text_cinema_name));
-        enterCinema.setBackgroundResource(R.mipmap.enter_cinema);
-        enterCinema.setVisibility(View.VISIBLE);
+        enterCinema.setImageResource(R.mipmap.enter_cinema);
+        enterCinema.setAlpha(1.0f);
         enterCinema.setOnClickListener(this);
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -98,7 +98,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
 
         chosenFilmEntityList = Application.getiDataService().getChosenMovieList(5);
         chosenAdapter = new ChosenAdapter(chosenFilmEntityList);
-        chosenAdapter.setImageSize(Application.getInstance().getCurrentActivity(), cardWidth, cardHeight);
+        chosenAdapter.setImageSize(cardWidth, cardHeight);
 
         // enable zoom effect. this line can be customized
         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());

@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/content_film_seat__time_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_50"
+        android:layout_height="@dimen/size_50"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -26,17 +26,17 @@
             <TextView
                 android:id="@+id/content_film_seat__date"
                 style="@style/WrapWrap"
-                android:layout_marginRight="@dimen/magin_5"
+                android:layout_marginRight="@dimen/size_5"
                 android:text="08月20日"
-                android:textColor="@color/gray_alpha1"
-                android:textSize="@dimen/text_12" />
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_13" />
 
             <TextView
                 android:id="@+id/content_film_seat__time"
                 style="@style/WrapWrap"
                 android:text="07:00"
-                android:textColor="@color/black_alpha"
-                android:textSize="@dimen/text_16" />
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_20" />
 
 
         </LinearLayout>
@@ -51,21 +51,23 @@
             <TextView
                 android:id="@+id/content_film_seat__hall"
                 style="@style/WrapWrap"
-                android:layout_marginRight="@dimen/magin_5"
-                android:text="5号厅"
-                android:textColor="@color/gray_alpha1"
-                android:textSize="@dimen/text_12" />
+                android:layout_marginRight="@dimen/size_5"
+                android:text="6号厅"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_13" />
 
             <TextView
                 android:id="@+id/content_film_seat__hall_type"
                 style="@style/WrapWrap"
-                android:layout_marginRight="@dimen/magin_5"
+                android:layout_marginRight="@dimen/size_5"
                 android:background="@drawable/bg_green"
-                android:paddingLeft="@dimen/padding_5"
-                android:paddingRight="@dimen/padding_5"
+                android:paddingLeft="@dimen/size_5"
+                android:paddingRight="@dimen/size_5"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
                 android:text="巨幕厅"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_10" />
+                android:textSize="@dimen/text_11" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,24 +80,24 @@
             <TextView
                 android:id="@+id/content_film_seat__film_language"
                 style="@style/WrapWrap"
-                android:layout_marginRight="@dimen/magin_5"
                 android:text="英语"
-                android:textColor="@color/gray_alpha1"
-                android:textSize="@dimen/text_12" />
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_13" />
 
             <View
                 android:layout_width="1dp"
-                android:layout_height="@dimen/height_5"
-                android:layout_marginRight="@dimen/magin_5"
-                android:background="@color/gray_alpha1" />
+                android:layout_height="@dimen/size_7"
+                android:layout_marginRight="@dimen/size_5"
+                android:layout_marginLeft="@dimen/size_5"
+                android:background="@color/gray_929292" />
 
             <TextView
                 android:id="@+id/content_film_seat__film_type"
                 style="@style/WrapWrap"
-                android:layout_marginRight="@dimen/magin_5"
+                android:layout_marginRight="@dimen/size_5"
                 android:text="3D"
-                android:textColor="@color/gray_alpha1"
-                android:textSize="@dimen/text_12" />
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_13" />
         </LinearLayout>
     </LinearLayout>
 
@@ -104,25 +106,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/content_film_seat__time_layout"
-        android:paddingBottom="@dimen/padding_10"
-        android:paddingLeft="@dimen/padding_20"
-        android:paddingRight="@dimen/padding_20"
-        android:paddingTop="@dimen/padding_10" />
+        android:paddingBottom="@dimen/size_10"
+        android:paddingLeft="@dimen/size_20"
+        android:paddingRight="@dimen/size_20"
+        android:paddingTop="@dimen/size_10" />
 
     <View
         android:id="@+id/content_film_seat__line"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@id/content_film_seat__type_listview"
-        android:layout_marginLeft="@dimen/magin_20"
-        android:layout_marginRight="@dimen/magin_20"
-        android:background="@color/gray" />
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginRight="@dimen/size_20"
+        android:background="@color/gray_929292" />
 
 
     <LinearLayout
         android:id="@+id/content_film_seat__confirm_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_50"
+        android:layout_height="@dimen/size_50"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:orientation="horizontal">
@@ -133,40 +135,41 @@
             android:layout_weight="2"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/padding_5"
-            android:paddingLeft="@dimen/padding_10"
-            android:paddingRight="@dimen/padding_5"
-            android:paddingTop="@dimen/padding_5">
+            android:paddingBottom="@dimen/size_5"
+            android:paddingLeft="@dimen/size_10"
+            android:paddingRight="@dimen/size_5"
+            android:paddingTop="@dimen/size_5">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="共计："
-                android:textColor="@color/gray"
+                android:text="@string/text_select_seat_price"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
 
             <TextView
                 android:id="@+id/content_film_seat__price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/magin_5"
+                android:layout_marginRight="@dimen/size_5"
                 android:text="100"
-                android:textColor="@color/red"
+                android:textColor="@color/red_c80f0f"
                 android:textSize="@dimen/text_16" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="元"
-                android:textColor="@color/red"
+                android:textColor="@color/red_c80f0f"
                 android:textSize="@dimen/text_13" />
 
             <TextView
+                android:id="@+id/content_film_seat__price_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/magin_5"
+                android:layout_marginLeft="@dimen/size_5"
                 android:text="(50+50)"
-                android:textColor="@color/gray"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
 
 
@@ -184,9 +187,9 @@
             <TextView
                 android:id="@+id/content_film_seat__confirm_seat"
                 style="@style/MatchMatch"
-                android:background="@color/btn_orange"
+                android:background="@color/orange_ff7a0f"
                 android:gravity="center"
-                android:text="确认选座"
+                android:text="@string/text_select_seat_confirm"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_15" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
@@ -204,17 +207,18 @@
             android:id="@+id/content_film_seat__seat_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/magin_5"
-            android:padding="@dimen/padding_10"
-            android:text="已选座位："
+            android:layout_marginBottom="@dimen/size_5"
+            android:textColor="@color/black_333333"
+            android:padding="@dimen/size_10"
+            android:text="@string/text_select_seat"
             android:textSize="@dimen/text_16" />
 
         <LinearLayout
             android:id="@+id/content_film_seat__seat_recommend_layout"
             style="@style/MatchWrap"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/padding_10"
-            android:paddingRight="@dimen/padding_10">
+            android:paddingLeft="@dimen/size_10"
+            android:paddingRight="@dimen/size_10">
 
             <com.yyjlr.tickets.viewutils.MaterialRippleLayout
                 android:layout_width="0dp"
@@ -228,11 +232,11 @@
                 <TextView
                     android:id="@+id/content_film_seat__seat_recommend_one"
                     style="@style/MatchMatch"
-                    android:background="@drawable/border_gray"
+                    android:background="@drawable/radius_border_gray"
                     android:gravity="center"
-                    android:padding="@dimen/padding_10"
-                    android:text="1人座"
-                    android:textColor="@color/gray_alpha1"
+                    android:padding="@dimen/size_10"
+                    android:text="@string/text_select_seat_one"
+                    android:textColor="@color/gray_929292"
                     android:textSize="@dimen/text_14" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
@@ -244,17 +248,17 @@
                 app:mrl_rippleColor="@color/bg_shadow"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true"
-                android:layout_marginLeft="@dimen/magin_5"
-                android:layout_marginRight="@dimen/magin_5">
+                android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_5">
 
                 <TextView
                     android:id="@+id/content_film_seat__seat_recommend_two"
                     style="@style/MatchMatch"
-                    android:background="@drawable/border_gray"
+                    android:background="@drawable/radius_border_gray"
                     android:gravity="center"
-                    android:padding="@dimen/padding_10"
-                    android:text="2人座"
-                    android:textColor="@color/gray_alpha1"
+                    android:padding="@dimen/size_10"
+                    android:text="@string/text_select_seat_two"
+                    android:textColor="@color/gray_929292"
                     android:textSize="@dimen/text_14" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
@@ -266,16 +270,16 @@
                 app:mrl_rippleColor="@color/bg_shadow"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true"
-                android:layout_marginRight="@dimen/magin_5">
+                android:layout_marginRight="@dimen/size_5">
 
                 <TextView
                     android:id="@+id/content_film_seat__seat_recommend_three"
                     style="@style/MatchMatch"
-                    android:background="@drawable/border_gray"
+                    android:background="@drawable/radius_border_gray"
                     android:gravity="center"
-                    android:padding="@dimen/padding_10"
-                    android:text="3人座"
-                    android:textColor="@color/gray_alpha1"
+                    android:padding="@dimen/size_10"
+                    android:text="@string/text_select_seat_three"
+                    android:textColor="@color/gray_929292"
                     android:textSize="@dimen/text_14" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
@@ -290,11 +294,11 @@
             <TextView
                 android:id="@+id/content_film_seat__seat_recommend_four"
                 style="@style/MatchMatch"
-                android:background="@drawable/border_gray"
+                android:background="@drawable/radius_border_gray"
                 android:gravity="center"
-                android:padding="@dimen/padding_10"
-                android:text="4人座"
-                android:textColor="@color/gray_alpha1"
+                android:padding="@dimen/size_10"
+                android:text="@string/text_select_seat_four"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_14" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
         </LinearLayout>
@@ -308,18 +312,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/padding_10"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10">
+                android:paddingBottom="@dimen/size_10"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10">
 
             </LinearLayout>
 
         </com.yyjlr.tickets.viewutils.ScrollView>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray" />
+            style="@style/MatchOne"
+            android:background="@color/gray_f4f4f4" />
 
     </LinearLayout>
 

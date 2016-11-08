@@ -1,100 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.yyjlr.tickets.viewutils.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
     android:background="@color/bg_gray"
-    android:orientation="vertical"
+    android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.yyjlr.tickets.activity.setting.SettingPointsActivity"
     tools:showIn="@layout/activity_mysetting_points">
 
     <LinearLayout
-        style="@style/MatchWrap"
-        android:layout_marginBottom="@dimen/magin_10"
-        android:layout_marginTop="@dimen/magin_10"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/content_setting_points__precent_points"
-                style="@style/WrapWrap"
-                android:layout_marginBottom="@dimen/magin_10"
-                android:layout_marginTop="@dimen/magin_20"
-                android:text="10000"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_18" />
-
-            <TextView
-                style="@style/WrapWrap"
-                android:layout_marginBottom="@dimen/magin_20"
-                android:text="当前积分"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_12" />
-        </LinearLayout>
-
-        <View
-            style="@style/OneMatch"
-            android:layout_marginBottom="@dimen/magin_20"
-            android:layout_marginTop="@dimen/magin_20"
-            android:background="@color/gray" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/content_setting_points__history_points"
-                style="@style/WrapWrap"
-                android:layout_marginBottom="@dimen/magin_10"
-                android:layout_marginTop="@dimen/magin_20"
-                android:text="32500"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_18" />
-
-            <TextView
-                style="@style/WrapWrap"
-                android:layout_marginBottom="@dimen/magin_20"
-                android:text="历史积分"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_12" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
         style="@style/MatchMatch"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/padding_10"
-        android:paddingLeft="@dimen/padding_10"
-        android:paddingRight="@dimen/padding_10">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/WrapWrap"
-            android:text="积分明细"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/text_14" />
+        <LinearLayout
+            style="@style/MatchWrap"
+            android:layout_marginBottom="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@color/white"
+            android:orientation="horizontal">
 
-        <View
-            style="@style/MatchOne"
-            android:layout_marginBottom="@dimen/magin_10"
-            android:layout_marginTop="@dimen/magin_10"
-            android:background="@color/gray" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/content_setting_points__listview"
-            style="@style/MatchMatch" />
+                <TextView
+                    android:id="@+id/content_setting_points__precent_points"
+                    style="@style/WrapWrap"
+                    android:layout_marginBottom="@dimen/size_10"
+                    android:layout_marginTop="@dimen/size_20"
+                    android:text="10000"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_18" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:layout_marginBottom="@dimen/size_20"
+                    android:text="@string/text_points_present"
+                    android:textColor="@color/gray_929292"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+
+            <View
+                style="@style/OneMatch"
+                android:layout_marginBottom="@dimen/size_20"
+                android:layout_marginTop="@dimen/size_20"
+                android:background="@color/gray_ebebeb" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/content_setting_points__history_points"
+                    style="@style/WrapWrap"
+                    android:layout_marginBottom="@dimen/size_10"
+                    android:layout_marginTop="@dimen/size_20"
+                    android:text="32500"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_18" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:layout_marginBottom="@dimen/size_20"
+                    android:text="@string/text_points_history"
+                    android:textColor="@color/gray_929292"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MatchMatch"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/size_10"
+            android:paddingRight="@dimen/size_10"
+            android:paddingTop="@dimen/size_10">
+
+            <TextView
+                style="@style/WrapWrap"
+                android:text="@string/text_points_all"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_14" />
+
+            <View
+                style="@style/MatchOne"
+                android:layout_marginBottom="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_10"
+                android:background="@color/gray_dcdcdc" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/content_setting_points__listview"
+                style="@style/MatchMatch"
+                android:scrollbars="none"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</com.yyjlr.tickets.viewutils.ScrollView>

@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/height_50"
+    android:layout_height="@dimen/size_50"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_alignParentBottom="true"
     android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/padding_10"
-    android:visibility="gone">
+    android:visibility="gone"
+    android:paddingLeft="@dimen/size_10">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="支付金额"
-        android:textColor="@color/black_alpha1"
+        android:text="@string/text_pay_price"
+        android:textColor="@color/black_363636"
         android:textSize="@dimen/text_12" />
 
     <TextView
         android:id="@+id/content_pay_select__confirm_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/magin_5"
-        android:layout_marginRight="@dimen/magin_5"
+        android:layout_marginLeft="@dimen/size_5"
+        android:layout_marginRight="@dimen/size_5"
+        android:layout_marginTop="-2dp"
         android:text="120"
-        android:textColor="@color/red"
+        android:textColor="@color/red_de2500"
         android:textSize="@dimen/text_18" />
 
     <TextView
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="元"
-        android:textColor="@color/black_alpha1"
+        android:textColor="@color/black_363636"
         android:textSize="@dimen/text_12" />
 
     <com.yyjlr.tickets.viewutils.MaterialRippleLayout
@@ -45,11 +46,11 @@
         <TextView
             android:id="@+id/content_pay_select__confirm_pay"
             style="@style/MatchMatch"
-            android:background="@color/btn_orange"
+            android:background="@color/orange_ff7a0f"
             android:gravity="center"
-            android:text="确认支付"
-            android:paddingLeft="@dimen/padding_20"
-            android:paddingRight="@dimen/padding_20"
+            android:text="@string/text_pay_confirm"
+            android:paddingLeft="@dimen/size_20"
+            android:paddingRight="@dimen/size_20"
             android:textColor="@color/white"
             android:textSize="@dimen/text_14" />
     </com.yyjlr.tickets.viewutils.MaterialRippleLayout>

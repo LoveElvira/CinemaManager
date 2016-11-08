@@ -8,14 +8,14 @@
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_50"
+        android:layout_height="@dimen/size_50"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             style="@style/WrapMatch"
             android:layout_centerVertical="true"
-            android:padding="@dimen/padding_5"
+            android:padding="@dimen/size_5"
             app:mrl_rippleAlpha="0.2"
             app:mrl_rippleColor="@color/bg_shadow"
             app:mrl_rippleHover="true"
@@ -31,7 +31,7 @@
             style="@style/WrapMatch"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="@dimen/padding_10"
+            android:padding="@dimen/size_10"
             app:mrl_rippleAlpha="0.2"
             app:mrl_rippleColor="@color/bg_shadow"
             app:mrl_rippleHover="true"

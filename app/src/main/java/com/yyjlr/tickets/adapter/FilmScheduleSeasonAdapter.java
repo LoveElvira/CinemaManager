@@ -44,7 +44,8 @@ public class FilmScheduleSeasonAdapter extends BaseAdapter<FilmSeasonEntity>{
                 .setText(R.id.item_schedule__original_price,item.getOriginalPrice())
                 .setFlags(R.id.item_schedule__original_price,Paint.STRIKE_THRU_TEXT_FLAG)
                 .setText(R.id.item_schedule__app_price,item.getAppPrice())
-                .setOnClickListener(R.id.item_schedule__buy_ticket,new OnItemChildClickListener());
+                .setOnClickListener(R.id.item_schedule__buy_ticket,new OnItemChildClickListener())
+                .setOnClickListener(R.id.item_schedule__parent,new OnItemChildClickListener());
     }
 
 }

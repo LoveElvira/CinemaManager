@@ -34,6 +34,7 @@ import java.util.Calendar;
 public class SettingAccountActivity extends BasePhotoActivity implements View.OnClickListener {
 
     private TextView title;
+    private ImageView leftArrow;
     private int year, monthOfYear, dayOfMonth;
     private View showBirthdayLayout;
     private TextView birthday;
@@ -49,12 +50,15 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysetting_account);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+
+    private void initView(){
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("我的账户");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
 
         headImageLayout = (LinearLayout) findViewById(R.id.content_setting_account__head_image_layout);
         userNameLayout = (LinearLayout) findViewById(R.id.content_setting_account__username_layout);
@@ -75,25 +79,12 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                SettingAccountActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                SettingAccountActivity.this.finish();
+                break;
             case R.id.content_setting_account__head_image_layout:
                 View parent = LayoutInflater.from(SettingAccountActivity.this).inflate(R.layout.activity_mysetting_account,null);
                 new PopupWindows(SettingAccountActivity.this,parent);
@@ -113,7 +104,7 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                 showPopWindowDatePicker();
                 break;
             case R.id.content_setting_account__password://修改密码
-                startActivity(FindPasswordActivity.class);
+                startActivity(UpdatePasswordActivity.class);
                 break;
         }
     }
@@ -250,7 +241,6 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 }

@@ -30,17 +30,22 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
     private LinearLayout haveAccount;
     private TimeCount timeCount;
     private TextView title;
+    private ImageView leftArrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+
+    }
+
+    private void initView(){
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_register));
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
         timeCount = new TimeCount(60000, 1000);
         phoneNum = (EditText) findViewById(R.id.content_register__phone);
         code = (EditText) findViewById(R.id.content_register__code);
@@ -53,12 +58,14 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
         getCode.setOnClickListener(this);
         register.setOnClickListener(this);
         haveAccount.setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.base_toolbar__left:
+                RegisterActivity.this.finish();
+                break;
             case R.id.content_register__getcode:
                 timeCount.start();
                 break;
@@ -90,21 +97,5 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
             getCode.setClickable(false);
             getCode.setText(millisUntilFinished / 1000 + "秒");
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                RegisterActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

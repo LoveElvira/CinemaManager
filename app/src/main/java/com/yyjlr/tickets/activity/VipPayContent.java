@@ -36,6 +36,12 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_vip_pay, this);
 
+        initView();
+
+
+    }
+
+    private void initView() {
         boundVipCard = (TextView) findViewById(R.id.content_pay_select__vip_bound);
         noVipCard = (ImageView) findViewById(R.id.content_pay_select__no_vip_card);
         showVipCardLayout = (LinearLayout) findViewById(R.id.content_pay_select__vip_layout);
@@ -46,11 +52,10 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
         confirmPrice = (TextView) findViewById(R.id.content_pay_select__confirm_price);
 
         boundVipCard.setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View view) {
-        Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(),VipBoundActivity.class));
+        Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), VipBoundActivity.class));
     }
 }

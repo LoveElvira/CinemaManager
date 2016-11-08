@@ -7,10 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.R;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Elvira on 2016/7/28.
@@ -35,12 +41,28 @@ public class AbstractActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        // 添加到循环关闭集合
+//        Application.getInstance().addActivity(this);
+        Application.getInstance().setCurrentActivity(this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Application.getInstance().setCurrentActivity(this);
+//        Application.getInstance().setCurrentActivity(this);
+        // 1. 沉浸式状态栏
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Window window = getWindow();
+//            window.setFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -50,14 +72,6 @@ public class AbstractActivity extends AppCompatActivity {
         }
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
-
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Application.getInstance().setCurrentActivity(this);
-    }
-
 
     /**
      * 短暂显示Toast提示(来自String)
@@ -92,4 +106,34 @@ public class AbstractActivity extends AppCompatActivity {
         intent.putExtra(name,value);
         startActivity(intent);
     }
+
+    /**
+     * 调整沉浸式菜单的title
+     */
+    protected void dealStatusBar(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int statusBarHeight = getStatusBarHeight();
+            ViewGroup.LayoutParams lp = view.getLayoutParams();
+            lp.height = statusBarHeight;
+            view.setLayoutParams(lp);
+        }
+    }
+
+    protected int getStatusBarHeight() {
+        Class<?> c = null;
+        Object obj = null;
+        Field field = null;
+        int x = 0, statusBarHeight = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            statusBarHeight = getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return statusBarHeight;
+    }
+
 }

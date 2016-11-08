@@ -10,7 +10,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yyjlr.tickets.Application;
@@ -20,7 +22,10 @@ import com.yyjlr.tickets.activity.FilmScheduleActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FilmAdapter;
 import com.yyjlr.tickets.model.FilmEntity;
+import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.yyjlr.tickets.Application.*;
@@ -29,13 +34,17 @@ import static com.yyjlr.tickets.Application.*;
  * Created by Elvira on 2016/7/28.
  * 影片页面
  */
-public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRefreshListener, BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener {
+public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener, SuperSwipeRefreshLayout.OnPullRefreshListener {
 
     private View view;
     private RecyclerView listView;//列表
-    private SwipeRefreshLayout refresh;//刷新
+    private SuperSwipeRefreshLayout refresh;//刷新
     private List<FilmEntity> filmEntityList;
     private FilmAdapter filmAdapter;
+
+    private ImageView headerImage;
+    private ProgressBar headerProgressBar;
+    private TextView headerSta/*, headerTime*/;
 
     protected int TOTAL_COUNTER = 20;
 
@@ -61,11 +70,10 @@ public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRe
         title.setText(getResources().getText(R.string.text_film_title));
 
         listView = (RecyclerView) view.findViewById(R.id.fragment_film__listview);
-        refresh = (SwipeRefreshLayout) view.findViewById(R.id.fragment_film__refresh);
-        refresh.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        refresh.setOnRefreshListener(this);
+        refresh = (SuperSwipeRefreshLayout) view.findViewById(R.id.fragment_film__refresh);
+        refresh.setHeaderView(createHeaderView());// add headerView
+        refresh.setTargetScrollWithLayout(true);
+        refresh.setOnPullRefreshListener(this);
         filmEntityList = Application.getiDataService().getFilmList();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getInstance().getCurrentActivity());
         listView.setLayoutManager(linearLayoutManager);
@@ -83,12 +91,12 @@ public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRe
                     int lastItemPosition = linearManager.findLastVisibleItemPosition();
                     //获取第一个可见view的位置
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
-                    int first =  linearManager.findFirstCompletelyVisibleItemPosition();
+                    int first = linearManager.findFirstCompletelyVisibleItemPosition();
                     /*if (foodsArrayList.get(firstItemPosition) instanceof Foods) {
                         int foodTypePosion = ((Foods) foodsArrayList.get(firstItemPosition)).getFood_stc_posion();
                         FoodsTypeListview.getChildAt(foodTypePosion).setBackgroundResource(R.drawable.choose_item_selected);
                     }*/
-                    filmAdapter.changeBgFristAndLast(firstItemPosition, lastItemPosition,first);
+                    filmAdapter.changeBgFristAndLast(firstItemPosition, lastItemPosition, first);
                 }
             }
 
@@ -107,10 +115,10 @@ public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRe
             public void run() {
                 if (mCurrentCounter >= TOTAL_COUNTER) {
                     filmAdapter.notifyDataChangedAfterLoadMore(false);
-                    if (notLoadingView == null) {
-                        notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
-                    }
-                    filmAdapter.addFooterView(notLoadingView);
+//                    if (notLoadingView == null) {
+//                        notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
+//                    }
+//                    filmAdapter.addFooterView(notLoadingView);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -123,20 +131,6 @@ public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRe
             }
 
         });
-    }
-
-    @Override
-    public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                filmAdapter.setNewData(filmEntityList);
-                filmAdapter.openLoadMore(PAGE_SIZE, true);
-                filmAdapter.removeAllFooterView();
-                mCurrentCounter = PAGE_SIZE;
-                refresh.setRefreshing(false);
-            }
-        }, delayMillis);
     }
 
     private void initAdapter() {
@@ -156,6 +150,7 @@ public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRe
             case R.id.item_film__buy_ticket:
                 intent.setClass(getInstance().getCurrentActivity(), FilmScheduleActivity.class);
                 break;
+            case R.id.item_film__cardview:
             case R.id.item_film__image:
                 intent.setClass(getInstance().getCurrentActivity(), FilmDetailsActivity.class);
                 break;
@@ -163,4 +158,49 @@ public class FilmContent extends LinearLayout implements SwipeRefreshLayout.OnRe
         getInstance().getCurrentActivity().startActivity(intent);
     }
 
+    private View createHeaderView() {
+        View headerView = LayoutInflater.from(getContext())
+                .inflate(R.layout.header_loading, null);
+        headerProgressBar = (ProgressBar) headerView.findViewById(R.id.header_loading_progress);
+        headerSta = (TextView) headerView.findViewById(R.id.header_loading_text);
+//        headerTime = (TextView) headerView.findViewById(R.id.header_loading_time);
+        headerSta.setText("下拉刷新");
+        headerImage = (ImageView) headerView.findViewById(R.id.header_loading_image);
+        headerImage.setVisibility(View.VISIBLE);
+        headerProgressBar.setVisibility(View.GONE);
+        return headerView;
+    }
+
+    @Override
+    public void onRefresh() {
+        headerSta.setText("正在刷新数据中");
+        headerImage.setVisibility(View.GONE);
+        headerProgressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                filmAdapter.setNewData(filmEntityList);
+                filmAdapter.openLoadMore(PAGE_SIZE, true);
+                filmAdapter.removeAllFooterView();
+                mCurrentCounter = PAGE_SIZE;
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                Date curDate = new Date(System.currentTimeMillis());
+//                headerTime.setText("最后更新：今天"+formatter.format(curDate));
+                refresh.setRefreshing(false);
+                headerProgressBar.setVisibility(View.GONE);
+            }
+        }, delayMillis);
+    }
+
+    @Override
+    public void onPullDistance(int distance) {
+
+    }
+
+    @Override
+    public void onPullEnable(boolean enable) {
+        headerSta.setText(enable ? "松开立即刷新" : "下拉刷新");
+        headerImage.setVisibility(View.VISIBLE);
+        headerImage.setRotation(enable ? 180 : 0);
+    }
 }

@@ -39,7 +39,7 @@ public class ClipImageBorderView extends View {
     private Paint mPaint;
 
     public static int COLOR_BORDER = R.color.white;
-    public static int COLOR_BACKGROUND = R.color.gray_alpha_a;
+    public static int COLOR_BACKGROUND = R.color.black_alpha_3;
 
     public ClipImageBorderView(Context context) {
         this(context, null);

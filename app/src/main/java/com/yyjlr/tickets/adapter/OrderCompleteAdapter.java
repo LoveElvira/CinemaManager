@@ -38,8 +38,7 @@ public class OrderCompleteAdapter extends BaseAdapter<OrderEntity> implements Sl
         AppManager.getInstance().initWidthHeight(helper.getConvertView().getContext());
         helper.setText(R.id.item_order_complete__order_num, item.getOrderNum())
                 .setText(R.id.item_order_complete__order_film, item.getOrderFilmName())
-                .setText(R.id.item_order_complete__package, item.getOrderPackage())
-                .setOnClickListener(R.id.item_order_complete__rl_layout, new OnItemChildClickListener());
+                .setText(R.id.item_order_complete__package, item.getOrderPackage());
         helper.getView(R.id.item_order_complete__rl_layout).getLayoutParams().width = AppManager.getInstance().getWidth();
 
         int w = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);

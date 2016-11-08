@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yyjlr.tickets.Application;
@@ -24,25 +25,28 @@ import static com.yyjlr.tickets.Application.getInstance;
  * 我的积分
  */
 
-public class SettingPointsActivity extends AbstractActivity {
+public class SettingPointsActivity extends AbstractActivity implements View.OnClickListener {
 
     private RecyclerView listView;//列表
     //private SwipeRefreshLayout refresh;//刷新
     private List<PointsEntity> pointsEntityList;
     private PointsAdapter pointsAdapter;
     private TextView title;
+    private ImageView leftArrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysetting_points);
+        initView();
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void initView(){
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("我的积分");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
         listView = (RecyclerView) findViewById(R.id.content_setting_points__listview);
         pointsEntityList = Application.getiDataService().getPointsList();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getInstance().getCurrentActivity());
@@ -60,20 +64,12 @@ public class SettingPointsActivity extends AbstractActivity {
         //pointsAdapter.setOnRecyclerViewItemChildClickListener(this);
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.base_toolbar__left:
                 SettingPointsActivity.this.finish();
                 break;
         }
-        return super.onOptionsItemSelected(item);
     }
 }

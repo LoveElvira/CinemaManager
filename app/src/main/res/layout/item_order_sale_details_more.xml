@@ -11,19 +11,19 @@
     style="@style/MatchWrap"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="@dimen/padding_10">
+    android:padding="@dimen/size_10">
 
     <ImageView
         android:id="@+id/item_order_sale_details_more__down"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/height_20"
+        android:layout_height="@dimen/size_20"
         android:src="@mipmap/more_down"/>
     <TextView
         android:id="@+id/item_order_sale_details_more__text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray"
+        android:textColor="@color/gray_929292"
         android:textSize="@dimen/text_12"
-        android:text="展开更多卖品"/>
+        android:text="@string/text_details_more"/>
 </LinearLayout>
     </com.yyjlr.tickets.viewutils.MaterialRippleLayout>

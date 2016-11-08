@@ -2,6 +2,7 @@ package com.yyjlr.tickets.activity;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,8 +33,9 @@ import java.util.List;
  */
 public class FilmDetailsActivity extends AbstractActivity implements View.OnClickListener {
 
-    private TextView collect;//收藏
-    private TextView share;//分享
+    private LinearLayout collectLayout;//收藏
+    private LinearLayout shareLayout;//分享
+    private ImageView collectImage;//收藏
     private TextView selectSeat;//购票选座
     private ImageView bgImage;
     private ImageView image;
@@ -51,25 +53,31 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
     private FilmDetailsPeopleAdapter adapter;
     private List<FilmPeopleEntity> filmPeopleEntityList;
     private TextView title;
+    private ImageView leftArrow;
     private static final int FILM_CONTENT_DESC_MAX_LINE = 3;
     private static final int SHRINK_UP_STATE = 1;
     private static final int SPREAD_STATE = 2;
     private static int mState = SHRINK_UP_STATE;
     private boolean flag = true;
 
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_film_details_title));
-        collect = (TextView) findViewById(R.id.content_film_details__collect);
-        share = (TextView) findViewById(R.id.content_film_details__share);
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
+        collectLayout = (LinearLayout) findViewById(R.id.content_film_details__collect);
+        shareLayout = (LinearLayout) findViewById(R.id.content_film_details__share);
+        collectImage = (ImageView) findViewById(R.id.content_film_details__collect_image);
         selectSeat = (TextView) findViewById(R.id.content_film_details__select_seat);
         bgImage = (ImageView) findViewById(R.id.content_film_details__bgimage);
         image = (ImageView) findViewById(R.id.content_film_details__image);
@@ -93,8 +101,8 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
         adapter = new FilmDetailsPeopleAdapter(filmPeopleEntityList);
         listView.setAdapter(adapter);
 
-        collect.setOnClickListener(this);
-        share.setOnClickListener(this);
+        collectLayout.setOnClickListener(this);
+        shareLayout.setOnClickListener(this);
         selectSeat.setOnClickListener(this);
         upOrDown.setOnClickListener(this);
     }
@@ -102,6 +110,9 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                FilmDetailsActivity.this.finish();
+                break;
             case R.id.content_film_details__down://显示全部介绍
                 if (mState == SPREAD_STATE) {//显示全部
                     introduce.setMaxLines(FILM_CONTENT_DESC_MAX_LINE);
@@ -117,14 +128,16 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
 
                 break;
             case R.id.content_film_details__collect://收藏
-                Drawable drawable = null;
+//                Drawable drawable = null;
                 if (flag) {
-                    drawable = getResources().getDrawable(R.mipmap.collect_select);
-                }else {
-                    drawable = getResources().getDrawable(R.mipmap.collect);
+//                    drawable = getResources().getDrawable(R.mipmap.collect_select);
+                    collectImage.setImageResource(R.mipmap.collect_select);
+                } else {
+//                    drawable = getResources().getDrawable(R.mipmap.collect);
+                    collectImage.setImageResource(R.mipmap.collect);
                 }
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                collect.setCompoundDrawables(null, drawable, null, null);
+//                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//                collect.setCompoundDrawables(null, drawable, null, null);
                 flag = !flag;
                 break;
             case R.id.content_film_details__share://分享
@@ -170,9 +183,10 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setContentView(view);
         // 设置背景颜色变暗
-        final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
-        lp.alpha = 0.5f;
-        Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+        final WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.6f;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
 
         mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -197,23 +211,4 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
         cancel.setOnClickListener(this);
 
     }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                FilmDetailsActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

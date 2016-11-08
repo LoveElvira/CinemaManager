@@ -113,7 +113,7 @@ public class MockupDataServiceImp implements IDataService {
             filmSeasonEntity.setOriginalPrice("¥120");
             filmSeasonEntity.setAppPrice("¥50");
             filmSeasonEntity.setVipPrice("¥50");
-            filmSeasonEntity.setHall("3号厅");
+            filmSeasonEntity.setHall("6号厅");
             filmSeasonEntity.setHallType("巨幕厅");
             filmSeasonEntityList.add(filmSeasonEntity);
         }
@@ -177,10 +177,10 @@ public class MockupDataServiceImp implements IDataService {
             orderEntity.setOrderFilmName("小飞侠：幻梦起航");
             orderEntity.setOrderPackage("卖品"+(i+1)+"套餐");
             orderEntity.setOrderNum("2565263322");
-            if (i%2==0) {
-                orderEntity.setOrderComplete("1");
-            }else {
+            if (i<6) {
                 orderEntity.setOrderComplete("2");
+            }else {
+                orderEntity.setOrderComplete("1");
             }
             orderEntityList.add(orderEntity);
         }

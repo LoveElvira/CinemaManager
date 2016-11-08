@@ -16,8 +16,9 @@
         android:gravity="center|left"
         android:maxLength="11"
         android:maxLines="1"
-        android:layout_marginTop="@dimen/magin_10"
-        android:padding="@dimen/padding_10"
-        android:textSize="@dimen/text_14" />
+        android:layout_marginTop="@dimen/size_10"
+        android:padding="@dimen/size_10"
+        android:textSize="@dimen/text_14"
+        android:textColor="@color/black_363636"/>
 
 </LinearLayout>

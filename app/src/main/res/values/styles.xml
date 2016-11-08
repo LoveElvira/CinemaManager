@@ -8,8 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionMenuTextColor">@color/white_alpha_0</item>
         <item name="elevation">0dp</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -25,6 +25,7 @@
         <!--<item name="tabSelectedTextColor">@color/tab_text_select</item>-->
         <item name="tabTextColor">@color/white</item>
         <item name="tabIndicatorColor">@null</item>
+        <item name="tabBackground">@color/white_alpha_0</item>
         <!--<item name="tabPaddingStart">@dimen/padding_30</item>-->
         <!--<item name="tabPaddingEnd">@dimen/padding_30</item>-->
         <item name="tabPaddingTop">@dimen/padding_5</item>
@@ -32,18 +33,6 @@
 
     <style name="MyHomePageTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/text_11</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="PayCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabTextAppearance">@style/PayTextAppearance</item>
-        <item name="tabSelectedTextColor">@color/tab_text_select</item>
-        <item name="tabTextColor">@color/black_alpha1</item>
-        <item name="tabIndicatorColor">@color/tab_text_select</item>
-    </style>
-
-    <style name="PayTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">@dimen/text_14</item>
         <item name="textAllCaps">false</item>
     </style>
 
@@ -112,7 +101,7 @@
     </declare-styleable>
 
     <style name="text_gray">
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/gray_929292</item>
         <item name="android:textSize">@dimen/text_10</item>
     </style>
 </resources>

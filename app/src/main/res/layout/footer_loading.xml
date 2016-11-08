@@ -2,21 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loading_view"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="@dimen/size_40"
     android:gravity="center"
     android:orientation="horizontal">
 
     <ProgressBar
         android:id="@+id/loading_progress"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="5dp"/>
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_5"/>
 
     <TextView
         android:id="@+id/loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="加载更多"
-        android:textColor="#ccc"
+        android:text="@string/text_loading"
+        android:textColor="@color/gray_929292"
         android:textSize="14sp" />
 </LinearLayout>

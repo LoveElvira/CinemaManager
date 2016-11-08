@@ -23,19 +23,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="?attr/actionBarSize"
-            android:paddingTop="@dimen/height_300">
+            android:paddingTop="@dimen/size_300">
 
             <include layout="@layout/content_package_details_" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:alpha="0.85"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"></LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/content_package_details__layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_50"
+        android:layout_height="@dimen/size_50"
         android:layout_alignParentBottom="true"
-        android:background="@color/black_"
-        android:alpha="0.9"
         android:orientation="horizontal">
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
@@ -47,15 +53,26 @@
             app:mrl_rippleHover="true"
             app:mrl_rippleOverlay="true">
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/content_package_details__collect"
                 style="@style/MatchMatch"
-                android:drawablePadding="-10dp"
-                android:drawableTop="@mipmap/collect"
-                android:gravity="center"
-                android:text="@string/text_film_collection"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_13" />
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/content_package_details__collect_image"
+                    android:layout_width="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
+                    android:src="@mipmap/collect"/>
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:text="@string/text_film_collection"
+                    android:textColor="@color/gray_929292"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
+
+
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
@@ -67,15 +84,25 @@
             app:mrl_rippleHover="true"
             app:mrl_rippleOverlay="true">
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/content_package_details__share"
                 style="@style/MatchMatch"
-                android:drawablePadding="-10dp"
-                android:drawableTop="@mipmap/share"
-                android:gravity="center"
-                android:text="@string/text_film_share"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_13" />
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
+                    android:src="@mipmap/share"/>
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:text="@string/text_film_share"
+                    android:textColor="@color/gray_929292"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
@@ -90,9 +117,9 @@
             <TextView
                 android:id="@+id/content_package_details__buy"
                 style="@style/MatchMatch"
-                android:background="@color/btn_orange"
+                android:background="@color/orange_ff7a0f"
                 android:gravity="center"
-                android:text="购买"
+                android:text="@string/text_package_buy"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_15" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>

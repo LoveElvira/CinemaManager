@@ -3,51 +3,34 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="main_tab_height">65dp</dimen>
-    <dimen name="height_5">5dp</dimen>
-    <dimen name="height_10">10dp</dimen>
-    <dimen name="height_20">20dp</dimen>
-    <dimen name="height_25">25dp</dimen>
-    <dimen name="height_30">30dp</dimen>
-    <dimen name="height_40">40dp</dimen>
-    <dimen name="height_50">50dp</dimen>
-    <dimen name="height_60">60dp</dimen>
-    <dimen name="height_55">55dp</dimen>
-    <dimen name="height_65">65dp</dimen>
-    <dimen name="height_70">70dp</dimen>
-    <dimen name="height_80">80dp</dimen>
-    <dimen name="height_100">100dp</dimen>
-    <dimen name="height_110">110dp</dimen>
-    <dimen name="height_130">130dp</dimen>
-    <dimen name="height_140">140dp</dimen>
-    <dimen name="height_150">150dp</dimen>
-    <dimen name="height_200">200dp</dimen>
-    <dimen name="height_300">300dp</dimen>
-
-
 
     <dimen name="padding_5">5dp</dimen>
-    <dimen name="padding_7">7dp</dimen>
-    <dimen name="padding_10">10dp</dimen>
-    <dimen name="padding_15">15dp</dimen>
-    <dimen name="padding_20">20dp</dimen>
-    <dimen name="padding_30">30dp</dimen>
-    <dimen name="padding_40">40dp</dimen>
-    <dimen name="padding_50">50dp</dimen>
-    <dimen name="padding_100">100dp</dimen>
+    <dimen name="size_2">2dp</dimen>
+    <dimen name="size_3">3dp</dimen>
+    <dimen name="size_5">5dp</dimen>
+    <dimen name="size_7">7dp</dimen>
+    <dimen name="size_10">10dp</dimen>
+    <dimen name="size_12">12dp</dimen>
+    <dimen name="size_15">15dp</dimen>
+    <dimen name="size_20">20dp</dimen>
+    <dimen name="size_25">25dp</dimen>
+    <dimen name="size_30">30dp</dimen>
+    <dimen name="size_40">40dp</dimen>
+    <dimen name="size_50">50dp</dimen>
+    <dimen name="size_60">60dp</dimen>
+    <dimen name="size_70">70dp</dimen>
+    <dimen name="size_80">80dp</dimen>
+    <dimen name="size_90">90dp</dimen>
+    <dimen name="size_100">100dp</dimen>
+    <dimen name="size_110">110dp</dimen>
+    <dimen name="size_120">120dp</dimen>
+    <dimen name="size_125">125dp</dimen>
+    <dimen name="size_130">130dp</dimen>
+    <dimen name="size_140">140dp</dimen>
+    <dimen name="size_150">150dp</dimen>
+    <dimen name="size_200">200dp</dimen>
+    <dimen name="size_300">300dp</dimen>
 
-    <dimen name="magin_5">5dp</dimen>
-    <dimen name="magin_10">10dp</dimen>
-    <dimen name="magin__15">-15dp</dimen>
-    <dimen name="magin_15">15dp</dimen>
-    <dimen name="magin_20">20dp</dimen>
-    <dimen name="magin_25">25dp</dimen>
-    <dimen name="magin_30">30dp</dimen>
-    <dimen name="magin_40">40dp</dimen>
-    <dimen name="magin_50">50dp</dimen>
-    <dimen name="magin_60">60dp</dimen>
-    <dimen name="magin_120">120dp</dimen>
-    <dimen name="magin_125">125dp</dimen>
-    <dimen name="magin_150">150dp</dimen>
 
 
     <dimen name="text_8">8sp</dimen>

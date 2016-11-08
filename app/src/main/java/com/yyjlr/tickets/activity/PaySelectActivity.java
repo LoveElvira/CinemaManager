@@ -5,6 +5,8 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,43 +22,50 @@ import com.yyjlr.tickets.adapter.ContentAdapter;
 import com.yyjlr.tickets.viewutils.LockableViewPager;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by Elvira on 2016/8/17.
  * 支付界面
  */
-public class PaySelectActivity extends AbstractActivity {
+public class PaySelectActivity extends AbstractActivity implements View.OnClickListener {
 
-    private final String[] titles = {"网上支付", "会员卡支付"};
     private OnLinePayContent onLinePayContent;//网上支付
     private VipPayContent vipPayContent;//会员卡支付
     private LockableViewPager viewPager;
     private ContentAdapter adapter;
     private TextView title;
+    private ImageView leftArrow;
     private LinearLayout addPackageLayout;
+
+    private TextView onlinePay,cardPay;
+    private View onlineLine,cardLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_select);
+        initView();
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("订单支付");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
 
         addPackageLayout = (LinearLayout) findViewById(R.id.content_pay_select__add_layout);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.content_pay_select__tab_layout);
-        final TabLayout.Tab[] tabs = {tabLayout.newTab().setText(titles[0]), tabLayout.newTab().setText(titles[1])};
+        onlinePay = (TextView) findViewById(R.id.content_pay_select__online_pay);
+        cardPay = (TextView) findViewById(R.id.content_pay_select__card);
+        onlineLine = findViewById(R.id.content_pay_select__online_pay_line);
+        cardLine = findViewById(R.id.content_pay_select__card_line);
 
-        tabLayout.addTab(tabs[0]);
-        tabLayout.addTab(tabs[1]);
+        onlinePay.setOnClickListener(this);
+        cardPay.setOnClickListener(this);
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         viewPager = (LockableViewPager) findViewById(R.id.content_pay_select__viewpager);
 
         onLinePayContent = new OnLinePayContent(getBaseContext());
@@ -66,42 +75,38 @@ public class PaySelectActivity extends AbstractActivity {
         list.add(onLinePayContent);
         list.add(vipPayContent);
 
-        adapter = new ContentAdapter(list, titles);
-//        viewPager.setSwipeable(false);
+        adapter = new ContentAdapter(list, null);
+        viewPager.setSwipeable(true);
         viewPager.setAdapter(adapter);
-
-        TabLayout.TabLayoutOnPageChangeListener onPageChangeListener = new TabLayout.TabLayoutOnPageChangeListener(tabLayout) {
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                initFirstView();
+                if (position==0){
+                    onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+                    onlineLine.setVisibility(View.VISIBLE);
+                }else if(position==1){
+                    cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+                    cardLine.setVisibility(View.VISIBLE);
+                }
+            }
 
             @Override
             public void onPageSelected(int position) {
-                setTitle(titles[position]);
-                invalidateOptionsMenu();
-            }
-        };
-        viewPager.addOnPageChangeListener(onPageChangeListener);
-        TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onPageScrollStateChanged(int state) {
 
             }
-        };
-        tabLayout.setOnTabSelectedListener(onTabSelectedListener);
-        onPageChangeListener.onPageSelected(0);
+        });
 
         addPackageList(2);
     }
 
 
-    //动态添加酒列表
+    //动态添加商品列表
     private void addPackageList(int size) {
         for (int i = 0; i < size; i++) {
             View view = LayoutInflater.from(PaySelectActivity.this).inflate(R.layout.item_pay_select_film_sale, addPackageLayout, false);
@@ -123,7 +128,7 @@ public class PaySelectActivity extends AbstractActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!"".equals(vipPayContent.vipCardNum.getText().toString())){
+        if (!"".equals(vipPayContent.vipCardNum.getText().toString())) {
             vipPayContent.boundVipCard.setVisibility(View.GONE);
             vipPayContent.noVipCard.setVisibility(View.GONE);
             vipPayContent.showVipCardLayout.setVisibility(View.VISIBLE);
@@ -132,7 +137,7 @@ public class PaySelectActivity extends AbstractActivity {
             vipPayContent.vipPrice.setText("998");
         }
 
-        if ("".equals(vipPayContent.vipCardNum.getText().toString()) && "".equals(vipPayContent.vipPrice.getText().toString())){
+        if ("".equals(vipPayContent.vipCardNum.getText().toString()) && "".equals(vipPayContent.vipPrice.getText().toString())) {
             vipPayContent.boundVipCard.setVisibility(View.VISIBLE);
             vipPayContent.noVipCard.setVisibility(View.VISIBLE);
             vipPayContent.showVipCardLayout.setVisibility(View.GONE);
@@ -142,18 +147,30 @@ public class PaySelectActivity extends AbstractActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.base_toolbar__left:
                 PaySelectActivity.this.finish();
                 break;
+            case R.id.content_pay_select__online_pay:
+                initFirstView();
+                onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+                onlineLine.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.content_pay_select__card:
+                initFirstView();
+                cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+                cardLine.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(1);
+                break;
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    private void initFirstView(){
+        onlinePay.setTextColor(getResources().getColor(R.color.gray_cbcbcb));
+        cardPay.setTextColor(getResources().getColor(R.color.gray_cbcbcb));
+        onlineLine.setVisibility(View.GONE);
+        cardLine.setVisibility(View.GONE);
     }
 }

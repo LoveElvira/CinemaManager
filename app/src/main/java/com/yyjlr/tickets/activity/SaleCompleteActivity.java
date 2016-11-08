@@ -39,12 +39,13 @@ import java.util.List;
 public class SaleCompleteActivity extends AbstractActivity implements BaseAdapter.OnRecyclerViewItemChildClickListener, View.OnClickListener {
 
     private TextView title;
+    private ImageView leftArrow;
     private TextView payPrice;//应付金额
     private ImageView addPackage;//添加套餐
     private ImageView deletePhone;//删除电话
     private LinearLayout addPackageLayout;
     private EditText phone;
-    private Button confirmOrder;
+    private TextView confirmOrder;
 
     private List<FilmSaleEntity> allDate;
     private List<FilmSaleEntity> partDate = new ArrayList<FilmSaleEntity>();
@@ -54,20 +55,24 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_confirm);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         AppManager.getInstance().initWidthHeight(getBaseContext());
+
+        initView();
+    }
+
+    private void initView() {
 
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("卖品确认");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
         payPrice = (TextView) findViewById(R.id.content_sale_confirm__pay_price);
         addPackage = (ImageView) findViewById(R.id.content_sale_confirm__add);
         addPackageLayout = (LinearLayout) findViewById(R.id.content_sale_confirm__sale_layout);
         phone = (EditText) findViewById(R.id.content_sale_bill__phone);
         deletePhone = (ImageView) findViewById(R.id.content_sale_bill__delete_phone);
-        confirmOrder = (Button) findViewById(R.id.content_sale_bill__confirm_order);
+        confirmOrder = (TextView) findViewById(R.id.content_sale_bill__confirm_order);
         deletePhone.setOnClickListener(this);
         phone.addTextChangedListener(textWatcher);
         confirmOrder.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +129,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         TextView salePackagePrice = (TextView) view.findViewById(R.id.item_film_sale__price);
         TextView salePackageContent = (TextView) view.findViewById(R.id.item_film_sale__package_content);
         TextView saleTime = (TextView) view.findViewById(R.id.item_film_sale__time);
-//            LinearLayout saleLayout = (LinearLayout) view.findViewById(R.id.item_film_sale__layout);
+        LinearLayout saleLayout = (LinearLayout) view.findViewById(R.id.item_film_sale__layout);
         final LinearLayout addLayout = (LinearLayout) view.findViewById(R.id.item_film_sale__add_layout);
         TextView saleLost = (TextView) view.findViewById(R.id.item_film_sale__lost);
         final TextView saleNum = (TextView) view.findViewById(R.id.item_film_sale__num);
@@ -150,6 +155,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                 saleNum.setText(num + "");
             }
         });
+        final int finalI1 = i;
         saleLost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,9 +163,30 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                 if (num != 0)
                     num = num - 1;
                 saleNum.setText(num + "");
+                if (num == 0) {
+                    selectImage.setImageResource(R.mipmap.sale_no_select);
+                    partDate.get(finalI1).setSaleSelect(false);
+                    addLayout.setVisibility(View.GONE);
+                }
             }
         });
         final int finalI = i;
+        saleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (partDate.get(finalI).isSaleSelect()) {
+                    selectImage.setImageResource(R.mipmap.sale_no_select);
+                    partDate.get(finalI).setSaleSelect(false);
+                    addLayout.setVisibility(View.GONE);
+                } else {
+                    selectImage.setImageResource(R.mipmap.sale_select);
+                    partDate.get(finalI).setSaleSelect(true);
+                    addLayout.setVisibility(View.VISIBLE);
+                    saleNum.setText("1");
+                }
+            }
+        });
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,7 +228,8 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
 
         // 设置背景颜色变暗
         final WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.5f;
+        lp.alpha = 0.6f;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         getWindow().setAttributes(lp);
         mPopupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -209,7 +237,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
             public void onDismiss() {
                 restAddPackage();
                 lp.alpha = 1.0f;
-                Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+                getWindow().setAttributes(lp);
             }
         });
 
@@ -258,23 +286,6 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         initAddPackage(0);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                SaleCompleteActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
         if (allDate.get(position).isSaleSelect()) {
@@ -288,6 +299,9 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                SaleCompleteActivity.this.finish();
+                break;
             case R.id.content_sale_bill__delete_phone:
                 phone.setText("");
                 break;

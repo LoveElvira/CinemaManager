@@ -9,34 +9,35 @@
     tools:context="com.yyjlr.tickets.activity.setting.SettingAccountActivity"
     tools:showIn="@layout/activity_mysetting_account">
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-        style="@style/MatchWrap"
-        android:layout_marginTop="@dimen/magin_10"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
+    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--style="@style/MatchWrap"-->
+        <!--android:layout_marginTop="@dimen/size_10"-->
+        <!--app:mrl_rippleAlpha="0.2"-->
+        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+        <!--app:mrl_rippleHover="true"-->
+        <!--app:mrl_rippleOverlay="true">-->
 
         <LinearLayout
             android:id="@+id/content_setting_account__head_image_layout"
             style="@style/MatchWrap"
+            android:layout_marginTop="@dimen/size_10"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="头像"
-                android:textColor="@color/gray_alpha1"
+                android:text="@string/text_account_head_image"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_14" />
 
             <ImageView
                 android:id="@+id/content_setting_account__head_image"
-                android:layout_width="@dimen/height_80"
-                android:layout_height="@dimen/height_80"
+                android:layout_width="@dimen/size_80"
+                android:layout_height="@dimen/size_80"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/image_2" />
 
@@ -44,28 +45,29 @@
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-        style="@style/MatchWrap"
-        android:layout_marginTop="@dimen/magin_10"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
+    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--style="@style/MatchWrap"-->
+        <!--android:layout_marginTop="@dimen/size_10"-->
+        <!--app:mrl_rippleAlpha="0.2"-->
+        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+        <!--app:mrl_rippleHover="true"-->
+        <!--app:mrl_rippleOverlay="true">-->
 
         <LinearLayout
             android:id="@+id/content_setting_account__username_layout"
             style="@style/MatchWrap"
+            android:layout_marginTop="@dimen/size_10"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 style="@style/WrapWrap"
-                android:text="昵称"
-                android:textColor="@color/gray_alpha1"
+                android:text="@string/text_account_username"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_14" />
 
             <TextView
@@ -74,26 +76,26 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="小蛮缠"
-                android:textColor="@color/black_alpha1"
+                android:text="@string/text_name"
+                android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_14" />
 
             <ImageView
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
     <View
         style="@style/MatchOne"
-        android:background="@color/gray" />
+        android:background="@color/gray_f4f4f4" />
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-        style="@style/MatchWrap"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
+    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--style="@style/MatchWrap"-->
+        <!--app:mrl_rippleAlpha="0.2"-->
+        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+        <!--app:mrl_rippleHover="true"-->
+        <!--app:mrl_rippleOverlay="true">-->
 
         <LinearLayout
             android:id="@+id/content_setting_account__sex_layout"
@@ -101,12 +103,12 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 style="@style/WrapWrap"
-                android:text="性别"
-                android:textColor="@color/gray_alpha1"
+                android:text="@string/text_sex"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_14" />
 
             <TextView
@@ -115,26 +117,26 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="女"
-                android:textColor="@color/black_alpha1"
+                android:text="@string/text_sex_girl"
+                android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_14" />
 
             <ImageView
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
     <View
         style="@style/MatchOne"
-        android:background="@color/gray" />
+        android:background="@color/gray_f4f4f4" />
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-        style="@style/MatchWrap"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
+    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--style="@style/MatchWrap"-->
+        <!--app:mrl_rippleAlpha="0.2"-->
+        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+        <!--app:mrl_rippleHover="true"-->
+        <!--app:mrl_rippleOverlay="true">-->
 
         <LinearLayout
             android:id="@+id/content_setting_account__birthday_layout"
@@ -142,12 +144,12 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 style="@style/WrapWrap"
-                android:text="生日"
-                android:textColor="@color/gray_alpha1"
+                android:text="@string/text_account_birthday"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_14" />
 
             <TextView
@@ -157,7 +159,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="1994-01-01"
-                android:textColor="@color/black_alpha1"
+                android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_14" />
 
             <ImageView
@@ -165,15 +167,15 @@
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
 
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-        style="@style/MatchWrap"
-        android:layout_marginTop="@dimen/magin_10"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
+    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--style="@style/MatchWrap"-->
+        <!--android:layout_marginTop="@dimen/size_10"-->
+        <!--app:mrl_rippleAlpha="0.2"-->
+        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+        <!--app:mrl_rippleHover="true"-->
+        <!--app:mrl_rippleOverlay="true">-->
 
         <LinearLayout
             android:id="@+id/content_setting_account__phone_layout"
@@ -181,12 +183,13 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_10">
 
             <TextView
                 style="@style/WrapWrap"
-                android:text="手机号码"
-                android:textColor="@color/gray_alpha1"
+                android:text="@string/text_account_phone"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_14" />
 
             <TextView
@@ -196,25 +199,23 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="150****1234"
-                android:textColor="@color/black_alpha1"
-                android:textSize="@dimen/text_14" />
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_14"
+                android:layout_marginRight="@dimen/size_25"/>
 
-            <ImageView
-                style="@style/WrapWrap"
-                android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
     <View
         style="@style/MatchOne"
-        android:background="@color/gray" />
+        android:background="@color/gray_f4f4f4" />
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-        style="@style/MatchWrap"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
+    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--style="@style/MatchWrap"-->
+        <!--app:mrl_rippleAlpha="0.2"-->
+        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+        <!--app:mrl_rippleHover="true"-->
+        <!--app:mrl_rippleOverlay="true">-->
 
         <LinearLayout
             android:id="@+id/content_setting_account__password"
@@ -222,20 +223,20 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="修改密码"
-                android:textColor="@color/gray_alpha1"
+                android:text="@string/text_account_update_pwd"
+                android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_14" />
 
             <ImageView
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
 </LinearLayout>

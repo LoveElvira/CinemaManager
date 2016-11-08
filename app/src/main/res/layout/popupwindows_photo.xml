@@ -28,9 +28,9 @@
             <TextView
                 android:id="@+id/item_popupwindows_camera"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_50"
+                android:layout_height="@dimen/size_50"
                 android:gravity="center"
-                android:text="拍照"
+                android:text="@string/text_phonto_camero"
                 android:textSize="@dimen/text_18" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
         <View
@@ -49,9 +49,9 @@
             <TextView
                 android:id="@+id/item_popupwindows_Photo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_50"
+                android:layout_height="@dimen/size_50"
                 android:gravity="center"
-                android:text="从相册中选取"
+                android:text="@string/text_phonto_picture"
                 android:textSize="@dimen/text_18" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
@@ -71,9 +71,9 @@
             <TextView
                 android:id="@+id/item_popupwindows_cancel"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_50"
+                android:layout_height="@dimen/size_50"
                 android:gravity="center"
-                android:text="取消"
+                android:text="@string/text_cancel"
                 android:textSize="@dimen/text_18" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>

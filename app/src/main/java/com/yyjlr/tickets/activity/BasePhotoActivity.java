@@ -69,9 +69,11 @@ public class BasePhotoActivity extends AbstractActivity {
             setContentView(view);
 
             // 设置背景颜色变暗
-            final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
-            lp.alpha = 0.5f;
-            Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+            final WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.alpha = 0.6f;
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            getWindow().setAttributes(lp);
+
             showAtLocation(parent, Gravity.BOTTOM, 0, 0);
 
             setOnDismissListener(new PopupWindow.OnDismissListener() {

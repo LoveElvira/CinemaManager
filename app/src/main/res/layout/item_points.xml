@@ -2,41 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchWrap"
     android:orientation="horizontal"
-    android:padding="@dimen/padding_10">
+    android:padding="@dimen/size_10">
 
     <ImageView
         android:id="@+id/item_points__image"
-        android:layout_width="@dimen/height_30"
-        android:layout_height="@dimen/height_30"/>
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"/>
     <LinearLayout
         style="@style/MatchWrap"
         android:orientation="vertical"
-        android:layout_marginLeft="@dimen/magin_10">
+        android:layout_marginLeft="@dimen/size_10">
 
         <TextView
             android:id="@+id/item_points__points"
             style="@style/WrapWrap"
-            android:textColor="@color/black_alpha"
+            android:textColor="@color/black_363636"
             android:textSize="@dimen/text_14"
             android:text="400积分"
-            android:layout_marginTop="@dimen/magin_5"
-            android:layout_marginBottom="@dimen/magin_10"/>
+            android:layout_marginTop="@dimen/size_5"
+            android:layout_marginBottom="@dimen/size_10"/>
 
         <TextView
             android:id="@+id/item_points__points_content"
             style="@style/WrapWrap"
-            android:textColor="@color/black_alpha"
+            android:textColor="@color/black_363636"
             android:textSize="@dimen/text_14"
             android:text="400积分 换购x月x日，盗墓笔记SFC永华店 x场，x排x座 "
-            android:layout_marginBottom="@dimen/magin_10"/>
+            android:layout_marginBottom="@dimen/size_10"/>
 
         <TextView
             android:id="@+id/item_points__time"
             style="@style/WrapWrap"
-            android:textColor="@color/gray"
+            android:textColor="@color/gray_929292"
             android:textSize="@dimen/text_12"
             android:text="2016.09.20"
-            android:layout_marginBottom="@dimen/magin_10"/>
+            android:layout_marginBottom="@dimen/size_10"/>
 
         <View
             android:layout_width="match_parent"

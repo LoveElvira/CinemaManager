@@ -9,15 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.BaseAdapter;
+import com.yyjlr.tickets.adapter.FilmScheduleImageAdapter;
 import com.yyjlr.tickets.adapter.FilmScheduleSeasonAdapter;
 import com.yyjlr.tickets.adapter.FilmScheduleTimeAdapter;
 import com.yyjlr.tickets.model.FilmSeasonEntity;
 import com.yyjlr.tickets.model.FilmTimeEntity;
+import com.yyjlr.tickets.viewutils.gallery.WGallery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,10 +30,12 @@ import java.util.Map;
 
 /**
  * Created by Elvira on 2016/8/2.
+ * 影片排期
  */
-public class FilmScheduleActivity extends AbstractActivity implements BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener {
+public class FilmScheduleActivity extends AbstractActivity implements BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, View.OnClickListener {
 
     private TextView title;
+    private ImageView leftArrow;
     private RecyclerView timeList;
     private RecyclerView listView;
     private FilmScheduleTimeAdapter timeAdapter;
@@ -38,16 +44,29 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
     private List<FilmTimeEntity> filmTimeEntityList;
     private List<Map<String, String>> mapList;
 
+    private FilmScheduleImageAdapter imageAdapter;
+    WGallery wGallery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_schedule);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AppManager.getInstance().initWidthHeight(getBaseContext());
+        initView();
+
+    }
+
+    private void initView(){
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("愤怒的小鸟");
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
+
+        wGallery = (WGallery) findViewById(R.id.content_film_schedule__wgallery);
+        imageAdapter = new FilmScheduleImageAdapter(initData());
+        wGallery.setAdapter(imageAdapter);
 
         timeList = (RecyclerView) findViewById(R.id.content_film_schedule__time);
         listView = (RecyclerView) findViewById(R.id.content_film_schedule__listview);
@@ -57,7 +76,7 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         timeList.setLayoutManager(linearLayoutManager);
         mapList = Application.getiDataService().getMapList();
-        timeAdapter = new FilmScheduleTimeAdapter( mapList);
+        timeAdapter = new FilmScheduleTimeAdapter(mapList);
         timeList.setAdapter(timeAdapter);
         timeAdapter.setOnRecyclerViewItemChildClickListener(this);
 
@@ -67,7 +86,19 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
         listView.setLayoutManager(linearLayoutManager1);
         filmSeasonEntityList = Application.getiDataService().getSeasonList();
         initAdapter();
+    }
 
+    private List<Integer> initData() {
+        List<Integer> list = new ArrayList<>();
+        list.add(R.mipmap.image_1);
+        list.add(R.mipmap.image_2);
+        list.add(R.mipmap.image_3);
+        list.add(R.mipmap.image_4);
+        list.add(R.mipmap.image_1);
+        list.add(R.mipmap.image_2);
+        list.add(R.mipmap.image_3);
+        list.add(R.mipmap.image_4);
+        return list;
     }
 
     private void initAdapter() {
@@ -111,6 +142,9 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
             case R.id.item_schedule__buy_ticket://购票
                 startActivity(FilmSelectSeatActivity.class);
                 break;
+            case R.id.item_schedule__parent://购票
+                startActivity(FilmSelectSeatActivity.class);
+                break;
             case R.id.item_film_schedule__layout_parent://选择时间item
                 List<Map<String, String>> list = new ArrayList<Map<String, String>>();
                 for (int i = 0; i < mapList.size(); i++) {
@@ -131,19 +165,11 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.base_toolbar__left:
                 FilmScheduleActivity.this.finish();
                 break;
         }
-        return super.onOptionsItemSelected(item);
     }
-
 }

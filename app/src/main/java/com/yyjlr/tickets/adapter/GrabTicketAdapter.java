@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 import com.yyjlr.tickets.model.DataImportUtils;
 import com.yyjlr.tickets.model.DataInfo;
-import com.yyjlr.tickets.viewutils.ItemTicketLayout;
-import com.yyjlr.tickets.viewutils.TicketFrameLayout;
+import com.yyjlr.tickets.viewutils.grabticket.ItemTicketLayout;
+import com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.TimerTask;
  * 抢票adapter
  */
 public class GrabTicketAdapter extends TicketFrameLayout.Adapter{
-    List<DataInfo> list = new ArrayList<>();
+    List<DataInfo> list= new ArrayList<>();
     private SparseArray<ItemTicketLayout> mCountdownVHList;
     private boolean flag = true;
     private Handler mHandler = new Handler();
@@ -28,6 +28,7 @@ public class GrabTicketAdapter extends TicketFrameLayout.Adapter{
     private boolean isCancel = true;
 
     public void set() {
+        list.clear();
         mCountdownVHList = new SparseArray<>();
         List<DataInfo> l1 = DataImportUtils.init();
 

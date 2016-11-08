@@ -48,7 +48,8 @@ public class SalePackageAdapter extends BaseAdapter<SaleEntity> {
                 .setText(R.id.item_sale__original_price, item.getOriginalPrice())
                 .setText(R.id.item_sale__app_price, item.getAppPrice())
                 .setImageResource(R.id.item_sale_package__image, R.mipmap.bird)
-                .setOnClickListener(R.id.item_sale_package__right, new OnItemChildClickListener());
+                .setOnClickListener(R.id.item_sale_package__right, new OnItemChildClickListener())
+                .setOnClickListener(R.id.item_sale_package__cardview, new OnItemChildClickListener());
         LinearLayout priceLayout = helper.getView(R.id.item_sale__price_layout);
         priceLayout.measure(0, 0);
         int width = priceLayout.getMeasuredWidth();

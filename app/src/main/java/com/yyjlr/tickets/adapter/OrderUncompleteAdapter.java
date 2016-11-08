@@ -48,7 +48,6 @@ public class OrderUncompleteAdapter extends BaseAdapter<OrderEntity> implements 
                 .setVisible(R.id.item_order_nocomplete__cancel, true)
                 .setOnClickListener(R.id.item_order_nocomplete__cancel, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_order_nocomplete__pay, new OnItemChildClickListener());
-        ;
         if ("1".equals(item.getOrderComplete())) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);
@@ -70,11 +69,10 @@ public class OrderUncompleteAdapter extends BaseAdapter<OrderEntity> implements 
 //                判断是否有删除菜单打开
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
+                } else {
+                    int n = helper.getLayoutPosition();
+                    mIDeleteBtnClickListener.onItemClick(view, n);
                 }
-//                else {
-//                    int n = helper.getLayoutPosition();
-//                    mIDeleteBtnClickListener.onItemClick(view, n);
-//                }
             }
         });
 

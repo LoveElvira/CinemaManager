@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     style="@style/WrapWrap"
-    android:layout_margin="3dp">
+    android:layout_margin="@dimen/size_3">
     <TextView
         android:id="@+id/item_cinema__type"
         style="@style/WrapWrap"
         android:textSize="@dimen/text_10"
-        android:background="@drawable/selector_btn_gray_radius_10"
-        android:textColor="@color/black_alpha"
-        android:paddingLeft="@dimen/padding_5"
-        android:paddingRight="@dimen/padding_5"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
+        android:background="@drawable/radius_gray_10_alpha_2"
+        android:textColor="@color/black_363636"
+        android:paddingLeft="@dimen/size_5"
+        android:paddingRight="@dimen/size_5"
+        android:paddingTop="@dimen/size_2"
+        android:paddingBottom="@dimen/size_2"/>
 </LinearLayout>

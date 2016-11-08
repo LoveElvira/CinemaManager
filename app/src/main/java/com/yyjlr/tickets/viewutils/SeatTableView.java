@@ -21,6 +21,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -430,20 +431,34 @@ public class SeatTableView extends View {
                                     }
                                 }
                             } else {
+                                Toast toast = Toast.makeText(getContext(), "最多只能选择" + maxSelected + "个", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
                                 if (selects.size() >= maxSelected) {
-                                    Toast.makeText(getContext(), "最多只能选择" + maxSelected + "个", Toast.LENGTH_SHORT).show();
+                                    toast.show();
                                     return super.onSingleTapConfirmed(e);
                                 } else {
                                     addChooseSeat(i, j);
                                     if (newSeatList.get(id).getType().equals("1")) {
                                         addChooseSeat(i, j + 1);
                                         if (seatChecker != null) {
+                                            if (selects.size() > maxSelected) {
+                                                remove(isHave(getID(i, j)));
+                                                remove(isHave(getID(i, j + 1)));
+                                                toast.show();
+                                                return super.onSingleTapConfirmed(e);
+                                            }
                                             seatChecker.checked(newSeatList.get(id));
                                             seatChecker.checked(newSeatList.get(i * column + j + 1));
                                         }
                                     } else if (newSeatList.get(i * column + j).getType().equals("2")) {
                                         addChooseSeat(i, j - 1);
                                         if (seatChecker != null) {
+                                            if (selects.size() > maxSelected) {
+                                                remove(isHave(getID(i, j)));
+                                                remove(isHave(getID(i, j - 1)));
+                                                toast.show();
+                                                return super.onSingleTapConfirmed(e);
+                                            }
                                             seatChecker.checked(newSeatList.get(id));
                                             seatChecker.checked(newSeatList.get(i * column + j - 1));
                                         }
@@ -1605,16 +1620,264 @@ public class SeatTableView extends View {
         invalidate();
     }
 
-    //专座推荐
+    //专座推荐 0 普通 1 情侣首座 2 情侣次座 3 特殊人群 4 vip专座
     public void selectSeatRecommend(int num) {
-        int centerNum = lineNumbers.size() / 2;
-        for (int i = 0; i < row; i++) {
+        List<List<Map<String, Integer>>> seatRecommendListTwo = new ArrayList<List<Map<String, Integer>>>();
+        //最小的绝对值
+        int minNum = 100;
+        int bestNum = 0;
+        int centerRow = lineNumbers.size() / 3 * 2;//最佳行数 2/3 得位置
+        int centerColumn = column / 2;
+        for (int i = centerRow; i < row; i++) {
+            List<List<Map<String, Integer>>> seatRecommendListOne = new ArrayList<List<Map<String, Integer>>>();
 
+            //筛选出所有的可能性 包括 不可选的位置
             for (int j = 0; j < column; j++) {
 
+                int n = 0;
+                List<Map<String, Integer>> list = new ArrayList<Map<String, Integer>>();
+                for (int k = j; k < column && n < num; k++, n++) {
+                    Map<String, Integer> map = new HashMap<String, Integer>();
+                    map.put("row", i);
+                    map.put("col", k);
+                    int id = getID(i, k);
+                    Log.i("ee", "------newSeatList.get(id).getType()---------" + newSeatList.get(id).getType().toString());
+
+                    if (newSeatList.get(id).getType().equals("0")) {
+                        list.add(map);
+                    } else if (!newSeatList.get(id).getType().equals("0")) {
+                        break;
+                    }
+                }
+                if (list.size() == num) {
+                    seatRecommendListOne.add(list);
+                }
+            }
+            Log.i("ee", "------seatRecommendListOne---------" + seatRecommendListOne.toString());
+            //最小的绝对值
+            minNum = 100;
+            bestNum = 0;
+            //取完每一行的可能性之后 选出最佳位置
+            for (int j = 0; j < seatRecommendListOne.size(); j++) {
+
+                int min = 0;
+                for (int k = 0; k < seatRecommendListOne.get(j).size(); k++) {
+                    min += Math.abs(centerColumn - seatRecommendListOne.get(j).get(k).get("col"));
+                }
+
+                if (min < minNum) {
+                    minNum = min;
+                    bestNum = j;
+                }
+            }
+
+            //存放每一行的最佳位置
+            seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
+
+            Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
+
+        }
+
+        if (seatRecommendListTwo.size() <= 0) {
+            for (int i = 0; i < centerRow; i++) {//上半部分
+                List<List<Map<String, Integer>>> seatRecommendListOne = new ArrayList<List<Map<String, Integer>>>();
+
+                //筛选出所有的可能性 包括 不可选的位置
+                for (int j = 0; j < column; j++) {
+
+                    int n = 0;
+                    List<Map<String, Integer>> list = new ArrayList<Map<String, Integer>>();
+                    for (int k = j; k < column && n < num; k++, n++) {
+                        Map<String, Integer> map = new HashMap<String, Integer>();
+                        map.put("row", i);
+                        map.put("col", k);
+                        int id = getID(i, k);
+                        Log.i("ee", "------newSeatList.get(id).getType()---------" + newSeatList.get(id).getType().toString());
+
+                        if (newSeatList.get(id).getType().equals("0")) {
+                            list.add(map);
+                        } else if (!newSeatList.get(id).getType().equals("0")) {
+                            break;
+                        }
+                    }
+                    if (list.size() == num) {
+                        seatRecommendListOne.add(list);
+                    }
+
+                }
+
+                Log.i("ee", "------seatRecommendListOne---------" + seatRecommendListOne.toString());
+
+                //最小的绝对值
+                minNum = 100;
+                bestNum = 0;
+                //取完每一行的可能性之后 选出最佳位置
+                for (int j = 0; j < seatRecommendListOne.size(); j++) {
+
+                    int min = 0;
+                    for (int k = 0; k < seatRecommendListOne.get(j).size(); k++) {
+                        min += Math.abs(centerColumn - seatRecommendListOne.get(j).get(k).get("col"));
+                    }
+
+                    if (min < minNum) {
+                        minNum = min;
+                        bestNum = j;
+                    }
+                }
+                //存放每一行的最佳位置
+                seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
+                Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
             }
         }
 
+        //最小的绝对值
+        minNum = 100;
+        bestNum = 0;
+        //取完每一行的可能性之后 选出最佳位置
+        for (int j = 0; j < seatRecommendListTwo.size(); j++) {
+
+            int min = 0;
+            for (int k = 0; k < seatRecommendListTwo.get(j).size(); k++) {
+                min += Math.abs(centerColumn - seatRecommendListTwo.get(j).get(k).get("col"));
+            }
+
+            if (min < minNum) {
+                minNum = min;
+                bestNum = j;
+            }
+        }
+
+        for (int i = 0; i < seatRecommendListTwo.get(bestNum).size(); i++) {
+            int a = seatRecommendListTwo.get(bestNum).get(i).get("row");
+            int b = seatRecommendListTwo.get(bestNum).get(i).get("col");
+            int id = getID(a, b);
+            addChooseSeat(a, b);
+            seatChecker.checked(newSeatList.get(id));
+            newSeatList.get(id).setType("0-1");
+        }
+        invalidate();
+    }
+
+
+    //判断是否符合选择规则
+    public boolean isSelect(int row, int col) {
+
+        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
+                && isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
+            return false;
+        }
+
+        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
+                && isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
+            return false;
+        }
+
+        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
+                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
+                return false;
+        }
+
+//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1 2
+//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
+//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+//        //向左查看均存在座位 本身 1 2不可选  向右查看均存在座位 本身 1 2
+//        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
+//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
+//            return false;
+//        }
+//
+//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1 2不可选
+//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
+//                && isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
+//            return false;
+//        }
+//
+//        //左 2 不可选 1可选 右 1不可选 2可选
+//        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
+//                && !isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+//
+//
+//        //向左查看 不 均存在座位 本身 1不可选 2不可选  向右查看均存在座位 本身 1 2
+//        if (!isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
+//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+//
+//        //向左查看均存在座位 本身 1 2  向右查看 不 均存在座位 本身 1不可选 2不可选
+//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
+//                && !isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+//
+//        //向左查看均存在座位 本身 1不可选 2  向右查看均存在座位 本身 1 2
+//        if (!isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
+//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+//
+//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1不可选  2
+//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
+//                && !isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+//
+//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1不可选 2不可选
+//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
+//                && !isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+//
+//        //向左查看均存在座位 本身 1 2不可选 向右查看均存在座位 本身 1 2不可选
+//        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
+//                && isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
+//            return true;
+//        }
+
+
+        return true;
+    }
+
+    private boolean addIsHave(int col) {
+        if (col > column) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean lostIsHave(int col) {
+        if (col < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isSelectSeat(int row, int col, int flag) {
+        boolean isTrue = false;
+        if (flag == 0) {//真的话  向左
+            isTrue = lostIsHave(col);
+        } else if (flag == 2) {//假的话 向右
+            isTrue = addIsHave(col);
+        } else {
+            isTrue = true;
+        }
+
+        if (isTrue) {//判断那个位置是否可选
+            int id = getID(row, col);
+            Log.i("ee", "newSeatList.get(id).getType()---" + newSeatList.get(id).getType() +
+                    "-----------" + id);
+            if (newSeatList.get(id).getType().equals("0")) {
+                isTrue = true;
+            } /*else if (newSeatList.get(id).getType().equals("0-1")) {
+                isTrue = true;
+            }*/ else {
+                isTrue = false;
+            }
+        }
+        return isTrue;
     }
 
 }

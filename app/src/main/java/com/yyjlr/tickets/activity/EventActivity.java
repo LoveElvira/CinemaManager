@@ -24,6 +24,9 @@ import android.widget.TextView;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.setting.AccountNameActivity;
+import com.yyjlr.tickets.activity.setting.SettingAccountActivity;
+import com.yyjlr.tickets.content.MySettingContent;
 
 /**
  * Created by Elvira on 2016/8/3.
@@ -32,12 +35,17 @@ import com.yyjlr.tickets.R;
 public class EventActivity extends AbstractActivity implements View.OnClickListener/* implements View.OnClickListener*/ {
 
     private TextView title;
+    private ImageView leftArrow;
+    private ImageView rightImage;
+    private TextView rightPhoto;
+
     private NestedScrollView nestedScrollView;
     private View mContentView;
     private CardView mCardView;
 
-    private TextView share;
-    private TextView collect;
+    private LinearLayout shareLayout;
+    private LinearLayout collectLayout;
+    private ImageView collectImage;
     private TextView join;
     private boolean flag = true;
 
@@ -45,20 +53,30 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+
+    private void initView(){
 
 //        AppManager.getInstance().initWidthHeight(this);
         title = (TextView) findViewById(R.id.base_toolbar__text);
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
+        rightImage = (ImageView) findViewById(R.id.base_toolbar__right);
+        rightImage.setVisibility(View.GONE);
+        rightPhoto = (TextView) findViewById(R.id.base_toolbar__right_text);
+        rightPhoto.setVisibility(View.VISIBLE);
+        rightPhoto.setText("相册");
+        rightPhoto.setOnClickListener(this);
 //        initWidget();
         title.setText("明星见面会");
-        collect = (TextView) findViewById(R.id.content_event__collect);
-        share = (TextView) findViewById(R.id.content_event__share);
+        collectLayout = (LinearLayout) findViewById(R.id.content_event__collect);
+        shareLayout = (LinearLayout) findViewById(R.id.content_event__share);
+        collectImage = (ImageView) findViewById(R.id.content_event__collect_image);
         join = (TextView) findViewById(R.id.content_event__join);
-        collect.setOnClickListener(this);
-        share.setOnClickListener(this);
+        collectLayout.setOnClickListener(this);
+        shareLayout.setOnClickListener(this);
         join.setOnClickListener(this);
     }
 
@@ -84,15 +102,22 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.base_toolbar__left:
+                EventActivity.this.finish();
+                break;
+            case R.id.base_toolbar__right_text://展示背景图片信息
+                break;
             case R.id.content_event__collect:
-                Drawable drawable = null;
+//                Drawable drawable = null;
                 if (flag) {
-                    drawable = getResources().getDrawable(R.mipmap.collect_select);
+//                    drawable = getResources().getDrawable(R.mipmap.collect_select);
+                    collectImage.setImageResource(R.mipmap.collect_select);
                 }else {
-                    drawable = getResources().getDrawable(R.mipmap.collect);
+//                    drawable = getResources().getDrawable(R.mipmap.collect);
+                    collectImage.setImageResource(R.mipmap.collect);
                 }
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                collect.setCompoundDrawables(null, drawable, null, null);
+//                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//                collect.setCompoundDrawables(null, drawable, null, null);
                 flag = !flag;
                 break;
             case R.id.content_event__share:
@@ -137,9 +162,10 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setContentView(view);
         // 设置背景颜色变暗
-        final WindowManager.LayoutParams lp = Application.getInstance().getCurrentActivity().getWindow().getAttributes();
-        lp.alpha = 0.5f;
-        Application.getInstance().getCurrentActivity().getWindow().setAttributes(lp);
+        final WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.6f;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
 
         mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -164,22 +190,4 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         cancel.setOnClickListener(this);
 
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                EventActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

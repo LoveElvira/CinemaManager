@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.yyjlr.tickets.activity.VipPayContent;
 public class SettingVipActivity extends AbstractActivity implements View.OnClickListener {
 
     private TextView title;
+    private ImageView leftArrow;
 
     private TextView boundVip;//绑定会员卡
     private LinearLayout haveVipLayout;//有会员卡的布局
@@ -36,12 +38,15 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysetting_vip);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initView();
+    }
+
+    private void initView(){
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_card_title));
+        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
+        leftArrow.setAlpha(1.0f);
+        leftArrow.setOnClickListener(this);
 
         boundVip = (TextView) findViewById(R.id.content_setting_vip__bound);
         haveVipLayout = (LinearLayout) findViewById(R.id.content_setting_vip__bound_layout);
@@ -70,27 +75,14 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                SettingVipActivity.this.finish();
+                break;
             case R.id.content_setting_vip__bound://绑定会员卡
                 startActivity(VipBoundActivity.class);
                 break;
             case R.id.content_setting_vip__unbound_or_bound://解除绑定
                 break;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                SettingVipActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,121 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yyjlr.tickets.viewutils.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MatchMatch"
-    android:background="@color/bg_gray"
-    android:paddingBottom="@dimen/padding_20"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.yyjlr.tickets.activity.CinemaDetailsActivity"
-    tools:showIn="@layout/activity_cinema_details">
+<!--<com.yyjlr.tickets.viewutils.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--style="@style/MatchMatch"-->
+    <!--android:background="@color/bg_gray"-->
+    <!--android:paddingBottom="@dimen/padding_20"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+    <!--tools:context="com.yyjlr.tickets.activity.CinemaDetailsActivity"-->
+    <!--tools:showIn="@layout/activity_cinema_details">-->
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         style="@style/MatchMatch"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/bg_gray"
+        android:paddingBottom="@dimen/size_20"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.yyjlr.tickets.activity.CinemaDetailsActivity"
+        tools:showIn="@layout/activity_cinema_details">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_200"
-            android:background="@mipmap/cinema">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/height_200"-->
+            <!--android:background="@mipmap/cinema">-->
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+                <!--style="@style/WrapWrap"-->
+                <!--app:mrl_rippleAlpha="0.2"-->
+                <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                <!--app:mrl_rippleHover="true"-->
+                <!--app:mrl_rippleOverlay="true">-->
 
-                <ImageView
-                    android:id="@+id/content_cinema__left"
-                    style="@style/WrapWrap"
-                    android:background="@mipmap/left_arrow"
-                    android:fitsSystemWindows="true" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                <!--<ImageView-->
+                    <!--android:id="@+id/content_cinema__left"-->
+                    <!--style="@style/WrapWrap"-->
+                    <!--android:background="@mipmap/left_arrow"-->
+                    <!--android:fitsSystemWindows="true" />-->
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-            <LinearLayout
-                android:layout_width="@dimen/height_150"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@color/gray_alpha1"
-                android:gravity="center"
-                android:orientation="vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="@dimen/height_150"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:background="@color/gray_alpha1"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="vertical">-->
 
-                <TextView
-                    android:id="@+id/content_cinema__name"
-                    style="@style/WrapWrap"
-                    android:padding="@dimen/padding_5"
-                    android:text="@string/text_cinema_name"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
+                <!--<TextView-->
+                    <!--android:id="@+id/content_cinema__name"-->
+                    <!--style="@style/WrapWrap"-->
+                    <!--android:padding="@dimen/padding_5"-->
+                    <!--android:text="@string/text_cinema_name"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textSize="@dimen/text_14" />-->
 
-                <TextView
-                    android:id="@+id/content_cinema__introduction"
-                    style="@style/WrapWrap"
-                    android:padding="@dimen/padding_5"
-                    android:text="@string/text_cinema_introduction"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-            </LinearLayout>
-        </RelativeLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/content_cinema__introduction"-->
+                    <!--style="@style/WrapWrap"-->
+                    <!--android:padding="@dimen/padding_5"-->
+                    <!--android:text="@string/text_cinema_introduction"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textSize="@dimen/text_12" />-->
+            <!--</LinearLayout>-->
+        <!--</RelativeLayout>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_60"
-            android:gravity="center"
-            android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/content_cinema__listview"
-                style="@style/WrapWrap" />
-        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/content_cinema__listview"
+            style="@style/WrapWrap" />
+    </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
             style="@style/MatchWrap"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <ImageView
                 style="@style/WrapWrap"
-                android:layout_marginRight="@dimen/magin_10"
+                android:layout_marginRight="@dimen/size_10"
                 android:background="@mipmap/time" />
 
             <TextView
                 style="@style/WrapWrap"
-                android:text="营业时间："
-                android:textColor="@color/black_alpha"
+                android:text="@string/text_start_and_end_time"
+                android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_12" />
 
             <TextView
                 android:id="@+id/content_cinema__start_and_end_time"
                 style="@style/WrapWrap"
                 android:text="06:00~23:59"
-                android:textColor="@color/black_alpha"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_12" />
 
         </LinearLayout>
 
         <View
             style="@style/MatchOne"
-            android:background="@color/gray" />
+            android:background="@color/gray_e4e4e4" />
 
         <LinearLayout
+            android:id="@+id/content_cinema__tel_phone"
             style="@style/MatchWrap"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/size_10">
 
             <ImageView
                 style="@style/WrapWrap"
-                android:layout_marginRight="@dimen/magin_10"
+                android:layout_marginRight="@dimen/size_10"
                 android:background="@mipmap/phone" />
 
             <TextView
                 style="@style/WrapWrap"
-                android:text="热线电话："
-                android:textColor="@color/black_alpha"
+                android:text="@string/text_cinema_phone"
+                android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_12" />
 
             <TextView
@@ -123,23 +132,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="8888888888"
-                android:textColor="@color/black_alpha"
+                android:text="88888888"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_12" />
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_marginRight="@dimen/magin_10">
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+                <!--style="@style/WrapWrap"-->
+                <!--app:mrl_rippleAlpha="0.2"-->
+                <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                <!--app:mrl_rippleHover="true"-->
+                <!--app:mrl_rippleOverlay="true"-->
+                <!--android:layout_marginRight="@dimen/size_10">-->
             <ImageView
-                android:id="@+id/content_cinema__tel_phone"
-                android:layout_width="@dimen/height_40"
-                android:layout_height="@dimen/height_40"
-                android:background="@mipmap/tel_phone" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                android:layout_width="@dimen/size_40"
+                android:layout_height="@dimen/size_40"
+                android:background="@mipmap/tel_phone"
+                android:layout_marginRight="@dimen/size_10"/>
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
         </LinearLayout>
 
@@ -147,23 +156,19 @@
         <LinearLayout
             android:id="@+id/content_cinema__address_layout"
             style="@style/MatchWrap"
-            android:layout_marginTop="@dimen/magin_10"
+            android:layout_marginTop="@dimen/size_10"
             android:orientation="vertical">
-
-            <View
-                style="@style/MatchOne"
-                android:background="@color/gray" />
 
             <LinearLayout
                 style="@style/MatchWrap"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_10">
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/magin_10"
+                    android:layout_marginRight="@dimen/size_10"
                     android:background="@mipmap/address" />
 
                 <TextView
@@ -172,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/text_cinema_address"
-                    android:textColor="@color/black_alpha"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
         </LinearLayout>
@@ -185,18 +190,18 @@
 
             <View
                 style="@style/MatchOne"
-                android:background="@color/gray" />
+                android:background="@color/gray_e4e4e4" />
 
             <LinearLayout
                 style="@style/MatchWrap"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_10">
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/magin_10"
+                    android:layout_marginRight="@dimen/size_10"
                     android:background="@mipmap/subway" />
 
                 <TextView
@@ -205,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/text_cinema_subway"
-                    android:textColor="@color/black_alpha"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
         </LinearLayout>
@@ -217,18 +222,18 @@
 
             <View
                 style="@style/MatchOne"
-                android:background="@color/gray" />
+                android:background="@color/gray_e4e4e4" />
 
             <LinearLayout
                 style="@style/MatchWrap"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_10">
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/magin_10"
+                    android:layout_marginRight="@dimen/size_10"
                     android:background="@mipmap/transit" />
 
                 <TextView
@@ -237,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/text_cinema_transit"
-                    android:textColor="@color/black_alpha"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
         </LinearLayout>
@@ -249,18 +254,18 @@
 
             <View
                 style="@style/MatchOne"
-                android:background="@color/gray" />
+                android:background="@color/gray_e4e4e4" />
 
             <LinearLayout
                 style="@style/MatchWrap"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_10">
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/magin_10"
+                    android:layout_marginRight="@dimen/size_10"
                     android:background="@mipmap/park" />
 
                 <TextView
@@ -269,14 +274,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/text_cinema_park"
-                    android:textColor="@color/black_alpha"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             style="@style/MatchWrap"
-            android:layout_marginTop="@dimen/magin_10"
+            android:layout_marginTop="@dimen/size_10"
             android:orientation="vertical">
 
             <LinearLayout
@@ -284,20 +289,17 @@
                 style="@style/MatchWrap"
                 android:orientation="vertical">
 
-                <View
-                    style="@style/MatchOne"
-                    android:background="@color/gray" />
-
                 <LinearLayout
+                    android:id="@+id/content_cinema_add_shopping"
                     style="@style/MatchWrap"
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="@dimen/padding_10">
+                    android:padding="@dimen/size_10">
 
                     <ImageView
                         style="@style/WrapWrap"
-                        android:layout_marginRight="@dimen/magin_10"
+                        android:layout_marginRight="@dimen/size_10"
                         android:background="@mipmap/popcorn" />
 
                     <TextView
@@ -306,22 +308,56 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/text_cinema_popcorn"
-                        android:textColor="@color/black_alpha"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_12" />
 
-                    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                        style="@style/WrapWrap"
-                        app:mrl_rippleAlpha="0.2"
-                        app:mrl_rippleColor="@color/bg_shadow"
-                        app:mrl_rippleHover="true"
-                        app:mrl_rippleOverlay="true"
-                        android:layout_marginRight="@dimen/magin_10">
+                    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+                        <!--style="@style/WrapWrap"-->
+                        <!--app:mrl_rippleAlpha="0.2"-->
+                        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                        <!--app:mrl_rippleHover="true"-->
+                        <!--app:mrl_rippleOverlay="true"-->
+                        <!--android:layout_marginRight="@dimen/size_10">-->
 
                         <ImageView
-                            android:id="@+id/content_cinema_add_shopping"
-                            style="@style/WrapWrap"
-                            android:background="@mipmap/shopping_cart" />
-                    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                            android:layout_width="@dimen/size_40"
+                            android:layout_height="@dimen/size_40"
+                            android:layout_marginRight="@dimen/size_10"
+                            android:background="@mipmap/small_shopping_cart" />
+                    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/content_cinema__lovers_layout"
+                style="@style/MatchWrap"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/MatchOne"
+                    android:background="@color/gray_e4e4e4" />
+
+                <LinearLayout
+                    style="@style/MatchWrap"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size_10">
+
+                    <ImageView
+                        style="@style/WrapWrap"
+                        android:layout_marginRight="@dimen/size_10"
+                        android:background="@mipmap/lovers" />
+
+                    <TextView
+                        android:id="@+id/content_cinema__lovers"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/text_cinema_lover"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_12" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -332,18 +368,18 @@
 
                 <View
                     style="@style/MatchOne"
-                    android:background="@color/gray" />
+                    android:background="@color/gray_e4e4e4" />
 
                 <LinearLayout
                     style="@style/MatchWrap"
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="@dimen/padding_10">
+                    android:padding="@dimen/size_10">
 
                     <ImageView
                         style="@style/WrapWrap"
-                        android:layout_marginRight="@dimen/magin_10"
+                        android:layout_marginRight="@dimen/size_10"
                         android:background="@mipmap/children" />
 
                     <TextView
@@ -352,7 +388,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/text_cinema_children"
-                        android:textColor="@color/black_alpha"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
             </LinearLayout>
@@ -364,18 +400,18 @@
 
                 <View
                     style="@style/MatchOne"
-                    android:background="@color/gray" />
+                    android:background="@color/gray_e4e4e4" />
 
                 <LinearLayout
                     style="@style/MatchWrap"
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="@dimen/padding_10">
+                    android:padding="@dimen/size_10">
 
                     <ImageView
                         style="@style/WrapWrap"
-                        android:layout_marginRight="@dimen/magin_10"
+                        android:layout_marginRight="@dimen/size_10"
                         android:background="@mipmap/glasses" />
 
                     <TextView
@@ -384,43 +420,11 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/text_cinema_glasses"
-                        android:textColor="@color/black_alpha"
-                        android:textSize="@dimen/text_12" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/content_cinema__lovers_layout"
-                style="@style/MatchWrap"
-                android:orientation="vertical">
-
-                <View
-                    style="@style/MatchOne"
-                    android:background="@color/gray" />
-
-                <LinearLayout
-                    style="@style/MatchWrap"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/padding_10">
-
-                    <ImageView
-                        style="@style/WrapWrap"
-                        android:layout_marginRight="@dimen/magin_10"
-                        android:background="@mipmap/lovers" />
-
-                    <TextView
-                        android:id="@+id/content_cinema__lovers"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/text_cinema_lover"
-                        android:textColor="@color/black_alpha"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
-</com.yyjlr.tickets.viewutils.ScrollView>
+<!--</com.yyjlr.tickets.viewutils.ScrollView>-->
