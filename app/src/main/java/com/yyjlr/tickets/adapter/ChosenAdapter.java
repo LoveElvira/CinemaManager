@@ -34,6 +34,7 @@ public class ChosenAdapter extends BaseAdapter<ChosenFilmEntity> {
         helper.setText(R.id.item_chosen__name,item.getChosenFilmName())
                 .setText(R.id.item_chosen__showtime, item.getChosenFilmShowTime())
                 .setText(R.id.item_chosen__price,item.getChosenFilmPrice())
+                .setOnClickListener(R.id.item_chosen__parent,new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_chosen__enter,new OnItemChildClickListener());
         Picasso.with(helper.getConvertView().getContext())
                 .load(item.getChosenFilmImage())

@@ -46,7 +46,6 @@
             android:layout_marginBottom="@dimen/size_10"
             android:textColor="@color/white"
             android:textSize="@dimen/text_18"
-            android:text="你们好呀"
             android:shadowColor="@color/gray_929292"
             android:shadowRadius="1"
             android:shadowDx="1.5"

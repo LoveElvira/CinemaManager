@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.MainActivity;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FilmSaleAdapter;
@@ -83,7 +84,12 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         confirmOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(PaySelectActivity.class);
+                String num = phone.getText().toString().trim();
+                if (isMobileNum(num)){
+                    startActivity(PaySelectActivity.class);
+                }else {
+                    showShortToast("手机号码不对");
+                }
             }
         });
 

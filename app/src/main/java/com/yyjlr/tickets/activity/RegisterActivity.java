@@ -70,7 +70,12 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
                 timeCount.start();
                 break;
             case R.id.content_register__register:
-                startActivity(MainActivity.class);
+                String phone = phoneNum.getText().toString().trim();
+                if (isMobileNum(phone)){
+                    startActivity(MainActivity.class);
+                }else {
+                    showShortToast("手机号码不对");
+                }
                 break;
             case R.id.content_regster__have_account:
                 startActivity(LoginActivity.class);

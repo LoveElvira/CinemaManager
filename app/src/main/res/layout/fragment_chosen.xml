@@ -9,6 +9,7 @@
     <include layout="@layout/base_toolbar_" />
 
     <TextView
+        android:id="@+id/fragment_chosen__address"
         style="@style/WrapWrap"
         android:layout_marginTop="@dimen/size_5"
         android:text="@string/text_chosen_address"

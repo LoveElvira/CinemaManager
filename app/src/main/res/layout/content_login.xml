@@ -21,8 +21,8 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:text="@string/text_phone"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/gray_929292"/>
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_14" />
 
         <EditText
             android:id="@+id/content_login__phone"
@@ -33,8 +33,8 @@
             android:inputType="number"
             android:maxLength="11"
             android:maxLines="1"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/black_363636"/>
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -49,8 +49,8 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:text="@string/text_password"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/gray_929292"/>
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_14" />
 
         <EditText
             android:id="@+id/content_login__password"
@@ -60,8 +60,8 @@
             android:gravity="center|right"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/black_363636"/>
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -87,8 +87,8 @@
                     style="@style/WrapWrap"
                     android:padding="5dp"
                     android:text="@string/text_forget_password"
-                    android:textSize="@dimen/text_13"
-                    android:textColor="@color/gray_c6c6c6"/>
+                    android:textColor="@color/gray_c6c6c6"
+                    android:textSize="@dimen/text_13" />
 
                 <ImageView
                     android:layout_width="@dimen/size_20"
@@ -151,89 +151,95 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
+
+            <LinearLayout
+                android:id="@+id/content_login__weixin"
                 style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_5"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:paddingTop="@dimen/size_5">
 
-                <LinearLayout
-                    android:id="@+id/content_login__weixin"
+                <ImageView
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:src="@mipmap/weixin" />
+
+                <TextView
                     style="@style/WrapWrap"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="@dimen/size_5"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingLeft="@dimen/size_10"
-                    android:paddingRight="@dimen/size_10">
-                    <ImageView
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_40"
-                        android:src="@mipmap/weixin"/>
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:text="@string/text_weixin"
-                        android:textSize="@dimen/text_12"
-                        android:layout_marginTop="@dimen/size_5"
-                        android:textColor="@color/gray_a1a1a1"/>
-                </LinearLayout>
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="@string/text_weixin"
+                    android:textColor="@color/gray_a1a1a1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
+            <LinearLayout
+                android:id="@+id/content_login__friend_circle"
                 style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-                <LinearLayout
-                    android:id="@+id/content_login__qq"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_5"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:paddingTop="@dimen/size_5">
+
+                <ImageView
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:src="@mipmap/friend_circle" />
+
+                <TextView
                     style="@style/WrapWrap"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="@dimen/size_5"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingLeft="@dimen/size_10"
-                    android:paddingRight="@dimen/size_10">
-                    <ImageView
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_40"
-                        android:src="@mipmap/qq"/>
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:text="@string/text_qq"
-                        android:textSize="@dimen/text_12"
-                        android:layout_marginTop="@dimen/size_5"
-                        android:textColor="@color/gray_a1a1a1"/>
-                </LinearLayout>
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="@string/text_friend_circle"
+                    android:textColor="@color/gray_a1a1a1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
 
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
+            <LinearLayout
+                android:id="@+id/content_login__xinlang"
                 style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-                <LinearLayout
-                    android:id="@+id/content_login__xinlang"
-                    style="@style/WrapWrap"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/size_5">
-                    <ImageView
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_40"
-                        android:src="@mipmap/xinlangweibo"/>
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:text="@string/text_xinlang"
-                        android:textSize="@dimen/text_12"
-                        android:layout_marginTop="@dimen/size_5"
-                        android:textColor="@color/gray_a1a1a1"/>
-                </LinearLayout>
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/size_5">
 
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                <ImageView
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:src="@mipmap/xinlangweibo" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="@string/text_xinlang"
+                    android:textColor="@color/gray_a1a1a1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
         </LinearLayout>
 
         <LinearLayout
@@ -252,8 +258,8 @@
                 android:layout_margin="@dimen/size_5"
                 android:padding="@dimen/size_5"
                 android:text="@string/text_example_login"
-                android:textSize="@dimen/text_12"
-                android:textColor="@color/gray_929292"/>
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12" />
 
             <View
                 android:layout_width="@dimen/size_60"

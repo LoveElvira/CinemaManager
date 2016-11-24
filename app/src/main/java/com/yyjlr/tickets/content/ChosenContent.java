@@ -49,6 +49,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
 
     private ImageView enterCinema;//进入影院
     private TextView title;
+    private TextView address;
 
     public ChosenContent(Context context) {
         this(context, null);
@@ -57,30 +58,37 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     public ChosenContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_chosen, this);
+        initView(view);
+
+    }
+
+    private void initView(View view) {
         title = (TextView) view.findViewById(R.id.base_toolbar__text);
-        enterCinema = (ImageView) findViewById(R.id.base_toolbar__right);
+        enterCinema = (ImageView) view.findViewById(R.id.base_toolbar__right);
         title.setText(getResources().getText(R.string.text_cinema_name));
         enterCinema.setImageResource(R.mipmap.enter_cinema);
         enterCinema.setAlpha(1.0f);
         enterCinema.setOnClickListener(this);
+        address = (TextView) findViewById(R.id.fragment_chosen__address);
+        address.setOnClickListener(this);
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
         float density = dm.density;
         cardWidth = (int) (dm.widthPixels - (2 * 18 * density));
         cardHeight = (int) (dm.heightPixels - (338 * density));
 
-        choseFling = (RecyclerView) findViewById(R.id.fragment_chosen__fling);
+        choseFling = (RecyclerView) view.findViewById(R.id.fragment_chosen__fling);
         initChosenView(choseFling, new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true));
 
-        listView = (RecyclerView) findViewById(R.id.fragment_chosen__listview);
+        listView = (RecyclerView) view.findViewById(R.id.fragment_chosen__listview);
         //设置布局管理器
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         listView.setLayoutManager(linearLayoutManager);
         getDate();
-        cinemaAdapter = new CinemaAdapter(context, typeDate);
+        cinemaAdapter = new CinemaAdapter(getContext(), typeDate);
         listView.setAdapter(cinemaAdapter);
-
+        listView.setOnClickListener(this);
     }
 
     private void getDate() {
@@ -135,6 +143,8 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.base_toolbar__right:
+            case R.id.fragment_chosen__address:
+            case R.id.fragment_chosen__listview:
                 Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), CinemaDetailsActivity.class));
                 break;
         }

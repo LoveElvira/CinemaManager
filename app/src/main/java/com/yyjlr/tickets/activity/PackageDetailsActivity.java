@@ -31,6 +31,7 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
     private LinearLayout collectPackage;
     private LinearLayout sharePackage;
     private ImageView collectImage;
+    private TextView collectText;
     private TextView buyPackage;
     private boolean flag = true;
 
@@ -51,6 +52,7 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         collectPackage = (LinearLayout) findViewById(R.id.content_package_details__collect);
         sharePackage = (LinearLayout) findViewById(R.id.content_package_details__share);
         collectImage = (ImageView) findViewById(R.id.content_package_details__collect_image);
+        collectText = (TextView) findViewById(R.id.content_package_details__collect_text);
         buyPackage = (TextView) findViewById(R.id.content_package_details__buy);
         collectPackage.setOnClickListener(this);
         sharePackage.setOnClickListener(this);
@@ -72,9 +74,11 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
                 if (flag) {
 //                    drawable = getResources().getDrawable(R.mipmap.collect_select);
                     collectImage.setImageResource(R.mipmap.collect_select);
+                    collectText.setText("已收藏");
                 }else {
 //                    drawable = getResources().getDrawable(R.mipmap.collect);
                     collectImage.setImageResource(R.mipmap.collect);
+                    collectText.setText("收藏");
                 }
 //                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
 //                collectPackage.setCompoundDrawables(null, drawable, null, null);

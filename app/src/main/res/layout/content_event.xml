@@ -71,6 +71,7 @@
                     android:src="@mipmap/collect" />
 
                 <TextView
+                    android:id="@+id/content_event__collect_text"
                     style="@style/WrapWrap"
                     android:text="@string/text_film_collection"
                     android:textColor="@color/gray_929292"

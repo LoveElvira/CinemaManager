@@ -7,11 +7,11 @@
     <include layout="@layout/base_toolbar_" />
 
     <!--<com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout-->
-        <!--android:id="@+id/fragment_grab__refresh"-->
-        <!--style="@style/MatchMatch">-->
+    <!--android:id="@+id/fragment_grab__refresh"-->
+    <!--style="@style/MatchMatch">-->
 
-        <com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout
-            android:id="@+id/fragment_grab__layout"
-            style="@style/MatchMatch" />
+    <com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout
+        android:id="@+id/fragment_grab__layout"
+        style="@style/MatchMatch" />
     <!--</com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>-->
 </LinearLayout>

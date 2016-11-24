@@ -36,6 +36,7 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
     private LinearLayout collectLayout;//收藏
     private LinearLayout shareLayout;//分享
     private ImageView collectImage;//收藏
+    private TextView collectText;//
     private TextView selectSeat;//购票选座
     private ImageView bgImage;
     private ImageView image;
@@ -71,13 +72,14 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
 
     private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
-        title.setText(getResources().getText(R.string.text_film_details_title));
+        title.setText("愤怒的小鸟");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
         collectLayout = (LinearLayout) findViewById(R.id.content_film_details__collect);
         shareLayout = (LinearLayout) findViewById(R.id.content_film_details__share);
         collectImage = (ImageView) findViewById(R.id.content_film_details__collect_image);
+        collectText = (TextView) findViewById(R.id.content_film_details__collect_text);
         selectSeat = (TextView) findViewById(R.id.content_film_details__select_seat);
         bgImage = (ImageView) findViewById(R.id.content_film_details__bgimage);
         image = (ImageView) findViewById(R.id.content_film_details__image);
@@ -132,9 +134,11 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
                 if (flag) {
 //                    drawable = getResources().getDrawable(R.mipmap.collect_select);
                     collectImage.setImageResource(R.mipmap.collect_select);
+                    collectText.setText("已收藏");
                 } else {
 //                    drawable = getResources().getDrawable(R.mipmap.collect);
                     collectImage.setImageResource(R.mipmap.collect);
+                    collectText.setText("收藏");
                 }
 //                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
 //                collect.setCompoundDrawables(null, drawable, null, null);

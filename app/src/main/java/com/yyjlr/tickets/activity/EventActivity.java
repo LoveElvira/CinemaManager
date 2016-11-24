@@ -46,6 +46,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     private LinearLayout shareLayout;
     private LinearLayout collectLayout;
     private ImageView collectImage;
+    private TextView collectText;
     private TextView join;
     private boolean flag = true;
 
@@ -74,6 +75,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         collectLayout = (LinearLayout) findViewById(R.id.content_event__collect);
         shareLayout = (LinearLayout) findViewById(R.id.content_event__share);
         collectImage = (ImageView) findViewById(R.id.content_event__collect_image);
+        collectText = (TextView) findViewById(R.id.content_event__collect_text);
         join = (TextView) findViewById(R.id.content_event__join);
         collectLayout.setOnClickListener(this);
         shareLayout.setOnClickListener(this);
@@ -112,9 +114,11 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                 if (flag) {
 //                    drawable = getResources().getDrawable(R.mipmap.collect_select);
                     collectImage.setImageResource(R.mipmap.collect_select);
+                    collectText.setText("已收藏");
                 }else {
 //                    drawable = getResources().getDrawable(R.mipmap.collect);
                     collectImage.setImageResource(R.mipmap.collect);
+                    collectText.setText("收藏");
                 }
 //                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
 //                collect.setCompoundDrawables(null, drawable, null, null);

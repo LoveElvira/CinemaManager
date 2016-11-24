@@ -37,7 +37,7 @@ public class TicketFrameLayout extends FrameLayout {
     private Adapter mAdapter;
     private final GestureDetector mGestureDetector;
     private final Scroller mScroller;
-    private final LinearLayout layBottomContainer;
+    private final RelativeLayout layBottomContainer;
 
     private List<OnScrollChangedListener> scrollCallbacks = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class TicketFrameLayout extends FrameLayout {
 
     public TicketFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        layBottomContainer = new LinearLayout(context);
+        layBottomContainer = new RelativeLayout(context);
         mScroller = new Scroller(context);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mGestureDetector = new GestureDetectorWithOnUp(context, new GestureListenerWithOnUp());
@@ -66,7 +66,6 @@ public class TicketFrameLayout extends FrameLayout {
 
     public void addBottomContent(View vBottomContent) {
         layBottomContainer.addView(vBottomContent);
-        layBottomContainer.setGravity(View.TEXT_ALIGNMENT_CENTER);
     }
 
     @Override
@@ -121,7 +120,10 @@ public class TicketFrameLayout extends FrameLayout {
             addView(retailMeNotView);
         }
 
+//        layBottomContainer.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, childTotalHeight));
         layBottomContainer.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mHeight - (dataSize < 1 ? 0 : childExpandedHeight)));
+        View view = layBottomContainer.getChildAt(0);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         int bottomTranslateY;
         if (dataSize < 1) {
             bottomTranslateY = 0;
@@ -133,7 +135,7 @@ public class TicketFrameLayout extends FrameLayout {
 
 
         layBottomContainer.setTranslationY(bottomTranslateY);
-        layBottomContainer.setBackgroundColor(getResources().getColor(R.color.white));
+        //layBottomContainer.setBackgroundColor(getResources().getColor(R.color.white));
         addView(layBottomContainer);
     }
 

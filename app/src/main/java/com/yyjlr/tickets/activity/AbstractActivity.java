@@ -17,6 +17,8 @@ import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
 
 import java.lang.reflect.Field;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Elvira on 2016/7/28.
@@ -136,4 +138,9 @@ public class AbstractActivity extends AppCompatActivity {
         return statusBarHeight;
     }
 
+    protected boolean isMobileNum(String mobile){
+        Pattern pattern=Pattern.compile("^1[0-9]{10}$");
+        Matcher matcher=pattern.matcher(mobile);
+        return matcher.matches();
+    }
 }

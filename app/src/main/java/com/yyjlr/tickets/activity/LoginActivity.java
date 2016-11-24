@@ -25,7 +25,7 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
     private Button register;
     private Button login;
     private LinearLayout weixinLogin;
-    private LinearLayout QQLogin;
+    private LinearLayout friendCircleLogin;
     private LinearLayout xinlangLogin;
     private LinearLayout forgetPassword;
     private TextView title;
@@ -50,14 +50,14 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
         register = (Button) findViewById(R.id.content_login__register);
         login = (Button) findViewById(R.id.content_login__login);
         weixinLogin = (LinearLayout) findViewById(R.id.content_login__weixin);
-        QQLogin = (LinearLayout) findViewById(R.id.content_login__qq);
+        friendCircleLogin = (LinearLayout) findViewById(R.id.content_login__friend_circle);
         xinlangLogin = (LinearLayout) findViewById(R.id.content_login__xinlang);
         forgetPassword = (LinearLayout) findViewById(R.id.content_login__forger_password);
 
         register.setOnClickListener(this);
         login.setOnClickListener(this);
         weixinLogin.setOnClickListener(this);
-        QQLogin.setOnClickListener(this);
+        friendCircleLogin.setOnClickListener(this);
         xinlangLogin.setOnClickListener(this);
         forgetPassword.setOnClickListener(this);
     }
@@ -72,11 +72,16 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
                 startActivity(RegisterActivity.class);
                 break;
             case R.id.content_login__login:
-                startActivity(MainActivity.class);
+                String phone = phoneNum.getText().toString().trim();
+                if (isMobileNum(phone)){
+                    startActivity(MainActivity.class);
+                }else {
+                    showShortToast("手机号码不对");
+                }
                 break;
             case R.id.content_login__weixin:
                 break;
-            case R.id.content_login__qq:
+            case R.id.content_login__friend_circle:
                 break;
             case R.id.content_login__xinlang:
                 break;

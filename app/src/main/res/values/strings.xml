@@ -11,7 +11,7 @@
     <string name="text_forget_password">忘记密码</string>
     <string name="text_example_login">第三方登录</string>
     <string name="text_weixin">微信</string>
-    <string name="text_qq">QQ</string>
+    <string name="text_friend_circle">朋友圈</string>
     <string name="text_xinlang">新浪微博</string>
     <!--注册-->
     <string name="text_code">验证码</string>

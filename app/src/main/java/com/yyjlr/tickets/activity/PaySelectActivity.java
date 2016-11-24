@@ -81,6 +81,11 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
                 initFirstView();
                 if (position==0){
                     onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
@@ -89,11 +94,6 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                     cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
                     cardLine.setVisibility(View.VISIBLE);
                 }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
             }
 
             @Override
@@ -153,15 +153,15 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                 PaySelectActivity.this.finish();
                 break;
             case R.id.content_pay_select__online_pay:
-                initFirstView();
-                onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
-                onlineLine.setVisibility(View.VISIBLE);
+//                initFirstView();
+//                onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+//                onlineLine.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(0);
                 break;
             case R.id.content_pay_select__card:
-                initFirstView();
-                cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
-                cardLine.setVisibility(View.VISIBLE);
+//                initFirstView();
+//                cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+//                cardLine.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(1);
                 break;
         }

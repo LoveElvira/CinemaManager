@@ -78,7 +78,12 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         confirmOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(PaySelectActivity.class);
+                String num = phone.getText().toString().trim();
+                if (isMobileNum(num)){
+                    startActivity(PaySelectActivity.class);
+                }else {
+                    showShortToast("手机号码不对");
+                }
             }
         });
 

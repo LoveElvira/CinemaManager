@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/tools"
     style="@style/MatchMatch"
+    android:id="@+id/item_chosen__parent"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/size_20"
     android:layout_marginLeft="@dimen/size_20"

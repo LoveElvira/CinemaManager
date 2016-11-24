@@ -141,7 +141,7 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                 showPhoneService();
                 break;
             case R.id.content_cinema_add_shopping:
-
+                startActivity(SaleActivity.class);
                 break;
         }
     }

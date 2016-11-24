@@ -30,6 +30,7 @@
                 android:maxLines="3"
                 android:ellipsize="end"
                 android:textSize="@dimen/text_14"
+                android:lineSpacingMultiplier="1.4"
                 android:layout_marginRight="@dimen/size_10"/>
 
             <TextView

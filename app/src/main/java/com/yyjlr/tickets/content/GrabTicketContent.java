@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.GrabTicketAdapter;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
+import com.yyjlr.tickets.viewutils.countdown.CountdownView;
 import com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout;
 
 import java.text.SimpleDateFormat;
@@ -53,25 +55,29 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
 //        refresh.setTargetScrollWithLayout(false);
 
         ticketFrameLayout = (TicketFrameLayout) view.findViewById(R.id.fragment_grab__layout);
-//        View bottomView = inflate(getContext(),R.layout.item_ticket,null);
-//        RelativeLayout parentView = (RelativeLayout) bottomView.findViewById(R.id.item_ticket__parent_layout);
-//        TextView bottomTitle = (TextView) bottomView.findViewById(R.id.item_ticket__title);
-//        bottomTitle.setText("更多产品，敬请期待");
-//        CountdownView bottomTime = (CountdownView) bottomView.findViewById(R.id.item_ticket__time);
-//        bottomTime.setVisibility(GONE);
-//        ImageView bottomImageShadow = (ImageView) bottomView.findViewById(R.id.item_ticket__shadow);
-//        bottomImageShadow.setAlpha(0.0f);
-//        ImageView bottomImage = (ImageView) bottomView.findViewById(R.id.item_ticket__shadow);
-//        bottomImage.setImageResource(R.mipmap.bg);
-        TextView tMoreInfo = new TextView(context);
-        tMoreInfo.setWidth(MATCH_PARENT);
-        tMoreInfo.setHeight(MATCH_PARENT);
-        tMoreInfo.setBackgroundResource(R.mipmap.bg);
-        tMoreInfo.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        tMoreInfo.setTextColor(getResources().getColor(R.color.white));
-        tMoreInfo.setTextSize(18f);
-        tMoreInfo.setText("更多产品，敬请期待...");
-        ticketFrameLayout.addBottomContent(tMoreInfo);
+        View bottomView = inflate(getContext(),R.layout.item_ticket,null);
+        RelativeLayout parentView = (RelativeLayout) bottomView.findViewById(R.id.item_ticket__parent_layout);
+        TextView bottomTitle = (TextView) bottomView.findViewById(R.id.item_ticket__title);
+        TextView bottomDate = (TextView) bottomView.findViewById(R.id.item_ticket__date);
+        TextView bottomPrice = (TextView) bottomView.findViewById(R.id.item_ticket__price);
+        bottomDate.setVisibility(GONE);
+        bottomPrice.setVisibility(GONE);
+        bottomTitle.setText("更多产品，敬请期待");
+        CountdownView bottomTime = (CountdownView) bottomView.findViewById(R.id.item_ticket__time);
+        bottomTime.setVisibility(GONE);
+        ImageView bottomImageShadow = (ImageView) bottomView.findViewById(R.id.item_ticket__shadow);
+        bottomImageShadow.setAlpha(0.5f);
+        ImageView bottomImage = (ImageView) bottomView.findViewById(R.id.item_ticket__background);
+        bottomImage.setImageResource(R.mipmap.bg);
+//        TextView tMoreInfo = new TextView(context);
+//        tMoreInfo.setWidth(MATCH_PARENT);
+//        tMoreInfo.setHeight(MATCH_PARENT);
+//        tMoreInfo.setBackgroundResource(R.mipmap.bg);
+//        tMoreInfo.setGravity(View.TEXT_ALIGNMENT_CENTER);
+//        tMoreInfo.setTextColor(getResources().getColor(R.color.white));
+//        tMoreInfo.setTextSize(18f);
+//        tMoreInfo.setText("更多产品，敬请期待...");
+        ticketFrameLayout.addBottomContent(parentView);
         ticketFrameLayout.setAdapter(adapter = new GrabTicketAdapter());
     }
 
