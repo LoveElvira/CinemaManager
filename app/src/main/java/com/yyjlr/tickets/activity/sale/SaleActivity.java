@@ -1,11 +1,13 @@
-package com.yyjlr.tickets.activity;
+package com.yyjlr.tickets.activity.sale;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,12 +21,22 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.SaleAdapter;
 import com.yyjlr.tickets.adapter.SalePackageAdapter;
 import com.yyjlr.tickets.model.SaleEntity;
+import com.yyjlr.tickets.model.sale.GoodInfo;
+import com.yyjlr.tickets.model.sale.Goods;
+import com.yyjlr.tickets.requestdata.PagableRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.IRequestMainData;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.text.SimpleDateFormat;
@@ -55,7 +67,6 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
 
     protected View notLoadingView;
     private TextView title;
-    private ImageView leftArrow;
 
     private LinearLayout packageLayout;
     private LinearLayout saleLayout;
@@ -66,20 +77,24 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
+    private List<GoodInfo> goodInfoList;
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sale);
+        setContentView(R.layout.activity_cinema_sale);
         initView();
+        getSale();
     }
 
-    private void initView(){
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_sale_title));
-        leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
-        leftArrow.setAlpha(1.0f);
-        leftArrow.setOnClickListener(this);
+        back = (ImageView) findViewById(R.id.base_toolbar__left);
+        back.setAlpha(1.0f);
+        back.setOnClickListener(this);
+
         packageLayout = (LinearLayout) findViewById(R.id.fragment_sale__package_layout);
         saleLayout = (LinearLayout) findViewById(R.id.fragment_sale__sale_layout);
         packageImage = (ImageView) findViewById(R.id.fragment_sale__package_image);
@@ -129,6 +144,31 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
         });
     }
 
+    //获取卖品数据
+    private void getSale() {
+        PagableRequest pagableRequest = new PagableRequest();
+        OkHttpClientManager.postAsyn(Config.GET_SALE, new OkHttpClientManager.ResultCallback<Goods>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+            }
+
+            @Override
+            public void onResponse(Goods response) {
+                Log.i("ee", new Gson().toJson(response));
+
+                goodInfoList = response.getGoodsList();
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+            }
+        }, (IRequestMainData) pagableRequest, Goods.class, SaleActivity.this);
+    }
+
     @Override
     public void onLoadMoreRequested() {
         listView.post(new Runnable() {
@@ -146,7 +186,7 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
                                 salePackageAdapter.notifyDataChangedAfterLoadMore(saleEntityList, true);
                                 mPackageCounter = salePackageAdapter.getData().size();
                             } else {
-                                saleAdapter.notifyDataChangedAfterLoadMore(saleEntityList, true);
+                                saleAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
                                 mSaleCounter = saleAdapter.getData().size();
                             }
 
@@ -172,7 +212,7 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
                     salePackageAdapter.removeAllFooterView();
                     mPackageCounter = PAGE_SIZE;
                 } else {
-                    saleAdapter.setNewData(saleEntityList);
+                    saleAdapter.setNewData(goodInfoList);
                     saleAdapter.openLoadMore(PAGE_SIZE, true);
                     saleAdapter.removeAllFooterView();
                     mSaleCounter = PAGE_SIZE;
@@ -210,7 +250,7 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
             salePackageAdapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
             salePackageAdapter.setOnRecyclerViewItemChildClickListener(this);
         } else {
-            saleAdapter = new SaleAdapter(saleEntityList);
+            saleAdapter = new SaleAdapter(goodInfoList);
             saleAdapter.openLoadAnimation();
             listView.setAdapter(saleAdapter);
             mSaleCounter = saleAdapter.getData().size();
@@ -219,7 +259,7 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
             saleAdapter.setOnRecyclerViewItemChildClickListener(this);
         }
 
-        Log.i("ee",mSaleCounter+"--------------------------"+mPackageCounter);
+        Log.i("ee", mSaleCounter + "--------------------------" + mPackageCounter);
     }
 
     @Override
@@ -263,7 +303,7 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
     private void selectPopupWindow(SaleEntity saleEntity) {
 
         View parent = View
-                .inflate(getBaseContext(), R.layout.activity_sale, null);
+                .inflate(getBaseContext(), R.layout.fragment_sale, null);
         View view = View
                 .inflate(getBaseContext(), R.layout.popupwindows_sale, null);
         view.startAnimation(AnimationUtils.loadAnimation(getBaseContext(),
@@ -313,9 +353,6 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
             num = Integer.parseInt(saleNum.getText().toString());
         }
         switch (view.getId()) {
-            case R.id.base_toolbar__left:
-                SaleActivity.this.finish();
-                break;
             case R.id.fragment_sale__package_layout:
                 packageImage.setImageResource(R.mipmap.sale_package_select);
                 saleImage.setImageResource(R.mipmap.sale_sale);
@@ -326,6 +363,7 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
                 flag = false;
                 packageImage.setImageResource(R.mipmap.sale_package);
                 saleImage.setImageResource(R.mipmap.sale_sale_select);
+                getSale();
                 initAdapter();
                 break;
             case R.id.popup_sale__buy://购买
@@ -339,6 +377,9 @@ public class SaleActivity extends AbstractActivity implements SuperSwipeRefreshL
                 break;
             case R.id.popup_sale__add://增加数量
                 saleNum.setText((num + 1) + "");
+                break;
+            case R.id.base_toolbar__left://增加数量
+                SaleActivity.this.finish();
                 break;
         }
     }

@@ -29,12 +29,13 @@ public class FilmScheduleTimeAdapter extends BaseAdapter<Map<String, String>> {
 
     @Override
     protected void convert(BaseViewHolder helper, Map<String, String> item, int position) {
-        helper.setText(R.id.item_schedule__time, item.get("time"))
-                .setText(R.id.item_schedule__date, item.get("week"))
+        helper.setText(R.id.item_schedule__time, item.get("date"))
+//                .setText(R.id.item_schedule__date, item.get("week"))
+                .setVisible(R.id.item_schedule__date, false)
                 .setBackgroundRes(R.id.item_film_schedule__layout, R.drawable.circle_border_gray)
                 .setVisible(R.id.item_film_schedule__confirm, false)
                 .setOnClickListener(R.id.item_film_schedule__layout_parent, new OnItemChildClickListener());
-        if ("0".equals(item.get("show"))) {
+        if ("1".equals(item.get("show"))) {
             helper.setBackgroundRes(R.id.item_film_schedule__layout, R.drawable.circle_border_orange)
                     .setVisible(R.id.item_film_schedule__confirm, true);
         }

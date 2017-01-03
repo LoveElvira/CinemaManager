@@ -17,8 +17,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.ContentAdapter;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.order.ChangePayTypeBean;
+import com.yyjlr.tickets.model.order.OrderItemsInfo;
+import com.yyjlr.tickets.model.sale.Goods;
+import com.yyjlr.tickets.requestdata.PagableRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.IRequestMainData;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.LockableViewPager;
 
 import java.util.ArrayList;
@@ -39,13 +50,17 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
     private ImageView leftArrow;
     private LinearLayout addPackageLayout;
 
-    private TextView onlinePay,cardPay;
-    private View onlineLine,cardLine;
+    private TextView onlinePay, cardPay;
+    private View onlineLine, cardLine;
+
+    private ChangePayTypeBean changePayTypeBean;//确认订单传过来的参数
+    private TextView price;//订单总金额
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_select);
+        changePayTypeBean = (ChangePayTypeBean) getIntent().getSerializableExtra("changePayTypeBean");
         initView();
     }
 
@@ -58,6 +73,8 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
 
         addPackageLayout = (LinearLayout) findViewById(R.id.content_pay_select__add_layout);
 
+        price = (TextView) findViewById(R.id.content_pay_select__price);
+        price.setText(ChangeUtils.save2Decimal(changePayTypeBean.getTotalPrice()));
         onlinePay = (TextView) findViewById(R.id.content_pay_select__online_pay);
         cardPay = (TextView) findViewById(R.id.content_pay_select__card);
         onlineLine = findViewById(R.id.content_pay_select__online_pay_line);
@@ -87,10 +104,10 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             @Override
             public void onPageSelected(int position) {
                 initFirstView();
-                if (position==0){
+                if (position == 0) {
                     onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
                     onlineLine.setVisibility(View.VISIBLE);
-                }else if(position==1){
+                } else if (position == 1) {
                     cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
                     cardLine.setVisibility(View.VISIBLE);
                 }
@@ -102,17 +119,21 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             }
         });
 
-        addPackageList(2);
+        addPackageList(changePayTypeBean.getItems());
     }
 
-
     //动态添加商品列表
-    private void addPackageList(int size) {
-        for (int i = 0; i < size; i++) {
+    private void addPackageList(List<OrderItemsInfo> orderItemsInfoList) {
+        for (int i = 0; i < orderItemsInfoList.size(); i++) {
             View view = LayoutInflater.from(PaySelectActivity.this).inflate(R.layout.item_pay_select_film_sale, addPackageLayout, false);
             TextView packageName = (TextView) view.findViewById(R.id.item_pay_select_filmorsale__name);
             TextView packageOriginalPrice = (TextView) view.findViewById(R.id.item_pay_select_filmorsale__original_price);
             TextView packageVipPrice = (TextView) view.findViewById(R.id.item_pay_select_filmorsale__discount_price);
+            packageName.setText(orderItemsInfoList.get(i).getName());
+            packageOriginalPrice.setText(ChangeUtils.save2Decimal(orderItemsInfoList.get(i).getPrice()) + "元");
+            packageVipPrice.setText(ChangeUtils.save2Decimal(orderItemsInfoList.get(i).getCouponPrice()) + "元");
+
+
             addPackageLayout.addView(view);
 //            if (size > 1 && i < size - 1) {
 //                View lineView = new View(PaySelectActivity.this);
@@ -148,7 +169,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.base_toolbar__left:
                 PaySelectActivity.this.finish();
                 break;
@@ -167,7 +188,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         }
     }
 
-    private void initFirstView(){
+    private void initFirstView() {
         onlinePay.setTextColor(getResources().getColor(R.color.gray_cbcbcb));
         cardPay.setTextColor(getResources().getColor(R.color.gray_cbcbcb));
         onlineLine.setVisibility(View.GONE);

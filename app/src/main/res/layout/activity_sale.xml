@@ -5,7 +5,7 @@
     style="@style/MatchMatch"
     android:fitsSystemWindows="true"
     android:background="@mipmap/bg"
-    tools:context=".activity.SaleActivity"
+    tools:context=".activity.sale.SaleActivity"
     tools:openDrawer="start">
 
     <include layout="@layout/base_toolbar" />

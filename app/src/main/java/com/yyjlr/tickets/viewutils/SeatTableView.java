@@ -32,6 +32,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.model.FilmSeatEntity;
+import com.yyjlr.tickets.model.seat.SeatInfo;
+import com.yyjlr.tickets.model.seat.SeatTypeInfo;
 import com.yyjlr.tickets.utils.BitmapUtils;
 
 import java.util.ArrayList;
@@ -323,9 +325,9 @@ public class SeatTableView extends View {
     int bacColor = Color.parseColor("#7e000000");
     Handler handler = new Handler();
     ArrayList<Integer> selects = new ArrayList<>();
-    private List<FilmSeatEntity.Response.SeatList> seatList = null;
-    private List<FilmSeatEntity.Response.SeatList> newSeatList = null;
-    private List<FilmSeatEntity.Response.SeatType> seatType = null;
+    private List<SeatInfo> seatList = null;
+    private List<SeatInfo> newSeatList = null;
+    private List<SeatTypeInfo> seatType = null;
     float[] m = new float[9];
     /**
      * 监听手势进行缩放
@@ -1358,11 +1360,11 @@ public class SeatTableView extends View {
         invalidate();
     }
 
-    public void setData(List<FilmSeatEntity.Response.SeatList> seatList, List<FilmSeatEntity.Response.SeatType> seatType) {
+    public void setData(List<SeatInfo> seatList, List<SeatTypeInfo> seatType) {
 
         this.seatList = seatList;
         this.seatType = seatType;
-        newSeatList = new ArrayList<FilmSeatEntity.Response.SeatList>();
+        newSeatList = new ArrayList<SeatInfo>();
         ArrayList<String> lineList = new ArrayList<String>();
         this.row = 0;
         this.column = 0;
@@ -1388,9 +1390,7 @@ public class SeatTableView extends View {
                 if (returnSeat(i, j) != null)
                     newSeatList.add(returnSeat(i, j));
                 else {
-                    FilmSeatEntity filmSeatEntity = new FilmSeatEntity();
-                    FilmSeatEntity.Response response = filmSeatEntity.new Response();
-                    FilmSeatEntity.Response.SeatList seat = response.new SeatList();
+                    SeatInfo seat = new SeatInfo();
                     seat.setId("");
                     seat.setCol("");
                     seat.setRow("");
@@ -1407,7 +1407,7 @@ public class SeatTableView extends View {
         invalidate();
     }
 
-    private FilmSeatEntity.Response.SeatList returnSeat(int i, int j) {
+    private SeatInfo returnSeat(int i, int j) {
         for (int k = 0; k < seatList.size(); k++) {
             if ((seatList.get(k).getgRow() == i + 1
                     && seatList.get(k).getgCol() == j + 1)) {
@@ -1508,9 +1508,9 @@ public class SeatTableView extends View {
          */
         boolean isSold(int row, int column, String type);
 
-        void checked(FilmSeatEntity.Response.SeatList seatList);
+        void checked(SeatInfo seatList);
 
-        void unCheck(FilmSeatEntity.Response.SeatList seatList);
+        void unCheck(SeatInfo seatList);
 
         /**
          * 获取选中后座位上显示的文字
@@ -1576,9 +1576,9 @@ public class SeatTableView extends View {
     }
 
     //选择座位
-    public void selectSeat(FilmSeatEntity.Response.SeatList seatList) {
-        int row = seatList.getgRow() - 1;
-        int column = seatList.getgCol() - 1;
+    public void selectSeat(SeatInfo seatInfo) {
+        int row = seatInfo.getgRow() - 1;
+        int column = seatInfo.getgCol() - 1;
         int id = getID(row, column);
         String type = newSeatList.get(id).getType();
         if (type.equals("0")) {
@@ -1597,9 +1597,9 @@ public class SeatTableView extends View {
     }
 
     //取消座位
-    public void cancelSeat(FilmSeatEntity.Response.SeatList seatList) {
-        int row = seatList.getgRow() - 1;
-        int column = seatList.getgCol() - 1;
+    public void cancelSeat(SeatInfo seatInfo) {
+        int row = seatInfo.getgRow() - 1;
+        int column = seatInfo.getgCol() - 1;
         int id = getID(row, column);
         String type = newSeatList.get(id).getType();
         if (type.equals("0-1")) {
@@ -1774,7 +1774,7 @@ public class SeatTableView extends View {
 
         if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
                 && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
-                return false;
+            return false;
         }
 
 //        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1 2

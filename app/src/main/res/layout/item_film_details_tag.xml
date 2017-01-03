@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_film_details__tag"
+        style="@style/WrapWrap"
+        android:layout_marginRight="@dimen/size_5"
+        android:background="@drawable/selector_btn_blue_alpha"
+        android:paddingBottom="2dp"
+        android:paddingLeft="@dimen/size_5"
+        android:paddingRight="@dimen/size_5"
+        android:paddingTop="2dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_12" />
+
+</LinearLayout>

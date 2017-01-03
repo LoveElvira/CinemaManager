@@ -1,21 +1,18 @@
-package com.yyjlr.tickets.activity;
+package com.yyjlr.tickets.activity.film;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,14 +20,28 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
-import com.yyjlr.tickets.MainActivity;
+import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FilmSaleAdapter;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmSaleEntity;
+import com.yyjlr.tickets.model.order.AddMovieOrderBean;
+import com.yyjlr.tickets.model.order.ChangePayTypeBean;
+import com.yyjlr.tickets.requestdata.IdRequest;
+import com.yyjlr.tickets.requestdata.confirmfilmorder.ConfirmFilmOrder;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +66,15 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
 
     private RelativeLayout addLayout;
     private LinearLayout discountLayout;
+    private AddMovieOrderBean movieOrderBean;
+    //电影名称 类型语言 日期 时间 几号厅 座位 单价共几张 总价
+    private TextView filmName, filmType, filmDate, filmTime, filmSeat, filmHall, filmPrice, filmTotalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_complete_seat);
+        movieOrderBean = (AddMovieOrderBean) getIntent().getSerializableExtra("movieOrderBean");
         AppManager.getInstance().initWidthHeight(getBaseContext());
         initView();
     }
@@ -71,6 +86,18 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
+
+        //头部的电影票信息
+        filmName = (TextView) findViewById(R.id.content_film_complete_seat__film_name);
+        filmType = (TextView) findViewById(R.id.content_film_complete_seat__type);
+        filmDate = (TextView) findViewById(R.id.content_film_complete_seat__date);
+        filmTime = (TextView) findViewById(R.id.content_film_complete_seat__time);
+        filmSeat = (TextView) findViewById(R.id.content_film_complete_seat__seat);
+        filmHall = (TextView) findViewById(R.id.content_film_complete_seat__hall);
+        filmPrice = (TextView) findViewById(R.id.content_film_complete_seat__unit_price);
+        filmTotalPrice = (TextView) findViewById(R.id.content_film_complete_seat__price);
+
+
         payPrice = (TextView) findViewById(R.id.content_film_complete_seat__pay_price);
         addPackage = (ImageView) findViewById(R.id.content_film_complete_seat__add);
         addPackageLayout = (LinearLayout) findViewById(R.id.content_film_complete_seat__sale_layout);
@@ -80,43 +107,63 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         addLayout = (RelativeLayout) findViewById(R.id.content_film_complete_seat__add_layout);
         discountLayout = (LinearLayout) findViewById(R.id.content_film_complete_seat__discount_layout);
         deletePhone.setOnClickListener(this);
-        phone.addTextChangedListener(textWatcher);
-        confirmOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String num = phone.getText().toString().trim();
-                if (isMobileNum(num)){
-                    startActivity(PaySelectActivity.class);
-                }else {
-                    showShortToast("手机号码不对");
-                }
-            }
-        });
 
-        addPackage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAllDatePopupWindow();
-            }
-        });
+        String phoneStr = SharePrefUtil.getString(Constant.FILE_NAME, Constant.PHONE, "", FilmCompleteActivity.this);
+        phone.setText(phoneStr);
+
+        phone.addTextChangedListener(textWatcher);
+
+
+        addLayout.setVisibility(View.GONE);
+        addPackageLayout.setVisibility(View.GONE);
+        initData();
+
+        confirmOrder.setOnClickListener(this);
+        addPackage.setOnClickListener(this);
 
         allDate = Application.getiDataService().getFileSaleList();
         partDate.add(allDate.get(0));
         partDate.add(allDate.get(1));
 
-
-        if (flag) {
-            discountLayout.setVisibility(View.VISIBLE);
-            addLayout.setVisibility(View.GONE);
-            initAddDiscountPackage();
-        } else {
-            discountLayout.setVisibility(View.GONE);
-            addLayout.setVisibility(View.VISIBLE);
-            initAddPackage(0);
-        }
-        flag = !flag;
+        //卖品
+//        if (flag) {
+//            discountLayout.setVisibility(View.VISIBLE);
+//            addLayout.setVisibility(View.GONE);
+//            initAddDiscountPackage();
+//        } else {
+//            discountLayout.setVisibility(View.GONE);
+//            addLayout.setVisibility(View.VISIBLE);
+//            initAddPackage(0);
+//        }
+//        flag = !flag;
     }
 
+
+    private void initData() {
+        filmName.setText(movieOrderBean.getOrderInfo().getMovieName());
+        filmDate.setText(movieOrderBean.getOrderInfo().getPlayDate());
+        filmTime.setText(movieOrderBean.getOrderInfo().getStartTime() + "~" + movieOrderBean.getOrderInfo().getEndTime());
+        filmType.setText(movieOrderBean.getOrderInfo().getLanguage() + movieOrderBean.getOrderInfo().getMovieType());
+        filmHall.setText(movieOrderBean.getOrderInfo().getHallName());
+        String seatStr = "";
+        for (int i = 0; i < movieOrderBean.getOrderInfo().getSeatInfos().length; i++) {
+            if (i == movieOrderBean.getOrderInfo().getSeatInfos().length - 1) {
+                seatStr = seatStr + movieOrderBean.getOrderInfo().getSeatInfos()[i];
+            } else {
+                seatStr = seatStr + movieOrderBean.getOrderInfo().getSeatInfos()[i] + ",";
+            }
+        }
+        filmSeat.setText(seatStr);
+        filmPrice.setText("单价：" + ChangeUtils.save2Decimal(movieOrderBean.getOrderInfo().getPrice()) + "元，共" + movieOrderBean.getOrderInfo().getNums() + "张");
+        filmTotalPrice.setText("¥" + ChangeUtils.save2Decimal(movieOrderBean.getOrderInfo().getTotalPrice()));
+        payPrice.setText("¥" + ChangeUtils.save2Decimal(movieOrderBean.getOrderInfo().getTotalPrice()));
+
+        if (movieOrderBean.getGoods().size() > 0) {
+
+        }
+
+
+    }
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -368,6 +415,38 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         filmSaleAdapter.notifyDataSetChanged();
     }
 
+
+    //确认订单
+    private void confirmOrder() {
+        customDialog = new CustomDialog(this, "加载中...");
+        customDialog.show();
+        ConfirmFilmOrder confirmFilmOrder = new ConfirmFilmOrder();
+        confirmFilmOrder.setPhone(phone.getText().toString().trim());
+        confirmFilmOrder.setOrderId(movieOrderBean.getOrderInfo().getId() + "");
+        OkHttpClientManager.postAsyn(Config.CONFIRM_ORDER, new OkHttpClientManager.ResultCallback<ChangePayTypeBean>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(ChangePayTypeBean response) {
+                customDialog.dismiss();
+                startActivity(new Intent(getBaseContext(), PaySelectActivity.class).putExtra("changePayTypeBean", (Serializable) response));
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, confirmFilmOrder, ChangePayTypeBean.class, FilmCompleteActivity.this);
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -376,6 +455,17 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
                 break;
             case R.id.content_sale_bill__delete_phone:
                 phone.setText("");
+                break;
+            case R.id.content_sale_bill__confirm_order:
+                String num = phone.getText().toString().trim();
+                if (isMobileNum(num)) {
+                    confirmOrder();
+                } else {
+                    showShortToast("手机号码不对");
+                }
+                break;
+            case R.id.content_film_complete_seat__add:
+                showAllDatePopupWindow();
                 break;
         }
     }

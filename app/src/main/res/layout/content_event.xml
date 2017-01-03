@@ -8,6 +8,7 @@
     tools:showIn="@layout/activity_event">
 
     <ImageView
+        android:id="@+id/content_event__bg_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"

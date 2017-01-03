@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_event_collect_user__more"
+        style="@style/WrapWrap"
+        android:background="@drawable/circle_orange_alpha_4"
+        android:gravity="center"
+        android:text="+99"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_20"
+        android:visibility="gone"/>
+
+    <com.yyjlr.tickets.viewutils.CircleImageView
+        android:id="@+id/item_event_collect_user__headimage"
+        android:layout_width="@dimen/size_50"
+        android:layout_height="@dimen/size_50"
+        android:src="@mipmap/image_1" />
+
+    <TextView
+        android:id="@+id/item_event_collect_user__username"
+        style="@style/WrapWrap"
+        android:layout_marginTop="@dimen/size_10"
+        android:textColor="@color/gray_c3c3c3"
+        android:textSize="@dimen/text_13" />
+
+</LinearLayout>

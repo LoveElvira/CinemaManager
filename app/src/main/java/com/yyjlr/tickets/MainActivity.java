@@ -46,8 +46,8 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
 
     private View view;
 
-    private LinearLayout chosenLayout,filmLayout,grabLayout,saleLayout,myLayout;
-    private ImageView chosenImage,filmImage,grabImage,saleImage,myImage;
+    private LinearLayout chosenLayout, filmLayout, grabLayout, saleLayout, myLayout;
+    private ImageView chosenImage, filmImage, grabImage, saleImage, myImage;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -59,21 +59,28 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
         dealStatusBar(view);
 
         initView();
-        initPagerContent();
-        List<View> list = new ArrayList<View>();
-        list.add(chosenContent);
-        list.add(filmContent);
-        list.add(grabTicketContent);
-        list.add(saleContent);
-        list.add(mySettingContent);
-        adapter = new ContentAdapter(list, null);
-        viewPager.setSwipeable(false);
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
+//        initPagerContent();
+//        List<View> list = new ArrayList<View>();
+//        list.add(chosenContent);
+//        list.add(filmContent);
+//        list.add(grabTicketContent);
+//        list.add(saleContent);
+//        list.add(mySettingContent);
+//        adapter = new ContentAdapter(list, null);
+//        viewPager.setSwipeable(false);
+//        viewPager.setAdapter(adapter);
+//        viewPager.setCurrentItem(0);
     }
 
-    private void initView(){
-        viewPager = (LockableViewPager) findViewById(R.id.content_main_viewpager);
+    private void initView() {
+//        viewPager = (LockableViewPager) findViewById(R.id.content_main_viewpager);
+        chosenContent = (ChosenContent) findViewById(R.id.content_main__chosen);
+        filmContent = (FilmContent) findViewById(R.id.content_main__film);
+        grabTicketContent = (GrabTicketContent) findViewById(R.id.content_main__ticket);
+        saleContent = (SaleContent) findViewById(R.id.content_main__sale);
+        mySettingContent = (MySettingContent) findViewById(R.id.content_main__my);
+
+
         chosenLayout = (LinearLayout) findViewById(R.id.bottom_button__chosen);
         filmLayout = (LinearLayout) findViewById(R.id.bottom_button__film);
         grabLayout = (LinearLayout) findViewById(R.id.bottom_button__grab);
@@ -91,52 +98,72 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
         saleLayout.setOnClickListener(this);
         myLayout.setOnClickListener(this);
 
+        initVisibility();
+        chosenContent.setVisibility(View.VISIBLE);
+        chosenContent.initView();
+    }
+
+    private void initVisibility() {
+        chosenContent.setVisibility(View.GONE);
+        filmContent.setVisibility(View.GONE);
+        grabTicketContent.setVisibility(View.GONE);
+        saleContent.setVisibility(View.GONE);
+        mySettingContent.setVisibility(View.GONE);
     }
 
 
-
     private void initPagerContent() {
-        Context context = getBaseContext();
-        chosenContent = new ChosenContent(context);
-        mySettingContent = new MySettingContent(context);
-        filmContent = new FilmContent(context);
-        grabTicketContent = new GrabTicketContent(context);
-        saleContent = new SaleContent(context);
+//        Context context = getBaseContext();
+//        chosenContent = new ChosenContent(context);
+//        mySettingContent = new MySettingContent(context);
+//        filmContent = new FilmContent(context);
+//        grabTicketContent = new GrabTicketContent(context);
+//        saleContent = new SaleContent(context);
     }
 
 
     @Override
     public void onClick(View v) {
         setBottomView();
+        initVisibility();
         switch (v.getId()) {
             case R.id.bottom_button__chosen://精选
                 chosenImage.setImageResource(R.mipmap.jingxuan_select);
-                viewPager.setCurrentItem(0);
+                chosenContent.setVisibility(View.VISIBLE);
+                chosenContent.initView();
+//                viewPager.setCurrentItem(0);
                 break;
             case R.id.bottom_button__film://影片
                 filmImage.setImageResource(R.mipmap.yingpian_select);
-                viewPager.setCurrentItem(1);
+                filmContent.setVisibility(View.VISIBLE);
+//                filmContent.initView();
+//                viewPager.setCurrentItem(1);
                 break;
             case R.id.bottom_button__grab://抢票
                 grabImage.setImageResource(R.mipmap.qiangpiao_select);
-                viewPager.setCurrentItem(2);
-                grabTicketContent.adapter.set();
+                grabTicketContent.setVisibility(View.VISIBLE);
+                grabTicketContent.initView();
+//                viewPager.setCurrentItem(2);
+//                grabTicketContent.adapter.set();
                 break;
             case R.id.bottom_button__sale://卖品
                 saleImage.setImageResource(R.mipmap.maipin_select);
-                viewPager.setCurrentItem(3);
+                saleContent.setVisibility(View.VISIBLE);
+
+//                viewPager.setCurrentItem(3);
                 break;
             case R.id.bottom_button__my://我的
                 myImage.setImageResource(R.mipmap.wode_select);
-                viewPager.setCurrentItem(4);
+                mySettingContent.setVisibility(View.VISIBLE);
+//                viewPager.setCurrentItem(4);
                 break;
         }
     }
 
     /**
      * 初始底部View样式
-     * */
-    private void setBottomView(){
+     */
+    private void setBottomView() {
         chosenImage.setImageResource(R.mipmap.jingxuan);
         filmImage.setImageResource(R.mipmap.yingpian);
         grabImage.setImageResource(R.mipmap.qiangpiao);

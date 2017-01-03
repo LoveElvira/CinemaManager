@@ -6,7 +6,7 @@
     android:background="@color/bg_gray"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.yyjlr.tickets.activity.FilmSelectSeatActivity"
+    tools:context="com.yyjlr.tickets.activity.film.FilmSelectSeatActivity"
     tools:showIn="@layout/activity_film_select_seat">
 
     <LinearLayout
@@ -27,14 +27,12 @@
                 android:id="@+id/content_film_seat__date"
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_5"
-                android:text="08月20日"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
 
             <TextView
                 android:id="@+id/content_film_seat__time"
                 style="@style/WrapWrap"
-                android:text="07:00"
                 android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_20" />
 
@@ -52,7 +50,9 @@
                 android:id="@+id/content_film_seat__hall"
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_5"
-                android:text="6号厅"
+                android:maxEms="6"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
 
@@ -65,7 +65,9 @@
                 android:paddingRight="@dimen/size_5"
                 android:paddingTop="1dp"
                 android:paddingBottom="1dp"
-                android:text="巨幕厅"
+                android:maxEms="4"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_11" />
         </LinearLayout>
@@ -73,14 +75,16 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.6"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/content_film_seat__film_language"
                 style="@style/WrapWrap"
-                android:text="英语"
+                android:maxEms="4"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
 
@@ -95,7 +99,6 @@
                 android:id="@+id/content_film_seat__film_type"
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_5"
-                android:text="3D"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
         </LinearLayout>
@@ -152,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/size_5"
-                android:text="100"
+                android:text="0"
                 android:textColor="@color/red_c80f0f"
                 android:textSize="@dimen/text_16" />
 
@@ -168,7 +171,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_5"
-                android:text="(50+50)"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
 

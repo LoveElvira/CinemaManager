@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchMatch"
     android:id="@+id/content_event__cardview"
+    style="@style/MatchMatch"
+    android:layout_margin="@dimen/size_20"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="@dimen/size_5"
-    android:layout_margin="@dimen/size_20">
+    app:cardCornerRadius="@dimen/size_5">
 
     <LinearLayout
         style="@style/MatchWrap"
@@ -14,6 +14,7 @@
         android:paddingTop="@dimen/size_20">
 
         <TextView
+            android:id="@+id/content_event__collect_num"
             style="@style/MatchWrap"
             android:gravity="center"
             android:text="123位用户收藏了这个信息"
@@ -27,25 +28,6 @@
             android:paddingRight="@dimen/size_20"
             android:paddingTop="@dimen/size_20">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <com.yyjlr.tickets.viewutils.CircleImageView
-                    android:layout_width="@dimen/size_50"
-                    android:layout_height="@dimen/size_50"
-                    android:src="@mipmap/image_1" />
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="小蛮缠"
-                    android:textColor="@color/gray_c3c3c3"
-                    android:textSize="@dimen/text_13" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -54,88 +36,27 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.yyjlr.tickets.viewutils.CircleImageView
-                    android:layout_width="@dimen/size_50"
-                    android:layout_height="@dimen/size_50"
-                    android:src="@mipmap/image_1" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/content_event__listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="小蛮缠"
-                    android:textColor="@color/gray_c3c3c3"
-                    android:textSize="@dimen/text_13" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <com.yyjlr.tickets.viewutils.CircleImageView
-                    android:layout_width="@dimen/size_50"
-                    android:layout_height="@dimen/size_50"
-                    android:src="@mipmap/image_1" />
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="小蛮缠"
-                    android:textColor="@color/gray_c3c3c3"
-                    android:textSize="@dimen/text_13" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <com.yyjlr.tickets.viewutils.CircleImageView
-                    android:layout_width="@dimen/size_50"
-                    android:layout_height="@dimen/size_50"
-                    android:src="@mipmap/image_1" />
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="小蛮缠"
-                    android:textColor="@color/gray_c3c3c3"
-                    android:textSize="@dimen/text_13" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:background="@drawable/circle_orange_alpha_4"
-                    android:gravity="center"
-                    android:text="+99"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_20" />
             </LinearLayout>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@drawable/line_dash"
-            android:layout_marginTop="@dimen/size_10"/>
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@drawable/line_dash" />
 
         <LinearLayout
             style="@style/MatchWrap"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/size_10"
+            android:paddingBottom="@dimen/size_20"
             android:paddingLeft="@dimen/size_20"
             android:paddingRight="@dimen/size_20"
-            android:paddingBottom="@dimen/size_20">
+            android:paddingTop="@dimen/size_10">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -145,15 +66,16 @@
 
                 <LinearLayout
                     style="@style/MatchWrap"
+                    android:layout_marginBottom="@dimen/size_5"
                     android:gravity="left|center"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/size_5">
+                    android:orientation="horizontal">
 
                     <ImageView
                         style="@style/WrapWrap"
                         android:background="@mipmap/calendar" />
 
                     <TextView
+                        android:id="@+id/content_event__time"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
                         android:text="2016.12.31 19:30"
@@ -171,6 +93,7 @@
                         android:background="@mipmap/people" />
 
                     <TextView
+                        android:id="@+id/content_event__join_number"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
                         android:text="100"
@@ -187,15 +110,16 @@
 
                 <LinearLayout
                     style="@style/MatchWrap"
+                    android:layout_marginBottom="@dimen/size_5"
                     android:gravity="left|center"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/size_5">
+                    android:orientation="horizontal">
 
                     <ImageView
                         style="@style/WrapWrap"
                         android:background="@mipmap/address_yellow" />
 
                     <TextView
+                        android:id="@+id/content_event__address"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
                         android:text="SFC上影（世博店）"
@@ -213,6 +137,7 @@
                         android:background="@mipmap/money" />
 
                     <TextView
+                        android:id="@+id/content_event__price"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
                         android:text="¥80"
@@ -223,16 +148,17 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/content_event__description"
             style="@style/MatchWrap"
+            android:background="@color/bg_gray"
+            android:lineSpacingMultiplier="1.5"
             android:paddingBottom="@dimen/size_20"
             android:paddingLeft="@dimen/size_20"
             android:paddingRight="@dimen/size_20"
             android:paddingTop="@dimen/size_12"
-            android:background="@color/bg_gray"
-            android:textSize="@dimen/text_12"
-            android:lineSpacingMultiplier="1.5"
+            android:text="@string/text_film_details"
             android:textColor="@color/black_363636"
-            android:text="@string/text_film_details"/>
+            android:textSize="@dimen/text_12" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

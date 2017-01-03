@@ -2,6 +2,7 @@ package com.yyjlr.tickets.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,8 +12,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Request;
+import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.MainActivity;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
+import com.yyjlr.tickets.model.register.RegisterModel;
+import com.yyjlr.tickets.requestdata.register.RegisterRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 /**
  * Created by Elvira on 2016/7/29.
@@ -54,12 +64,66 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
         xinlangLogin = (LinearLayout) findViewById(R.id.content_login__xinlang);
         forgetPassword = (LinearLayout) findViewById(R.id.content_login__forger_password);
 
+        String userName = SharePrefUtil.getString(Constant.FILE_NAME, Constant.PHONE, "", LoginActivity.this);
+        String passWord = SharePrefUtil.getString(Constant.FILE_NAME, Constant.PASSWORD, "", LoginActivity.this);
+        phoneNum.setText(userName);
+        password.setText(passWord);
+
+
         register.setOnClickListener(this);
         login.setOnClickListener(this);
         weixinLogin.setOnClickListener(this);
         friendCircleLogin.setOnClickListener(this);
         xinlangLogin.setOnClickListener(this);
         forgetPassword.setOnClickListener(this);
+    }
+
+    private boolean isNull() {
+        if (!isMobileNum(phoneNum.getText().toString().trim())) {
+            showShortToast("手机号码不对");
+            return false;
+        } else if ("".equals(password.getText().toString().trim())) {
+            showShortToast("密码不对");
+            return false;
+        }
+        return true;
+    }
+
+
+    //用户登录
+    private void login() {
+        customDialog = new CustomDialog(this, "登录中...");
+        customDialog.show();
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setPhone(phoneNum.getText().toString().trim());
+        registerRequest.setPwd(password.getText().toString().trim());
+        OkHttpClientManager.postAsyn(Config.LOGIN, new OkHttpClientManager.ResultCallback<RegisterModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                customDialog.dismiss();
+                showShortToast(info.getInfo());
+            }
+
+            @Override
+            public void onResponse(RegisterModel response) {
+
+                SharePrefUtil.putString(Constant.FILE_NAME, "token", response.getToken(), LoginActivity.this);
+                SharePrefUtil.putString(Constant.FILE_NAME, Constant.PHONE, response.getPhone(), LoginActivity.this);
+                SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, password.getText().toString().trim(), LoginActivity.this);
+                SharePrefUtil.putString(Constant.FILE_NAME, "flag", "1", LoginActivity.this);
+                customDialog.dismiss();
+                startActivity(MainActivity.class);
+                LoginActivity.this.finish();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, registerRequest, RegisterModel.class, LoginActivity.this);
     }
 
     @Override
@@ -72,11 +136,8 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
                 startActivity(RegisterActivity.class);
                 break;
             case R.id.content_login__login:
-                String phone = phoneNum.getText().toString().trim();
-                if (isMobileNum(phone)){
-                    startActivity(MainActivity.class);
-                }else {
-                    showShortToast("手机号码不对");
+                if (isNull()) {
+                    login();
                 }
                 break;
             case R.id.content_login__weixin:

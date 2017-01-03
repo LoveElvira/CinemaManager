@@ -19,7 +19,6 @@
         <TextView
             android:id="@+id/item_schedule__time"
             style="@style/WrapWrap"
-            android:text="07月06日"
             android:textColor="@color/black_363636"
             android:textSize="@dimen/text_12" />
 
@@ -27,7 +26,6 @@
             android:id="@+id/item_schedule__date"
             style="@style/WrapWrap"
             android:layout_marginLeft="@dimen/size_2"
-            android:text="星期一"
             android:textColor="@color/gray_c3c3c3"
             android:textSize="@dimen/text_9" />
     </LinearLayout>

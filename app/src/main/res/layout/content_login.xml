@@ -71,32 +71,25 @@
         android:orientation="horizontal"
         android:padding="@dimen/size_10">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+
+        <LinearLayout
+            android:id="@+id/content_login__forger_password"
             style="@style/WrapWrap"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/content_login__forger_password"
+            <TextView
                 style="@style/WrapWrap"
-                android:orientation="horizontal">
+                android:padding="5dp"
+                android:text="@string/text_forget_password"
+                android:textColor="@color/gray_c6c6c6"
+                android:textSize="@dimen/text_13" />
 
-                <TextView
-                    style="@style/WrapWrap"
-                    android:padding="5dp"
-                    android:text="@string/text_forget_password"
-                    android:textColor="@color/gray_c6c6c6"
-                    android:textSize="@dimen/text_13" />
-
-                <ImageView
-                    android:layout_width="@dimen/size_20"
-                    android:layout_height="@dimen/size_20"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/right_arrow" />
-            </LinearLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <ImageView
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_20"
+                android:layout_gravity="center"
+                android:src="@mipmap/right_arrow" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -151,13 +144,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-            <!--style="@style/WrapWrap"-->
-            <!--app:mrl_rippleAlpha="0.2"-->
-            <!--app:mrl_rippleColor="@color/bg_shadow"-->
-            <!--app:mrl_rippleHover="true"-->
-            <!--app:mrl_rippleOverlay="true">-->
-
             <LinearLayout
                 android:id="@+id/content_login__weixin"
                 style="@style/WrapWrap"
@@ -180,14 +166,7 @@
                     android:textColor="@color/gray_a1a1a1"
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
-            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-            <!--style="@style/WrapWrap"-->
-            <!--app:mrl_rippleAlpha="0.2"-->
-            <!--app:mrl_rippleColor="@color/bg_shadow"-->
-            <!--app:mrl_rippleHover="true"-->
-            <!--app:mrl_rippleOverlay="true">-->
             <LinearLayout
                 android:id="@+id/content_login__friend_circle"
                 style="@style/WrapWrap"
@@ -211,14 +190,6 @@
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
 
-            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
-
-            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-            <!--style="@style/WrapWrap"-->
-            <!--app:mrl_rippleAlpha="0.2"-->
-            <!--app:mrl_rippleColor="@color/bg_shadow"-->
-            <!--app:mrl_rippleHover="true"-->
-            <!--app:mrl_rippleOverlay="true">-->
             <LinearLayout
                 android:id="@+id/content_login__xinlang"
                 style="@style/WrapWrap"
@@ -239,7 +210,6 @@
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
 
-            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
         </LinearLayout>
 
         <LinearLayout

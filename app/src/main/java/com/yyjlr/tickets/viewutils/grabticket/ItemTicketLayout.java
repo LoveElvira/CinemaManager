@@ -1,6 +1,7 @@
 package com.yyjlr.tickets.viewutils.grabticket;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.EventActivity;
+import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.DataInfo;
+import com.yyjlr.tickets.model.ticket.TicketModel;
 import com.yyjlr.tickets.viewutils.countdown.CountdownView;
 
 /**
@@ -24,7 +28,7 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
     private int maxHeight;//最大高度
     private int minHeight;//最小高度
     private int pos;//下坐标
-    private DataInfo d;//数据
+    private TicketModel d;//数据
 
     private ImageView itemBackground;//背景图片
     private ImageView itemShadow;
@@ -48,7 +52,7 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
         setOnClickListener(this);
     }
 
-    public void setData(int position, DataInfo data, int childExpandedHeight, int childNormalHeight) {
+    public void setData(int position, TicketModel data, int childExpandedHeight, int childNormalHeight) {
         d = data;
         pos = position;
         maxHeight = childExpandedHeight;
@@ -79,14 +83,20 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
         itemLayout.getLayoutParams().height = maxHeight;
         itemBackground.getLayoutParams().height = maxHeight;
 
-        if (d.countDown > 0) {
+        if ((d.getEndTime() - d.getStartTime()) > 0) {
             refreshTime(System.currentTimeMillis());
         } else {
 //            itemTime.allShowZero();
             endTime(0);
         }
-        itemTitle.setText(data.title);
-        Picasso.with(getContext()).load(data.cover).resize(getWidth(), maxHeight).placeholder(R.mipmap.bg).into(itemBackground);
+        itemTitle.setText(data.getActivityName());
+        itemDate.setText(ChangeUtils.changeTimeDate(d.getStartTime())+"-"+ChangeUtils.changeTimeDate(d.getEndTime()));
+//        itemPrice.setText("人均"+ChangeUtils.save2Decimal(d.getPrice())+"元");
+        Picasso.with(getContext())
+                .load(data.getActivityImg())
+                .resize(getWidth(), maxHeight)
+                .placeholder(R.mipmap.bg)
+                .into(itemBackground);
 
     }
 
@@ -94,6 +104,9 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
     public void onClick(View v) {
 //        Toast.makeText(v.getContext().getApplicationContext(), "" + (d != null ? d.title : "null"), Toast.LENGTH_SHORT).
 //                show();
+        Intent intent = new Intent(v.getContext(), EventActivity.class);
+        intent.putExtra("id",d.getActivityId());
+        v.getContext().startActivity(intent);
     }
 
 
@@ -110,14 +123,14 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
 
     //动画 修改透明度 显示大小
     private void animate(float percent) {
-        Log.i("ee","-----------percent:"+percent);
-        if (percent == 1f){
+        Log.i("ee", "-----------percent:" + percent);
+        if (percent == 1f) {
             itemShadow.setAlpha(0f);
-        }else if(percent == 0f){
+        } else if (percent == 0f) {
             itemShadow.setAlpha(0.5f);
-        }else {
+        } else {
             if (percent > 0.5f)
-                itemShadow.setAlpha(1-percent);
+                itemShadow.setAlpha(1 - percent);
         }
         itemTime.setAlpha(percent);
         itemPrice.setAlpha(percent);
@@ -128,15 +141,15 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
     }
 
     public void refreshTime(long curTimeMillis) {
-        if (null == d || d.countDown <= 0) return;
-        itemTime.updateShow(d.endTime - curTimeMillis);
+        if (null == d || (d.getEndTime() - d.getStartTime()) <= 0) return;
+        itemTime.updateShow(d.getEndTime() - curTimeMillis);
     }
 
     public void endTime(long curTimeMillis) {
         itemTime.updateShow(curTimeMillis);
     }
 
-    public DataInfo getBean() {
+    public TicketModel getBean() {
         return d;
     }
 }

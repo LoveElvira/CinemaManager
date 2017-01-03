@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.yyjlr.tickets.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:orientation="vertical">
 
-    <com.yyjlr.tickets.viewutils.LockableViewPager
-        android:id="@+id/content_main_viewpager"
-        style="@style/MatchMatch"
-        android:layout_marginBottom="@dimen/size_50" />
+    <!--<com.yyjlr.tickets.viewutils.LockableViewPager-->
+    <!--android:id="@+id/content_main_viewpager"-->
+    <!--style="@style/MatchMatch"-->
+    <!--android:layout_marginBottom="@dimen/size_50" />-->
+    <com.yyjlr.tickets.content.ChosenContent
+        android:id="@+id/content_main__chosen"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"/>
+
+    <com.yyjlr.tickets.content.FilmContent
+        android:id="@+id/content_main__film"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+
+    <com.yyjlr.tickets.content.GrabTicketContent
+        android:id="@+id/content_main__ticket"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+
+    <com.yyjlr.tickets.content.SaleContent
+        android:id="@+id/content_main__sale"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <com.yyjlr.tickets.content.MySettingContent
+        android:id="@+id/content_main__my"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:visibility="gone" />
 
     <include layout="@layout/bottom_button" />
 
 
-</RelativeLayout>
+</LinearLayout>
 

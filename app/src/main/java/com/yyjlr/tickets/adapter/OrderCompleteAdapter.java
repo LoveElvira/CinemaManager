@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.model.OrderEntity;
+import com.yyjlr.tickets.model.order.MyOrderInfo;
 import com.yyjlr.tickets.viewutils.SlidingButtonView;
 
 import java.util.List;
@@ -16,33 +17,42 @@ import java.util.List;
  * Created by Elvira on 2016/8/11.
  * 已完成的订单
  */
-public class OrderCompleteAdapter extends BaseAdapter<OrderEntity> implements SlidingButtonView.SlidingButtonListener {
+public class OrderCompleteAdapter extends BaseAdapter<MyOrderInfo> implements SlidingButtonView.SlidingButtonListener {
 
     private SlidingButtonView mMenu = null;
     private SlidingViewClickListener mIDeleteBtnClickListener;
 
-    List<OrderEntity> data;
+    List<MyOrderInfo> data;
 
-    public OrderCompleteAdapter(List<OrderEntity> data, Context context) {
+    public OrderCompleteAdapter(List<MyOrderInfo> data, Context context) {
         this(data);
         this.data = data;
         mIDeleteBtnClickListener = (SlidingViewClickListener) context;
     }
 
-    public OrderCompleteAdapter(List<OrderEntity> data) {
+    public OrderCompleteAdapter(List<MyOrderInfo> data) {
         super(R.layout.item_order_complete, data);
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, OrderEntity item, int position) {
+    protected void convert(final BaseViewHolder helper, MyOrderInfo item, int position) {
         AppManager.getInstance().initWidthHeight(helper.getConvertView().getContext());
-        helper.setText(R.id.item_order_complete__order_num, item.getOrderNum())
-                .setText(R.id.item_order_complete__order_film, item.getOrderFilmName())
-                .setText(R.id.item_order_complete__package, item.getOrderPackage());
+        helper.setText(R.id.item_order_complete__order_num, item.getOrderNo())
+                .setText(R.id.item_order_complete__order_film, item.getMovieName());
+        String goodName = "";
+        for (int i = 0; i < item.getGoodsName().size(); i++) {
+            if (i == item.getGoodsName().size() - 1) {
+                goodName = goodName + item.getGoodsName().get(i);
+            } else {
+                goodName = goodName + item.getGoodsName().get(i) + "，";
+            }
+        }
+        helper.setText(R.id.item_order_complete__package, goodName);
+
         helper.getView(R.id.item_order_complete__rl_layout).getLayoutParams().width = AppManager.getInstance().getWidth();
 
-        int w = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
-        int h = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         helper.getView(R.id.item_order_complete__ll_layout).measure(w, h);
         int height = helper.getView(R.id.item_order_complete__ll_layout).getMeasuredHeight();
         helper.getView(R.id.item_order__delete).getLayoutParams().height = height;

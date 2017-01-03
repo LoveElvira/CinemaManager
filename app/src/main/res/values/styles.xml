@@ -11,6 +11,7 @@
         <!--<item name="android:windowIsTranslucent">true</item>-->
         <!--<item name="android:windowNoTitle">true</item>-->
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -103,5 +104,15 @@
     <style name="text_gray">
         <item name="android:textColor">@color/gray_929292</item>
         <item name="android:textSize">@dimen/text_10</item>
+    </style>
+
+    <style name="CustomDialog">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@drawable/dialog_custom_bg</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+        <item name="android:backgroundDimAmount">0.6</item>
     </style>
 </resources>

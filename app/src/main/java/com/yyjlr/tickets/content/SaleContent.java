@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -21,14 +20,24 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.MainActivity;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.PackageDetailsActivity;
-import com.yyjlr.tickets.activity.SaleCompleteActivity;
+import com.yyjlr.tickets.activity.sale.PackageDetailsActivity;
+import com.yyjlr.tickets.activity.sale.SaleCompleteActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.SaleAdapter;
 import com.yyjlr.tickets.adapter.SalePackageAdapter;
 import com.yyjlr.tickets.model.SaleEntity;
+import com.yyjlr.tickets.model.sale.GoodInfo;
+import com.yyjlr.tickets.model.sale.Goods;
+import com.yyjlr.tickets.requestdata.PagableRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.IRequestMainData;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.text.SimpleDateFormat;
@@ -68,6 +77,7 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
+    private List<GoodInfo> goodInfoList;
 
 
     public SaleContent(Context context) {
@@ -77,7 +87,10 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
     public SaleContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_sale, this);
+        initView();
+    }
 
+    private void initView() {
         title = (TextView) view.findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_sale_title));
 
@@ -128,7 +141,38 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
+    }
 
+    //获取卖品数据
+    private void getSale() {
+        PagableRequest pagableRequest = new PagableRequest();
+        OkHttpClientManager.postAsyn(Config.GET_SALE, new OkHttpClientManager.ResultCallback<Goods>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+            }
+
+            @Override
+            public void onResponse(Goods response) {
+                Log.i("ee", new Gson().toJson(response));
+
+                goodInfoList = response.getGoodsList();
+                Log.i("ee", goodInfoList.size() + "----");
+                saleAdapter = new SaleAdapter(goodInfoList);
+                saleAdapter.openLoadAnimation();
+                listView.setAdapter(saleAdapter);
+                mSaleCounter = saleAdapter.getData().size();
+                saleAdapter.setOnLoadMoreListener(SaleContent.this);
+                saleAdapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
+                saleAdapter.setOnRecyclerViewItemChildClickListener(SaleContent.this);
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+            }
+        }, pagableRequest, Goods.class, Application.getInstance().getCurrentActivity());
     }
 
     @Override
@@ -148,7 +192,7 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
                                 salePackageAdapter.notifyDataChangedAfterLoadMore(saleEntityList, true);
                                 mPackageCounter = salePackageAdapter.getData().size();
                             } else {
-                                saleAdapter.notifyDataChangedAfterLoadMore(saleEntityList, true);
+                                saleAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
                                 mSaleCounter = saleAdapter.getData().size();
                             }
 
@@ -174,7 +218,7 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
                     salePackageAdapter.removeAllFooterView();
                     mPackageCounter = PAGE_SIZE;
                 } else {
-                    saleAdapter.setNewData(saleEntityList);
+                    saleAdapter.setNewData(goodInfoList);
                     saleAdapter.openLoadMore(PAGE_SIZE, true);
                     saleAdapter.removeAllFooterView();
                     mSaleCounter = PAGE_SIZE;
@@ -212,7 +256,7 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
             salePackageAdapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
             salePackageAdapter.setOnRecyclerViewItemChildClickListener(this);
         } else {
-            saleAdapter = new SaleAdapter(saleEntityList);
+            saleAdapter = new SaleAdapter(goodInfoList);
             saleAdapter.openLoadAnimation();
             listView.setAdapter(saleAdapter);
             mSaleCounter = saleAdapter.getData().size();
@@ -221,7 +265,7 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
             saleAdapter.setOnRecyclerViewItemChildClickListener(this);
         }
 
-        Log.i("ee",mSaleCounter+"--------------------------"+mPackageCounter);
+        Log.i("ee", mSaleCounter + "--------------------------" + mPackageCounter);
     }
 
     @Override
@@ -326,6 +370,7 @@ public class SaleContent extends LinearLayout implements BaseAdapter.RequestLoad
                 packageImage.setImageResource(R.mipmap.sale_package);
                 saleImage.setImageResource(R.mipmap.sale_sale_select);
                 initAdapter();
+                getSale();
                 break;
             case R.id.popup_sale__buy://购买
                 Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SaleCompleteActivity.class));

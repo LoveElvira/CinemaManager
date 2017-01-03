@@ -3,7 +3,7 @@
     style="@style/MatchMatch"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".activity.FilmSelectSeatActivity">
+    tools:context=".activity.film.FilmSelectSeatActivity">
 
     <include layout="@layout/base_toolbar" />
 

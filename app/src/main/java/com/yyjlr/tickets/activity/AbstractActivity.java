@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
@@ -39,6 +40,9 @@ public class AbstractActivity extends AppCompatActivity {
     protected InputMethodManager imm;
 
     protected boolean flag = true;
+    public static AbstractActivity abstractActivity;
+    protected CustomDialog customDialog;
+
 
     @Override
     protected void onResume() {
@@ -73,6 +77,7 @@ public class AbstractActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        abstractActivity = this;
     }
 
     /**
@@ -86,26 +91,27 @@ public class AbstractActivity extends AppCompatActivity {
 
     /**
      * 跳转页面
-     * */
-    protected void startActivity(Class activity){
-        Intent intent = new Intent(this,activity);
+     */
+    protected void startActivity(Class activity) {
+        Intent intent = new Intent(this, activity);
         startActivity(intent);
     }
 
     /**
      * 跳转页面
-     * */
-    protected void startActivity(Class activity,String name,Bundle bundle){
-        Intent intent = new Intent(this,activity);
-        intent.putExtra(name,bundle);
+     */
+    protected void startActivity(Class activity, String name, Bundle bundle) {
+        Intent intent = new Intent(this, activity);
+        intent.putExtra(name, bundle);
         startActivity(intent);
     }
+
     /**
      * 跳转页面
-     * */
-    protected void startActivity(Class activity,String name,String value){
-        Intent intent = new Intent(this,activity);
-        intent.putExtra(name,value);
+     */
+    protected void startActivity(Class activity, String name, String value) {
+        Intent intent = new Intent(this, activity);
+        intent.putExtra(name, value);
         startActivity(intent);
     }
 
@@ -138,9 +144,9 @@ public class AbstractActivity extends AppCompatActivity {
         return statusBarHeight;
     }
 
-    protected boolean isMobileNum(String mobile){
-        Pattern pattern=Pattern.compile("^1[0-9]{10}$");
-        Matcher matcher=pattern.matcher(mobile);
+    protected boolean isMobileNum(String mobile) {
+        Pattern pattern = Pattern.compile("^1[0-9]{10}$");
+        Matcher matcher = pattern.matcher(mobile);
         return matcher.matches();
     }
 }

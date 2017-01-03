@@ -1,11 +1,11 @@
 package com.yyjlr.tickets.adapter;
 
-import android.content.Context;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.model.ChosenFilmEntity;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.chosen.EventInfo;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import java.util.List;
 */
 
 
-public class ChosenAdapter extends BaseAdapter<ChosenFilmEntity> {
+public class ChosenAdapter extends BaseAdapter<EventInfo> {
 
     private int cardWidth,cardHeight;
 
-    public ChosenAdapter(List<ChosenFilmEntity> data) {
+    public ChosenAdapter(List<EventInfo> data) {
         super(R.layout.item_chosen_film,data);
     }
 
@@ -29,59 +29,18 @@ public class ChosenAdapter extends BaseAdapter<ChosenFilmEntity> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ChosenFilmEntity item, int position) {
+    protected void convert(BaseViewHolder helper, EventInfo item, int position) {
 //        helper.getConvertView().getLayoutParams().width = cardWidth;
-        helper.setText(R.id.item_chosen__name,item.getChosenFilmName())
-                .setText(R.id.item_chosen__showtime, item.getChosenFilmShowTime())
-                .setText(R.id.item_chosen__price,item.getChosenFilmPrice())
+        helper.setText(R.id.item_chosen__name,item.getActivityName())
+                .setText(R.id.item_chosen__showtime, ChangeUtils.changeTimeYear(item.getStartTime())+"~"+ChangeUtils.changeTimeYear(item.getEndTime()))
+                .setText(R.id.item_chosen__price,item.getPrice())
                 .setOnClickListener(R.id.item_chosen__parent,new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_chosen__enter,new OnItemChildClickListener());
-        Picasso.with(helper.getConvertView().getContext())
-                .load(item.getChosenFilmImage())
-                .placeholder(R.mipmap.icon_logo)
-                .into((ImageView)helper.getView(R.id.item_chosen__image));
+        if (item.getActivityImg()!=null) {
+            Picasso.with(helper.getConvertView().getContext())
+                    .load(item.getActivityImg())
+                    .placeholder(R.mipmap.icon_logo)
+                    .into((ImageView) helper.getView(R.id.item_chosen__image));
+        }
     }
-
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        ChosenFilmEntity chosenFilmEntity = getItem(position);
-//        if (convertView == null)
-//            convertView = LayoutInflater.from(context).inflate(R.layout.item_chosen_film, parent, false);
-//        ViewHolder holder = new ViewHolder();
-//        convertView.setTag(holder);
-//        convertView.getLayoutParams().width = cardWidth;
-//        holder.fileIamge = (SimpleDraweeView) convertView.findViewById(R.id.item_chosen__image);
-//        holder.fileIamge.getLayoutParams().height = cardHeight;
-//        holder.fileName = (TextView) convertView.findViewById(R.id.item_chosen__name);
-//        holder.fileShowTime = (TextView) convertView.findViewById(R.id.item_chosen__showtime);
-//        holder.filePirce = (TextView) convertView.findViewById(R.id.item_chosen__price);
-//        holder.fileEnter = (TextView) convertView.findViewById(R.id.item_chosen__enter);
-//
-//        holder.fileIamge.setImageURI(Uri.parse(chosenFilmEntity.getChosenFilmImage()));
-//        holder.fileName.setText(chosenFilmEntity.getChosenFilmName());
-//        holder.fileShowTime.setText(chosenFilmEntity.getChosenFilmShowTime());
-//        holder.filePirce.setText(chosenFilmEntity.getChosenFilmPrice());
-//
-//        holder.fileEnter.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Application.getInstance().getCurrentActivity().startActivity(new Intent(context, EventActivity.class));
-//            }
-//        });
-//
-//        return convertView;
-//    }
-//
-//    public static class ViewHolder {
-//        SimpleDraweeView fileIamge;
-//        TextView fileName;
-//        TextView fileShowTime;
-//        TextView filePirce;
-//        TextView fileEnter;
-//    }
 }

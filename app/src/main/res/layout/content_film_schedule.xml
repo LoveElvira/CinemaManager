@@ -7,21 +7,23 @@
     android:gravity="center"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.yyjlr.tickets.activity.FilmScheduleActivity"
+    tools:context="com.yyjlr.tickets.activity.film.FilmScheduleActivity"
     tools:showIn="@layout/activity_film_schedule">
 
     <com.yyjlr.tickets.viewutils.gallery.WGallery
         android:id="@+id/content_film_schedule__wgallery"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_120"
+        android:visibility="gone"
         app:wGallery_scalePivot="center"
         app:wGallery_selectedScale="1.3"
-        app:wGallery_unselectedAlpha="0.5"/>
+        app:wGallery_unselectedAlpha="0.5" />
 
     <ImageView
         android:layout_width="@dimen/size_20"
         android:layout_height="@dimen/size_7"
-        android:src="@mipmap/sanjiao" />
+        android:src="@mipmap/sanjiao"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

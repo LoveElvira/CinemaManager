@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.model.FilmEntity;
 import com.yyjlr.tickets.model.FilmPeopleEntity;
+import com.yyjlr.tickets.model.film.FilmWorker;
 
 import java.util.List;
 
@@ -18,19 +19,16 @@ import java.util.List;
  * Created by Elvira on 2016/8/1.
  * 影片详情人物介绍Adapter
  */
-public class FilmDetailsPeopleAdapter extends BaseAdapter<FilmPeopleEntity>{
+public class FilmDetailsPeopleAdapter extends BaseAdapter<FilmWorker>{
 
-    private List<FilmPeopleEntity> filmPeopleEntityList;
-    private Context context;
-
-    public FilmDetailsPeopleAdapter(List<FilmPeopleEntity> data) {
+    public FilmDetailsPeopleAdapter(List<FilmWorker> data) {
         super(R.layout.item_film_details_people, data);
     }
 
 
     @Override
-    protected void convert(BaseViewHolder helper, FilmPeopleEntity item, int position) {
-        helper.setText(R.id.item_film_details__people_name,item.getName());
-        helper.setText(R.id.item_film_details__people_position,item.getPosition());
+    protected void convert(BaseViewHolder helper, FilmWorker item, int position) {
+        helper.setText(R.id.item_film_details__people_name,item.getItem());
+        helper.setText(R.id.item_film_details__people_position,item.getType());
     }
 }

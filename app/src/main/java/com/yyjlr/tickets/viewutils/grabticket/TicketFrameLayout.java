@@ -100,6 +100,8 @@ public class TicketFrameLayout extends FrameLayout {
         }
         isInitFinish = true;
 
+        if (mAdapter == null)
+            return;
         final int dataSize = mAdapter.getCount();
         childTotalHeight = (dataSize < 1 ? 0 : childNormalHeight * (dataSize - 1));
 

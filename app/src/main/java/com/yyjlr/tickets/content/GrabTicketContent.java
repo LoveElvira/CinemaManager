@@ -3,6 +3,7 @@ package com.yyjlr.tickets.content;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,14 +12,27 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
+import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.GrabTicketAdapter;
+import com.yyjlr.tickets.model.chosen.ChosenModel;
+import com.yyjlr.tickets.model.ticket.GrabTicketModel;
+import com.yyjlr.tickets.model.ticket.TicketModel;
+import com.yyjlr.tickets.requestdata.RequestNull;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
+import com.yyjlr.tickets.viewutils.chosen.CarouselLayoutManager;
 import com.yyjlr.tickets.viewutils.countdown.CountdownView;
 import com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -39,13 +53,16 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
     private TextView headerSta/*, headerTime*/;
 
     public GrabTicketContent(Context context) {
-        this(context,null);
+        this(context, null);
     }
+
     public GrabTicketContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_grabticket, this);
+    }
 
-        title = (TextView) view.findViewById(R.id.base_toolbar__text);
+    public void initView() {
+        title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_grab_title));
 
 //        refresh = (SuperSwipeRefreshLayout) view.findViewById(R.id.fragment_grab__refresh);
@@ -54,21 +71,40 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
 //        refresh.setOnPullRefreshListener(this);
 //        refresh.setTargetScrollWithLayout(false);
 
-        ticketFrameLayout = (TicketFrameLayout) view.findViewById(R.id.fragment_grab__layout);
-        View bottomView = inflate(getContext(),R.layout.item_ticket,null);
-        RelativeLayout parentView = (RelativeLayout) bottomView.findViewById(R.id.item_ticket__parent_layout);
-        TextView bottomTitle = (TextView) bottomView.findViewById(R.id.item_ticket__title);
-        TextView bottomDate = (TextView) bottomView.findViewById(R.id.item_ticket__date);
-        TextView bottomPrice = (TextView) bottomView.findViewById(R.id.item_ticket__price);
-        bottomDate.setVisibility(GONE);
-        bottomPrice.setVisibility(GONE);
-        bottomTitle.setText("更多产品，敬请期待");
-        CountdownView bottomTime = (CountdownView) bottomView.findViewById(R.id.item_ticket__time);
-        bottomTime.setVisibility(GONE);
-        ImageView bottomImageShadow = (ImageView) bottomView.findViewById(R.id.item_ticket__shadow);
-        bottomImageShadow.setAlpha(0.5f);
-        ImageView bottomImage = (ImageView) bottomView.findViewById(R.id.item_ticket__background);
-        bottomImage.setImageResource(R.mipmap.bg);
+        ticketFrameLayout = (TicketFrameLayout) findViewById(R.id.fragment_grab__layout);
+        getTicket();
+    }
+
+    //获取首页抢票
+    private void getTicket() {
+        RequestNull requestNull = new RequestNull();
+        OkHttpClientManager.postAsyn(Config.GET_TICKET, new OkHttpClientManager.ResultCallback<GrabTicketModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+            }
+
+            @Override
+            public void onResponse(GrabTicketModel response) {
+                Log.i("ee", "--" + new Gson().toJson(response));
+
+//                adapter.set(response);
+//
+                View bottomView = inflate(getContext(), R.layout.item_ticket, null);
+                RelativeLayout parentView = (RelativeLayout) bottomView.findViewById(R.id.item_ticket__parent_layout);
+                TextView bottomTitle = (TextView) bottomView.findViewById(R.id.item_ticket__title);
+                TextView bottomDate = (TextView) bottomView.findViewById(R.id.item_ticket__date);
+                TextView bottomPrice = (TextView) bottomView.findViewById(R.id.item_ticket__price);
+                bottomDate.setVisibility(GONE);
+                bottomPrice.setVisibility(GONE);
+                bottomTitle.setText("更多产品，敬请期待");
+                CountdownView bottomTime = (CountdownView) bottomView.findViewById(R.id.item_ticket__time);
+                bottomTime.setVisibility(GONE);
+                ImageView bottomImageShadow = (ImageView) bottomView.findViewById(R.id.item_ticket__shadow);
+                bottomImageShadow.setAlpha(0.5f);
+                ImageView bottomImage = (ImageView) bottomView.findViewById(R.id.item_ticket__background);
+                bottomImage.setImageResource(R.mipmap.bg);
 //        TextView tMoreInfo = new TextView(context);
 //        tMoreInfo.setWidth(MATCH_PARENT);
 //        tMoreInfo.setHeight(MATCH_PARENT);
@@ -77,8 +113,17 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
 //        tMoreInfo.setTextColor(getResources().getColor(R.color.white));
 //        tMoreInfo.setTextSize(18f);
 //        tMoreInfo.setText("更多产品，敬请期待...");
-        ticketFrameLayout.addBottomContent(parentView);
-        ticketFrameLayout.setAdapter(adapter = new GrabTicketAdapter());
+                ticketFrameLayout.addBottomContent(parentView);
+                adapter = new GrabTicketAdapter(response.getActivityList());
+                ticketFrameLayout.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+            }
+        }, requestNull, GrabTicketModel.class, Application.getInstance().getCurrentActivity());
     }
 
     private View createHeaderView() {
@@ -102,7 +147,6 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                adapter.set();
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                 Date curDate = new Date(System.currentTimeMillis());
 //                headerTime.setText("最后更新：今天"+formatter.format(curDate));

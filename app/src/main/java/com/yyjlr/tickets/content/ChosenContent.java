@@ -7,26 +7,33 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.CinemaDetailsActivity;
 import com.yyjlr.tickets.activity.EventActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.ChosenAdapter;
 import com.yyjlr.tickets.model.ChosenFilmEntity;
+import com.yyjlr.tickets.model.chosen.ChosenModel;
+import com.yyjlr.tickets.model.chosen.EventInfo;
+import com.yyjlr.tickets.requestdata.RequestNull;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.chosen.CarouselLayoutManager;
 import com.yyjlr.tickets.viewutils.chosen.CarouselZoomPostLayoutListener;
 import com.yyjlr.tickets.viewutils.chosen.CenterScrollListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,8 +46,6 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     private int cardWidth;
     private int cardHeight;
 
-    private List<ChosenFilmEntity> chosenFilmEntityList;
-
     private RecyclerView listView;
     private RecyclerView choseFling;
     private CinemaAdapter cinemaAdapter;
@@ -50,6 +55,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     private ImageView enterCinema;//进入影院
     private TextView title;
     private TextView address;
+    private ChosenModel chosenModel;
 
     public ChosenContent(Context context) {
         this(context, null);
@@ -58,14 +64,11 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     public ChosenContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_chosen, this);
-        initView(view);
-
     }
 
-    private void initView(View view) {
-        title = (TextView) view.findViewById(R.id.base_toolbar__text);
-        enterCinema = (ImageView) view.findViewById(R.id.base_toolbar__right);
-        title.setText(getResources().getText(R.string.text_cinema_name));
+    public void initView() {
+        title = (TextView) findViewById(R.id.base_toolbar__text);
+        enterCinema = (ImageView) findViewById(R.id.base_toolbar__right);
         enterCinema.setImageResource(R.mipmap.enter_cinema);
         enterCinema.setAlpha(1.0f);
         enterCinema.setOnClickListener(this);
@@ -77,35 +80,59 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
         cardWidth = (int) (dm.widthPixels - (2 * 18 * density));
         cardHeight = (int) (dm.heightPixels - (338 * density));
 
-        choseFling = (RecyclerView) view.findViewById(R.id.fragment_chosen__fling);
-        initChosenView(choseFling, new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true));
+        choseFling = (RecyclerView) findViewById(R.id.fragment_chosen__fling);
 
-        listView = (RecyclerView) view.findViewById(R.id.fragment_chosen__listview);
+        listView = (RecyclerView) findViewById(R.id.fragment_chosen__listview);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         listView.setLayoutManager(linearLayoutManager);
-        getDate();
-        cinemaAdapter = new CinemaAdapter(getContext(), typeDate);
-        listView.setAdapter(cinemaAdapter);
-        listView.setOnClickListener(this);
+
+        getChosen();
     }
 
-    private void getDate() {
-        typeDate = new ArrayList<String>();
-        typeDate.add("3D眼镜");
-        typeDate.add("儿童票");
-        typeDate.add("停车场");
-        typeDate.add("IMAX");
-        typeDate.add("4D");
-        typeDate.add("4K");
-        typeDate.add("ATMOS");
+    //获取首页推荐
+    private void getChosen() {
+        RequestNull requestNull = new RequestNull();
+        OkHttpClientManager.postAsyn(Config.GET_CHOSEN, new OkHttpClientManager.ResultCallback<ChosenModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+            }
+
+            @Override
+            public void onResponse(ChosenModel response) {
+                Log.i("ee", new Gson().toJson(response));
+
+                chosenModel = response;
+                title.setText(chosenModel.getCinemaInfo().getCinemaName());
+                address.setText(chosenModel.getCinemaInfo().getAddress());
+                typeDate = chosenModel.getCinemaInfo().getHallType();
+//                typeDate = chosenModel.getCinemaInfo().getFeature();
+//                for (int i = 0; i < chosenModel.getCinemaInfo().getHallType().size(); i++) {
+//                    typeDate.add(chosenModel.getCinemaInfo().getHallType().get(i));
+//                }
+                cinemaAdapter = new CinemaAdapter(getContext(), typeDate);
+                listView.setAdapter(cinemaAdapter);
+                if (response.getActivityList().size() != 0) {
+                    initChosenView(choseFling,
+                            new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true),
+                            chosenModel.getActivityList());
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+            }
+        }, requestNull, ChosenModel.class, Application.getInstance().getCurrentActivity());
     }
 
-    private void initChosenView(RecyclerView recyclerView, final CarouselLayoutManager layoutManager) {
+    private void initChosenView(RecyclerView recyclerView, final CarouselLayoutManager layoutManager, List<EventInfo> eventInfoList) {
 
-        chosenFilmEntityList = Application.getiDataService().getChosenMovieList(5);
-        chosenAdapter = new ChosenAdapter(chosenFilmEntityList);
+//        chosenFilmEntityList = Application.getiDataService().getChosenMovieList(5);
+        chosenAdapter = new ChosenAdapter(eventInfoList);
         chosenAdapter.setImageSize(cardWidth, cardHeight);
 
         // enable zoom effect. this line can be customized
@@ -154,7 +181,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
 
         Application.getInstance().getCurrentActivity().startActivity(
-                new Intent(Application.getInstance().getCurrentActivity(), EventActivity.class));
+                new Intent(Application.getInstance().getCurrentActivity(), EventActivity.class).putExtra("id", chosenModel.getActivityList().get(position).getActivityId()));
 
 //        if(layoutManager.getOrientation()==CarouselLayoutManager.VERTICAL){
 //            if ((int) view.getY() > 0 && view.getHeight() / 2 > (int) view.getY()) {

@@ -1,17 +1,28 @@
 package com.yyjlr.tickets.activity.setting;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.order.GoodsOrderListInfo;
+import com.yyjlr.tickets.model.order.MovieOrderDetailInfo;
+import com.yyjlr.tickets.model.order.OrderDetailBean;
+import com.yyjlr.tickets.requestdata.IdRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
+
+import java.util.List;
 
 /**
  * Created by Elvira on 2016/8/11.
@@ -26,11 +37,26 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     private TextView moreText;
     private boolean flag = false;
 
+    private TextView orderNum;//订单号
+    private TextView statusText;//状态
+    //电影名称 日期 时间 类型 几号厅 座位 电话 图片
+    private TextView filmName, filmDate, filmTime, filmType, filmHall, filmSeat, filmPhone;
+    private ImageView filmImage;
+    private TextView getFilmNum;//电影取票码
+    private TextView getGoodNum;//套餐取票码
+
+    private OrderDetailBean orderDetailBean;
+
+    private LinearLayout goodLayout;
+    //付款电话 付款方式 付款时间 支付金额
+    private TextView payPhone, payType, payTime, payPrice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
         initView();
+        getOrderInfo();
     }
 
     private void initView() {
@@ -40,32 +66,146 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
 
+        orderNum = (TextView) findViewById(R.id.item_order_details__order_num);
+        filmName = (TextView) findViewById(R.id.content_order_details__film_name);
+        filmDate = (TextView) findViewById(R.id.content_order_details__film_date);
+        filmTime = (TextView) findViewById(R.id.content_order_details__film_time);
+        filmType = (TextView) findViewById(R.id.content_order_details__film_type);
+        filmHall = (TextView) findViewById(R.id.content_order_details__film_hall);
+        filmSeat = (TextView) findViewById(R.id.content_order_details__film_seat);
+        filmPhone = (TextView) findViewById(R.id.content_order_details__film_phone);
+        filmImage = (ImageView) findViewById(R.id.content_order_details__film_image);
+        getFilmNum = (TextView) findViewById(R.id.content_order_details__film_ticket_code);
+        getGoodNum = (TextView) findViewById(R.id.content_order_details__package_ticket_code);
+
         saleLayout = (LinearLayout) findViewById(R.id.content_order_details__package_layout);
         moreLayout = (LinearLayout) findViewById(R.id.item_order_sale_details__more_layout);
         moreImage = (ImageView) findViewById(R.id.item_order_sale_details_more__down);
         moreText = (TextView) findViewById(R.id.item_order_sale_details_more__text);
 
+        goodLayout = (LinearLayout) findViewById(R.id.content_order_details_package);
+        goodLayout.setVisibility(View.GONE);
+
+        payPhone = (TextView) findViewById(R.id.item_order_details__pay_phone);
+        payType = (TextView) findViewById(R.id.item_order_details__pay_way);
+        payTime = (TextView) findViewById(R.id.item_order_details__pay_time);
+        payPrice = (TextView) findViewById(R.id.item_order_details__pay_price);
+
         moreLayout.setOnClickListener(this);
 
+//        initSaleList(4, flag);
+    }
 
-        initSaleList(4, flag);
+    private void initDate() {
+
+        MovieOrderDetailInfo movieOrderDetailInfo = orderDetailBean.getMovieDetail();
+        filmName.setText(movieOrderDetailInfo.getMovieName());
+        filmDate.setText(ChangeUtils.changeTimeDate(movieOrderDetailInfo.getStartTime()));
+        filmTime.setText(ChangeUtils.changeTimeTime(movieOrderDetailInfo.getStartTime()) + "~" + ChangeUtils.changeTimeTime(movieOrderDetailInfo.getEndTime()));
+        filmType.setText("(" + movieOrderDetailInfo.getLanguage() + movieOrderDetailInfo.getMovieType() + ")");
+        filmHall.setText("(" + movieOrderDetailInfo.getCinemaName() + ")" + movieOrderDetailInfo.getHallName());
+        String seatStr = "";
+        for (int i = 0; i < movieOrderDetailInfo.getSeatInfo().size(); i++) {
+            if (i == movieOrderDetailInfo.getSeatInfo().size() - 1) {
+                seatStr = seatStr + movieOrderDetailInfo.getSeatInfo().get(i);
+            } else {
+                seatStr = seatStr + movieOrderDetailInfo.getSeatInfo().get(i) + ",";
+            }
+        }
+        filmSeat.setText(seatStr);
+        filmPhone.setText(movieOrderDetailInfo.getPhone());
+        getFilmNum.setText(movieOrderDetailInfo.getValidCode());
+
+        if (movieOrderDetailInfo.getMovieImg() != null && !"".equals(movieOrderDetailInfo.getMovieImg())) {
+            Picasso.with(getBaseContext())
+                    .load(movieOrderDetailInfo.getMovieImg())
+                    .into(filmImage);
+        }
+
+        getGoodNum.setText(orderDetailBean.getGoodsDetail().getFetchCode());
+        if (orderDetailBean.getGoodsDetail() != null) {
+            initSaleList(orderDetailBean.getGoodsDetail().getGoodsList(), flag);
+        }
+
+        if (!"".equals(orderDetailBean.getPayPhone()) && orderDetailBean.getPayPhone() != null) {
+            payPhone.setText(orderDetailBean.getPayPhone());
+        } else {
+            payPhone.setText("无");
+        }
+        if (!"".equals(orderDetailBean.getPayType()) && orderDetailBean.getPayType() != null) {
+            payType.setText(orderDetailBean.getPayType());
+        } else {
+            payType.setText("无");
+        }
+        if (!"".equals(orderDetailBean.getPayTime()) && orderDetailBean.getPayTime() != null) {
+            payTime.setText(ChangeUtils.changeTime(orderDetailBean.getPayTime()));
+        } else {
+            payTime.setText("无");
+
+        }
+        if (!"".equals(orderDetailBean.getPayMoney())) {
+            payPrice.setText(ChangeUtils.save2Decimal(orderDetailBean.getPayMoney()));
+        }
     }
 
 
     //卖品列表
-    private void initSaleList(int num, boolean flag) {
+    private void initSaleList(List<GoodsOrderListInfo> goodsList, boolean flag) {
         saleLayout.removeAllViews();
-        if (!flag && num > 2) {
+        int num = goodsList.size();
+        if (!flag && goodsList.size() > 2) {
             num = 2;
         }
         for (int i = 0; i < num; i++) {
             View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_order_sale_details, null);
             TextView salePackageName = (TextView) view.findViewById(R.id.item_order_sale_details__package_name);
             TextView salePackageContent = (TextView) view.findViewById(R.id.item_order_sale_details__package_content);
+            TextView saleNum = (TextView) view.findViewById(R.id.item_order_sale_details__package_num);
             ImageView salePackageImage = (ImageView) view.findViewById(R.id.item_order_sale_details__package_image);
+            salePackageName.setText(goodsList.get(i).getGoodsName());
+            salePackageContent.setText(goodsList.get(i).getGoodsDesc());
+            saleNum.setText("x" + goodsList.get(i).getCount());
+            if (goodsList.get(i).getGoodsImg() != null && !"".equals(goodsList.get(i).getGoodsImg())) {
+                Picasso.with(getBaseContext())
+                        .load(goodsList.get(i).getGoodsImg())
+                        .into(salePackageImage);
+            }
+
             saleLayout.addView(view);
         }
     }
+
+    //获取订单详情
+    private void getOrderInfo() {
+        customDialog = new CustomDialog(this, "加载中...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setOrderId(getIntent().getStringExtra("orderId"));
+        OkHttpClientManager.postAsyn(Config.GET_MY_ORDER_INFO, new OkHttpClientManager.ResultCallback<OrderDetailBean>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(OrderDetailBean response) {
+                customDialog.dismiss();
+                orderDetailBean = response;
+                initDate();
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, OrderDetailBean.class, SettingOrderDetailsActivity.this);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -84,7 +224,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
                     flag = false;
                 }
 
-                initSaleList(4, flag);
+                initSaleList(orderDetailBean.getGoodsDetail().getGoodsList(), flag);
 
                 break;
         }

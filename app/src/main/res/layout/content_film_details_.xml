@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch"
     android:layout_marginTop="@dimen/size_125"
     android:orientation="vertical">
@@ -19,16 +18,16 @@
                 android:layout_width="106dp"
                 android:layout_height="136dp"
                 android:layout_marginLeft="17dp"
-                android:background="@color/black"
-                android:alpha="0.15"/>
+                android:alpha="0.15"
+                android:background="@color/black" />
+
             <ImageView
                 android:id="@+id/content_film_details__image"
                 android:layout_width="@dimen/size_100"
                 android:layout_height="@dimen/size_130"
                 android:layout_marginLeft="@dimen/size_20"
                 android:layout_marginTop="3dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/bird" />
+                android:scaleType="centerCrop" />
 
         </FrameLayout>
 
@@ -40,14 +39,12 @@
             <TextView
                 android:id="@+id/content_film_details__name"
                 style="@style/WrapWrap"
-                android:text="愤怒的小鸟"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_15" />
 
             <TextView
                 android:id="@+id/content_film_details__english_name"
                 style="@style/WrapWrap"
-                android:text="Angle Bird"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_10" />
 
@@ -57,83 +54,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_5"
-                android:numStars="5"
-                android:rating="5"/>
+                android:numStars="5" />
 
-            <LinearLayout
+            <com.yyjlr.tickets.viewutils.WordWrapView
+                android:id="@+id/content_film_details__tags"
                 style="@style/MatchWrap"
-                android:layout_marginBottom="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_5"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/content_film_details__type"
-                    style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/size_5"
-                    android:background="@drawable/selector_btn_blue_alpha"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/size_5"
-                    android:paddingRight="@dimen/size_5"
-                    android:paddingTop="2dp"
-                    android:text="动画/喜剧/动作"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:id="@+id/content_film_details__duration"
-                    style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/size_5"
-                    android:background="@drawable/selector_btn_blue_alpha"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/size_5"
-                    android:paddingRight="@dimen/size_5"
-                    android:paddingTop="2dp"
-                    android:text="97分钟"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:id="@+id/content_film_details__degree"
-                    style="@style/WrapWrap"
-                    android:background="@drawable/selector_btn_blue_alpha"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/size_5"
-                    android:paddingRight="@dimen/size_5"
-                    android:paddingTop="2dp"
-                    android:text="2D"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/MatchWrap"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/content_film_details__country"
-                    style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/size_5"
-                    android:background="@drawable/selector_btn_blue_alpha"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/size_5"
-                    android:paddingRight="@dimen/size_5"
-                    android:paddingTop="2dp"
-                    android:text="美国"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    android:id="@+id/content_film_details__showtime"
-                    style="@style/WrapWrap"
-                    android:layout_marginRight="@dimen/size_5"
-                    android:background="@drawable/selector_btn_blue_alpha"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/size_5"
-                    android:paddingRight="@dimen/size_5"
-                    android:paddingTop="2dp"
-                    android:text="上映"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-            </LinearLayout>
+            </com.yyjlr.tickets.viewutils.WordWrapView>
 
         </LinearLayout>
 
@@ -154,23 +83,22 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:singleLine="false"
-            android:text="@string/text_film_details"
             android:textColor="@color/gray_929292"
             android:textSize="@dimen/text_12" />
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-            style="@style/WrapWrap"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--style="@style/WrapWrap"-->
+        <!--app:mrl_rippleAlpha="0.2"-->
+        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+        <!--app:mrl_rippleHover="true"-->
+        <!--app:mrl_rippleOverlay="true">-->
 
-            <ImageView
-                android:id="@+id/content_film_details__down"
-                android:layout_width="@dimen/size_40"
-                android:layout_height="@dimen/size_40"
-                android:background="@mipmap/down_arrow" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        <ImageView
+            android:id="@+id/content_film_details__down"
+            android:layout_width="@dimen/size_40"
+            android:layout_height="@dimen/size_40"
+            android:background="@mipmap/down_arrow" />
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

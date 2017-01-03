@@ -22,8 +22,8 @@
             android:layout_marginRight="@dimen/size_10"
             android:padding="5dp"
             android:text="@string/text_phone"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/gray_929292"/>
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_14" />
 
         <EditText
             android:id="@+id/content_register__phone"
@@ -34,8 +34,8 @@
             android:inputType="number"
             android:maxLength="11"
             android:maxLines="1"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/black_363636"/>
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -53,8 +53,8 @@
             android:layout_marginRight="@dimen/size_10"
             android:padding="5dp"
             android:text="@string/text_code"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/gray_929292"/>
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_14" />
 
         <EditText
             android:id="@+id/content_register__code"
@@ -65,25 +65,17 @@
             android:inputType="number"
             android:maxLength="11"
             android:maxLines="1"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/black_363636"/>
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-            style="@style/WrapWrap"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
-
-            <Button
-                android:id="@+id/content_register__getcode"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_30"
-                android:background="@drawable/left_circle_orange_alpha_6"
-                android:text="@string/text_get_code"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_13" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        <Button
+            android:id="@+id/content_register__getcode"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_30"
+            android:background="@drawable/left_circle_orange_alpha_6"
+            android:text="@string/text_get_code"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_13" />
     </LinearLayout>
 
     <LinearLayout
@@ -99,8 +91,8 @@
             android:layout_marginRight="@dimen/size_10"
             android:padding="5dp"
             android:text="@string/text_password"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/gray_929292"/>
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_14" />
 
         <EditText
             android:id="@+id/content_register__password"
@@ -110,8 +102,8 @@
             android:gravity="center|left"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/black_363636"/>
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -126,8 +118,8 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:text="@string/text_confirm_password"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/gray_929292"/>
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_14" />
 
         <EditText
             android:id="@+id/content_register__confirm_password"
@@ -137,8 +129,8 @@
             android:gravity="center|left"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:textSize="@dimen/text_14"
-            android:textColor="@color/black_363636"/>
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -148,32 +140,24 @@
         android:orientation="horizontal"
         android:padding="@dimen/size_10">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <LinearLayout
+            android:id="@+id/content_regster__have_account"
             style="@style/WrapWrap"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/content_regster__have_account"
-                style="@style/MatchMatch"
-                android:orientation="horizontal">
+            <TextView
+                style="@style/WrapWrap"
+                android:padding="5dp"
+                android:text="@string/text_have_account"
+                android:textColor="@color/gray_c6c6c6"
+                android:textSize="@dimen/text_13" />
 
-                <TextView
-                    style="@style/WrapWrap"
-                    android:padding="5dp"
-                    android:text="@string/text_have_account"
-                    android:textSize="@dimen/text_13"
-                    android:textColor="@color/gray_c6c6c6"/>
-
-                <ImageView
-                    android:layout_width="@dimen/size_20"
-                    android:layout_height="@dimen/size_20"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/right_arrow" />
-            </LinearLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <ImageView
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_20"
+                android:layout_gravity="center"
+                android:src="@mipmap/right_arrow" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -182,19 +166,21 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/size_20"
         android:paddingRight="@dimen/size_20">
+
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             style="@style/AutoMatch"
             app:mrl_rippleAlpha="0.2"
             app:mrl_rippleColor="@color/bg_shadow"
             app:mrl_rippleHover="true"
             app:mrl_rippleOverlay="true">
-        <Button
-            android:id="@+id/content_register__register"
-            style="@style/MatchMatch"
-            android:background="@drawable/radius_blue_4"
-            android:text="@string/text_register"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_15" />
+
+            <Button
+                android:id="@+id/content_register__register"
+                style="@style/MatchMatch"
+                android:background="@drawable/radius_blue_4"
+                android:text="@string/text_register"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_15" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
 </LinearLayout>

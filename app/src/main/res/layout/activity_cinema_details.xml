@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
+    android:background="@color/bg_gray"
     android:fitsSystemWindows="true"
     tools:context=".activity.CinemaDetailsActivity">
 
@@ -12,7 +13,7 @@
     <View
         android:id="@+id/content_cinema__view"
         android:layout_width="1px"
-        android:layout_height="1px"/>
+        android:layout_height="1px" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/content_cinema__appbar"
@@ -30,6 +31,7 @@
             app:statusBarScrim="@android:color/transparent">
 
             <ImageView
+                android:id="@+id/content_cinema__image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
@@ -57,16 +59,16 @@
                     <TextView
                         android:id="@+id/content_cinema__name"
                         style="@style/WrapWrap"
-                        android:padding="@dimen/size_5"
-                        android:text="@string/text_cinema_name"
+                        android:lines="1"
+                        android:padding="@dimen/size_3"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_14" />
 
                     <TextView
                         android:id="@+id/content_cinema__introduction"
                         style="@style/WrapWrap"
-                        android:padding="@dimen/size_5"
-                        android:text="@string/text_cinema_introduction"
+                        android:lines="8"
+                        android:padding="@dimen/size_3"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
@@ -76,11 +78,11 @@
                 android:id="@+id/content_cinema__toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
                 android:layout_marginLeft="-15dp"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <include layout="@layout/base_toolbar_"/>
+                <include layout="@layout/base_toolbar_" />
 
             </android.support.v7.widget.Toolbar>
 

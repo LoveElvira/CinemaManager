@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.yyjlr.tickets.model.DataImportUtils;
 import com.yyjlr.tickets.model.DataInfo;
+import com.yyjlr.tickets.model.ticket.TicketModel;
 import com.yyjlr.tickets.viewutils.grabticket.ItemTicketLayout;
 import com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout;
 
@@ -20,28 +21,36 @@ import java.util.TimerTask;
  * 抢票adapter
  */
 public class GrabTicketAdapter extends TicketFrameLayout.Adapter{
-    List<DataInfo> list= new ArrayList<>();
+//    List<DataInfo> list= new ArrayList<>();
     private SparseArray<ItemTicketLayout> mCountdownVHList;
     private boolean flag = true;
     private Handler mHandler = new Handler();
     private Timer mTimer;
     private boolean isCancel = true;
 
-    public void set() {
-        list.clear();
+    private List<TicketModel> ticketModelList;
+
+    public GrabTicketAdapter(List<TicketModel> ticketModelList) {
+        this.ticketModelList = ticketModelList;
         mCountdownVHList = new SparseArray<>();
         List<DataInfo> l1 = DataImportUtils.init();
+        this.ticketModelList = ticketModelList;
 
-        list.addAll(l1);
+//        list.addAll(l1);
 
         // 校对倒计时
         long curTime = System.currentTimeMillis();
-        for (DataInfo itemInfo : list) {
-            itemInfo.setEndTime(curTime + itemInfo.countDown);
+        for (TicketModel itemInfo : ticketModelList) {
+            itemInfo.setEndTime(curTime + (itemInfo.getEndTime()-itemInfo.getStartTime())/*itemInfo.countDown*/);
         }
         startRefreshTime();
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
+
+//    public void set(List<TicketModel> ticketModelList) {
+////        list.clear();
+//
+//    }
 
     public void startRefreshTime() {
         if (!isCancel) return;
@@ -70,18 +79,18 @@ public class GrabTicketAdapter extends TicketFrameLayout.Adapter{
 
     @Override
     public int getCount() {
-        return list.size();
+        return ticketModelList.size();
     }
 
     @Override
     public View getView(int position, ViewGroup parent, int expendedHeight, int normalHeight) {
         ItemTicketLayout item = new ItemTicketLayout(parent.getContext());
-        item.setData(position, list.get(position), expendedHeight, normalHeight);
+        item.setData(position, ticketModelList.get(position), expendedHeight, normalHeight);
 
         // 处理倒计时
-        if (list.get(position).countDown > 0) {
+        if ((ticketModelList.get(position).getEndTime()-ticketModelList.get(position).getStartTime()) > 0) {
             synchronized (mCountdownVHList) {
-                mCountdownVHList.put(Integer.parseInt(list.get(position).id), item);
+                mCountdownVHList.put(Integer.parseInt(ticketModelList.get(position).getActivityId()+""), item);
             }
         }
         return item;
@@ -98,9 +107,9 @@ public class GrabTicketAdapter extends TicketFrameLayout.Adapter{
                 for (int i = 0; i < mCountdownVHList.size(); i++) {
                     key = mCountdownVHList.keyAt(i);
                     ItemTicketLayout curMyViewHolder = mCountdownVHList.get(key);
-                    if (currentTime >= curMyViewHolder.getBean().endTime) {
+                    if (currentTime >= curMyViewHolder.getBean().getEndTime()) {
                         // 倒计时结束
-                        curMyViewHolder.getBean().setCountDown(0);
+//                        curMyViewHolder.getBean().setEndTime(0);
                         curMyViewHolder.endTime(0);
                         mCountdownVHList.remove(key);
                     } else {

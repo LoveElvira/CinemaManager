@@ -5,7 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,12 +24,24 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.setting.AccountNameActivity;
 import com.yyjlr.tickets.activity.setting.SettingAccountActivity;
+import com.yyjlr.tickets.adapter.EventCollectUserAdapter;
 import com.yyjlr.tickets.content.MySettingContent;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.cinemainfo.CinemaInfoModel;
+import com.yyjlr.tickets.model.event.EventModel;
+import com.yyjlr.tickets.requestdata.IdRequest;
+import com.yyjlr.tickets.requestdata.RequestNull;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 
 /**
  * Created by Elvira on 2016/8/3.
@@ -49,15 +64,26 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     private TextView collectText;
     private TextView join;
     private boolean flag = true;
+    private RecyclerView listView;//收藏人
+    private TextView startTime;//开始时间
+    private TextView address;//地址
+    private TextView joinNum;//参加数
+    private TextView price;//价格
+    private TextView description;//描述
+    private TextView collectNum;//收藏用户
+    private EventModel eventModel;
+    private EventCollectUserAdapter adapter;
+    private ImageView imagebg;//背景图片 封面
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
         initView();
+        getEventInfo();
     }
 
-    private void initView(){
+    private void initView() {
 
 //        AppManager.getInstance().initWidthHeight(this);
         title = (TextView) findViewById(R.id.base_toolbar__text);
@@ -72,6 +98,20 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         rightPhoto.setOnClickListener(this);
 //        initWidget();
         title.setText("明星见面会");
+
+        collectNum = (TextView) findViewById(R.id.content_event__collect_num);
+        startTime = (TextView) findViewById(R.id.content_event__time);
+        address = (TextView) findViewById(R.id.content_event__address);
+        joinNum = (TextView) findViewById(R.id.content_event__join_number);
+        price = (TextView) findViewById(R.id.content_event__price);
+        description = (TextView) findViewById(R.id.content_event__description);
+        imagebg = (ImageView) findViewById(R.id.content_event__bg_image);
+
+        listView = (RecyclerView) findViewById(R.id.content_event__listview);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getBaseContext(), 5);
+        listView.setLayoutManager(gridLayoutManager);
+
+
         collectLayout = (LinearLayout) findViewById(R.id.content_event__collect);
         shareLayout = (LinearLayout) findViewById(R.id.content_event__share);
         collectImage = (ImageView) findViewById(R.id.content_event__collect_image);
@@ -80,6 +120,47 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         collectLayout.setOnClickListener(this);
         shareLayout.setOnClickListener(this);
         join.setOnClickListener(this);
+    }
+
+
+    //获取活动信息
+    private void getEventInfo() {
+        IdRequest idRequest = new IdRequest();
+        idRequest.setActivityId(getIntent().getLongExtra("id", 0) + "");
+        OkHttpClientManager.postAsyn(Config.GET_EVENT_INFO, new OkHttpClientManager.ResultCallback<EventModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+            }
+
+            @Override
+            public void onResponse(EventModel response) {
+                Log.i("ee", new Gson().toJson(response));
+                eventModel = response;
+                title.setText(eventModel.getActivityName());
+                startTime.setText(ChangeUtils.changeTime(eventModel.getStartTime()));
+                address.setText(eventModel.getAddress());
+                joinNum.setText(eventModel.getInterestUsers() + "");
+                collectNum.setText(eventModel.getInterestUsers() + "位用户收藏了这个信息");
+                price.setText(eventModel.getPrice());
+                description.setText(eventModel.getActivityDesc());
+
+                if (eventModel.getInterestUserInfo() != null) {
+                    adapter = new EventCollectUserAdapter(eventModel.getInterestUserInfo());
+                    listView.setAdapter(adapter);
+                }
+
+                Picasso.with(getBaseContext())
+                        .load(eventModel.getActivityImg())
+                        .into(imagebg);
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+            }
+        }, idRequest, EventModel.class, EventActivity.this);
     }
 
 
@@ -115,7 +196,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
 //                    drawable = getResources().getDrawable(R.mipmap.collect_select);
                     collectImage.setImageResource(R.mipmap.collect_select);
                     collectText.setText("已收藏");
-                }else {
+                } else {
 //                    drawable = getResources().getDrawable(R.mipmap.collect);
                     collectImage.setImageResource(R.mipmap.collect);
                     collectText.setText("收藏");

@@ -1,13 +1,9 @@
-package com.yyjlr.tickets.activity;
+package com.yyjlr.tickets.activity.sale;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,6 +15,7 @@ import android.widget.TextView;
 
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.AbstractActivity;
 
 /**
  * Created by Elvira on 2016/9/23.

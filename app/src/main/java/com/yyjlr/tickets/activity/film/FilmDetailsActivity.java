@@ -1,15 +1,12 @@
-package com.yyjlr.tickets.activity;
+package com.yyjlr.tickets.activity.film;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,10 +17,20 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.adapter.FilmDetailsPeopleAdapter;
 import com.yyjlr.tickets.model.FilmPeopleEntity;
+import com.yyjlr.tickets.model.film.FilmDetailsModel;
+import com.yyjlr.tickets.requestdata.IdRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
+import com.yyjlr.tickets.viewutils.WordWrapView;
 
 import java.util.List;
 
@@ -43,11 +50,6 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
     private ImageView upOrDown;
     private TextView filmName;//电影名
     private TextView filmEnglishName;//电影名
-    private TextView type;//类型
-    private TextView duration;//时长
-    private TextView degree;//2D 3D 4D
-    private TextView country;//国家
-    private TextView showTime;//上映
     private TextView introduce;//影片介绍
     private RecyclerView listView;
     private RatingBar score;//评分
@@ -60,8 +62,8 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
     private static final int SPREAD_STATE = 2;
     private static int mState = SHRINK_UP_STATE;
     private boolean flag = true;
-
-    private View view;
+    private FilmDetailsModel filmDetailsModel;
+    private WordWrapView wordWrapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,6 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
 
     private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
-        title.setText("愤怒的小鸟");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
@@ -86,27 +87,88 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
         upOrDown = (ImageView) findViewById(R.id.content_film_details__down);
         filmName = (TextView) findViewById(R.id.content_film_details__name);
         filmEnglishName = (TextView) findViewById(R.id.content_film_details__english_name);
-        type = (TextView) findViewById(R.id.content_film_details__type);
-        duration = (TextView) findViewById(R.id.content_film_details__duration);
-        degree = (TextView) findViewById(R.id.content_film_details__degree);
-        country = (TextView) findViewById(R.id.content_film_details__country);
-        showTime = (TextView) findViewById(R.id.content_film_details__showtime);
         introduce = (TextView) findViewById(R.id.content_film_details__introduce);
         listView = (RecyclerView) findViewById(R.id.content_film_details__listview);
         score = (RatingBar) findViewById(R.id.content_film_details__star);
+        wordWrapView = (WordWrapView) findViewById(R.id.content_film_details__tags);
 
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         listView.setLayoutManager(linearLayoutManager);
-        filmPeopleEntityList = Application.getiDataService().getFilmPeopleList();
-        adapter = new FilmDetailsPeopleAdapter(filmPeopleEntityList);
-        listView.setAdapter(adapter);
 
         collectLayout.setOnClickListener(this);
         shareLayout.setOnClickListener(this);
         selectSeat.setOnClickListener(this);
         upOrDown.setOnClickListener(this);
+        getFilmInfo();
+    }
+
+    //获取影片详情
+    private void getFilmInfo() {
+        customDialog = new CustomDialog(this, "加载中...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setMovieId(getIntent().getStringExtra("filmId"));
+        OkHttpClientManager.postAsyn(Config.GET_FILM_INFO, new OkHttpClientManager.ResultCallback<FilmDetailsModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(FilmDetailsModel response) {
+                filmDetailsModel = response;
+                title.setText(response.getMovieName());
+                filmName.setText(response.getMovieName());
+                filmEnglishName.setText(response.getMovieAlas());
+                introduce.setText(response.getMovieDesc());
+                if (response.getMovieBanner() != null) {
+                    Picasso.with(getBaseContext())
+                            .load(response.getMovieBanner())
+                            .into(bgImage);
+                }
+                if (response.getMoviePortrait() != null) {
+                    Picasso.with(getBaseContext())
+                            .load(response.getMoviePortrait())
+                            .into(image);
+                }
+
+                collectImage.setImageResource(R.mipmap.collect);
+                if (response.getIsFavority() == 1) {
+                    collectImage.setImageResource(R.mipmap.collect_select);
+                }
+                score.setRating(response.getScore() / 2.0f);
+                if (response.getWorker() != null) {
+//                    filmPeopleEntityList = Application.getiDataService().getFilmPeopleList();
+                    adapter = new FilmDetailsPeopleAdapter(response.getWorker());
+                    listView.setAdapter(adapter);
+                }
+
+                if (response.getTags() != null) {
+                    for (int i = 0; i < response.getTags().size(); i++) {
+                        wordWrapView.addView(initTag(response.getTags().get(i)));
+                    }
+                }
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, FilmDetailsModel.class, FilmDetailsActivity.this);
+    }
+
+    //动态创建标签
+    private View initTag(String tag) {
+        View view = View.inflate(getBaseContext(), R.layout.item_film_details_tag, null);
+        TextView tagText = (TextView) view.findViewById(R.id.item_film_details__tag);
+        tagText.setText(tag);
+        return view;
     }
 
     @Override
@@ -130,25 +192,20 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
 
                 break;
             case R.id.content_film_details__collect://收藏
-//                Drawable drawable = null;
                 if (flag) {
-//                    drawable = getResources().getDrawable(R.mipmap.collect_select);
                     collectImage.setImageResource(R.mipmap.collect_select);
                     collectText.setText("已收藏");
                 } else {
-//                    drawable = getResources().getDrawable(R.mipmap.collect);
                     collectImage.setImageResource(R.mipmap.collect);
                     collectText.setText("收藏");
                 }
-//                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-//                collect.setCompoundDrawables(null, drawable, null, null);
                 flag = !flag;
                 break;
             case R.id.content_film_details__share://分享
                 sharePopupWindow();
                 break;
             case R.id.content_film_details__select_seat://选座购票
-                startActivity(FilmScheduleActivity.class);
+                startActivity(new Intent(getBaseContext(), FilmScheduleActivity.class).putExtra("filmId", filmDetailsModel.getMovieId() + ""));
                 break;
             case R.id.popup_share__weixin:
                 mPopupWindow.dismiss();

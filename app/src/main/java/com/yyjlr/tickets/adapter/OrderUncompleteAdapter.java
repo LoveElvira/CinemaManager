@@ -1,18 +1,11 @@
 package com.yyjlr.tickets.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.model.OrderEntity;
-import com.yyjlr.tickets.service.OnRecyclerViewItemClickListener;
+import com.yyjlr.tickets.model.order.MyOrderInfo;
 import com.yyjlr.tickets.viewutils.SlidingButtonView;
 
 import java.util.List;
@@ -21,34 +14,44 @@ import java.util.List;
  * Created by Elvira on 2016/8/11.
  * 未完成的订单
  */
-public class OrderUncompleteAdapter extends BaseAdapter<OrderEntity> implements SlidingButtonView.SlidingButtonListener {
+public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements SlidingButtonView.SlidingButtonListener {
 
     private SlidingButtonView mMenu = null;
     private SlidingViewClickListener mIDeleteBtnClickListener;
 
-    List<OrderEntity> data;
+    List<MyOrderInfo> data;
 
-    public OrderUncompleteAdapter(List<OrderEntity> data, Context context) {
+    public OrderUncompleteAdapter(List<MyOrderInfo> data, Context context) {
         this(data);
         this.data = data;
         mIDeleteBtnClickListener = (SlidingViewClickListener) context;
     }
 
-    public OrderUncompleteAdapter(List<OrderEntity> data) {
+    public OrderUncompleteAdapter(List<MyOrderInfo> data) {
         super(R.layout.item_order_nocomplete, data);
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, OrderEntity item, int position) {
-        helper.setText(R.id.item_order_nocomplete__order_num, item.getOrderNum())
-                .setText(R.id.item_order_nocomplete__order_film, item.getOrderFilmName())
-                .setText(R.id.item_order_nocomplete__package, item.getOrderPackage())
+    protected void convert(final BaseViewHolder helper, MyOrderInfo item, int position) {
+        helper.setText(R.id.item_order_nocomplete__order_num, item.getOrderNo())
+                .setText(R.id.item_order_nocomplete__order_film, item.getMovieName())
                 .setVisible(R.id.item_order_nocomplete__pay, true)
                 .setVisible(R.id.item_order_nocomplete__lost, true)
                 .setVisible(R.id.item_order_nocomplete__cancel, true)
                 .setOnClickListener(R.id.item_order_nocomplete__cancel, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_order_nocomplete__pay, new OnItemChildClickListener());
-        if ("1".equals(item.getOrderComplete())) {
+
+        String goodName = "";
+        for (int i = 0; i < item.getGoodsName().size(); i++) {
+            if (i == item.getGoodsName().size() - 1) {
+                goodName = goodName + item.getGoodsName().get(i);
+            } else {
+                goodName = goodName + item.getGoodsName().get(i) + "，";
+            }
+        }
+        helper.setText(R.id.item_order_nocomplete__package, goodName);
+
+        if (item.getOrderStatus() == 1) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);
         } else {

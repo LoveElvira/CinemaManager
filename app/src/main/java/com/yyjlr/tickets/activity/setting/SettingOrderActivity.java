@@ -1,38 +1,38 @@
 package com.yyjlr.tickets.activity.setting;
 
-import android.app.Service;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
-import com.yyjlr.tickets.activity.EventActivity;
-import com.yyjlr.tickets.activity.FilmScheduleActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.OrderCompleteAdapter;
 import com.yyjlr.tickets.adapter.OrderUncompleteAdapter;
 import com.yyjlr.tickets.model.OrderEntity;
+import com.yyjlr.tickets.model.order.MyOrderBean;
+import com.yyjlr.tickets.model.order.MyOrderInfo;
+import com.yyjlr.tickets.requestdata.PagableRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -59,11 +59,13 @@ public class SettingOrderActivity extends AbstractActivity
     private List<OrderEntity> orderEntityList;
     private OrderCompleteAdapter completeAdapter;
     private OrderUncompleteAdapter unCompleteAdapter;
-    private boolean flag = true;
+    private String flag = "1";//订单类别,1:已完成；2：未完成
 
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
+
+    private List<MyOrderInfo> orderInfoList;
 
 
     @Override
@@ -99,9 +101,42 @@ public class SettingOrderActivity extends AbstractActivity
 
         completeLayout.setOnClickListener(this);
         unCompleteLayout.setOnClickListener(this);
-
-        initAdapter();
+        getOrder("0", "1");
+//        initAdapter();
     }
+
+    //获取订单 订单类别,1:已完成；2：未完成
+    private void getOrder(String pagable, String type) {
+        customDialog = new CustomDialog(this, "加载中...");
+        customDialog.show();
+        PagableRequest pagableRequest = new PagableRequest();
+        pagableRequest.setPagable(pagable);
+        pagableRequest.setType(type);
+        OkHttpClientManager.postAsyn(Config.GET_MY_ORDER, new OkHttpClientManager.ResultCallback<MyOrderBean>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(MyOrderBean response) {
+                customDialog.dismiss();
+                orderInfoList = response.getOrders();
+                initAdapter(orderInfoList);
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, pagableRequest, MyOrderBean.class, SettingOrderActivity.this);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -114,22 +149,22 @@ public class SettingOrderActivity extends AbstractActivity
                 completeImage.setBackgroundResource(R.mipmap.complete_select);
                 unComplete.setTextColor(getResources().getColor(R.color.gray_c3c3c3));
                 unCompleteImage.setBackgroundResource(R.mipmap.uncomplete);
-                flag = true;
+                flag = "1";
                 break;
             case R.id.content_setting_order__uncomplete_layout:
                 complete.setTextColor(getResources().getColor(R.color.gray_c3c3c3));
                 completeImage.setBackgroundResource(R.mipmap.complete);
                 unComplete.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
                 unCompleteImage.setBackgroundResource(R.mipmap.uncomplete_select);
-                flag = false;
+                flag = "2";
                 break;
         }
-        initAdapter();
+        initAdapter(orderInfoList);
     }
 
-    private void initAdapter() {
-        if (flag) {
-            completeAdapter = new OrderCompleteAdapter(orderEntityList, SettingOrderActivity.this);
+    private void initAdapter(List<MyOrderInfo> orderInfoList) {
+        if (flag.equals("1")) {
+            completeAdapter = new OrderCompleteAdapter(orderInfoList, SettingOrderActivity.this);
             completeAdapter.openLoadAnimation();
             listView.setAdapter(completeAdapter);
             mCurrentCounter = completeAdapter.getData().size();
@@ -137,7 +172,7 @@ public class SettingOrderActivity extends AbstractActivity
             completeAdapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
             completeAdapter.setOnRecyclerViewItemChildClickListener(this);
         } else {
-            unCompleteAdapter = new OrderUncompleteAdapter(orderEntityList, SettingOrderActivity.this);
+            unCompleteAdapter = new OrderUncompleteAdapter(orderInfoList, SettingOrderActivity.this);
             unCompleteAdapter.openLoadAnimation();
             listView.setAdapter(unCompleteAdapter);
             mCurrentCounter = unCompleteAdapter.getData().size();
@@ -169,14 +204,16 @@ public class SettingOrderActivity extends AbstractActivity
         listView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (flag) {
-                    completeAdapter.setNewData(orderEntityList);
-                    completeAdapter.openLoadMore(PAGE_SIZE, true);
+                if (flag.equals("1")) {
+//                    completeAdapter.setNewData(orderEntityList);
+//                    completeAdapter.openLoadMore(PAGE_SIZE, true);
                     completeAdapter.removeAllFooterView();
+                    getOrder("0", "1");
                 } else {
-                    unCompleteAdapter.setNewData(orderEntityList);
-                    unCompleteAdapter.openLoadMore(PAGE_SIZE, true);
+//                    unCompleteAdapter.setNewData(orderEntityList);
+//                    unCompleteAdapter.openLoadMore(PAGE_SIZE, true);
                     unCompleteAdapter.removeAllFooterView();
+                    getOrder("0", "2");
                 }
 
                 mCurrentCounter = PAGE_SIZE;
@@ -207,32 +244,32 @@ public class SettingOrderActivity extends AbstractActivity
         listView.post(new Runnable() {
             @Override
             public void run() {
-                if (mCurrentCounter >= TOTAL_COUNTER) {
+//                if (mCurrentCounter >= TOTAL_COUNTER) {
 //                    if (notLoadingView == null) {
 //                        notLoadingView = LayoutInflater.from(getBaseContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
 //                    }
-                    if (flag) {
-                        completeAdapter.notifyDataChangedAfterLoadMore(false);
+                if (flag.equals("1")) {
+                    completeAdapter.notifyDataChangedAfterLoadMore(false);
 //                        completeAdapter.addFooterView(notLoadingView);
-                    } else {
-                        unCompleteAdapter.notifyDataChangedAfterLoadMore(false);
-//                        unCompleteAdapter.addFooterView(notLoadingView);
-                    }
                 } else {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (flag) {
-                                completeAdapter.notifyDataChangedAfterLoadMore(orderEntityList, true);
-                                mCurrentCounter = completeAdapter.getData().size();
-                            } else {
-                                unCompleteAdapter.notifyDataChangedAfterLoadMore(orderEntityList, true);
-                                mCurrentCounter = unCompleteAdapter.getData().size();
-                            }
-
-                        }
-                    }, delayMillis);
+                    unCompleteAdapter.notifyDataChangedAfterLoadMore(false);
+//                        unCompleteAdapter.addFooterView(notLoadingView);
                 }
+//                } else {
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (flag.equals("1")) {
+//                                completeAdapter.notifyDataChangedAfterLoadMore(orderEntityList, true);
+//                                mCurrentCounter = completeAdapter.getData().size();
+//                            } else {
+//                                unCompleteAdapter.notifyDataChangedAfterLoadMore(orderEntityList, true);
+//                                mCurrentCounter = unCompleteAdapter.getData().size();
+//                            }
+
+//                        }
+//                    }, delayMillis);
+//                }
             }
 
         });
@@ -241,7 +278,7 @@ public class SettingOrderActivity extends AbstractActivity
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.item_order_nocomplete__cancel:
                 showIsDelete(position);
                 break;
@@ -251,7 +288,7 @@ public class SettingOrderActivity extends AbstractActivity
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent();
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.item_order_complete__ll_layout:
                 intent.setClass(SettingOrderActivity.this, SettingOrderDetailsActivity.class);
                 break;
@@ -264,7 +301,7 @@ public class SettingOrderActivity extends AbstractActivity
 
     @Override
     public void onDeleteBtnCilck(View view, int position) {
-        if (flag) {
+        if (flag.equals("1")) {
             completeAdapter.notifyItemRemoved(position);
         } else {
             unCompleteAdapter.notifyItemRemoved(position);
