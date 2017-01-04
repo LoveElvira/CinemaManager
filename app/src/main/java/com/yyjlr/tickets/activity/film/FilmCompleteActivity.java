@@ -3,6 +3,7 @@ package com.yyjlr.tickets.activity.film;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -33,6 +34,8 @@ import com.yyjlr.tickets.adapter.FilmSaleAdapter;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmSaleEntity;
+import com.yyjlr.tickets.model.ResponeNull;
+import com.yyjlr.tickets.model.ResponseId;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
 import com.yyjlr.tickets.model.order.ChangePayTypeBean;
 import com.yyjlr.tickets.requestdata.IdRequest;
@@ -446,12 +449,74 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         }, confirmFilmOrder, ChangePayTypeBean.class, FilmCompleteActivity.this);
     }
 
+    //取消订单
+    private void cancelOrder() {
+        customDialog = new CustomDialog(this, "加载中...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setOrderId(movieOrderBean.getOrderInfo().getId() + "");
+        OkHttpClientManager.postAsyn(Config.CANCEL_ORDER, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(ResponeNull response) {
+                customDialog.dismiss();
+                FilmCompleteActivity.this.finish();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, ResponeNull.class, FilmCompleteActivity.this);
+    }
+
+    /**
+     * show Dialog 是否确定 取消订单
+     */
+    private void showCancelOrder() {
+        LayoutInflater inflater = LayoutInflater.from(Application.getInstance().getCurrentActivity());
+        View layout = inflater.inflate(R.layout.alert_dialog, null);
+        final AlertDialog builder = new AlertDialog.Builder(Application.getInstance().getCurrentActivity()).create();
+        builder.setView(layout);
+        builder.setCancelable(false);
+        builder.show();
+        TextView title = (TextView) layout.findViewById(R.id.alert_dialog_title);
+        TextView message = (TextView) layout.findViewById(R.id.alert_dialog_message);
+        TextView cancel = (TextView) layout.findViewById(R.id.alert_dialog__cancel);
+        TextView confirm = (TextView) layout.findViewById(R.id.alert_dialog__submit);
+        confirm.setText("确定");
+        title.setText("提示");
+        message.setText("是否取消此订单?");
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //取消订单
+                cancelOrder();
+                builder.dismiss();
+
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.base_toolbar__left:
-                FilmCompleteActivity.this.finish();
+                showCancelOrder();
                 break;
             case R.id.content_sale_bill__delete_phone:
                 phone.setText("");

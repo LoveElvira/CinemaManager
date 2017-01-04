@@ -1,10 +1,12 @@
 package com.yyjlr.tickets.model.order;
 
+import java.io.Serializable;
+
 /**
  * Created by Elvira on 2016/12/30.
  */
 
-public class PaymentType {
+public class PaymentType implements Serializable {
     private int id;
     private String name;
 

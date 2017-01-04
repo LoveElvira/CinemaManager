@@ -1,4 +1,4 @@
-package com.yyjlr.tickets.activity;
+package com.yyjlr.tickets.content.pay;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.VipBoundActivity;
 
 /**
  * Created by Elvira on 2016/8/17.

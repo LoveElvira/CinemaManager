@@ -49,7 +49,6 @@ public class SplashActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        SharePrefUtil.putString(Constant.FILE_NAME, "token", "", SplashActivity.this);
         view = findViewById(R.id.splash__view);
         dealStatusBar(view);
         initView();

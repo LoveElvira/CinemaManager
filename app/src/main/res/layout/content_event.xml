@@ -126,7 +126,7 @@
             <TextView
                 android:id="@+id/content_event__join"
                 style="@style/MatchMatch"
-                android:background="@color/orange_ff7a0f"
+                android:background="@color/orange_ff7b0f"
                 android:gravity="center"
                 android:text="@string/text_want_to"
                 android:textColor="@color/white"

@@ -8,9 +8,9 @@
 
     <LinearLayout
         style="@style/MatchWrap"
+        android:layout_marginBottom="@dimen/size_10"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/size_10">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -23,7 +23,6 @@
                 android:id="@+id/content_order_details__film_name"
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_20"
-                android:text="愤怒的小鸟"
                 android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_15" />
 
@@ -37,7 +36,6 @@
                     android:id="@+id/content_order_details__film_date"
                     style="@style/WrapWrap"
                     android:layout_marginRight="@dimen/size_5"
-                    android:text="2016-08-16"
                     android:textColor="@color/red_de2500"
                     android:textSize="@dimen/text_12" />
 
@@ -45,14 +43,12 @@
                     android:id="@+id/content_order_details__film_time"
                     style="@style/WrapWrap"
                     android:layout_marginRight="@dimen/size_5"
-                    android:text="19:00~20:30"
                     android:textColor="@color/red_de2500"
                     android:textSize="@dimen/text_12" />
 
                 <TextView
                     android:id="@+id/content_order_details__film_type"
                     style="@style/WrapWrap"
-                    android:text="(英语3D)"
                     android:textColor="@color/gray_929292"
                     android:textSize="@dimen/text_12" />
 
@@ -63,7 +59,6 @@
                 android:id="@+id/content_order_details__film_hall"
                 style="@style/WrapWrap"
                 android:layout_marginTop="@dimen/size_5"
-                android:text="SFC(世博店)5号厅"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_12" />
 
@@ -71,7 +66,6 @@
                 android:id="@+id/content_order_details__film_seat"
                 style="@style/WrapWrap"
                 android:layout_marginTop="@dimen/size_5"
-                android:text="4排3座 4排4座"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_12" />
 
@@ -81,7 +75,6 @@
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_10"
                 android:layout_marginTop="@dimen/size_5"
-                android:text="150****1234"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_12" />
         </LinearLayout>
@@ -90,8 +83,7 @@
             android:id="@+id/content_order_details__film_image"
             android:layout_width="@dimen/size_60"
             android:layout_height="@dimen/size_80"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/bird" />
+            android:scaleType="centerCrop" />
 
     </LinearLayout>
 
@@ -99,14 +91,16 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@drawable/line_dash"
-        android:layerType="software"/>
+        android:layerType="software" />
 
     <LinearLayout
+        android:id="@+id/content_order_details__film_ticket_code_layout"
         style="@style/MatchWrap"
         android:layout_marginTop="@dimen/size_10"
         android:background="@drawable/radius_4_gray"
         android:orientation="horizontal"
-        android:padding="@dimen/size_10">
+        android:padding="@dimen/size_10"
+        android:visibility="gone">
 
         <TextView
             style="@style/WrapWrap"

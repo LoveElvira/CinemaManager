@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * Created by Elvira on 2016/8/2.
- * 我的关注
+ * 我的收藏
  */
 public class SettingFollowActivity extends AbstractActivity
         implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,

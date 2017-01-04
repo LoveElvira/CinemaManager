@@ -1,9 +1,11 @@
 package com.yyjlr.tickets.model.order;
 
+import java.io.Serializable;
+
 /**
  * Created by Richie on 2016/8/25.
  */
-public class OrderItemsInfo {
+public class OrderItemsInfo implements Serializable {
     private String name;//商品名称
     private int price;//单价
     private int couponPrice;//优惠价

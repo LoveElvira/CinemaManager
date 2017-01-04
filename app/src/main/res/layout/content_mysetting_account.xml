@@ -38,8 +38,7 @@
                 android:id="@+id/content_setting_account__head_image"
                 android:layout_width="@dimen/size_80"
                 android:layout_height="@dimen/size_80"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/image_2" />
+                android:scaleType="centerCrop"/>
 
             <ImageView
                 style="@style/WrapWrap"
@@ -76,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="@string/text_name"
                 android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_14" />
 
@@ -158,7 +156,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="1994-01-01"
                 android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_14" />
 
@@ -198,7 +195,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="150****1234"
                 android:textColor="@color/black_363636"
                 android:textSize="@dimen/text_14"
                 android:layout_marginRight="@dimen/size_25"/>

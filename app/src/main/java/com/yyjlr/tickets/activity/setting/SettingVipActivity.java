@@ -1,9 +1,6 @@
 package com.yyjlr.tickets.activity.setting;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,7 +11,6 @@ import android.widget.TextView;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.activity.VipBoundActivity;
-import com.yyjlr.tickets.activity.VipPayContent;
 
 /**
  * Created by Elvira on 2016/8/3.

@@ -1,39 +1,23 @@
 package com.yyjlr.tickets.activity;
 
-import android.content.Context;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.os.ParcelableCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.Request;
-import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.ContentAdapter;
+import com.yyjlr.tickets.content.pay.OnLinePayContent;
+import com.yyjlr.tickets.content.pay.VipPayContent;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.order.ChangePayTypeBean;
 import com.yyjlr.tickets.model.order.OrderItemsInfo;
-import com.yyjlr.tickets.model.sale.Goods;
-import com.yyjlr.tickets.requestdata.PagableRequest;
-import com.yyjlr.tickets.service.Error;
-import com.yyjlr.tickets.service.IRequestMainData;
-import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.LockableViewPager;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -80,8 +64,8 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         onlineLine = findViewById(R.id.content_pay_select__online_pay_line);
         cardLine = findViewById(R.id.content_pay_select__card_line);
 
-        onlinePay.setOnClickListener(this);
-        cardPay.setOnClickListener(this);
+//        onlinePay.setOnClickListener(this);
+//        cardPay.setOnClickListener(this);
 
         viewPager = (LockableViewPager) findViewById(R.id.content_pay_select__viewpager);
 
@@ -90,7 +74,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
 
         List<View> list = new ArrayList<View>();
         list.add(onLinePayContent);
-        list.add(vipPayContent);
+//        list.add(vipPayContent);
 
         adapter = new ContentAdapter(list, null);
         viewPager.setSwipeable(true);
@@ -107,10 +91,10 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                 if (position == 0) {
                     onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
                     onlineLine.setVisibility(View.VISIBLE);
-                } else if (position == 1) {
+                }/* else if (position == 1) {
                     cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
                     cardLine.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
 
             @Override

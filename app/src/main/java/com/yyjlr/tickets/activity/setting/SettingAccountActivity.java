@@ -17,12 +17,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
+import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.BasePhotoActivity;
 import com.yyjlr.tickets.content.MySettingContent;
+import com.yyjlr.tickets.model.myinfo.MyInfoModel;
+import com.yyjlr.tickets.requestdata.RequestNull;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.utils.BitmapUtils;
 import com.yyjlr.tickets.utils.ImageFileUtils;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -45,6 +55,7 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
     private LinearLayout sexLayout;
     private LinearLayout findPwdLayout;
     public static ImageView headImage;
+    private TextView phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +64,7 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("我的账户");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -69,14 +80,65 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         birthday = (TextView) findViewById(R.id.content_setting_account__birthday);
         sex = (TextView) findViewById(R.id.content_setting_account__sex);
         userName = (TextView) findViewById(R.id.content_setting_account__username);
+        phone = (TextView) findViewById(R.id.content_setting_account__phone);
         showBirthdayLayout.setOnClickListener(this);
         headImageLayout.setOnClickListener(this);
         userNameLayout.setOnClickListener(this);
         sexLayout.setOnClickListener(this);
         findPwdLayout.setOnClickListener(this);
 
-        userName.setText(getIntent().getStringExtra("userName"));
+//        userName.setText(getIntent().getStringExtra("userName"));
+        getMyInfo();
     }
+
+    //获取我的账号信息
+    private void getMyInfo() {
+        customDialog = new CustomDialog(SettingAccountActivity.this, "加载中...");
+        customDialog.show();
+        RequestNull requestNull = new RequestNull();
+        OkHttpClientManager.postAsyn(Config.GET_MY_INFO, new OkHttpClientManager.ResultCallback<MyInfoModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(MyInfoModel response) {
+                customDialog.dismiss();
+                if (response != null) {
+                    if (response.getHeadImgUrl() != null && !"".equals(response.getHeadImgUrl())) {
+                        Picasso.with(getBaseContext())
+                                .load(response.getHeadImgUrl())
+                                .into(headImage);
+                    }
+                    userName.setText(response.getNickname());
+                    // 性别，1：男；2：女
+                    if ("1".equals(response.getSex())) {
+                        sex.setText("男");
+                    } else {
+                        sex.setText("女");
+                    }
+
+                    if (response.getBirthday() != null && !"".equals(response.getBirthday())) {
+                        birthday.setText(response.getBirthday());
+                    }
+
+                    phone.setText(response.getPhone());
+
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, requestNull, MyInfoModel.class, Application.getInstance().getCurrentActivity());
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -86,18 +148,18 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                 SettingAccountActivity.this.finish();
                 break;
             case R.id.content_setting_account__head_image_layout:
-                View parent = LayoutInflater.from(SettingAccountActivity.this).inflate(R.layout.activity_mysetting_account,null);
-                new PopupWindows(SettingAccountActivity.this,parent);
+                View parent = LayoutInflater.from(SettingAccountActivity.this).inflate(R.layout.activity_mysetting_account, null);
+                new PopupWindows(SettingAccountActivity.this, parent);
 //                startActivity(SettingPhotoActivity.class);
                 break;
             case R.id.content_setting_account__username_layout:
-                intent.setClass(getBaseContext(),AccountNameActivity.class);
-                intent.putExtra("userName",userName.getText().toString());
+                intent.setClass(getBaseContext(), AccountNameActivity.class);
+                intent.putExtra("userName", userName.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.content_setting_account__sex_layout:
-                intent.setClass(getBaseContext(),AccountSexActivity.class);
-                intent.putExtra("sex",sex.getText().toString());
+                intent.setClass(getBaseContext(), AccountSexActivity.class);
+                intent.putExtra("sex", sex.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.content_setting_account__birthday_layout://时间选择器
@@ -219,7 +281,7 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                     } else if (resultCode == RESULT_OK) {
                         if (data != null && data.getData() != null) {
                             String path = ImageFileUtils.getPath(this, data.getData());
-                            Log.i("ee",path);
+                            Log.i("ee", path);
                             ClipPhotoActivity.startActivity(SettingAccountActivity.this, path, CODE_CLIP_REQUEST);
 //                            updateImage(path);
                         }

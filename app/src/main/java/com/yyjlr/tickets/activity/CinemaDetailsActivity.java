@@ -56,12 +56,12 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
 
     private View view;
     private LinearLayout cinemaLayout;//透明背景
-    private CinemaInfoModel cinemaInfoModel;
+    private CinemaInfoModel cinemaInfoModel = null;
     private TextView cinemaName, cinemaIntro;//影院名称 影院介绍
     private ImageView cinemaImage;//影院图片
     private ImageView cinemaAddressImage;//地址图标
     private TextView cinemaAddress;
-    private LinearLayout timeAndTelLayout, trafficLayout, featureLayout; // 营业时间和服务电话 影院交通 影院服务
+    private LinearLayout timeAndTelLayout, trafficLayout, featureLayout, addressLayout; // 营业时间和服务电话 影院交通 影院服务
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +112,7 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
         timeAndTelLayout = (LinearLayout) findViewById(R.id.content_cinema__time_and_tel_layout);
         trafficLayout = (LinearLayout) findViewById(R.id.content_cinema__traffic_layout);
         featureLayout = (LinearLayout) findViewById(R.id.content_cinema__feature_layout);
+        addressLayout = (LinearLayout) findViewById(R.id.content_cinema__address_layout);
 
 
 //        telPhoneLayout = (LinearLayout) findViewById(R.id.content_cinema__tel_phone);
@@ -146,7 +147,11 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                             .load(cinemaInfoModel.getCinemaImg())
                             .into(cinemaImage);
                 }
-                cinemaAddress.setText(cinemaInfoModel.getAddress());
+
+                if (cinemaInfoModel.getAddress() != null && !"".equals(cinemaInfoModel.getAddress())) {
+                    cinemaAddress.setText(cinemaInfoModel.getAddress());
+                    addressLayout.setVisibility(View.VISIBLE);
+                }
                 typeDate = cinemaInfoModel.getHallType();
                 adapter = new CinemaAdapter(CinemaDetailsActivity.this, typeDate);
                 listView.setAdapter(adapter);
@@ -268,7 +273,8 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
             }
         } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
             if (state != CollapsingToolbarLayoutState.COLLAPSED) {
-                title.setText(cinemaInfoModel.getCinemaName());
+                if (cinemaInfoModel != null)
+                    title.setText(cinemaInfoModel.getCinemaName());
 
 
                 leftArrowBg.setAlpha(0.0f);

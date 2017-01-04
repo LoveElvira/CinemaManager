@@ -36,12 +36,14 @@ import com.yyjlr.tickets.activity.setting.SettingAccountActivity;
 import com.yyjlr.tickets.adapter.EventCollectUserAdapter;
 import com.yyjlr.tickets.content.MySettingContent;
 import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.cinemainfo.CinemaInfoModel;
 import com.yyjlr.tickets.model.event.EventModel;
 import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 /**
  * Created by Elvira on 2016/8/3.
@@ -63,7 +65,6 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     private ImageView collectImage;
     private TextView collectText;
     private TextView join;
-    private boolean flag = true;
     private RecyclerView listView;//收藏人
     private TextView startTime;//开始时间
     private TextView address;//地址
@@ -97,7 +98,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         rightPhoto.setText("相册");
         rightPhoto.setOnClickListener(this);
 //        initWidget();
-        title.setText("明星见面会");
+//        title.setText("明星见面会");
 
         collectNum = (TextView) findViewById(R.id.content_event__collect_num);
         startTime = (TextView) findViewById(R.id.content_event__time);
@@ -146,6 +147,13 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                 price.setText(eventModel.getPrice());
                 description.setText(eventModel.getActivityDesc());
 
+                collectImage.setImageResource(R.mipmap.collect);
+                collectText.setText("收藏");
+                if (response.getIsInterest() == 1) {
+                    collectImage.setImageResource(R.mipmap.collect_select);
+                    collectText.setText("已收藏");
+                }
+
                 if (eventModel.getInterestUserInfo() != null) {
                     adapter = new EventCollectUserAdapter(eventModel.getInterestUserInfo());
                     listView.setAdapter(adapter);
@@ -181,6 +189,43 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         mCardView.setLayoutParams(layoutParams);
     }
 
+    //关注影片或取消关注
+    private void collectFilm(String isCollect) {
+        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setMovieId(getIntent().getStringExtra("filmId"));
+        idRequest.setIsInterest(isCollect);
+        OkHttpClientManager.postAsyn(Config.COLLECT_FILM, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(ResponeNull response) {
+                if ("收藏".equals(collectText.getText().toString().trim())) {
+                    collectImage.setImageResource(R.mipmap.collect_select);
+                    collectText.setText("已收藏");
+                } else {
+                    collectImage.setImageResource(R.mipmap.collect);
+                    collectText.setText("收藏");
+                }
+                customDialog.dismiss();
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, ResponeNull.class, EventActivity.this);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -191,19 +236,11 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
             case R.id.base_toolbar__right_text://展示背景图片信息
                 break;
             case R.id.content_event__collect:
-//                Drawable drawable = null;
-                if (flag) {
-//                    drawable = getResources().getDrawable(R.mipmap.collect_select);
-                    collectImage.setImageResource(R.mipmap.collect_select);
-                    collectText.setText("已收藏");
+                if ("收藏".equals(collectText.getText().toString().trim())) {
+                    collectFilm("1");
                 } else {
-//                    drawable = getResources().getDrawable(R.mipmap.collect);
-                    collectImage.setImageResource(R.mipmap.collect);
-                    collectText.setText("收藏");
+                    collectFilm("0");
                 }
-//                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-//                collect.setCompoundDrawables(null, drawable, null, null);
-                flag = !flag;
                 break;
             case R.id.content_event__share:
                 sharePopupWindow();

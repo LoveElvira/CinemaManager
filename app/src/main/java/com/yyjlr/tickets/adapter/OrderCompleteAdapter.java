@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.content.order.CompleteOrderContent;
 import com.yyjlr.tickets.model.OrderEntity;
 import com.yyjlr.tickets.model.order.MyOrderInfo;
 import com.yyjlr.tickets.viewutils.SlidingButtonView;
@@ -24,7 +25,7 @@ public class OrderCompleteAdapter extends BaseAdapter<MyOrderInfo> implements Sl
 
     List<MyOrderInfo> data;
 
-    public OrderCompleteAdapter(List<MyOrderInfo> data, Context context) {
+    public OrderCompleteAdapter(List<MyOrderInfo> data, CompleteOrderContent context) {
         this(data);
         this.data = data;
         mIDeleteBtnClickListener = (SlidingViewClickListener) context;

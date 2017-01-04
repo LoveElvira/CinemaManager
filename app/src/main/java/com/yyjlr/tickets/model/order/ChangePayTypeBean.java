@@ -1,11 +1,12 @@
 package com.yyjlr.tickets.model.order;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Richie on 2016/8/29.
  */
-public class ChangePayTypeBean {
+public class ChangePayTypeBean implements Serializable {
     private int totalPrice;//订单总金额，单位分
     private int price;//支付金额，单位分
     private List<OrderItemsInfo> items;//商品信息

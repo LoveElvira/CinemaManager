@@ -30,7 +30,7 @@
                 <ImageView
                     android:id="@+id/fragment_sale__package_image"
                     style="@style/WrapWrap"
-                    android:background="@mipmap/sale_package_select" />
+                    android:src="@mipmap/sale_package_select" />
 
                 <TextView
                     style="@style/WrapWrap"
@@ -60,7 +60,7 @@
                 <ImageView
                     android:id="@+id/fragment_sale__sale_image"
                     style="@style/WrapWrap"
-                    android:background="@mipmap/sale_sale" />
+                    android:src="@mipmap/sale_sale" />
 
                 <TextView
                     style="@style/WrapWrap"
@@ -72,13 +72,7 @@
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
 
-    <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
-        android:id="@+id/fragment_sale__refresh"
-        style="@style/MatchMatch">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_sale__listview"
-            style="@style/MatchMatch" />
-    </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
-
+    <com.yyjlr.tickets.viewutils.LockableViewPager
+        android:id="@+id/content_sale__viewpager"
+        style="@style/MatchMatch" />
 </LinearLayout>

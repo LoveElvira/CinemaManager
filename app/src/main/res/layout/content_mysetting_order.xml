@@ -35,7 +35,7 @@
                     android:id="@+id/content_setting_order__complete"
                     android:layout_width="@dimen/size_30"
                     android:layout_height="@dimen/size_30"
-                    android:background="@mipmap/complete_select" />
+                    android:src="@mipmap/complete_select" />
 
                 <TextView
                     android:id="@+id/content_setting_order__complete_title"
@@ -71,7 +71,7 @@
                     android:id="@+id/content_setting_order__uncomplete"
                     android:layout_width="@dimen/size_30"
                     android:layout_height="@dimen/size_30"
-                    android:background="@mipmap/uncomplete" />
+                    android:src="@mipmap/uncomplete" />
 
                 <TextView
                     android:id="@+id/content_setting_order__uncomplete_title"
@@ -83,13 +83,7 @@
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
 
-    <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
-        android:id="@+id/content_setting_order__refresh"
-        style="@style/MatchMatch">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/content_setting_order__listview"
-            style="@style/MatchMatch"
-            android:background="@color/white" />
-    </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
+    <com.yyjlr.tickets.viewutils.LockableViewPager
+        android:id="@+id/content_order__viewpager"
+        style="@style/MatchMatch"/>
 </LinearLayout>

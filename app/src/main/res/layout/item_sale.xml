@@ -68,20 +68,21 @@
                             android:textSize="@dimen/text_13" />
                     </LinearLayout>
 
-                    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                        style="@style/WrapWrap"
-                        android:layout_margin="@dimen/size_5"
-                        app:mrl_rippleAlpha="0.2"
-                        app:mrl_rippleColor="@color/bg_shadow"
-                        app:mrl_rippleHover="true"
-                        app:mrl_rippleOverlay="true">
+                    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+                        <!--style="@style/WrapWrap"-->
+                        <!--android:layout_margin="@dimen/size_5"-->
+                        <!--app:mrl_rippleAlpha="0.2"-->
+                        <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                        <!--app:mrl_rippleHover="true"-->
+                        <!--app:mrl_rippleOverlay="true">-->
 
                         <ImageView
                             android:id="@+id/item_sale__shopping_cart"
                             android:layout_width="@dimen/size_40"
                             android:layout_height="@dimen/size_40"
+                            android:layout_margin="@dimen/size_5"
                             android:src="@mipmap/small_shopping_cart" />
-                    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
                 </LinearLayout>
 
 

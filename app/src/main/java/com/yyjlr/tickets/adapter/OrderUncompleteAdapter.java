@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.content.order.UnCompleteOrderContent;
 import com.yyjlr.tickets.model.order.MyOrderInfo;
 import com.yyjlr.tickets.viewutils.SlidingButtonView;
 
@@ -21,7 +22,7 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
 
     List<MyOrderInfo> data;
 
-    public OrderUncompleteAdapter(List<MyOrderInfo> data, Context context) {
+    public OrderUncompleteAdapter(List<MyOrderInfo> data, UnCompleteOrderContent context) {
         this(data);
         this.data = data;
         mIDeleteBtnClickListener = (SlidingViewClickListener) context;
@@ -33,6 +34,8 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
 
     @Override
     protected void convert(final BaseViewHolder helper, MyOrderInfo item, int position) {
+        AppManager.getInstance().initWidthHeight(helper.getConvertView().getContext());
+
         helper.setText(R.id.item_order_nocomplete__order_num, item.getOrderNo())
                 .setText(R.id.item_order_nocomplete__order_film, item.getMovieName())
                 .setVisible(R.id.item_order_nocomplete__pay, true)
@@ -51,11 +54,37 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
         }
         helper.setText(R.id.item_order_nocomplete__package, goodName);
 
+        // 订单状态，1：待支付；2：待出票；3：已完成；4：用户取消；5：待退款；6：已退款；7：购买卖品失败；8：出票失败；9：超时失效
         if (item.getOrderStatus() == 1) {
+            helper.setVisible(R.id.item_order_nocomplete__lost, false);
+        } else if (item.getOrderStatus() == 2) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);
-        } else {
-            helper.setVisible(R.id.item_order_nocomplete__lost, false);
+            helper.setText(R.id.item_order_nocomplete__lost, "待出票");
+        } else if (item.getOrderStatus() == 4) {
+            helper.setVisible(R.id.item_order_nocomplete__pay, false)
+                    .setVisible(R.id.item_order_nocomplete__cancel, false);
+            helper.setText(R.id.item_order_nocomplete__lost, "用户已取消");
+        } else if (item.getOrderStatus() == 5) {
+            helper.setVisible(R.id.item_order_nocomplete__pay, false)
+                    .setVisible(R.id.item_order_nocomplete__cancel, false);
+            helper.setText(R.id.item_order_nocomplete__lost, "待退款");
+        } else if (item.getOrderStatus() == 6) {
+            helper.setVisible(R.id.item_order_nocomplete__pay, false)
+                    .setVisible(R.id.item_order_nocomplete__cancel, false);
+            helper.setText(R.id.item_order_nocomplete__lost, "已退款");
+        } else if (item.getOrderStatus() == 7) {
+            helper.setVisible(R.id.item_order_nocomplete__pay, false)
+                    .setVisible(R.id.item_order_nocomplete__cancel, false);
+            helper.setText(R.id.item_order_nocomplete__lost, "购买卖品失败");
+        } else if (item.getOrderStatus() == 8) {
+            helper.setVisible(R.id.item_order_nocomplete__pay, false)
+                    .setVisible(R.id.item_order_nocomplete__cancel, false);
+            helper.setText(R.id.item_order_nocomplete__lost, "出票失败");
+        } else if (item.getOrderStatus() == 9) {
+            helper.setVisible(R.id.item_order_nocomplete__pay, false)
+                    .setVisible(R.id.item_order_nocomplete__cancel, false);
+            helper.setText(R.id.item_order_nocomplete__lost, "超时失效");
         }
 
         helper.getView(R.id.item_order_nocomplete__rl_layout).getLayoutParams().width = AppManager.getInstance().getWidth();

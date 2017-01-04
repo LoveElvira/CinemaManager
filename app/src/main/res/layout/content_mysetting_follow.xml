@@ -35,15 +35,15 @@
                     android:id="@+id/content_setting_follow__film_image"
                     android:layout_width="@dimen/size_20"
                     android:layout_height="@dimen/size_20"
-                    android:background="@mipmap/collect_film_select" />
+                    android:src="@mipmap/collect_film_select" />
 
                 <TextView
                     android:id="@+id/content_setting_follow__film"
                     style="@style/WrapWrap"
                     android:paddingTop="@dimen/size_5"
                     android:text="@string/text_film_title"
-                    android:textSize="@dimen/text_10"
-                    android:textColor="@color/orange_ff7a0f"/>
+                    android:textColor="@color/orange_ff7a0f"
+                    android:textSize="@dimen/text_10" />
             </LinearLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
@@ -72,7 +72,7 @@
                     android:id="@+id/content_setting_follow__grab_image"
                     android:layout_width="@dimen/size_20"
                     android:layout_height="@dimen/size_20"
-                    android:background="@mipmap/collect_grab" />
+                    android:src="@mipmap/collect_grab" />
 
                 <TextView
                     android:id="@+id/content_setting_follow__grab_ticket"

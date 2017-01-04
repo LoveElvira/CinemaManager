@@ -1,32 +1,25 @@
-package com.yyjlr.tickets.activity;
+package com.yyjlr.tickets.content.pay;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
-import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.PayAdapter;
-import com.yyjlr.tickets.model.cinemainfo.HallType;
 import com.yyjlr.tickets.model.pay.PayModel;
 import com.yyjlr.tickets.model.pay.SelectPay;
-import com.yyjlr.tickets.model.sale.Goods;
-import com.yyjlr.tickets.requestdata.PagableRequest;
 import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.Error;
-import com.yyjlr.tickets.service.IRequestMainData;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 
 import java.util.List;

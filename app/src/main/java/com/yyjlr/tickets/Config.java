@@ -7,8 +7,8 @@ package com.yyjlr.tickets;
 
 public class Config {
     public static final boolean DEBUG = true;
-    public static final String URL_SERVICE = "http://192.168.1.85:8080/cgi";//小强本地
-    //    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
+    //    public static final String URL_SERVICE = "http://192.168.1.85:8080/cgi";//小强本地
+    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
     public static final String URL_SERVICE_UPLOAD = "http://121.43.175.36/uploadFile";//上传文件
 
     public static final String REGISTER = "user/register";//用户注册
@@ -33,6 +33,14 @@ public class Config {
     public static final String CONFIRM_ORDER = "order/saveOrder";//确认订单接口
     public static final String GET_MY_ORDER = "user/order";//订单列表
     public static final String GET_MY_ORDER_INFO = "user/orderDetail";//订单详情
+    public static final String CHECK_NO_PAY_ORDER = "order/unpaid";//检查同场次未支付订单
+    public static final String GET_MY_INFO = "user/detail";//个人中心首页 以及个人中心
+    public static final String CANCEL_ORDER = "order/cancel";//取消订单接口
+    public static final String REMOVE_ORDER = "order/delete";//删除订单
+    public static final String COLLECT_FILM = "movie/interest";//影片关注（取消关注）接口
+    public static final String CONFIRM_PAY = "order/changePayType";//确认支付金额接口
+    public static final String GET_MESSAGE = "user/message";//我的消息
+    public static final String GET_UNPAID_DETAIL = "order/unpaid/detail";//待处理订单详情
 
 
 }

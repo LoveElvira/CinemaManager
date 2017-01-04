@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.activity.setting.SettingAccountActivity;
@@ -25,7 +30,13 @@ import com.yyjlr.tickets.activity.setting.SettingMessageActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderActivity;
 import com.yyjlr.tickets.activity.setting.SettingPointsActivity;
 import com.yyjlr.tickets.activity.setting.SettingVipActivity;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
+import com.yyjlr.tickets.model.myinfo.MyInfoModel;
+import com.yyjlr.tickets.requestdata.RequestNull;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CircleImageView;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import static com.yyjlr.tickets.R.mipmap.phone;
 
@@ -45,6 +56,8 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
     private RelativeLayout myAccountLayout, myOrderLayout, myVipLayout, myMessageLayout, myFollowLayout, myPointsLayout;
 
 
+    private CustomDialog customDialog;
+
     public MySettingContent(Context context) {
         this(context, null);
     }
@@ -52,16 +65,20 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
     public MySettingContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_mysetting, this);
-        headImage = (CircleImageView) view.findViewById(R.id.fragment_setting__head_img);
-        sex = (ImageView) view.findViewById(R.id.fragment_setting__sex);
-        userName = (TextView) view.findViewById(R.id.fragment_setting__username);
-        myAccountLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__myaccount);
-        myOrderLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__myorder);
-        myVipLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__vip);
-        myMessageLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__message);
-        myFollowLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__follow);
-        myPointsLayout = (RelativeLayout) view.findViewById(R.id.fragment_setting__points);
-        myService = (LinearLayout) view.findViewById(R.id.fragment_setting__service);
+        initView();
+    }
+
+    private void initView() {
+        headImage = (CircleImageView) findViewById(R.id.fragment_setting__head_img);
+        sex = (ImageView) findViewById(R.id.fragment_setting__sex);
+        userName = (TextView) findViewById(R.id.fragment_setting__username);
+        myAccountLayout = (RelativeLayout) findViewById(R.id.fragment_setting__myaccount);
+        myOrderLayout = (RelativeLayout) findViewById(R.id.fragment_setting__myorder);
+        myVipLayout = (RelativeLayout) findViewById(R.id.fragment_setting__vip);
+        myMessageLayout = (RelativeLayout) findViewById(R.id.fragment_setting__message);
+        myFollowLayout = (RelativeLayout) findViewById(R.id.fragment_setting__follow);
+        myPointsLayout = (RelativeLayout) findViewById(R.id.fragment_setting__points);
+        myService = (LinearLayout) findViewById(R.id.fragment_setting__service);
 
         headImage.setOnClickListener(this);
         myAccountLayout.setOnClickListener(this);
@@ -71,8 +88,53 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
         myFollowLayout.setOnClickListener(this);
         myService.setOnClickListener(this);
         myPointsLayout.setOnClickListener(this);
-
+        String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "0", Application.getInstance().getCurrentActivity());
+        if (isLogin.equals("1")) {
+            getMyInfo();
+        }
     }
+
+
+    //获取我的账号信息
+    private void getMyInfo() {
+        customDialog = new CustomDialog(getContext(), "加载中...");
+        customDialog.show();
+        RequestNull requestNull = new RequestNull();
+        OkHttpClientManager.postAsyn(Config.GET_MY_INFO, new OkHttpClientManager.ResultCallback<MyInfoModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(MyInfoModel response) {
+                customDialog.dismiss();
+
+                if (response.getHeadImgUrl() != null && !"".equals(response.getHeadImgUrl())) {
+                    Picasso.with(getContext())
+                            .load(response.getHeadImgUrl())
+                            .into(headImage);
+                }
+                if (response.getSexImgUrl() != null && !"".equals(response.getSexImgUrl())) {
+                    Picasso.with(getContext())
+                            .load(response.getSexImgUrl())
+                            .into(sex);
+                }
+                userName.setText(response.getNickname());
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, requestNull, MyInfoModel.class, Application.getInstance().getCurrentActivity());
+    }
+
 
     @Override
     public void onClick(View view) {

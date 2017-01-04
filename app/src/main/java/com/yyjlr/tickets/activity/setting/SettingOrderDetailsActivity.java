@@ -47,7 +47,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
 
     private OrderDetailBean orderDetailBean;
 
-    private LinearLayout goodLayout;
+    private LinearLayout goodLayout, ticketCodeLayout;
     //付款电话 付款方式 付款时间 支付金额
     private TextView payPhone, payType, payTime, payPrice;
 
@@ -80,6 +80,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
 
         saleLayout = (LinearLayout) findViewById(R.id.content_order_details__package_layout);
         moreLayout = (LinearLayout) findViewById(R.id.item_order_sale_details__more_layout);
+        ticketCodeLayout = (LinearLayout) findViewById(R.id.content_order_details__film_ticket_code_layout);
         moreImage = (ImageView) findViewById(R.id.item_order_sale_details_more__down);
         moreText = (TextView) findViewById(R.id.item_order_sale_details_more__text);
 
@@ -99,8 +100,9 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     private void initDate() {
 
         MovieOrderDetailInfo movieOrderDetailInfo = orderDetailBean.getMovieDetail();
+        orderNum.setText(orderDetailBean.getOrderNo());
         filmName.setText(movieOrderDetailInfo.getMovieName());
-        filmDate.setText(ChangeUtils.changeTimeDate(movieOrderDetailInfo.getStartTime()));
+        filmDate.setText(ChangeUtils.changeTimeYear(movieOrderDetailInfo.getStartTime()));
         filmTime.setText(ChangeUtils.changeTimeTime(movieOrderDetailInfo.getStartTime()) + "~" + ChangeUtils.changeTimeTime(movieOrderDetailInfo.getEndTime()));
         filmType.setText("(" + movieOrderDetailInfo.getLanguage() + movieOrderDetailInfo.getMovieType() + ")");
         filmHall.setText("(" + movieOrderDetailInfo.getCinemaName() + ")" + movieOrderDetailInfo.getHallName());
@@ -114,7 +116,10 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         }
         filmSeat.setText(seatStr);
         filmPhone.setText(movieOrderDetailInfo.getPhone());
-        getFilmNum.setText(movieOrderDetailInfo.getValidCode());
+        if (movieOrderDetailInfo.getValidCode() != null && !"".equals(movieOrderDetailInfo.getValidCode())) {
+            ticketCodeLayout.setVisibility(View.VISIBLE);
+            getFilmNum.setText(movieOrderDetailInfo.getValidCode());
+        }
 
         if (movieOrderDetailInfo.getMovieImg() != null && !"".equals(movieOrderDetailInfo.getMovieImg())) {
             Picasso.with(getBaseContext())
@@ -137,7 +142,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         } else {
             payType.setText("无");
         }
-        if (!"".equals(orderDetailBean.getPayTime()) && orderDetailBean.getPayTime() != null) {
+        if (orderDetailBean.getPayTime() != 0 && orderDetailBean.getPayTime() != null) {
             payTime.setText(ChangeUtils.changeTime(orderDetailBean.getPayTime()));
         } else {
             payTime.setText("无");

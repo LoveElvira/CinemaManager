@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.StrictMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,7 @@ import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.adapter.SeatTypeAdapter;
 import com.yyjlr.tickets.helputils.ChangeUtils;
-import com.yyjlr.tickets.model.FilmSeatEntity;
+import com.yyjlr.tickets.model.ResponseId;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
 import com.yyjlr.tickets.model.seat.SeatBean;
 import com.yyjlr.tickets.model.seat.SeatInfo;
@@ -35,10 +34,6 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SeatTableView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,12 +108,6 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         Typeface font = Typeface.createFromAsset(assetManager, "fonts/Digital2.ttf");
         seatTime.setTypeface(font);
 
-        confirmSeat.setOnClickListener(this);
-        seatOne.setOnClickListener(this);
-        seatTwo.setOnClickListener(this);
-        seatThree.setOnClickListener(this);
-        seatFour.setOnClickListener(this);
-
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -129,13 +118,12 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         Gson gson = new Gson();
 //        Log.i("ee", getAssets().toString() + "------" + readFromAsset("seat.json"));
 //        FilmSeatEntity filmSeatEntity = gson.fromJson(readFromAsset("seat.json"), FilmSeatEntity.class);
-        getSeatPlan();
+        CheckNoPayOrder();
+        confirmSeat.setOnClickListener(this);
     }
 
     //获取影片（抢票）座位信息接口
     private void getSeatPlan() {
-        customDialog = new CustomDialog(this, "加载中...");
-        customDialog.show();
         IdRequest idRequest = new IdRequest();
         idRequest.setPlanId(getIntent().getStringExtra("planId"));
         OkHttpClientManager.postAsyn(Config.GET_FILM_SEAT, new OkHttpClientManager.ResultCallback<SeatBean>() {
@@ -158,16 +146,27 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 language.setText(seatBean.getLanguage());
                 filmType.setText(seatBean.getMovieType());
                 seatTableView.setScreenName(seatBean.getHallName());//设置屏幕名称
-                seatTableView.setData(seatBean.getSeatList(), seatBean.getSeatType());
-                for (int i = 0; i < seatBean.getSeatType().size(); i++) {
-                    if (seatBean.getSeatType().get(i).getIsShow().equals("1")) {
-                        seatTypeList.add(seatBean.getSeatType().get(i));
-                    }
+                if (seatBean.getSeatList() != null && seatBean.getSeatList().size() > 0) {
+                    seatTableView.setData(seatBean.getSeatList(), seatBean.getSeatType());
                 }
-                seatTypeAdapter = new SeatTypeAdapter(seatTypeList);
-                seatTypeListView.setAdapter(seatTypeAdapter);
+                if (seatBean.getSeatType() != null && seatBean.getSeatType().size() > 0) {
+                    for (int i = 0; i < seatBean.getSeatType().size(); i++) {
+                        if (seatBean.getSeatType().get(i).getIsShow().equals("1")) {
+                            seatTypeList.add(seatBean.getSeatType().get(i));
+                        }
+                    }
+                    seatTypeAdapter = new SeatTypeAdapter(seatTypeList);
+                    seatTypeListView.setAdapter(seatTypeAdapter);
+                }
 
                 customDialog.dismiss();
+
+                if (seatBean.getSeatList() != null && seatBean.getSeatList().size() > 0) {
+                    seatOne.setOnClickListener(FilmSelectSeatActivity.this);
+                    seatTwo.setOnClickListener(FilmSelectSeatActivity.this);
+                    seatThree.setOnClickListener(FilmSelectSeatActivity.this);
+                    seatFour.setOnClickListener(FilmSelectSeatActivity.this);
+                }
             }
 
             @Override
@@ -211,6 +210,38 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             }
         }, lockSeatRequest, AddMovieOrderBean.class, FilmSelectSeatActivity.this);
     }
+
+    //检查同场次未支付订单
+    private void CheckNoPayOrder() {
+        customDialog = new CustomDialog(this, "加载中...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setPlanId(getIntent().getStringExtra("planId"));
+        OkHttpClientManager.postAsyn(Config.CHECK_NO_PAY_ORDER, new OkHttpClientManager.ResultCallback<ResponseId>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(ResponseId response) {
+                getSeatPlan();
+//                Intent intent = new Intent(FilmSelectSeatActivity.this, FilmCompleteActivity.class);
+//                intent.putExtra("movieOrderBean", orderBean);
+//                FilmSelectSeatActivity.this.startActivity(intent);
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, ResponseId.class, FilmSelectSeatActivity.this);
+    }
+
 
 //    public String readFromAsset(String fileName) {
 //

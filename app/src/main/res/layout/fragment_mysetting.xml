@@ -22,15 +22,14 @@
                 <com.yyjlr.tickets.viewutils.CircleImageView
                     android:id="@+id/fragment_setting__head_img"
                     android:layout_width="@dimen/size_80"
-                    android:layout_height="@dimen/size_80"
-                    android:src="@mipmap/image_2" />
+                    android:layout_height="@dimen/size_80" />
 
                 <ImageView
                     android:id="@+id/fragment_setting__sex"
-                    style="@style/WrapWrap"
+                    android:layout_width="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
                     android:layout_alignBottom="@+id/fragment_setting__head_img"
-                    android:layout_alignRight="@+id/fragment_setting__head_img"
-                    android:src="@mipmap/girl" />
+                    android:layout_alignRight="@+id/fragment_setting__head_img" />
             </RelativeLayout>
 
             <TextView
@@ -38,9 +37,8 @@
                 style="@style/WrapWrap"
                 android:layout_marginTop="@dimen/size_5"
                 android:padding="@dimen/size_5"
-                android:text="@string/text_name"
-                android:textSize="@dimen/text_15"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_15" />
 
         </LinearLayout>
 
@@ -73,7 +71,7 @@
                     style="@style/WrapWrap"
                     android:text="@string/text_call_service"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_12"/>
+                    android:textSize="@dimen/text_12" />
             </LinearLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </RelativeLayout>
@@ -107,15 +105,15 @@
                     android:layout_height="@dimen/size_30"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/size_10"
-                    android:src="@mipmap/my_account"/>
+                    android:src="@mipmap/my_account" />
 
                 <TextView
                     style="@style/WrapWrap"
-                    android:text="@string/text_my_account"
-                    android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/text_my_account"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_14"/>
+                    android:textSize="@dimen/text_14" />
 
             </RelativeLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
@@ -148,12 +146,12 @@
 
                 <TextView
                     style="@style/WrapWrap"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="@string/text_my_order"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="@string/text_my_order"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_14"/>
+                    android:textSize="@dimen/text_14" />
             </RelativeLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
@@ -170,8 +168,8 @@
                 android:id="@+id/fragment_setting__vip"
                 style="@style/MatchMatch"
                 android:background="@drawable/radius_white_4_alpha_3"
-                android:padding="@dimen/size_10"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     android:layout_width="@dimen/size_30"
@@ -182,12 +180,12 @@
 
                 <TextView
                     style="@style/WrapWrap"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/size_10"
                     android:text="@string/text_huiyuan"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_14"/>
+                    android:textSize="@dimen/text_14" />
             </RelativeLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
@@ -213,8 +211,8 @@
                 android:id="@+id/fragment_setting__points"
                 style="@style/MatchMatch"
                 android:background="@drawable/radius_white_4_alpha_3"
-                android:padding="@dimen/size_10"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     android:layout_width="@dimen/size_30"
@@ -225,12 +223,12 @@
 
                 <TextView
                     style="@style/WrapWrap"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/size_10"
                     android:text="我的积分"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_14"/>
+                    android:textSize="@dimen/text_14" />
 
             </RelativeLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
@@ -250,8 +248,8 @@
                 android:id="@+id/fragment_setting__message"
                 style="@style/MatchMatch"
                 android:background="@drawable/radius_white_4_alpha_3"
-                android:padding="@dimen/size_10"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     android:layout_width="@dimen/size_30"
@@ -263,12 +261,12 @@
 
                 <TextView
                     style="@style/WrapWrap"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/size_10"
                     android:text="@string/text_message"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_14"/>
+                    android:textSize="@dimen/text_14" />
             </RelativeLayout>
 
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
@@ -286,8 +284,8 @@
                 android:id="@+id/fragment_setting__follow"
                 style="@style/MatchMatch"
                 android:background="@drawable/radius_white_4_alpha_3"
-                android:padding="@dimen/size_10"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
 
                 <ImageView
                     android:layout_width="@dimen/size_30"
@@ -298,12 +296,12 @@
 
                 <TextView
                     style="@style/WrapWrap"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/size_10"
                     android:text="@string/text_collect"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_14"/>
+                    android:textSize="@dimen/text_14" />
             </RelativeLayout>
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>

@@ -43,7 +43,10 @@
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="@dimen/size_10">
+                android:paddingBottom="@dimen/size_20"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:paddingTop="@dimen/size_20">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -92,7 +95,8 @@
                         android:id="@+id/item_order_complete__package_layout"
                         style="@style/MatchWrap"
                         android:layout_marginTop="@dimen/size_10"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             style="@style/WrapWrap"

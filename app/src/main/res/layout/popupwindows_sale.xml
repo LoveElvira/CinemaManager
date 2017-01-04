@@ -39,20 +39,20 @@
                 android:orientation="horizontal">
 
                 <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                    <!--style="@style/WrapWrap"-->
-                    <!--app:mrl_rippleAlpha="0.2"-->
-                    <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                    <!--app:mrl_rippleHover="true"-->
-                    <!--app:mrl_rippleOverlay="true">-->
+                <!--style="@style/WrapWrap"-->
+                <!--app:mrl_rippleAlpha="0.2"-->
+                <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                <!--app:mrl_rippleHover="true"-->
+                <!--app:mrl_rippleOverlay="true">-->
 
-                    <TextView
-                        android:id="@+id/popup_sale__lost"
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_30"
-                        android:gravity="center"
-                        android:text="-"
-                        android:textColor="@color/gray_c3c3c3"
-                        android:textSize="@dimen/text_18" />
+                <TextView
+                    android:id="@+id/popup_sale__lost"
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_30"
+                    android:gravity="center"
+                    android:text="-"
+                    android:textColor="@color/gray_c3c3c3"
+                    android:textSize="@dimen/text_18" />
                 <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
                 <View
@@ -75,20 +75,20 @@
                     android:background="@color/gray_cccccc" />
 
                 <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                    <!--style="@style/WrapWrap"-->
-                    <!--app:mrl_rippleAlpha="0.2"-->
-                    <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                    <!--app:mrl_rippleHover="true"-->
-                    <!--app:mrl_rippleOverlay="true">-->
+                <!--style="@style/WrapWrap"-->
+                <!--app:mrl_rippleAlpha="0.2"-->
+                <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                <!--app:mrl_rippleHover="true"-->
+                <!--app:mrl_rippleOverlay="true">-->
 
-                    <TextView
-                        android:id="@+id/popup_sale__add"
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_30"
-                        android:gravity="center"
-                        android:text="+"
-                        android:textColor="@color/gray_c3c3c3"
-                        android:textSize="@dimen/text_18" />
+                <TextView
+                    android:id="@+id/popup_sale__add"
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_30"
+                    android:gravity="center"
+                    android:text="+"
+                    android:textColor="@color/gray_c3c3c3"
+                    android:textSize="@dimen/text_18" />
                 <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
             </LinearLayout>
         </LinearLayout>
@@ -100,7 +100,7 @@
             android:layout_marginRight="@dimen/size_20"
             android:layout_marginTop="@dimen/size_100"
             android:background="@drawable/line_dash"
-            android:layerType="software"/>
+            android:layerType="software" />
 
         <View
             android:id="@+id/popup_line"
@@ -140,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/size_5"
-                    android:text="100"
+                    android:text="0"
                     android:textColor="@color/red_de2500"
                     android:textSize="@dimen/text_18" />
 
@@ -165,7 +165,7 @@
                 <TextView
                     android:id="@+id/popup_sale__buy"
                     style="@style/MatchMatch"
-                    android:background="@color/orange_ff7a0f"
+                    android:background="@color/orange_ff7b0f"
                     android:gravity="center"
                     android:text="@string/text_package_buy"
                     android:textColor="@color/white"
@@ -192,8 +192,7 @@
                 android:layout_height="@dimen/size_80"
                 android:layout_marginLeft="@dimen/size_20"
                 android:layout_marginTop="3dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/mihua" />
+                android:scaleType="centerCrop" />
 
         </RelativeLayout>
 
@@ -201,12 +200,13 @@
             android:id="@+id/popup_sale__package"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/popup_sale__add_layout"
             android:layout_marginLeft="@dimen/size_10"
             android:layout_toRightOf="@+id/popup_sale__image_layout"
-            android:text="套餐一"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/black_363636"
-            android:textSize="@dimen/text_15"
-            android:layout_alignTop="@+id/popup_sale__add_layout" />
+            android:textSize="@dimen/text_15" />
 
         <TextView
             android:id="@+id/popup_sale__package_content"
@@ -216,7 +216,8 @@
             android:layout_marginLeft="@dimen/size_10"
             android:layout_marginTop="@dimen/size_10"
             android:layout_toRightOf="@id/popup_sale__image_layout"
-            android:text="中份爆米花1份+可乐1杯"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/gray_929292"
             android:textSize="@dimen/text_14" />
 

@@ -79,21 +79,21 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                    style="@style/WrapWrap"
-                    app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="@color/bg_shadow"
-                    app:mrl_rippleHover="true"
-                    app:mrl_rippleOverlay="true">
+                <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+                    <!--style="@style/WrapWrap"-->
+                    <!--app:mrl_rippleAlpha="0.2"-->
+                    <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                    <!--app:mrl_rippleHover="true"-->
+                    <!--app:mrl_rippleOverlay="true">-->
 
                     <TextView
                         android:id="@+id/content_pay_select__online_pay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/size_10"
-                        android:textColor="@color/orange_ff7a0f"
-                        android:text="网上支付" />
-                </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                        android:text="网上支付"
+                        android:textColor="@color/orange_ff7a0f" />
+                <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
                 <View
                     android:id="@+id/content_pay_select__online_pay_line"
@@ -107,30 +107,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                    style="@style/WrapWrap"
-                    app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="@color/bg_shadow"
-                    app:mrl_rippleHover="true"
-                    app:mrl_rippleOverlay="true">
+                <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+                    <!--style="@style/WrapWrap"-->
+                    <!--app:mrl_rippleAlpha="0.2"-->
+                    <!--app:mrl_rippleColor="@color/bg_shadow"-->
+                    <!--app:mrl_rippleHover="true"-->
+                    <!--app:mrl_rippleOverlay="true">-->
 
                     <TextView
                         android:id="@+id/content_pay_select__card"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/size_10"
-                        android:textColor="@color/gray_cbcbcb"
-                        android:text="银行卡支付" />
-                </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                        android:text="银行卡支付"
+                        android:textColor="@color/gray_cbcbcb" />
+                <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
                 <View
                     android:id="@+id/content_pay_select__card_line"
                     android:layout_width="@dimen/size_10"
                     android:layout_height="@dimen/size_2"
                     android:background="@color/orange_ff7a0f"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -139,8 +140,7 @@
 
         <com.yyjlr.tickets.viewutils.LockableViewPager
             android:id="@+id/content_pay_select__viewpager"
-            style="@style/MatchMatch"
-            android:layout_height="match_parent" />
+            style="@style/MatchMatch" />
 
     </LinearLayout>
 

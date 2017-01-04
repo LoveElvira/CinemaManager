@@ -93,6 +93,7 @@ public class OkHttpClientManager {
     private <T> void _postAsyn(String cmd, final ResultCallback callback, IRequestMainData requestMainDataData, final Class<T> resultVOClass, Context context) {
         String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", context);
         String deviceId = SharePrefUtil.getString(Constant.FILE_NAME, "deviceId", "", context);
+
         RequestData requestData = new RequestData();
         if (!"".equals(token)) {
             requestData.setToken(token);
@@ -113,8 +114,9 @@ public class OkHttpClientManager {
 
     //异步请求 类(返回普通类)
     private <T> void _postAsyn(String cmd, final ResultCallback callback, IRequestMainData requestMainDataData, Context context) {
-        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", Application.getInstance().getCurrentActivity());
-        String deviceId = SharePrefUtil.getString(Constant.FILE_NAME, "deviceId", "", Application.getInstance().getCurrentActivity());
+        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", context);
+        String deviceId = SharePrefUtil.getString(Constant.FILE_NAME, "deviceId", "", context);
+
         RequestData requestData = new RequestData();
         if (!"".equals(token)) {
             requestData.setToken(token);
@@ -133,15 +135,17 @@ public class OkHttpClientManager {
 
     //异步请求 类(返回普通类) 上传专用
     private <T> void _postAsyn(String cmd, final ResultCallback callback, IRequestMainData requestMainDataData, final List<File> files, final TypeReference typeReference, Context context) {
-        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", Application.getInstance().getCurrentActivity());
+        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", context);
+
         String json = new Gson().toJson(requestMainDataData);
         deliveryResult(callback, token, cmd, files, json, typeReference);
     }
 
     //异步请求 类(返回集合类)
     private <T> void _postAsyn(String cmd, final ResultCallback callback, IRequestMainData requestMainDataData, final TypeReference typeReference, Context context) {
-        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", Application.getInstance().getCurrentActivity());
-        String deviceId = SharePrefUtil.getString(Constant.FILE_NAME, "deviceId", "", Application.getInstance().getCurrentActivity());
+        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", context);
+
+        String deviceId = SharePrefUtil.getString(Constant.FILE_NAME, "deviceId", "", context);
         RequestData requestData = new RequestData();
         if (!"".equals(token)) {
             requestData.setToken(token);

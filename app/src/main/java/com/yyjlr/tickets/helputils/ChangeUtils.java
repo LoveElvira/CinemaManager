@@ -12,7 +12,7 @@ public class ChangeUtils {
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（2016-6-16 17:25:59"）
      */
     public static String changeTime(long time) {
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(new Date(time));
     }
 

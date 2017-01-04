@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
@@ -25,6 +26,7 @@ import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.adapter.FilmDetailsPeopleAdapter;
 import com.yyjlr.tickets.model.FilmPeopleEntity;
+import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.film.FilmDetailsModel;
 import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.service.Error;
@@ -61,7 +63,6 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
     private static final int SHRINK_UP_STATE = 1;
     private static final int SPREAD_STATE = 2;
     private static int mState = SHRINK_UP_STATE;
-    private boolean flag = true;
     private FilmDetailsModel filmDetailsModel;
     private WordWrapView wordWrapView;
 
@@ -137,8 +138,10 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
                 }
 
                 collectImage.setImageResource(R.mipmap.collect);
+                collectText.setText("收藏");
                 if (response.getIsFavority() == 1) {
                     collectImage.setImageResource(R.mipmap.collect_select);
+                    collectText.setText("已收藏");
                 }
                 score.setRating(response.getScore() / 2.0f);
                 if (response.getWorker() != null) {
@@ -171,6 +174,43 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
         return view;
     }
 
+    //关注影片或取消关注
+    private void collectFilm(String isCollect) {
+        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setMovieId(getIntent().getStringExtra("filmId"));
+        idRequest.setIsInterest(isCollect);
+        OkHttpClientManager.postAsyn(Config.COLLECT_FILM, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(ResponeNull response) {
+                if ("收藏".equals(collectText.getText().toString().trim())) {
+                    collectImage.setImageResource(R.mipmap.collect_select);
+                    collectText.setText("已收藏");
+                } else {
+                    collectImage.setImageResource(R.mipmap.collect);
+                    collectText.setText("收藏");
+                }
+                customDialog.dismiss();
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, ResponeNull.class, FilmDetailsActivity.this);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -192,14 +232,11 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
 
                 break;
             case R.id.content_film_details__collect://收藏
-                if (flag) {
-                    collectImage.setImageResource(R.mipmap.collect_select);
-                    collectText.setText("已收藏");
+                if ("收藏".equals(collectText.getText().toString().trim())) {
+                    collectFilm("1");
                 } else {
-                    collectImage.setImageResource(R.mipmap.collect);
-                    collectText.setText("收藏");
+                    collectFilm("0");
                 }
-                flag = !flag;
                 break;
             case R.id.content_film_details__share://分享
                 sharePopupWindow();

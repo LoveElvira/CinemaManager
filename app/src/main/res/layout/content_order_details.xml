@@ -8,7 +8,8 @@
     tools:context="com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity"
     tools:showIn="@layout/activity_order_details">
 
-    <ScrollView style="@style/MatchMatch"
+    <ScrollView
+        style="@style/MatchMatch"
         android:background="@color/bg_gray">
 
         <LinearLayout
@@ -32,14 +33,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="2565263322"
                     android:textColor="@color/gray_c3c3c3"
                     android:textSize="@dimen/text_12" />
 
                 <TextView
                     android:id="@+id/item_order_details__flag"
                     style="@style/WrapWrap"
-                    android:text="@string/text_success"
                     android:textColor="@color/orange_ff7a0f"
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
@@ -78,7 +77,6 @@
                             android:id="@+id/item_order_details__pay_phone"
                             style="@style/WrapWrap"
                             android:layout_marginLeft="@dimen/size_10"
-                            android:text="150****1234"
                             android:textColor="@color/gray_929292"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
@@ -99,7 +97,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_10"
-                            android:text="微信支付"
                             android:textColor="@color/gray_929292"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
@@ -109,18 +106,17 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/textView"
                             style="@style/WrapWrap"
                             android:text="@string/text_pay_time"
                             android:textColor="@color/gray_929292"
-                            android:textSize="@dimen/text_12"
-                            android:id="@+id/textView" />
+                            android:textSize="@dimen/text_12" />
 
                         <TextView
                             android:id="@+id/item_order_details__pay_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_10"
-                            android:text="2016-08-16 17:30:20"
                             android:textColor="@color/gray_929292"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
@@ -131,8 +127,8 @@
                     android:layout_height="1dp"
                     android:layout_marginBottom="@dimen/size_10"
                     android:layout_marginTop="@dimen/size_10"
-                    android:layerType="software"
-                    android:background="@drawable/line_dash" />
+                    android:background="@drawable/line_dash"
+                    android:layerType="software" />
 
                 <LinearLayout
                     style="@style/MatchWrap"
@@ -148,10 +144,9 @@
                         android:id="@+id/item_order_details__pay_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/size_5"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:text="120"
-                        android:layout_marginRight="@dimen/size_5"
                         android:textColor="@color/black_363636"
                         android:textSize="@dimen/text_16" />
 
