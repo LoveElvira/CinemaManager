@@ -124,7 +124,7 @@ public class SettingPhotoActivity extends BasePhotoActivity implements View.OnCl
     private void updateImage(String path) {
         try {
             showPhoto.setImageBitmap(BitmapUtils.revitionImageSize(path));
-            SettingAccountActivity.headImage.setImageBitmap(BitmapUtils.revitionImageSize(path));
+//            SettingAccountActivity.headImage.setImageBitmap(BitmapUtils.revitionImageSize(path));
 //            upLoadImage(path);
         } catch (IOException e) {
             e.printStackTrace();

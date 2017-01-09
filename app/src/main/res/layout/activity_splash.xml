@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
     android:orientation="vertical"
     tools:context=".activity.SplashActivity">
 
-    <View android:id="@+id/splash__view"
+    <View
+        android:id="@+id/splash__view"
         android:layout_width="1px"
-        android:layout_height="1px"/>
+        android:layout_height="1px" />
 
     <RelativeLayout style="@style/MatchMatch">
 
         <com.yyjlr.tickets.viewutils.LockableViewPager
             android:id="@+id/splsh__viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <LinearLayout
             android:id="@+id/splsh__dot_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10"
-            android:gravity="center"
             android:layout_alignParentBottom="true"
-            android:background="@color/black_alpha_3"/>
+            android:background="@color/black_alpha_3"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10" />
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             style="@style/WrapWrap"
@@ -43,8 +44,17 @@
                 style="@style/MatchMatch"
                 android:background="@drawable/circle_border"
                 android:gravity="center"
-                android:textColor="@color/white"
-                android:text="@string/text_jump" />
+                android:text="@string/text_jump"
+                android:textColor="@color/white" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+        <ImageView
+            android:id="@+id/splash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/splash"
+            android:visibility="gone" />
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

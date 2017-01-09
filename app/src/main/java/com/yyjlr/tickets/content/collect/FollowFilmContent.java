@@ -1,4 +1,4 @@
-package com.yyjlr.tickets.content.order;
+package com.yyjlr.tickets.content.collect;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,13 +21,12 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.PaySelectActivity;
-import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
+import com.yyjlr.tickets.activity.film.FilmDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
-import com.yyjlr.tickets.adapter.OrderUncompleteAdapter;
+import com.yyjlr.tickets.adapter.FollowFilmAdapter;
 import com.yyjlr.tickets.model.ResponeNull;
-import com.yyjlr.tickets.model.order.MyOrderBean;
-import com.yyjlr.tickets.model.order.MyOrderInfo;
+import com.yyjlr.tickets.model.film.MovieBean;
+import com.yyjlr.tickets.model.film.MovieInfo;
 import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.requestdata.PagableRequest;
 import com.yyjlr.tickets.service.Error;
@@ -40,13 +39,14 @@ import java.util.List;
 
 /**
  * Created by Elvira on 2017/1/3.
- * 订单未完成
+ * 收藏 影片
  */
 
-public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderUncompleteAdapter.SlidingViewClickListener {
+public class FollowFilmContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowFilmAdapter.SlidingViewClickListener {
+
     private View view;
     private CustomDialog customDialog;
-    private OrderUncompleteAdapter unCompleteAdapter;
+    private FollowFilmAdapter adapter;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
     private View notLoadingView;
@@ -56,17 +56,18 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
     private boolean hasMore = false;
     private String pagable = "0";
     private int delayMillis = 1000;
-    private String type = "2";//订单类别,1:已完成；2：未完成
 
 
-    private List<MyOrderInfo> orderList;
-    private List<MyOrderInfo> orderLists;
+    private List<MovieInfo> movieInfoList;
+    private List<MovieInfo> movieInfoLists;
+    private int position;
 
-    public UnCompleteOrderContent(Context context) {
+
+    public FollowFilmContent(Context context) {
         this(context, null);
     }
 
-    public UnCompleteOrderContent(Context context, AttributeSet attrs) {
+    public FollowFilmContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
         initView();
@@ -83,17 +84,16 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
         listView.setLayoutManager(linearLayoutManager);
         notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
 
-        orderLists = new ArrayList<>();
+        movieInfoLists = new ArrayList<>();
 
-        getOrder(pagable, type);
+        getFollowFilm(pagable);
     }
 
-    //获取订单 订单类别,1:已完成；2：未完成
-    private void getOrder(final String pagables, String type) {
+    //获取关注的影片
+    private void getFollowFilm(final String pagables) {
         PagableRequest pagableRequest = new PagableRequest();
         pagableRequest.setPagable(pagables);
-        pagableRequest.setType(type);
-        OkHttpClientManager.postAsyn(Config.GET_MY_ORDER, new OkHttpClientManager.ResultCallback<MyOrderBean>() {
+        OkHttpClientManager.postAsyn(Config.GET_FOLLOW_FILM, new OkHttpClientManager.ResultCallback<MovieBean>() {
 
             @Override
             public void onError(Request request, Error info) {
@@ -102,37 +102,39 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             }
 
             @Override
-            public void onResponse(MyOrderBean response) {
-                orderList = response.getOrders();
-                if (orderList != null) {
-                    if ("0".equals(pagables)) {//第一页
-                        orderLists.clear();
-                        orderLists.addAll(orderList);
-                        Log.i("ee", orderList.size() + "----" + orderLists.size());
-                        unCompleteAdapter = new OrderUncompleteAdapter(orderList, UnCompleteOrderContent.this);
-                        unCompleteAdapter.openLoadAnimation();
-                        listView.setAdapter(unCompleteAdapter);
-                        unCompleteAdapter.openLoadMore(orderList.size(), true);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
-                        } else {
-                            hasMore = false;
-                        }
-                        pagable = response.getPagable();
-                    } else {
-                        orderLists.addAll(orderList);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
+            public void onResponse(MovieBean response) {
+                if (response != null) {
+                    movieInfoList = response.getMovieList();
+                    if (movieInfoList != null) {
+                        if ("0".equals(pagables)) {//第一页
+                            movieInfoLists.clear();
+                            movieInfoLists.addAll(movieInfoList);
+                            Log.i("ee", movieInfoList.size() + "----" + movieInfoLists.size());
+                            adapter = new FollowFilmAdapter(movieInfoList, FollowFilmContent.this);
+                            adapter.openLoadAnimation();
+                            listView.setAdapter(adapter);
+                            adapter.openLoadMore(movieInfoList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
                             pagable = response.getPagable();
-                            unCompleteAdapter.notifyDataChangedAfterLoadMore(orderList, true);
                         } else {
-                            unCompleteAdapter.notifyDataChangedAfterLoadMore(orderList, true);
-                            hasMore = false;
-                            pagable = "";
+                            movieInfoLists.addAll(movieInfoList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                adapter.notifyDataChangedAfterLoadMore(movieInfoList, true);
+                            } else {
+                                adapter.notifyDataChangedAfterLoadMore(movieInfoList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
                         }
+                        adapter.setOnLoadMoreListener(FollowFilmContent.this);
+                        adapter.setOnRecyclerViewItemChildClickListener(FollowFilmContent.this);
                     }
-                    unCompleteAdapter.setOnLoadMoreListener(UnCompleteOrderContent.this);
-                    unCompleteAdapter.setOnRecyclerViewItemChildClickListener(UnCompleteOrderContent.this);
                 }
             }
 
@@ -140,16 +142,17 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
             }
-        }, pagableRequest, MyOrderBean.class, Application.getInstance().getCurrentActivity());
+        }, pagableRequest, MovieBean.class, Application.getInstance().getCurrentActivity());
     }
 
-    //取消订单
-    private void cancelOrder(final int position) {
+    //取消关注
+    private void cancelCollectFilm() {
         customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
-        idRequest.setOrderId(orderLists.get(position).getOrderId() + "");
-        OkHttpClientManager.postAsyn(Config.CANCEL_ORDER, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+        idRequest.setMovieId(movieInfoLists.get(position).getMovieId() + "");
+        idRequest.setIsInterest("0");
+        OkHttpClientManager.postAsyn(Config.COLLECT_FILM, new OkHttpClientManager.ResultCallback<ResponeNull>() {
 
             @Override
             public void onError(Request request, Error info) {
@@ -160,41 +163,8 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 
             @Override
             public void onResponse(ResponeNull response) {
-                orderLists.get(position).setOrderStatus(4);
-                unCompleteAdapter.notifyItemChanged(position);
-                customDialog.dismiss();
-
-            }
-
-            @Override
-            public void onOtherError(Request request, Exception exception) {
-                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-                customDialog.dismiss();
-            }
-        }, idRequest, ResponeNull.class, Application.getInstance().getCurrentActivity());
-    }
-
-
-    //删除订单
-    private void removeOrder(final int position) {
-        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
-        customDialog.show();
-        IdRequest idRequest = new IdRequest();
-        idRequest.setOrderId(orderLists.get(position).getOrderId() + "");
-        OkHttpClientManager.postAsyn(Config.REMOVE_ORDER, new OkHttpClientManager.ResultCallback<ResponeNull>() {
-
-            @Override
-            public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
-                customDialog.dismiss();
-            }
-
-            @Override
-            public void onResponse(ResponeNull response) {
-                unCompleteAdapter.notifyItemRemoved(position);
                 pagable = "0";
-                getOrder(pagable,type);
+                getFollowFilm(pagable);
                 customDialog.dismiss();
 
             }
@@ -206,7 +176,6 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             }
         }, idRequest, ResponeNull.class, Application.getInstance().getCurrentActivity());
     }
-
 
     private View createHeaderView() {
         View headerView = LayoutInflater.from(getContext())
@@ -221,7 +190,6 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
         return headerView;
     }
 
-
     @Override
     public void onRefresh() {
         headerSta.setText("正在刷新数据中");
@@ -231,7 +199,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             @Override
             public void run() {
                 pagable = "0";
-                getOrder(pagable, type);
+                getFollowFilm(pagable);
                 refresh.setRefreshing(false);
                 headerProgressBar.setVisibility(View.GONE);
             }
@@ -256,13 +224,13 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             @Override
             public void run() {
                 if (!hasMore) {
-                    unCompleteAdapter.notifyDataChangedAfterLoadMore(false);
+                    adapter.notifyDataChangedAfterLoadMore(false);
 //                    saleAdapter.addFooterView(notLoadingView);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            getOrder(pagable, type);
+                            getFollowFilm(pagable);
                         }
                     }, delayMillis);
                 }
@@ -273,25 +241,16 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        switch (view.getId()) {
-            case R.id.item_order_nocomplete__cancel://取消订单
-                showCancelOrDelete(position, "1");
-                break;
-            case R.id.item_order_nocomplete__pay:
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), PaySelectActivity.class)
-                        .putExtra("orderId", orderLists.get(position).getOrderId() + ""));
-                break;
-        }
+
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent();
         switch (view.getId()) {
-            case R.id.item_order_nocomplete__ll_layout:
-                intent.setClass(getContext(), SettingOrderDetailsActivity.class);
-                intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
-                intent.putExtra("status",orderLists.get(position).getOrderStatus());
+            case R.id.item_follow_film__ll_layout:
+                intent.setClass(getContext(), FilmDetailsActivity.class);
+                intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
                 break;
         }
         Application.getInstance().getCurrentActivity().startActivity(intent);
@@ -299,13 +258,14 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 
     @Override
     public void onDeleteBtnCilck(View view, int position) {
-        showCancelOrDelete(position, "2");
+        this.position = position;
+        showCancel();
     }
 
     /**
-     * show Dialog 是否确定取消 或者 删除订单
+     * show Dialog 是否确定 取消收藏
      */
-    private void showCancelOrDelete(final int position, final String type) {
+    private void showCancel() {
         LayoutInflater inflater = LayoutInflater.from(Application.getInstance().getCurrentActivity());
         View layout = inflater.inflate(R.layout.alert_dialog, null);
         final AlertDialog builder = new AlertDialog.Builder(Application.getInstance().getCurrentActivity()).create();
@@ -318,11 +278,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
         TextView confirm = (TextView) layout.findViewById(R.id.alert_dialog__submit);
         confirm.setText("确定");
         title.setText("提示");
-        if ("1".equals(type)) {
-            message.setText("是否取消此订单?");
-        } else {
-            message.setText("是否删除此订单?");
-        }
+        message.setText("是否取消此收藏?");
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -332,14 +288,8 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //取消订单
-                if ("1".equals(type)) {
-                    cancelOrder(position);
-                } else {
-                    removeOrder(position);
-                }
-//                orderLists.get(position).setOrderComplete("1");
-//                unCompleteAdapter.notifyItemChanged(position);
+                //取消收藏
+                cancelCollectFilm();
                 builder.dismiss();
 
             }

@@ -11,6 +11,7 @@ import com.yyjlr.tickets.service.MockupDataServiceImp;
 import com.yyjlr.tickets.service.RealDataServiceImp;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by Elvira on 2016/7/28.
@@ -23,7 +24,6 @@ public class Application extends android.app.Application {
     private Activity currentActivity;
     private static IDataService iDataService;
     private ArrayList<AbstractActivity> activitys;          // 全局Activity集合
-
 
     static {
         if (Config.DEBUG) {
@@ -69,6 +69,31 @@ public class Application extends android.app.Application {
         activitys.add(activity);
     }
 
+    /**
+     * 结束所有Activity
+     */
+    public void finishAllActivity() {
+        for (int i = 0, size = activitys.size(); i < size; i++) {
+            if (null != activitys.get(i)) {
+                activitys.get(i).finish();
+            }
+        }
+        activitys.clear();
+    }
+
+    /**
+     * 结束指定Activity
+     */
+    public void finishActivity(AbstractActivity activity) {
+        String className = activity.getClass().getName();
+        for (Activity at : activitys) {
+            if (className.equals(at.getClass().getName())) {
+                activitys.remove(at);
+                at.finish();
+                break;
+            }
+        }
+    }
 
     /**
      * @return Application singleton instance

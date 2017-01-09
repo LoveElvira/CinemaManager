@@ -94,8 +94,6 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
 
     //获取订单 订单类别,1:已完成；2：未完成
     private void getOrder(final String pagables, String type) {
-        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
-        customDialog.show();
         PagableRequest pagableRequest = new PagableRequest();
         pagableRequest.setPagable(pagables);
         pagableRequest.setType(type);
@@ -105,47 +103,46 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
                 Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
-                customDialog.dismiss();
             }
 
             @Override
             public void onResponse(MyOrderBean response) {
-                customDialog.dismiss();
                 orderList = response.getOrders();
-                if ("0".equals(pagables)) {//第一页
-                    orderLists.clear();
-                    orderLists.addAll(orderList);
-                    Log.i("ee", orderList.size() + "----" + orderLists.size());
-                    completeAdapter = new OrderCompleteAdapter(orderList, CompleteOrderContent.this);
-                    completeAdapter.openLoadAnimation();
-                    listView.setAdapter(completeAdapter);
-                    completeAdapter.openLoadMore(orderList.size(), true);
-                    if (response.getHasMore() == 1) {
-                        hasMore = true;
-                    } else {
-                        hasMore = false;
-                    }
-                    pagable = response.getPagable();
-                } else {
-                    orderLists.addAll(orderList);
-                    if (response.getHasMore() == 1) {
-                        hasMore = true;
+                if (orderList != null) {
+                    if ("0".equals(pagables)) {//第一页
+                        orderLists.clear();
+                        orderLists.addAll(orderList);
+                        Log.i("ee", orderList.size() + "----" + orderLists.size());
+                        completeAdapter = new OrderCompleteAdapter(orderList, CompleteOrderContent.this);
+                        completeAdapter.openLoadAnimation();
+                        listView.setAdapter(completeAdapter);
+                        completeAdapter.openLoadMore(orderList.size(), true);
+                        if (response.getHasMore() == 1) {
+                            hasMore = true;
+                        } else {
+                            hasMore = false;
+                        }
                         pagable = response.getPagable();
-                        completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
                     } else {
-                        completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
-                        hasMore = false;
-                        pagable = "";
+                        orderLists.addAll(orderList);
+                        if (response.getHasMore() == 1) {
+                            hasMore = true;
+                            pagable = response.getPagable();
+                            completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
+                        } else {
+                            completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
+                            hasMore = false;
+                            pagable = "";
+                        }
                     }
+                    completeAdapter.setOnLoadMoreListener(CompleteOrderContent.this);
+                    completeAdapter.setOnRecyclerViewItemChildClickListener(CompleteOrderContent.this);
                 }
-                completeAdapter.setOnLoadMoreListener(CompleteOrderContent.this);
-                completeAdapter.setOnRecyclerViewItemChildClickListener(CompleteOrderContent.this);
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-                customDialog.dismiss();
             }
         }, pagableRequest, MyOrderBean.class, Application.getInstance().getCurrentActivity());
     }
@@ -168,6 +165,8 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
             @Override
             public void onResponse(ResponeNull response) {
                 completeAdapter.notifyItemRemoved(position);
+                pagable = "0";
+                getOrder(pagable, type);
                 customDialog.dismiss();
 
             }
@@ -256,6 +255,7 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
             case R.id.item_order_complete__ll_layout:
                 intent.setClass(getContext(), SettingOrderDetailsActivity.class);
                 intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
+                intent.putExtra("status",orderLists.get(position).getOrderStatus());
                 break;
         }
         Application.getInstance().getCurrentActivity().startActivity(intent);

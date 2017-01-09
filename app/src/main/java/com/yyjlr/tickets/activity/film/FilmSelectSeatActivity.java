@@ -1,10 +1,12 @@
 package com.yyjlr.tickets.activity.film;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,11 +19,14 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
+import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.adapter.SeatTypeAdapter;
 import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.ResponseId;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
 import com.yyjlr.tickets.model.seat.SeatBean;
@@ -66,11 +71,15 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     private SeatBean seatBean;
     private TextView totalPrice;
     private TextView seatPrice;
+    private String planId = "";
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_select_seat);
+        activity = this;
+        planId = getIntent().getStringExtra("planId");
         initView();
     }
 
@@ -115,17 +124,24 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
         seatTableView.setMaxSelected(4);//设置最多选中
         seatTableView.setSeatChecker(seatChecker);
-        Gson gson = new Gson();
+//        Gson gson = new Gson();
 //        Log.i("ee", getAssets().toString() + "------" + readFromAsset("seat.json"));
 //        FilmSeatEntity filmSeatEntity = gson.fromJson(readFromAsset("seat.json"), FilmSeatEntity.class);
-        CheckNoPayOrder();
         confirmSeat.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        seatSelectList.clear();
+        addSelectSeatText();
+        CheckNoPayOrder();
     }
 
     //获取影片（抢票）座位信息接口
     private void getSeatPlan() {
         IdRequest idRequest = new IdRequest();
-        idRequest.setPlanId(getIntent().getStringExtra("planId"));
+        idRequest.setPlanId(planId);
         OkHttpClientManager.postAsyn(Config.GET_FILM_SEAT, new OkHttpClientManager.ResultCallback<SeatBean>() {
 
             @Override
@@ -148,6 +164,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 seatTableView.setScreenName(seatBean.getHallName());//设置屏幕名称
                 if (seatBean.getSeatList() != null && seatBean.getSeatList().size() > 0) {
                     seatTableView.setData(seatBean.getSeatList(), seatBean.getSeatType());
+                    seatTableView.invalidate();
                 }
                 if (seatBean.getSeatType() != null && seatBean.getSeatType().size() > 0) {
                     for (int i = 0; i < seatBean.getSeatType().size(); i++) {
@@ -183,7 +200,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         customDialog = new CustomDialog(this, "下单中...");
         customDialog.show();
         LockSeatRequest lockSeatRequest = new LockSeatRequest();
-        lockSeatRequest.setPlanId(getIntent().getStringExtra("planId"));
+        lockSeatRequest.setPlanId(planId);
         lockSeatRequest.setSeatIds(seatIdList);
         OkHttpClientManager.postAsyn(Config.LOCK_FILM_SEAT, new OkHttpClientManager.ResultCallback<AddMovieOrderBean>() {
 
@@ -228,7 +245,15 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
             @Override
             public void onResponse(ResponseId response) {
-                getSeatPlan();
+
+                Log.i("ee", response.getOrderId() + "--------------------------------");
+
+                if (response != null && response.getOrderId() != 0) {
+                    customDialog.dismiss();
+                    showCancelOrder(response.getOrderId());
+                } else {
+                    getSeatPlan();
+                }
 //                Intent intent = new Intent(FilmSelectSeatActivity.this, FilmCompleteActivity.class);
 //                intent.putExtra("movieOrderBean", orderBean);
 //                FilmSelectSeatActivity.this.startActivity(intent);
@@ -353,8 +378,71 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             this.seatPrice.setText(seatPriceStr + ")");
             addSelectSeatLayout.addView(view);
         }
+    }
 
+    //取消订单
+    private void cancelOrder(int orderId) {
+        customDialog = new CustomDialog(this, "请稍后...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setOrderId(orderId + "");
+        OkHttpClientManager.postAsyn(Config.CANCEL_ORDER, new OkHttpClientManager.ResultCallback<ResponeNull>() {
 
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(ResponeNull response) {
+                customDialog.dismiss();
+                getSeatPlan();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, ResponeNull.class, FilmSelectSeatActivity.this);
+    }
+
+    /**
+     * show Dialog 是否确定 取消订单
+     */
+    private void showCancelOrder(final int orderId) {
+        LayoutInflater inflater = LayoutInflater.from(Application.getInstance().getCurrentActivity());
+        View layout = inflater.inflate(R.layout.alert_dialog, null);
+        final AlertDialog builder = new AlertDialog.Builder(Application.getInstance().getCurrentActivity()).create();
+        builder.setView(layout);
+        builder.setCancelable(false);
+        builder.show();
+        TextView title = (TextView) layout.findViewById(R.id.alert_dialog_title);
+        TextView message = (TextView) layout.findViewById(R.id.alert_dialog_message);
+        TextView cancel = (TextView) layout.findViewById(R.id.alert_dialog__cancel);
+        TextView confirm = (TextView) layout.findViewById(R.id.alert_dialog__submit);
+        confirm.setText("确定");
+        title.setText("提示");
+        message.setText("本场次有未支付订单，是否取消此订单?");
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+                startActivity(new Intent(getBaseContext(), PaySelectActivity.class)
+                        .putExtra("orderId", orderId + ""));
+                FilmSelectSeatActivity.this.finish();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //取消订单
+                builder.dismiss();
+                cancelOrder(orderId);
+            }
+        });
     }
 
     @Override
@@ -376,23 +464,27 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 seatRecommend(4);
                 break;
             case R.id.content_film_seat__confirm_seat:
-                List<Boolean> list = new ArrayList<Boolean>();
-                for (int i = 0; i < seatSelectList.size(); i++) {
-                    int row = seatSelectList.get(i).getgRow() - 1;
-                    int column = seatSelectList.get(i).getgCol() - 1;
-                    list.add(seatTableView.isSelect(row, column));
-                }
-                Log.i("ee", list.toString() + "-------------------");
-
-                if (list.contains(false)) {
-                    showShortToast("中间不可空一个座位");
-                    return;
-                } else {
-                    List<String> seatIdList = new ArrayList<>();
+                if (seatSelectList.size() > 0) {
+                    List<Boolean> list = new ArrayList<Boolean>();
                     for (int i = 0; i < seatSelectList.size(); i++) {
-                        seatIdList.add(seatSelectList.get(i).getId());
+                        int row = seatSelectList.get(i).getgRow() - 1;
+                        int column = seatSelectList.get(i).getgCol() - 1;
+                        list.add(seatTableView.isSelect(row, column));
                     }
-                    lockSeat(seatIdList);
+                    Log.i("ee", list.toString() + "-------------------");
+
+                    if (list.contains(false)) {
+                        showShortToast("中间不可空一个座位");
+                        return;
+                    } else {
+                        List<String> seatIdList = new ArrayList<>();
+                        for (int i = 0; i < seatSelectList.size(); i++) {
+                            seatIdList.add(seatSelectList.get(i).getId());
+                        }
+                        lockSeat(seatIdList);
+                    }
+                } else {
+                    showShortToast("请先选择座位");
                 }
                 break;
         }

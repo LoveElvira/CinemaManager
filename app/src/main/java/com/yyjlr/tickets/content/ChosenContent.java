@@ -106,19 +106,21 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
                 Log.i("ee", new Gson().toJson(response));
 
                 chosenModel = response;
-                title.setText(chosenModel.getCinemaInfo().getCinemaName());
-                address.setText(chosenModel.getCinemaInfo().getAddress());
-                typeDate = chosenModel.getCinemaInfo().getHallType();
+                if (chosenModel != null) {
+                    title.setText(chosenModel.getCinemaInfo().getCinemaName());
+                    address.setText(chosenModel.getCinemaInfo().getAddress());
+                    typeDate = chosenModel.getCinemaInfo().getHallType();
 //                typeDate = chosenModel.getCinemaInfo().getFeature();
 //                for (int i = 0; i < chosenModel.getCinemaInfo().getHallType().size(); i++) {
 //                    typeDate.add(chosenModel.getCinemaInfo().getHallType().get(i));
 //                }
-                cinemaAdapter = new CinemaAdapter(getContext(), typeDate);
-                listView.setAdapter(cinemaAdapter);
-                if (response.getActivityList().size() != 0) {
-                    initChosenView(choseFling,
-                            new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true),
-                            chosenModel.getActivityList());
+                    cinemaAdapter = new CinemaAdapter(getContext(), typeDate);
+                    listView.setAdapter(cinemaAdapter);
+                    if (response.getActivityList().size() != 0) {
+                        initChosenView(choseFling,
+                                new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true),
+                                chosenModel.getActivityList());
+                    }
                 }
             }
 
@@ -181,7 +183,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
 
         Application.getInstance().getCurrentActivity().startActivity(
-                new Intent(Application.getInstance().getCurrentActivity(), EventActivity.class).putExtra("id", chosenModel.getActivityList().get(position).getActivityId()));
+                new Intent(Application.getInstance().getCurrentActivity(), EventActivity.class).putExtra("eventId", chosenModel.getActivityList().get(position).getActivityId()));
 
 //        if(layoutManager.getOrientation()==CarouselLayoutManager.VERTICAL){
 //            if ((int) view.getY() > 0 && view.getHeight() / 2 > (int) view.getY()) {

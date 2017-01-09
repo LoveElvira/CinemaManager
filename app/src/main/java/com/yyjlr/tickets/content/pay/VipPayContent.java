@@ -28,18 +28,22 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
     private TextView confirmPrice;//确认金额
 
     private View view;
+    private String orderId;
+    private int price;
 
-    public VipPayContent(Context context) {
-        this(context, null);
+    public VipPayContent(Context context, String orderId) {
+        this(context, null, orderId);
     }
 
-    public VipPayContent(Context context, AttributeSet attrs) {
+    public VipPayContent(Context context, AttributeSet attrs, String orderId) {
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_vip_pay, this);
-
+        this.orderId = orderId;
         initView();
+    }
 
-
+    public void initPrice(int price) {
+        this.price = price;
     }
 
     private void initView() {

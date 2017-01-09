@@ -77,6 +77,11 @@ public class OkHttpClientManager {
         getInstance()._postAsyn(url, callback, requestMainDataData, files, typeReference, context);
     }
 
+//    //上传
+//    public static <T> void postAsyn(String url, final ResultCallback callback, IRequestMainData requestMainDataData, final List<File> files, final Class<T> resultVOClass, Context context) {
+//        getInstance()._postAsyn(url, callback, requestMainDataData, files, resultVOClass, context);
+//    }
+
     public static <T> void postAsyn(String url, final ResultCallback callback, IRequestMainData requestMainDataData, final Class<T> resultVOClass, Context context) {
         getInstance()._postAsyn(url, callback, requestMainDataData, resultVOClass, context);
     }
@@ -140,6 +145,14 @@ public class OkHttpClientManager {
         String json = new Gson().toJson(requestMainDataData);
         deliveryResult(callback, token, cmd, files, json, typeReference);
     }
+
+//    //异步请求 类(返回普通类) 上传专用
+//    private <T> void _postAsyn(String cmd, final ResultCallback callback, IRequestMainData requestMainDataData, final List<File> files, final Class<T> resultVOClass, Context context) {
+//        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", context);
+//
+//        String json = new Gson().toJson(requestMainDataData);
+//        deliveryResult(callback, token, cmd, files, json, resultVOClass);
+//    }
 
     //异步请求 类(返回集合类)
     private <T> void _postAsyn(String cmd, final ResultCallback callback, IRequestMainData requestMainDataData, final TypeReference typeReference, Context context) {
@@ -256,6 +269,55 @@ public class OkHttpClientManager {
             }
         });
     }
+
+//    //上传图片和视频
+//    private <T> void deliveryResult(final ResultCallback callback, final String token, final String cmd, final List<File> files, String json, final Class<T> resultVOClass) {
+//        MultipartBuilder builder = new MultipartBuilder();
+//        builder.type(MultipartBuilder.FORM);//表单形式
+//        builder.addFormDataPart("cmd", cmd);
+//        builder.addFormDataPart("token", token);
+//        builder.addFormDataPart("parameters", json);
+//        for (int i = 0; i < files.size(); i++) {
+//            builder.addFormDataPart("files", files.get(i).getName(), RequestBody.create(null, files.get(i)));
+//        }
+//        RequestBody requestBody = builder.build();
+//        final Request request = new Request.Builder()
+//                .url(Config.URL_SERVICE_UPLOAD)
+//                .post(requestBody)
+//                .build();
+//        mOkHttpClient.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(final Request request, final IOException e) {
+//                sendFailedStringCallback(request, e, callback);
+//            }
+//
+//            @Override
+//            public void onResponse(final Response response) {
+//                ObjectMapper mapper = new ObjectMapper();
+//                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//                try {
+//                    final String string = response.body().string();
+//                    JsonNode node = mapper.readValue(string, JsonNode.class);
+//
+//                    int statusCode = ((IntNode) node.get("statusCode")).intValue();
+//                    if (statusCode == 0) {
+//                        JsonNode responseNode = node.get("response");
+//                        T data = mapper.treeToValue(responseNode, resultVOClass);
+//                        sendSuccessResultCallback(data, callback);
+//                    } else {
+//                        JsonNode errorNode = node.get("error");
+//                        Error error = mapper.treeToValue(errorNode, Error.class);
+//                        if (401 == statusCode) {
+//                            showExitDialog(error.getInfo());
+//                        }
+//                        sendErrorStringCallback(request, error, callback);
+//                    }
+//                } catch (IOException e) {
+//                    sendFailedStringCallback(response.request(), e, callback);
+//                }
+//            }
+//        });
+//    }
 
     private <T> void deliveryResult(final ResultCallback callback, final Request request, final Class<T> resultVOClass, Context context) {
         mOkHttpClient.newCall(request).enqueue(new Callback() {

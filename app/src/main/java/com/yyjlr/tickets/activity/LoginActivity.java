@@ -110,7 +110,7 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
             public void onResponse(RegisterModel response) {
 
                 SharePrefUtil.putString(Constant.FILE_NAME, "token", response.getToken(), LoginActivity.this);
-                SharePrefUtil.putString(Constant.FILE_NAME, Constant.PHONE, response.getPhone(), LoginActivity.this);
+                SharePrefUtil.putString(Constant.FILE_NAME, Constant.PHONE, phoneNum.getText().toString().trim(), LoginActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, password.getText().toString().trim(), LoginActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, "flag", "1", LoginActivity.this);
                 customDialog.dismiss();

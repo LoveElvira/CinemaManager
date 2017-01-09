@@ -7,9 +7,11 @@ package com.yyjlr.tickets;
 
 public class Config {
     public static final boolean DEBUG = true;
-    //    public static final String URL_SERVICE = "http://192.168.1.85:8080/cgi";//小强本地
-    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
-    public static final String URL_SERVICE_UPLOAD = "http://121.43.175.36/uploadFile";//上传文件
+    public static final String URL_SERVICE = "http://192.168.1.85:8080/cgi";//小强本地
+    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.85:8080/uploadFile";//上传文件
+
+//    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
+//    public static final String URL_SERVICE_UPLOAD = "http://139.196.51.15/uploadFile";//上传文件
 
     public static final String REGISTER = "user/register";//用户注册
     public static final String GET_REGISTER_CODE = "user/register/getVerificationCode";//获取注册手机验证码
@@ -38,9 +40,16 @@ public class Config {
     public static final String CANCEL_ORDER = "order/cancel";//取消订单接口
     public static final String REMOVE_ORDER = "order/delete";//删除订单
     public static final String COLLECT_FILM = "movie/interest";//影片关注（取消关注）接口
+    public static final String COLLECT_EVENT = "activity/interest";//抢票关注（取消关注）接口
     public static final String CONFIRM_PAY = "order/changePayType";//确认支付金额接口
     public static final String GET_MESSAGE = "user/message";//我的消息
     public static final String GET_UNPAID_DETAIL = "order/unpaid/detail";//待处理订单详情
+    public static final String BEFORE_PAY_ORDER = "pay/payData";//订单预支付接口
+    public static final String CHECK_PAY_ORDER_STATUS = "order/queryState";//订单状态查询接口
+    public static final String GET_FOLLOW_FILM = "user/interest/movie";//关注的影片
+    public static final String GET_FOLLOW_EVENT = "user/interest/activity";//关注的活动
+    public static final String UPDATE_MY_INFO = "user/updateUserInfo";//修改用户信息
+    public static final String UPDATE_MY_HEAD_IMAGE = "base/uploadImage";//修改头像信息
 
 
 }

@@ -50,8 +50,8 @@
                 android:id="@+id/content_film_seat__hall"
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_5"
-                android:maxEms="6"
                 android:ellipsize="end"
+                android:maxEms="6"
                 android:singleLine="true"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
@@ -61,12 +61,12 @@
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_5"
                 android:background="@drawable/bg_green"
+                android:ellipsize="end"
+                android:maxEms="4"
+                android:paddingBottom="1dp"
                 android:paddingLeft="@dimen/size_5"
                 android:paddingRight="@dimen/size_5"
                 android:paddingTop="1dp"
-                android:paddingBottom="1dp"
-                android:maxEms="4"
-                android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_11" />
@@ -82,8 +82,8 @@
             <TextView
                 android:id="@+id/content_film_seat__film_language"
                 style="@style/WrapWrap"
-                android:maxEms="4"
                 android:ellipsize="end"
+                android:maxEms="4"
                 android:singleLine="true"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
@@ -91,8 +91,8 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="@dimen/size_7"
-                android:layout_marginRight="@dimen/size_5"
                 android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_5"
                 android:background="@color/gray_929292" />
 
             <TextView
@@ -210,9 +210,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/size_5"
-            android:textColor="@color/black_333333"
             android:padding="@dimen/size_10"
             android:text="@string/text_select_seat"
+            android:textColor="@color/black_333333"
             android:textSize="@dimen/text_16" />
 
         <LinearLayout
@@ -239,19 +239,19 @@
                     android:padding="@dimen/size_10"
                     android:text="@string/text_select_seat_one"
                     android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_14" />
+                    android:textSize="@dimen/text_12" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
             <com.yyjlr.tickets.viewutils.MaterialRippleLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_5"
                 android:layout_weight="1"
                 app:mrl_rippleAlpha="0.2"
                 app:mrl_rippleColor="@color/bg_shadow"
                 app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_marginLeft="@dimen/size_5"
-                android:layout_marginRight="@dimen/size_5">
+                app:mrl_rippleOverlay="true">
 
                 <TextView
                     android:id="@+id/content_film_seat__seat_recommend_two"
@@ -261,18 +261,18 @@
                     android:padding="@dimen/size_10"
                     android:text="@string/text_select_seat_two"
                     android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_14" />
+                    android:textSize="@dimen/text_12" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
             <com.yyjlr.tickets.viewutils.MaterialRippleLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/size_5"
                 android:layout_weight="1"
                 app:mrl_rippleAlpha="0.2"
                 app:mrl_rippleColor="@color/bg_shadow"
                 app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true"
-                android:layout_marginRight="@dimen/size_5">
+                app:mrl_rippleOverlay="true">
 
                 <TextView
                     android:id="@+id/content_film_seat__seat_recommend_three"
@@ -282,7 +282,7 @@
                     android:padding="@dimen/size_10"
                     android:text="@string/text_select_seat_three"
                     android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_14" />
+                    android:textSize="@dimen/text_12" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
             <com.yyjlr.tickets.viewutils.MaterialRippleLayout
@@ -293,15 +293,16 @@
                 app:mrl_rippleColor="@color/bg_shadow"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true">
-            <TextView
-                android:id="@+id/content_film_seat__seat_recommend_four"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_border_gray"
-                android:gravity="center"
-                android:padding="@dimen/size_10"
-                android:text="@string/text_select_seat_four"
-                android:textColor="@color/gray_929292"
-                android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/content_film_seat__seat_recommend_four"
+                    style="@style/MatchMatch"
+                    android:background="@drawable/radius_border_gray"
+                    android:gravity="center"
+                    android:padding="@dimen/size_10"
+                    android:text="@string/text_select_seat_four"
+                    android:textColor="@color/gray_929292"
+                    android:textSize="@dimen/text_12" />
             </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
         </LinearLayout>
 
@@ -316,7 +317,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/size_10"
                 android:paddingLeft="@dimen/size_10"
-                android:paddingRight="@dimen/size_10">
+                android:paddingRight="@dimen/size_10"
+                android:weightSum="4">
 
             </LinearLayout>
 

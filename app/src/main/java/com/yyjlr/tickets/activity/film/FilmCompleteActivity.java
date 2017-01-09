@@ -35,7 +35,6 @@ import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmSaleEntity;
 import com.yyjlr.tickets.model.ResponeNull;
-import com.yyjlr.tickets.model.ResponseId;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
 import com.yyjlr.tickets.model.order.ChangePayTypeBean;
 import com.yyjlr.tickets.requestdata.IdRequest;
@@ -44,7 +43,6 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -438,7 +436,11 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onResponse(ChangePayTypeBean response) {
                 customDialog.dismiss();
-                startActivity(new Intent(getBaseContext(), PaySelectActivity.class).putExtra("changePayTypeBean", (Serializable) response));
+                startActivity(new Intent(getBaseContext(), PaySelectActivity.class)
+                        .putExtra("orderId", movieOrderBean.getOrderInfo().getId() + ""));
+                Application.getInstance().finishActivity((AbstractActivity) FilmSelectSeatActivity.activity);
+                Application.getInstance().finishActivity(FilmCompleteActivity.this);
+                // FilmCompleteActivity.this.finish();
             }
 
             @Override
@@ -451,7 +453,7 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
 
     //取消订单
     private void cancelOrder() {
-        customDialog = new CustomDialog(this, "加载中...");
+        customDialog = new CustomDialog(this, "请稍后...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
         idRequest.setOrderId(movieOrderBean.getOrderInfo().getId() + "");

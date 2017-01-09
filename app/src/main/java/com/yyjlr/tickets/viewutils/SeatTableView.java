@@ -1622,14 +1622,15 @@ public class SeatTableView extends View {
 
     //专座推荐 0 普通 1 情侣首座 2 情侣次座 3 特殊人群 4 vip专座
     public void selectSeatRecommend(int num) {
-        List<List<Map<String, Integer>>> seatRecommendListTwo = new ArrayList<List<Map<String, Integer>>>();
+        List<List<Map<String, Integer>>> seatRecommendListTwo = new ArrayList<>();
         //最小的绝对值
         int minNum = 100;
         int bestNum = 0;
-        int centerRow = lineNumbers.size() / 3 * 2;//最佳行数 2/3 得位置
+        int centerRow = lineNumbers.size() * 2 / 3;//最佳行数 2/3 得位置
+        Log.i("ee", "-最佳-------------------" + centerRow + "----------------" + seatRecommendListTwo.size());
         int centerColumn = column / 2;
         for (int i = centerRow; i < row; i++) {
-            List<List<Map<String, Integer>>> seatRecommendListOne = new ArrayList<List<Map<String, Integer>>>();
+            List<List<Map<String, Integer>>> seatRecommendListOne = new ArrayList<>();
 
             //筛选出所有的可能性 包括 不可选的位置
             for (int j = 0; j < column; j++) {
@@ -1670,11 +1671,13 @@ public class SeatTableView extends View {
                     bestNum = j;
                 }
             }
-
-            //存放每一行的最佳位置
-            seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
-
             Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
+
+            if (seatRecommendListOne.size() > 0) {
+                //存放每一行的最佳位置
+                seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
+            }
+
 
         }
 
@@ -1724,9 +1727,12 @@ public class SeatTableView extends View {
                         bestNum = j;
                     }
                 }
-                //存放每一行的最佳位置
-                seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
-                Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
+
+                if (seatRecommendListOne.size() > 0) {
+                    Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
+                    //存放每一行的最佳位置
+                    seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
+                }
             }
         }
 
@@ -1746,14 +1752,15 @@ public class SeatTableView extends View {
                 bestNum = j;
             }
         }
-
-        for (int i = 0; i < seatRecommendListTwo.get(bestNum).size(); i++) {
-            int a = seatRecommendListTwo.get(bestNum).get(i).get("row");
-            int b = seatRecommendListTwo.get(bestNum).get(i).get("col");
-            int id = getID(a, b);
-            addChooseSeat(a, b);
-            seatChecker.checked(newSeatList.get(id));
-            newSeatList.get(id).setType("0-1");
+        if (seatRecommendListTwo.size() > 0) {
+            for (int i = 0; i < seatRecommendListTwo.get(bestNum).size(); i++) {
+                int a = seatRecommendListTwo.get(bestNum).get(i).get("row");
+                int b = seatRecommendListTwo.get(bestNum).get(i).get("col");
+                int id = getID(a, b);
+                addChooseSeat(a, b);
+                seatChecker.checked(newSeatList.get(id));
+                newSeatList.get(id).setType("0-1");
+            }
         }
         invalidate();
     }
@@ -1842,7 +1849,8 @@ public class SeatTableView extends View {
     }
 
     private boolean addIsHave(int col) {
-        if (col > column) {
+        Log.i("ee", column + "--------------" + col);
+        if (col >= column) {
             return false;
         }
         return true;

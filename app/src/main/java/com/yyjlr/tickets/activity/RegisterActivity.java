@@ -123,7 +123,7 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
             public void onResponse(RegisterModel response) {
 
                 SharePrefUtil.putString(Constant.FILE_NAME, "token", response.getToken(), RegisterActivity.this);
-                SharePrefUtil.putString(Constant.FILE_NAME, Constant.PHONE, response.getPhone(), RegisterActivity.this);
+                SharePrefUtil.putString(Constant.FILE_NAME, Constant.PHONE, phoneNum.getText().toString().trim(), RegisterActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, password.getText().toString().trim(), RegisterActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, "flag", "1", RegisterActivity.this);
                 customDialog.dismiss();

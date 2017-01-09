@@ -1,5 +1,6 @@
 package com.yyjlr.tickets.activity.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -79,18 +80,17 @@ public class AccountNameActivity extends AbstractActivity implements View.OnClic
 */
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.base_toolbar__left:
                 AccountNameActivity.this.finish();
                 break;
             case R.id.base_toolbar__right_text:
-                String name = userName.getText().toString();
-                if (!"".equals(name)) {
-                    SettingAccountActivity.userName.setText(name);
-                    MySettingContent.userName.setText(name);
+                String nick = userName.getText().toString().trim();
+                if (nick.length() > 0) {
+                    setResult(CODE_RESULT, new Intent().putExtra("nickName", nick));
                     AccountNameActivity.this.finish();
                 } else {
-                    showShortToast("昵称不能为空");
+                    showShortToast("昵称不能为空!");
                 }
                 break;
         }

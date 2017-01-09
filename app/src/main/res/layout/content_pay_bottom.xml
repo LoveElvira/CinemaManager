@@ -24,7 +24,7 @@
         android:layout_marginLeft="@dimen/size_5"
         android:layout_marginRight="@dimen/size_5"
         android:layout_marginTop="-2dp"
-        android:text="120"
+        android:text="0"
         android:textColor="@color/red_de2500"
         android:textSize="@dimen/text_18" />
 

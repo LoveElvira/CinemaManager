@@ -126,36 +126,40 @@ public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerV
             public void onResponse(MovieBean response) {
                 Log.i("ee", new Gson().toJson(response));
 
-                movieInfoList = response.getMovieList();
+                if (response != null) {
+                    movieInfoList = response.getMovieList();
 
-                if ("0".equals(pagables)) {//第一页
-                    movieInfoLists.clear();
-                    movieInfoLists.addAll(movieInfoList);
-                    Log.i("ee", movieInfoLists.size() + "----" + movieInfoList.size());
-                    filmAdapter = new FilmAdapter(movieInfoList);
-                    filmAdapter.openLoadAnimation();
-                    listView.setAdapter(filmAdapter);
-                    filmAdapter.openLoadMore(movieInfoList.size(), true);
-                    if (response.getHasMore() == 1) {
-                        hasMore = true;
-                    } else {
-                        hasMore = false;
-                    }
-                    pagable = response.getPagable();
-                } else {
-                    movieInfoLists.addAll(movieInfoList);
-                    if (response.getHasMore() == 1) {
-                        hasMore = true;
-                        pagable = response.getPagable();
-                        filmAdapter.notifyDataChangedAfterLoadMore(movieInfoList, true);
-                    } else {
-                        filmAdapter.notifyDataChangedAfterLoadMore(movieInfoList, true);
-                        hasMore = false;
-                        pagable = "";
+                    if (movieInfoList != null) {
+                        if ("0".equals(pagables)) {//第一页
+                            movieInfoLists.clear();
+                            movieInfoLists.addAll(movieInfoList);
+                            Log.i("ee", movieInfoLists.size() + "----" + movieInfoList.size());
+                            filmAdapter = new FilmAdapter(movieInfoList);
+                            filmAdapter.openLoadAnimation();
+                            listView.setAdapter(filmAdapter);
+                            filmAdapter.openLoadMore(movieInfoList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
+                            pagable = response.getPagable();
+                        } else {
+                            movieInfoLists.addAll(movieInfoList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                filmAdapter.notifyDataChangedAfterLoadMore(movieInfoList, true);
+                            } else {
+                                filmAdapter.notifyDataChangedAfterLoadMore(movieInfoList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
+                        }
+                        filmAdapter.setOnLoadMoreListener(FilmContent.this);
+                        filmAdapter.setOnRecyclerViewItemChildClickListener(FilmContent.this);
                     }
                 }
-                filmAdapter.setOnLoadMoreListener(FilmContent.this);
-                filmAdapter.setOnRecyclerViewItemChildClickListener(FilmContent.this);
             }
 
             @Override

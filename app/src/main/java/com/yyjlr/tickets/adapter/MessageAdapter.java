@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.FilmEntity;
 import com.yyjlr.tickets.model.MessageEntity;
+import com.yyjlr.tickets.model.message.MyMessageInfo;
 import com.yyjlr.tickets.service.OnRecyclerViewItemClickListener;
 
 import java.util.List;
@@ -21,17 +23,17 @@ import java.util.List;
  * Created by Elvira on 2016/8/3.
  * 消息Adapter
  */
-public class MessageAdapter extends BaseAdapter<MessageEntity>{
+public class MessageAdapter extends BaseAdapter<MyMessageInfo> {
 
-    public MessageAdapter(List<MessageEntity> data) {
+    public MessageAdapter(List<MyMessageInfo> data) {
         super(R.layout.item_message, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MessageEntity item, int position) {
-        helper.setText(R.id.item_message__title,item.getTitle())
-                .setText(R.id.item_message__time,item.getTime())
-                .setOnClickListener(R.id.item_message__layout,new OnItemChildClickListener());
+    protected void convert(BaseViewHolder helper, MyMessageInfo item, int position) {
+        helper.setText(R.id.item_message__title, item.getTitle())
+                .setText(R.id.item_message__time, ChangeUtils.changeTime(item.getSendDate()))
+                .setOnClickListener(R.id.item_message__layout, new OnItemChildClickListener());
     }
 
 }

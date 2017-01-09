@@ -26,6 +26,12 @@ import java.util.regex.Pattern;
  */
 public class AbstractActivity extends AppCompatActivity {
 
+    protected static final int CODE_REQUEST_ONE = 0x06;
+    protected static final int CODE_REQUEST_TWO = 0x07;
+    protected static final int CODE_REQUEST_THREE = 0x08;
+    protected static final int CODE_REQUEST_FOUR = 0x09;
+    public static final int CODE_RESULT = 0x10;
+
 
     protected int TOTAL_COUNTER = 20;
 
@@ -78,6 +84,7 @@ public class AbstractActivity extends AppCompatActivity {
         }
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         abstractActivity = this;
+        Application.getInstance().addActivity(this);
     }
 
     /**

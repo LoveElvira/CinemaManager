@@ -11,9 +11,27 @@ public class IdRequest implements IRequestMainData {
     private String movieId;//获取影院详情
     private String planId;//排期ID
     private String orderId;//订单号
+    private String payTypeId;//支付类别ID
     private String isInterest;//是否关注(0:取消关注;1:关注)
+    private String activityType;//活动类别，1：电影；2：特价票；3：明星见面会；4：商户合作活动
 
     public IdRequest() {
+    }
+
+    public String getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
+    }
+
+    public String getPayTypeId() {
+        return payTypeId;
+    }
+
+    public void setPayTypeId(String payTypeId) {
+        this.payTypeId = payTypeId;
     }
 
     public String getIsInterest() {

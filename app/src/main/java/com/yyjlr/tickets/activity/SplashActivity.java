@@ -44,6 +44,7 @@ public class SplashActivity extends AbstractActivity {
     private LinearLayout dotLayout;
     private int currentItem;
     private AdvertModel advertModel;//获取后台的数据
+    private ImageView splash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class SplashActivity extends AbstractActivity {
 
     private void initView() {
         jump = (TextView) findViewById(R.id.splash__jump);
+        splash = (ImageView) findViewById(R.id.splash);
+        splash.setVisibility(View.GONE);
         viewpager = (LockableViewPager) findViewById(R.id.splsh__viewpager);
         viewpager.setSwipeable(true);
         dotLayout = (LinearLayout) findViewById(R.id.splsh__dot_layout);
@@ -84,12 +87,22 @@ public class SplashActivity extends AbstractActivity {
             public void onResponse(AdvertModel response) {
                 advertModel = response;
                 views = new ArrayList<>();
-                for (int i = 0; i < response.getAdvertList().size(); i++) {
-                    views.add(getPageView(response.getAdvertList().get(i).getImageUrl()));
+                if (advertModel != null) {
+                    if (advertModel.getAdvertList().size() > 0) {
+                        for (int i = 0; i < response.getAdvertList().size(); i++) {
+                            views.add(getPageView(response.getAdvertList().get(i).getImageUrl()));
+                        }
+                        adapter = new ContentAdapter(views, null);
+                        viewpager.setAdapter(adapter);
+                        addDot();
+                    } else {
+                        splash.setVisibility(View.VISIBLE);
+                        autoJump();
+                    }
+                }else{
+                    splash.setVisibility(View.VISIBLE);
+                    autoJump();
                 }
-                adapter = new ContentAdapter(views, null);
-                viewpager.setAdapter(adapter);
-                addDot();
 
             }
 
@@ -98,6 +111,23 @@ public class SplashActivity extends AbstractActivity {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
             }
         }, requestNull, AdvertModel.class, SplashActivity.this);
+    }
+
+    private void autoJump(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    SplashActivity.this.finish();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 
     //监听事件

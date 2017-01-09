@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/WrapWrap"
     android:id="@+id/item_seat_select__layout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:background="@drawable/radius_border_gray"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/size_10"
-    android:gravity="center_vertical">
+    android:padding="@dimen/size_10">
 
     <TextView
         android:id="@+id/item_seat_select__text"
         style="@style/WrapWrap"
+        android:layout_marginRight="@dimen/size_5"
         android:text="1排1座"
         android:textColor="@color/gray_929292"
-        android:textSize="@dimen/text_14"
-        android:layout_marginRight="@dimen/size_5"/>
+        android:textSize="@dimen/text_12" />
+
     <ImageView
         android:layout_width="@dimen/size_10"
         android:layout_height="@dimen/size_10"
-        android:src="@mipmap/seat_cancel"/>
+        android:src="@mipmap/seat_cancel" />
 </LinearLayout>

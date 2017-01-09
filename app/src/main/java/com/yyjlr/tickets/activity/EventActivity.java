@@ -127,7 +127,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     //获取活动信息
     private void getEventInfo() {
         IdRequest idRequest = new IdRequest();
-        idRequest.setActivityId(getIntent().getLongExtra("id", 0) + "");
+        idRequest.setActivityId(getIntent().getLongExtra("eventId", 0) + "");
         OkHttpClientManager.postAsyn(Config.GET_EVENT_INFO, new OkHttpClientManager.ResultCallback<EventModel>() {
 
             @Override
@@ -194,9 +194,10 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
-        idRequest.setMovieId(getIntent().getStringExtra("filmId"));
+        idRequest.setActivityId(eventModel.getActivityId() + "");
         idRequest.setIsInterest(isCollect);
-        OkHttpClientManager.postAsyn(Config.COLLECT_FILM, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+        idRequest.setActivityType(eventModel.getActivityType() + "");
+        OkHttpClientManager.postAsyn(Config.COLLECT_EVENT, new OkHttpClientManager.ResultCallback<ResponeNull>() {
 
             @Override
             public void onError(Request request, Error info) {

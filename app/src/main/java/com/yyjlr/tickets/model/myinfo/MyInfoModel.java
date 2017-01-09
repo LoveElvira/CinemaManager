@@ -6,7 +6,7 @@ package com.yyjlr.tickets.model.myinfo;
  */
 
 public class MyInfoModel {
-    private int usrId;// 用户ID
+    private int userId;// 用户ID
     private String nickname;//用户昵称
     private String headImgUrl;// 头像URL地址
     private String sex;// 性别，1：男；2：女
@@ -17,12 +17,12 @@ public class MyInfoModel {
     public MyInfoModel() {
     }
 
-    public int getUsrId() {
-        return usrId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUsrId(int usrId) {
-        this.usrId = usrId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getNickname() {

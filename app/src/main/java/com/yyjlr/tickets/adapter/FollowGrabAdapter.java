@@ -1,19 +1,14 @@
 package com.yyjlr.tickets.adapter;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.model.ChosenFilmEntity;
-import com.yyjlr.tickets.model.FilmEntity;
-import com.yyjlr.tickets.service.OnRecyclerViewItemClickListener;
+import com.yyjlr.tickets.content.collect.FollowEventContent;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.event.FollowEventInfo;
 import com.yyjlr.tickets.viewutils.SlidingButtonView;
 
 import java.util.List;
@@ -22,33 +17,37 @@ import java.util.List;
  * Created by Elvira on 2016/7/31.
  * 关注抢票Adapter
  */
-public class FollowGrabAdapter extends BaseAdapter<ChosenFilmEntity> implements SlidingButtonView.SlidingButtonListener {
+public class FollowGrabAdapter extends BaseAdapter<FollowEventInfo> implements SlidingButtonView.SlidingButtonListener {
 
     private SlidingButtonView mMenu = null;
     private SlidingViewClickListener mIDeleteBtnClickListener;
 
-    List<ChosenFilmEntity> data;
+    List<FollowEventInfo> data;
 
-    public FollowGrabAdapter(List<ChosenFilmEntity> data, Context context) {
+    public FollowGrabAdapter(List<FollowEventInfo> data, FollowEventContent context) {
         this(data);
         this.data = data;
         mIDeleteBtnClickListener = (SlidingViewClickListener) context;
     }
 
-    public FollowGrabAdapter(List<ChosenFilmEntity> data) {
+    public FollowGrabAdapter(List<FollowEventInfo> data) {
         super(R.layout.item_follow_grab, data);
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, ChosenFilmEntity item, int position) {
+    protected void convert(final BaseViewHolder helper, FollowEventInfo item, int position) {
         AppManager.getInstance().initWidthHeight(helper.getConvertView().getContext());
-        helper.setImageResource(R.id.item_follow_grab__image, R.mipmap.bird)
-                .setText(R.id.item_follow_grab__name, item.getChosenFilmName())
-                .setText(R.id.item_follow_grab__time, item.getChosenFilmShowTime())
-                .setText(R.id.item_follow_grab__address, item.getChosenFilmAddress())
-                .setText(R.id.item_follow_grab__price, item.getChosenFilmPrice())
+        helper.setText(R.id.item_follow_grab__name, item.getActivityName())
+                .setText(R.id.item_follow_grab__time, ChangeUtils.changeTimeDate(item.getStartTime()) + "~" + ChangeUtils.changeTimeDate(item.getEndTime()))
+                .setText(R.id.item_follow_grab__address, item.getAddress())
+                .setText(R.id.item_follow_grab__price, item.getPrice())
                 .setOnClickListener(R.id.item_follow_grab__enter, new OnItemChildClickListener());
 
+        if (item.getActivityImg() != null && !"".equals(item.getActivityImg())) {
+            Picasso.with(helper.getConvertView().getContext())
+                    .load(item.getActivityImg())
+                    .into((ImageView) helper.getView(R.id.item_follow_grab__image));
+        }
 
         helper.getView(R.id.item_follow_grab__rl_layout).getLayoutParams().width = AppManager.getInstance().getWidth();
 
@@ -64,8 +63,7 @@ public class FollowGrabAdapter extends BaseAdapter<ChosenFilmEntity> implements 
 //                判断是否有删除菜单打开
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
-                }
-                else {
+                } else {
                     int n = helper.getLayoutPosition();
                     mIDeleteBtnClickListener.onItemClick(view, n);
                 }

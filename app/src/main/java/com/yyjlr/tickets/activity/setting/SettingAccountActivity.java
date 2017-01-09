@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.DatePicker;
@@ -17,25 +14,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.BasePhotoActivity;
-import com.yyjlr.tickets.content.MySettingContent;
+import com.yyjlr.tickets.activity.LoginActivity;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.myinfo.MyInfoModel;
 import com.yyjlr.tickets.requestdata.RequestNull;
+import com.yyjlr.tickets.requestdata.UpdateMyInfoRequest;
+import com.yyjlr.tickets.requestdata.UploadRequest;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
-import com.yyjlr.tickets.utils.BitmapUtils;
 import com.yyjlr.tickets.utils.ImageFileUtils;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
-import java.io.IOException;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Elvira on 2016/8/12.
@@ -48,14 +50,17 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
     private int year, monthOfYear, dayOfMonth;
     private View showBirthdayLayout;
     private TextView birthday;
-    public static TextView sex;
-    public static TextView userName;
+    private TextView sex;
+    private TextView userName;
     private LinearLayout headImageLayout;
     private LinearLayout userNameLayout;
     private LinearLayout sexLayout;
     private LinearLayout findPwdLayout;
-    public static ImageView headImage;
+    private ImageView headImage;
     private TextView phone;
+    private TextView quitLogin;//退出登录
+    private boolean isUpdate = false;
+    private MyInfoModel myInfoModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +86,14 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         sex = (TextView) findViewById(R.id.content_setting_account__sex);
         userName = (TextView) findViewById(R.id.content_setting_account__username);
         phone = (TextView) findViewById(R.id.content_setting_account__phone);
+        quitLogin = (TextView) findViewById(R.id.content_setting_account__quit);
         showBirthdayLayout.setOnClickListener(this);
         headImageLayout.setOnClickListener(this);
         userNameLayout.setOnClickListener(this);
         sexLayout.setOnClickListener(this);
         findPwdLayout.setOnClickListener(this);
-
+        quitLogin.setOnClickListener(this);
+        isUpdate = false;
 //        userName.setText(getIntent().getStringExtra("userName"));
         getMyInfo();
     }
@@ -108,25 +115,26 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
             @Override
             public void onResponse(MyInfoModel response) {
                 customDialog.dismiss();
-                if (response != null) {
-                    if (response.getHeadImgUrl() != null && !"".equals(response.getHeadImgUrl())) {
+                myInfoModel = response;
+                if (myInfoModel != null) {
+                    if (myInfoModel.getHeadImgUrl() != null && !"".equals(myInfoModel.getHeadImgUrl())) {
                         Picasso.with(getBaseContext())
-                                .load(response.getHeadImgUrl())
+                                .load(myInfoModel.getHeadImgUrl())
                                 .into(headImage);
                     }
-                    userName.setText(response.getNickname());
+                    userName.setText(myInfoModel.getNickname());
                     // 性别，1：男；2：女
-                    if ("1".equals(response.getSex())) {
+                    if ("1".equals(myInfoModel.getSex())) {
                         sex.setText("男");
                     } else {
                         sex.setText("女");
                     }
 
-                    if (response.getBirthday() != null && !"".equals(response.getBirthday())) {
-                        birthday.setText(response.getBirthday());
+                    if (myInfoModel.getBirthday() != null && !"".equals(myInfoModel.getBirthday())) {
+                        birthday.setText(myInfoModel.getBirthday());
                     }
 
-                    phone.setText(response.getPhone());
+                    phone.setText(myInfoModel.getPhone());
 
                 }
             }
@@ -139,12 +147,134 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         }, requestNull, MyInfoModel.class, Application.getInstance().getCurrentActivity());
     }
 
+    //修改个人信息
+    private void updateInfo(final String flag, final String str) {
+        customDialog = new CustomDialog(SettingAccountActivity.this, "请稍等...");
+        customDialog.show();
+        String sexStr = "";
+        if (sex.getText().equals("男")) {
+            sexStr = "1";
+        } else {
+            sexStr = "2";
+        }
+        UpdateMyInfoRequest updateMyInfoRequest = new UpdateMyInfoRequest();
+        updateMyInfoRequest.setPhone(phone.getText().toString().trim());
+        if (flag.equals("nickName")) {
+            updateMyInfoRequest.setHeadImgUrl(myInfoModel.getHeadImgUrl());
+            updateMyInfoRequest.setNickname(str);
+            updateMyInfoRequest.setSex(sexStr);
+            updateMyInfoRequest.setBirthday(birthday.getText().toString().trim());
+        } else if (flag.equals("birthday")) {
+            updateMyInfoRequest.setHeadImgUrl(myInfoModel.getHeadImgUrl());
+            updateMyInfoRequest.setBirthday(str);
+            updateMyInfoRequest.setNickname(userName.getText().toString().trim());
+            updateMyInfoRequest.setSex(sexStr);
+        } else if (flag.equals("sex")) {
+            updateMyInfoRequest.setHeadImgUrl(myInfoModel.getHeadImgUrl());
+            updateMyInfoRequest.setSex(str);
+            updateMyInfoRequest.setNickname(userName.getText().toString().trim());
+            updateMyInfoRequest.setBirthday(birthday.getText().toString().trim());
+        } else if (flag.equals("headImage")) {
+            updateMyInfoRequest.setHeadImgUrl(str);
+            updateMyInfoRequest.setNickname(userName.getText().toString().trim());
+            updateMyInfoRequest.setBirthday(birthday.getText().toString().trim());
+            updateMyInfoRequest.setSex(sexStr);
+        }
+        OkHttpClientManager.postAsyn(Config.UPDATE_MY_INFO, new OkHttpClientManager.ResultCallback<MyInfoModel>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(MyInfoModel response) {
+                customDialog.dismiss();
+                isUpdate = true;
+                myInfoModel = response;
+                if (myInfoModel != null) {
+                    if (myInfoModel.getHeadImgUrl() != null && !"".equals(myInfoModel.getHeadImgUrl())) {
+                        Picasso.with(getBaseContext())
+                                .load(myInfoModel.getHeadImgUrl())
+                                .into(headImage);
+                    }
+                    userName.setText(myInfoModel.getNickname());
+                    // 性别，1：男；2：女
+                    if ("1".equals(myInfoModel.getSex())) {
+                        SettingAccountActivity.this.sex.setText("男");
+                    } else {
+                        SettingAccountActivity.this.sex.setText("女");
+                    }
+
+                    if (response.getBirthday() != null && !"".equals(myInfoModel.getBirthday())) {
+                        SettingAccountActivity.this.birthday.setText(myInfoModel.getBirthday());
+                    }
+
+                    SettingAccountActivity.this.phone.setText(myInfoModel.getPhone());
+
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, updateMyInfoRequest, MyInfoModel.class, Application.getInstance().getCurrentActivity());
+    }
+
+    private void upLoadImage(String path) {
+        List<File> files = new ArrayList<File>();
+        final CustomDialog customerDialog = new CustomDialog(SettingAccountActivity.this, "请稍后。。。");
+        customerDialog.show();
+        File file = new File(path);
+        files.add(file);
+        UploadRequest upload = new UploadRequest();
+        upload.setType("my");
+        Log.i("ee", "--------------55555555555--------------");
+        OkHttpClientManager.postAsyn(Config.UPDATE_MY_HEAD_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , e = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customerDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(List<String> response) {
+                customerDialog.dismiss();
+                isUpdate = true;
+                Log.i("ee", "----------------------------");
+                if (response.get(0) != null && !"".equals(response.get(0))) {
+                    updateInfo("headImage", response.get(0));
+                }
+//                updateInfo("headImage", response.get(0).getType());
+//                showShortToast("上传成功");
+                // Intent intent = new Intent(PublishWishActivity.this, PublishConsigneeInfoActivity.class);
+                // startActivity(intent);
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                customerDialog.dismiss();
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+            }
+        }, upload, files, new TypeReference<List<String>>() {
+        }, SettingAccountActivity.this);
+    }
+
 
     @Override
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.base_toolbar__left:
+                if (isUpdate) {
+                    setResult(CODE_RESULT, new Intent());
+                }
                 SettingAccountActivity.this.finish();
                 break;
             case R.id.content_setting_account__head_image_layout:
@@ -154,19 +284,24 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                 break;
             case R.id.content_setting_account__username_layout:
                 intent.setClass(getBaseContext(), AccountNameActivity.class);
-                intent.putExtra("userName", userName.getText().toString());
-                startActivity(intent);
+                intent.putExtra("userName", userName.getText().toString().trim());
+                SettingAccountActivity.this.startActivityForResult(intent, CODE_REQUEST_ONE);
                 break;
             case R.id.content_setting_account__sex_layout:
                 intent.setClass(getBaseContext(), AccountSexActivity.class);
                 intent.putExtra("sex", sex.getText().toString());
-                startActivity(intent);
+                SettingAccountActivity.this.startActivityForResult(intent, CODE_REQUEST_TWO);
                 break;
             case R.id.content_setting_account__birthday_layout://时间选择器
                 showPopWindowDatePicker();
                 break;
             case R.id.content_setting_account__password://修改密码
                 startActivity(UpdatePasswordActivity.class);
+                break;
+            case R.id.content_setting_account__quit://退出登录
+                SharePrefUtil.putString(Constant.FILE_NAME, "flag", "0", SettingAccountActivity.this);
+                Application.getInstance().finishAllActivity();
+                startActivity(LoginActivity.class);
                 break;
         }
     }
@@ -225,7 +360,8 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                     month = (monthOfYear + 1) + "";
                 }
                 date = year + "-" + month + "-" + day;
-                birthday.setText(date);
+//                birthday.setText(date);
+                updateInfo("birthday", date);
                 window.dismiss();
             }
         });
@@ -234,9 +370,28 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == CODE_RESULT) {
+            switch (requestCode) {
+                case CODE_REQUEST_ONE:
+                    String nickName = data.getStringExtra("nickName");
+                    Log.i("ee", "------------------------" + nickName);
+                    updateInfo("nickName", nickName);
+                    break;
+                case CODE_REQUEST_TWO:
+                    String sex = data.getStringExtra("sex");
+                    this.sex.setText(sex);
+                    if (sex.equals("男"))
+                        updateInfo("sex", "1");
+                    else if (sex.equals("女"))
+                        updateInfo("sex", "2");
+                    break;
+            }
+        }
+
         if (resultCode != RESULT_OK) {
             return;
         }
+
         if (!mIsKitKat) {//低于4.4的版本
             switch (requestCode) {
                 case CODE_CAMERA_REQUEST_TWO://调用相机返回
@@ -296,13 +451,14 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
 
     //更新头像
     private void updateImage(String path) {
-        try {
-            headImage.setImageBitmap(BitmapUtils.revitionImageSize(path));
-            MySettingContent.headImage.setImageBitmap(BitmapUtils.revitionImageSize(path));
+        upLoadImage(path);
+//        try {
+////            headImage.setImageBitmap(BitmapUtils.revitionImageSize(path));
+////            MySettingContent.headImage.setImageBitmap(BitmapUtils.revitionImageSize(path));
 //            upLoadImage(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }

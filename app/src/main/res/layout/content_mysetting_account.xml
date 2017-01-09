@@ -9,7 +9,12 @@
     tools:context="com.yyjlr.tickets.activity.setting.SettingAccountActivity"
     tools:showIn="@layout/activity_mysetting_account">
 
-    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
         <!--style="@style/MatchWrap"-->
         <!--android:layout_marginTop="@dimen/size_10"-->
         <!--app:mrl_rippleAlpha="0.2"-->
@@ -38,15 +43,15 @@
                 android:id="@+id/content_setting_account__head_image"
                 android:layout_width="@dimen/size_80"
                 android:layout_height="@dimen/size_80"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <ImageView
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
         <!--style="@style/MatchWrap"-->
         <!--android:layout_marginTop="@dimen/size_10"-->
         <!--app:mrl_rippleAlpha="0.2"-->
@@ -82,13 +87,13 @@
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-    <View
-        style="@style/MatchOne"
-        android:background="@color/gray_f4f4f4" />
+        <View
+            style="@style/MatchOne"
+            android:background="@color/gray_f4f4f4" />
 
-    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
         <!--style="@style/MatchWrap"-->
         <!--app:mrl_rippleAlpha="0.2"-->
         <!--app:mrl_rippleColor="@color/bg_shadow"-->
@@ -123,13 +128,13 @@
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-    <View
-        style="@style/MatchOne"
-        android:background="@color/gray_f4f4f4" />
+        <View
+            style="@style/MatchOne"
+            android:background="@color/gray_f4f4f4" />
 
-    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
         <!--style="@style/MatchWrap"-->
         <!--app:mrl_rippleAlpha="0.2"-->
         <!--app:mrl_rippleColor="@color/bg_shadow"-->
@@ -164,9 +169,9 @@
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
 
-    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
         <!--style="@style/MatchWrap"-->
         <!--android:layout_marginTop="@dimen/size_10"-->
         <!--app:mrl_rippleAlpha="0.2"-->
@@ -177,11 +182,11 @@
         <LinearLayout
             android:id="@+id/content_setting_account__phone_layout"
             style="@style/MatchWrap"
+            android:layout_marginTop="@dimen/size_10"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/size_10"
-            android:layout_marginTop="@dimen/size_10">
+            android:padding="@dimen/size_10">
 
             <TextView
                 style="@style/WrapWrap"
@@ -193,20 +198,20 @@
                 android:id="@+id/content_setting_account__phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/size_25"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textColor="@color/black_363636"
-                android:textSize="@dimen/text_14"
-                android:layout_marginRight="@dimen/size_25"/>
+                android:textSize="@dimen/text_14" />
 
         </LinearLayout>
-    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-    <View
-        style="@style/MatchOne"
-        android:background="@color/gray_f4f4f4" />
+        <View
+            style="@style/MatchOne"
+            android:background="@color/gray_f4f4f4" />
 
-    <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
         <!--style="@style/MatchWrap"-->
         <!--app:mrl_rippleAlpha="0.2"-->
         <!--app:mrl_rippleColor="@color/bg_shadow"-->
@@ -233,6 +238,27 @@
                 style="@style/WrapWrap"
                 android:src="@mipmap/right_arrow" />
         </LinearLayout>
-    <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
+
+    </LinearLayout>
+
+    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        style="@style/MatchWrap"
+        android:layout_marginLeft="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_30"
+        android:layout_marginBottom="@dimen/size_20"
+        app:mrl_rippleAlpha="0.2"
+        app:mrl_rippleColor="@color/bg_shadow"
+        app:mrl_rippleHover="true"
+        app:mrl_rippleOverlay="true">
+
+        <Button
+            android:id="@+id/content_setting_account__quit"
+            style="@style/MatchWrap"
+            android:background="@drawable/radius_blue_4"
+            android:text="退出登录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
+    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 </LinearLayout>

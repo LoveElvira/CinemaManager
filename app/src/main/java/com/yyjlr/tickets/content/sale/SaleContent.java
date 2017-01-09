@@ -119,40 +119,44 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(),info.getInfo(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Goods response) {
-                goodInfoList = response.getGoodsList();
-                if ("0".equals(pagables)) {//第一页
-                    goodInfoLists.clear();
-                    goodInfoLists.addAll(goodInfoList);
-                    Log.i("ee", goodInfoList.size() + "----" + goodInfoLists.size());
-                    saleAdapter = new SaleAdapter(goodInfoList);
-                    saleAdapter.openLoadAnimation();
-                    listView.setAdapter(saleAdapter);
-                    saleAdapter.openLoadMore(goodInfoList.size(), true);
-                    if (response.getHasMore() == 1) {
-                        hasMore = true;
-                    } else {
-                        hasMore = false;
-                    }
-                    pagable = response.getPagable();
-                } else {
-                    goodInfoLists.addAll(goodInfoList);
-                    if (response.getHasMore() == 1) {
-                        hasMore = true;
-                        pagable = response.getPagable();
-                        saleAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
-                    } else {
-                        saleAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
-                        hasMore = false;
-                        pagable = "";
+                if (response != null) {
+                    goodInfoList = response.getGoodsList();
+                    if (goodInfoList != null) {
+                        if ("0".equals(pagables)) {//第一页
+                            goodInfoLists.clear();
+                            goodInfoLists.addAll(goodInfoList);
+                            Log.i("ee", goodInfoList.size() + "----" + goodInfoLists.size());
+                            saleAdapter = new SaleAdapter(goodInfoList);
+                            saleAdapter.openLoadAnimation();
+                            listView.setAdapter(saleAdapter);
+                            saleAdapter.openLoadMore(goodInfoList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
+                            pagable = response.getPagable();
+                        } else {
+                            goodInfoLists.addAll(goodInfoList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                saleAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
+                            } else {
+                                saleAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
+                        }
+                        saleAdapter.setOnLoadMoreListener(SaleContent.this);
+                        saleAdapter.setOnRecyclerViewItemChildClickListener(SaleContent.this);
                     }
                 }
-                saleAdapter.setOnLoadMoreListener(SaleContent.this);
-                saleAdapter.setOnRecyclerViewItemChildClickListener(SaleContent.this);
             }
 
             @Override

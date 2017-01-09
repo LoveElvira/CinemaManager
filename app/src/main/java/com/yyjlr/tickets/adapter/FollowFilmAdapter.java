@@ -1,20 +1,13 @@
 package com.yyjlr.tickets.adapter;
 
-import android.content.Context;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.model.FilmEntity;
-import com.yyjlr.tickets.model.OrderEntity;
-import com.yyjlr.tickets.service.OnRecyclerViewItemClickListener;
+import com.yyjlr.tickets.content.collect.FollowFilmContent;
+import com.yyjlr.tickets.model.film.MovieInfo;
 import com.yyjlr.tickets.viewutils.SlidingButtonView;
 
 import java.util.List;
@@ -23,33 +16,37 @@ import java.util.List;
  * Created by Elvira on 2016/7/31.
  * 关注影片Adapter
  */
-public class FollowFilmAdapter extends BaseAdapter<FilmEntity> implements SlidingButtonView.SlidingButtonListener {
+public class FollowFilmAdapter extends BaseAdapter<MovieInfo> implements SlidingButtonView.SlidingButtonListener {
 
     private SlidingButtonView mMenu = null;
     private SlidingViewClickListener mIDeleteBtnClickListener;
 
-    List<FilmEntity> data;
+    List<MovieInfo> data;
 
-    public FollowFilmAdapter(List<FilmEntity> data, Context context) {
+    public FollowFilmAdapter(List<MovieInfo> data, FollowFilmContent context) {
         this(data);
         this.data = data;
         mIDeleteBtnClickListener = (SlidingViewClickListener) context;
     }
 
-    public FollowFilmAdapter(List<FilmEntity> data) {
+    public FollowFilmAdapter(List<MovieInfo> data) {
         super(R.layout.item_follow_film, data);
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, FilmEntity item, int position) {
+    protected void convert(final BaseViewHolder helper, MovieInfo item, int position) {
         AppManager.getInstance().initWidthHeight(helper.getConvertView().getContext());
-        helper.setImageResource(R.id.item_follow_film__image, R.mipmap.bird)
-                .setText(R.id.item_follow_film__name, item.getFilmName())
-                .setText(R.id.item_follow_film__director, item.getFilmDirector())
-                .setText(R.id.item_follow_film__star, item.getFilmStar())
-                .setText(R.id.item_follow_film__showtime, item.getFilmShowTime())
+        helper.setText(R.id.item_follow_film__name, item.getMovieName())
+                .setText(R.id.item_follow_film__director, item.getDirector())
+                .setText(R.id.item_follow_film__star, item.getActors())
+                .setText(R.id.item_follow_film__showtime, item.getShowTime())
                 .setOnClickListener(R.id.item_follow_film__buy_ticket, new OnItemChildClickListener());
 
+        if (item.getMovieImage() != null && !"".equals(item.getMovieImage())) {
+            Picasso.with(helper.getConvertView().getContext())
+                    .load(item.getMovieImage())
+                    .into((ImageView) helper.getView(R.id.item_follow_film__image));
+        }
 
         helper.getView(R.id.item_follow_film__rl_layout).getLayoutParams().width = AppManager.getInstance().getWidth();
 
@@ -65,7 +62,7 @@ public class FollowFilmAdapter extends BaseAdapter<FilmEntity> implements Slidin
 //                判断是否有删除菜单打开
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
-                }else {
+                } else {
                     int n = helper.getLayoutPosition();
                     mIDeleteBtnClickListener.onItemClick(view, n);
                 }

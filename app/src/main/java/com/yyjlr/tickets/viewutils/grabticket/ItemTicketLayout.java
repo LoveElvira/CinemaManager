@@ -105,7 +105,7 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
 //        Toast.makeText(v.getContext().getApplicationContext(), "" + (d != null ? d.title : "null"), Toast.LENGTH_SHORT).
 //                show();
         Intent intent = new Intent(v.getContext(), EventActivity.class);
-        intent.putExtra("id",d.getActivityId());
+        intent.putExtra("eventId",d.getActivityId());
         v.getContext().startActivity(intent);
     }
 

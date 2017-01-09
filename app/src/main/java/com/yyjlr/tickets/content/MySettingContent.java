@@ -96,9 +96,7 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
 
 
     //获取我的账号信息
-    private void getMyInfo() {
-        customDialog = new CustomDialog(getContext(), "加载中...");
-        customDialog.show();
+    public void getMyInfo() {
         RequestNull requestNull = new RequestNull();
         OkHttpClientManager.postAsyn(Config.GET_MY_INFO, new OkHttpClientManager.ResultCallback<MyInfoModel>() {
 
@@ -106,31 +104,28 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
                 Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
-                customDialog.dismiss();
             }
 
             @Override
             public void onResponse(MyInfoModel response) {
-                customDialog.dismiss();
-
-                if (response.getHeadImgUrl() != null && !"".equals(response.getHeadImgUrl())) {
-                    Picasso.with(getContext())
-                            .load(response.getHeadImgUrl())
-                            .into(headImage);
+                if (response != null) {
+                    if (response.getHeadImgUrl() != null && !"".equals(response.getHeadImgUrl())) {
+                        Picasso.with(getContext())
+                                .load(response.getHeadImgUrl())
+                                .into(headImage);
+                    }
+                    if (response.getSexImgUrl() != null && !"".equals(response.getSexImgUrl())) {
+                        Picasso.with(getContext())
+                                .load(response.getSexImgUrl())
+                                .into(sex);
+                    }
+                    userName.setText(response.getNickname());
                 }
-                if (response.getSexImgUrl() != null && !"".equals(response.getSexImgUrl())) {
-                    Picasso.with(getContext())
-                            .load(response.getSexImgUrl())
-                            .into(sex);
-                }
-                userName.setText(response.getNickname());
-
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-                customDialog.dismiss();
             }
         }, requestNull, MyInfoModel.class, Application.getInstance().getCurrentActivity());
     }
@@ -171,8 +166,7 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
                 break;
             case R.id.fragment_setting__head_img:
                 intent.setClass(Application.getInstance().getCurrentActivity(), SettingAccountActivity.class);
-                intent.putExtra("userName", userName.getText().toString());
-                Application.getInstance().getCurrentActivity().startActivity(intent);
+                Application.getInstance().getCurrentActivity().startActivityForResult(intent,0x06);
                 break;
         }
 //        Application.getInstance().getCurrentActivity().startActivity(intent);

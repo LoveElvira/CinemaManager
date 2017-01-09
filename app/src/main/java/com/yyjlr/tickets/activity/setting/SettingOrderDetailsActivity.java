@@ -50,11 +50,13 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     private LinearLayout goodLayout, ticketCodeLayout;
     //付款电话 付款方式 付款时间 支付金额
     private TextView payPhone, payType, payTime, payPrice;
+    private int status = -1;//订单状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+        status = getIntent().getIntExtra("status", -1);
         initView();
         getOrderInfo();
     }
@@ -67,6 +69,8 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         leftArrow.setOnClickListener(this);
 
         orderNum = (TextView) findViewById(R.id.item_order_details__order_num);
+        statusText = (TextView) findViewById(R.id.item_order_details__flag);
+
         filmName = (TextView) findViewById(R.id.content_order_details__film_name);
         filmDate = (TextView) findViewById(R.id.content_order_details__film_date);
         filmTime = (TextView) findViewById(R.id.content_order_details__film_time);
@@ -95,6 +99,40 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         moreLayout.setOnClickListener(this);
 
 //        initSaleList(4, flag);
+    }
+
+    private void showStatus() {
+        // 订单状态，1：待支付；2：待出票；3：已完成；4：用户取消；5：待退款；6：已退款；7：购买卖品失败；8：出票失败；9：超时失效
+        switch (status) {
+            case 1:
+                statusText.setText("待支付");
+                break;
+            case 2:
+                statusText.setText("待出票");
+                break;
+            case 3:
+                statusText.setText("交易完成");
+                break;
+            case 4:
+                statusText.setText("用户已取消");
+                break;
+            case 5:
+                statusText.setText("待退款");
+                break;
+            case 6:
+                statusText.setText("已退款");
+                break;
+            case 7:
+                statusText.setText("购买卖品失败");
+                break;
+            case 8:
+                statusText.setText("出票失败");
+                break;
+            case 9:
+                statusText.setText("超时失效");
+                break;
+        }
+
     }
 
     private void initDate() {

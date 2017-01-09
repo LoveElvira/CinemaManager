@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.message.MyMessageInfo;
 
 /**
  * Created by Elvira on 2016/8/3.
@@ -24,10 +26,13 @@ public class MessageDetailsActivity extends AbstractActivity implements View.OnC
     private TextView title;
     private ImageView leftArrow;
 
+    private MyMessageInfo messageInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_details);
+        messageInfo = (MyMessageInfo) getIntent().getSerializableExtra("messageInfo");
         initView();
     }
 
@@ -42,14 +47,14 @@ public class MessageDetailsActivity extends AbstractActivity implements View.OnC
         message = (TextView) findViewById(R.id.content_message_details__message);
         time = (TextView) findViewById(R.id.content_message_details__time);
 
-        messageTitle.setText(getIntent().getStringExtra("title"));
-        message.setText(getIntent().getStringExtra("message"));
-        time.setText(getIntent().getStringExtra("time"));
+        messageTitle.setText(messageInfo.getTitle());
+        message.setText(messageInfo.getContent());
+        time.setText(ChangeUtils.changeTime(messageInfo.getSendDate()));
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.base_toolbar__left:
                 MessageDetailsActivity.this.finish();
                 break;

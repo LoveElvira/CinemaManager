@@ -1,6 +1,7 @@
 package com.yyjlr.tickets;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -169,5 +170,17 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
         grabImage.setImageResource(R.mipmap.qiangpiao);
         saleImage.setImageResource(R.mipmap.maipin);
         myImage.setImageResource(R.mipmap.wode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode) {
+            case CODE_REQUEST_ONE://更新个人信息
+                mySettingContent.getMyInfo();
+                break;
+        }
     }
 }

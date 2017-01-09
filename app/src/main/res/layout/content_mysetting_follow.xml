@@ -85,13 +85,7 @@
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </LinearLayout>
 
-    <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
-        android:id="@+id/content_setting_follow__refresh"
-        style="@style/MatchMatch">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/content_setting_follow__listview"
-            style="@style/MatchMatch"
-            android:background="@color/white" />
-    </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
+    <com.yyjlr.tickets.viewutils.LockableViewPager
+        android:id="@+id/content_follow__viewpager"
+        style="@style/MatchMatch" />
 </LinearLayout>
