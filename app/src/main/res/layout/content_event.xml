@@ -11,8 +11,7 @@
         android:id="@+id/content_event__bg_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/image_2" />
+        android:scaleType="centerCrop" />
 
     <ImageView
         android:layout_width="match_parent"

@@ -470,6 +470,8 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
             public void onResponse(ResponeNull response) {
                 customDialog.dismiss();
                 FilmCompleteActivity.this.finish();
+                startActivity(new Intent(getBaseContext(), FilmSelectSeatActivity.class).putExtra("planId", getIntent().getStringExtra("planId")));
+
             }
 
             @Override

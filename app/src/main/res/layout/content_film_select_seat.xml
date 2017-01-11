@@ -51,7 +51,7 @@
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_5"
                 android:ellipsize="end"
-                android:maxEms="6"
+                android:maxEms="5"
                 android:singleLine="true"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
@@ -69,7 +69,8 @@
                 android:paddingTop="1dp"
                 android:singleLine="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_11" />
+                android:textSize="@dimen/text_11"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -99,6 +100,9 @@
                 android:id="@+id/content_film_seat__film_type"
                 style="@style/WrapWrap"
                 android:layout_marginRight="@dimen/size_5"
+                android:ellipsize="end"
+                android:maxEms="4"
+                android:singleLine="true"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
         </LinearLayout>

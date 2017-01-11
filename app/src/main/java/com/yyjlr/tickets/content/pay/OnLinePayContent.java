@@ -37,6 +37,7 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Elvira on 2016/8/17.
@@ -55,7 +56,7 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
     private List<SelectPay> payList;
     private int position = 0;
     private String orderId;
-    private CustomDialog customDialog;
+    //    private CustomDialog customDialog;
     private int price;
 
     public OnLinePayContent(Context context, String orderId) {
@@ -65,7 +66,7 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
     public OnLinePayContent(Context context, AttributeSet attrs, String orderId) {
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_online_pay_way, this);
-        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "请稍等。。。");
+//        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "请稍等。。。");
         this.orderId = orderId;
         initView();
     }
@@ -118,7 +119,7 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
 
     //预支付数据
     private void beforePay() {
-        customDialog.show();
+//        customDialog.show();
         IdRequest idRequest = new IdRequest();
         idRequest.setPayTypeId(payList.get(position).getId() + "");
         idRequest.setOrderId(orderId);
@@ -127,19 +128,21 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                customDialog.dismiss();
+                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+//                customDialog.dismiss();
             }
 
             @Override
             public void onResponse(final AlipayResponse response) {
                 Log.i("ee", new Gson().toJson(response));
+                Log.i("ee", response.getData());
                 Runnable payRunnable = new Runnable() {
                     @Override
                     public void run() {
                         //构造PayTask 对象
                         PayTask alipay = new PayTask(Application.getInstance().getCurrentActivity());
                         //调用支付接口，获取支付结果
-                        String result = alipay.pay(response.getData(), true);
+                        Map<String, String> result = alipay.payV2(response.getData(), true);
                         Message msg = new Message();
                         msg.what = SDK_PAY_FLAG;
                         msg.obj = result;
@@ -154,7 +157,8 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-                customDialog.dismiss();
+//                Toast.makeText(getContext(),exception.getInfo(),Toast.LENGTH_SHORT).show();
+//                customDialog.dismiss();
             }
         }, idRequest, AlipayResponse.class, Application.getInstance().getCurrentActivity());
     }
@@ -163,7 +167,7 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SDK_PAY_FLAG: {
-                    PayResult payResult = new PayResult((String) msg.obj);
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
                     /**
                      * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
                      * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
@@ -202,7 +206,7 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                customDialog.dismiss();
+//                customDialog.dismiss();
             }
 
             @Override
@@ -237,13 +241,13 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-                customDialog.dismiss();
+//                customDialog.dismiss();
             }
         }, idRequest, ResponseStatus.class, Application.getInstance().getCurrentActivity());
     }
 
     private void startActivity() {
-        customDialog.dismiss();
+//        customDialog.dismiss();
         Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), SettingOrderDetailsActivity.class)
                 .putExtra("orderId", orderId));
         PaySelectActivity.activity.finish();

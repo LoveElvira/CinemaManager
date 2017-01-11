@@ -17,7 +17,7 @@
             android:id="@+id/content_event__collect_num"
             style="@style/MatchWrap"
             android:gravity="center"
-            android:text="123位用户收藏了这个信息"
+            android:text="0位用户收藏了这个信息"
             android:textColor="@color/gray_c3c3c3" />
 
         <LinearLayout
@@ -78,7 +78,6 @@
                         android:id="@+id/content_event__time"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
-                        android:text="2016.12.31 19:30"
                         android:textColor="@color/black_363636"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
@@ -96,7 +95,6 @@
                         android:id="@+id/content_event__join_number"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
-                        android:text="100"
                         android:textColor="@color/black_363636"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
@@ -122,7 +120,6 @@
                         android:id="@+id/content_event__address"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
-                        android:text="SFC上影（世博店）"
                         android:textColor="@color/black_363636"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
@@ -140,7 +137,6 @@
                         android:id="@+id/content_event__price"
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_5"
-                        android:text="¥80"
                         android:textColor="@color/black_363636"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
@@ -156,7 +152,6 @@
             android:paddingLeft="@dimen/size_20"
             android:paddingRight="@dimen/size_20"
             android:paddingTop="@dimen/size_12"
-            android:text="@string/text_film_details"
             android:textColor="@color/black_363636"
             android:textSize="@dimen/text_12" />
 

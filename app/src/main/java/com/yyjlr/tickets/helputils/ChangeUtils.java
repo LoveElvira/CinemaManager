@@ -17,6 +17,14 @@ public class ChangeUtils {
     }
 
     /**
+     * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（2016.6.16 17:25"）
+     */
+    public static String changeTimeDot(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        return format.format(new Date(time));
+    }
+
+    /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（6-16"）
      */
     public static String changeTimeDate(long time) {

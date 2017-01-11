@@ -1,0 +1,13 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="@color/black"
+    tools:context=".activity.LookPhotoActivity"
+    tools:openDrawer="start">
+
+    <com.yyjlr.tickets.viewutils.zoom.PhotoView
+        android:id="@+id/look_photo__photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</android.support.design.widget.CoordinatorLayout>

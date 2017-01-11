@@ -136,7 +136,7 @@
             android:name=".activity.setting.AccountNameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysVisible"/>
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".activity.FindPasswordActivity"
             android:screenOrientation="portrait"
@@ -147,6 +147,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.sale.SaleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.LookPhotoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

@@ -7,7 +7,10 @@
     android:background="@drawable/radius_border_gray"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/size_10">
+    android:paddingBottom="@dimen/size_10"
+    android:paddingLeft="@dimen/size_5"
+    android:paddingRight="@dimen/size_5"
+    android:paddingTop="@dimen/size_10">
 
     <TextView
         android:id="@+id/item_seat_select__text"

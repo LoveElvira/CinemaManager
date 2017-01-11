@@ -39,6 +39,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.fasterxml.jackson.core:jackson-core:2.8.5'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
-    compile files('libs/alipaySdk-20160825.jar')
     compile files('libs/libammsdk.jar')
+    compile files('libs/alipaySdk-20161222.jar')
 }

@@ -135,25 +135,31 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
-            case R.id.fragment_setting__myaccount:
-                intent.setClass(Application.getInstance().getCurrentActivity(), LoginActivity.class);
-                Application.getInstance().getCurrentActivity().startActivity(intent);
-                break;
+//            case R.id.fragment_setting__myaccount:
+//                intent.setClass(Application.getInstance().getCurrentActivity(), LoginActivity.class);
+//                Application.getInstance().getCurrentActivity().startActivity(intent);
+//                break;
             case R.id.fragment_setting__myorder:
                 intent.setClass(Application.getInstance().getCurrentActivity(), SettingOrderActivity.class);
                 Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
             case R.id.fragment_setting__vip:
-                intent.setClass(Application.getInstance().getCurrentActivity(), SettingVipActivity.class);
-                Application.getInstance().getCurrentActivity().startActivity(intent);
+                Toast.makeText(getContext(), "会员功能正在开放中", Toast.LENGTH_SHORT).show();
+//
+//                intent.setClass(Application.getInstance().getCurrentActivity(), SettingVipActivity.class);
+//                Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
             case R.id.fragment_setting__message:
-                intent.setClass(Application.getInstance().getCurrentActivity(), SettingMessageActivity.class);
-                Application.getInstance().getCurrentActivity().startActivity(intent);
+                Toast.makeText(getContext(), "消息功能正在开放中", Toast.LENGTH_SHORT).show();
+//
+//                intent.setClass(Application.getInstance().getCurrentActivity(), SettingMessageActivity.class);
+//                Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
             case R.id.fragment_setting__follow:
-                intent.setClass(Application.getInstance().getCurrentActivity(), SettingFollowActivity.class);
-                Application.getInstance().getCurrentActivity().startActivity(intent);
+                Toast.makeText(getContext(), "收藏功能正在开放中", Toast.LENGTH_SHORT).show();
+//
+//                intent.setClass(Application.getInstance().getCurrentActivity(), SettingFollowActivity.class);
+//                Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
             case R.id.fragment_setting__service:
 
@@ -161,12 +167,15 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
 
                 break;
             case R.id.fragment_setting__points:
-                intent.setClass(Application.getInstance().getCurrentActivity(), SettingPointsActivity.class);
-                Application.getInstance().getCurrentActivity().startActivity(intent);
+                Toast.makeText(getContext(), "积分功能正在开放中", Toast.LENGTH_SHORT).show();
+//
+//                intent.setClass(Application.getInstance().getCurrentActivity(), SettingPointsActivity.class);
+//                Application.getInstance().getCurrentActivity().startActivity(intent);
                 break;
+            case R.id.fragment_setting__myaccount:
             case R.id.fragment_setting__head_img:
                 intent.setClass(Application.getInstance().getCurrentActivity(), SettingAccountActivity.class);
-                Application.getInstance().getCurrentActivity().startActivityForResult(intent,0x06);
+                Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x06);
                 break;
         }
 //        Application.getInstance().getCurrentActivity().startActivity(intent);

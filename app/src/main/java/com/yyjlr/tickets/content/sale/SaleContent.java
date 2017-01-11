@@ -31,6 +31,7 @@ import com.yyjlr.tickets.activity.sale.PackageDetailsActivity;
 import com.yyjlr.tickets.activity.sale.SaleCompleteActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.SaleAdapter;
+import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.sale.GoodInfo;
 import com.yyjlr.tickets.model.sale.Goods;
 import com.yyjlr.tickets.requestdata.PagableRequest;
@@ -166,9 +167,10 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
         }, pagableRequest, Goods.class, Application.getInstance().getCurrentActivity());
     }
 
-    TextView price;
+    TextView salePrice;
     TextView saleNum;
     PopupWindow mPopupWindow;
+    private long goodPrice;
 
     //弹出popwindow 选择数量
     private void selectPopupWindow(GoodInfo goodInfo) {
@@ -208,7 +210,7 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
         TextView salePackage = (TextView) view.findViewById(R.id.popup_sale__package);
         TextView salePackageContent = (TextView) view.findViewById(R.id.popup_sale__package_content);
         saleNum = (TextView) view.findViewById(R.id.popup_sale__num);
-        price = (TextView) view.findViewById(R.id.popup_sale_price);
+        salePrice = (TextView) view.findViewById(R.id.popup_sale_price);
 
         salePackage.setText(goodInfo.getGoodsName());
         salePackageContent.setText(goodInfo.getGoodsDesc());
@@ -218,9 +220,12 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
                     .into(saleImage);
         }
 
-        buy.setOnClickListener(this);
-        lost.setOnClickListener(this);
-        add.setOnClickListener(this);
+        salePrice.setText(ChangeUtils.save2Decimal(goodInfo.getAppPrice()));
+        goodPrice = goodInfo.getAppPrice();
+
+        buy.setOnClickListener(SaleContent.this);
+        lost.setOnClickListener(SaleContent.this);
+        add.setOnClickListener(SaleContent.this);
 
     }
 
@@ -303,22 +308,32 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
 
     @Override
     public void onClick(View v) {
+        Log.i("ee", "------------------");
         int num = 0;
+        long price = 0;
         if (saleNum != null) {
             num = Integer.parseInt(saleNum.getText().toString());
+            int dotIndex = salePrice.getText().toString().trim().indexOf(".");
+            price = Long.parseLong(salePrice.getText().toString().trim().substring(0, dotIndex)) * 100;
         }
-        switch (view.getId()) {
+        switch (v.getId()) {
             case R.id.popup_sale__buy://购买
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SaleCompleteActivity.class));
+                Toast.makeText(getContext(), "购买功能正在开放中", Toast.LENGTH_SHORT).show();
+//                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SaleCompleteActivity.class));
                 mPopupWindow.dismiss();
                 break;
             case R.id.popup_sale__lost://减少数量
-                if (num != 0)
-                    num = num - 1;
+                if (num != 1) {
+                    num -= 1;
+                    price -= goodPrice;
+                }
+                salePrice.setText(ChangeUtils.save2Decimal(price));
                 saleNum.setText(num + "");
                 break;
             case R.id.popup_sale__add://增加数量
+                Log.i("ee", "price + goodPrice----" + (price + goodPrice));
                 saleNum.setText((num + 1) + "");
+                salePrice.setText(ChangeUtils.save2Decimal(price + goodPrice));
                 break;
         }
 

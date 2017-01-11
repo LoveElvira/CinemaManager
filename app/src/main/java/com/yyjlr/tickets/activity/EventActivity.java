@@ -1,5 +1,6 @@
 package com.yyjlr.tickets.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -75,6 +76,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     private EventModel eventModel;
     private EventCollectUserAdapter adapter;
     private ImageView imagebg;//背景图片 封面
+    private String path = "";//背景图片地址
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,11 +142,11 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                 Log.i("ee", new Gson().toJson(response));
                 eventModel = response;
                 title.setText(eventModel.getActivityName());
-                startTime.setText(ChangeUtils.changeTime(eventModel.getStartTime()));
+                startTime.setText(ChangeUtils.changeTimeDot(eventModel.getStartTime()));
                 address.setText(eventModel.getAddress());
                 joinNum.setText(eventModel.getInterestUsers() + "");
                 collectNum.setText(eventModel.getInterestUsers() + "位用户收藏了这个信息");
-                price.setText(eventModel.getPrice());
+                price.setText("¥" + eventModel.getPrice());
                 description.setText(eventModel.getActivityDesc());
 
                 collectImage.setImageResource(R.mipmap.collect);
@@ -159,9 +161,12 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                     listView.setAdapter(adapter);
                 }
 
-                Picasso.with(getBaseContext())
-                        .load(eventModel.getActivityImg())
-                        .into(imagebg);
+                path = eventModel.getActivityImg();
+                if (!"".equals(path)) {
+                    Picasso.with(getBaseContext())
+                            .load(path)
+                            .into(imagebg);
+                }
             }
 
             @Override
@@ -235,6 +240,14 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                 EventActivity.this.finish();
                 break;
             case R.id.base_toolbar__right_text://展示背景图片信息
+
+                if (!"".equals(path)) {
+                    startActivity(new Intent(getBaseContext(), LookPhotoActivity.class)
+                            .putExtra("path", path));
+                } else {
+                    showShortToast("没有图片集锦");
+                }
+
                 break;
             case R.id.content_event__collect:
                 if ("收藏".equals(collectText.getText().toString().trim())) {
@@ -247,6 +260,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                 sharePopupWindow();
                 break;
             case R.id.content_event__join:
+                showShortToast("参加功能正在开放中");
                 break;
             case R.id.popup_share__weixin:
                 mPopupWindow.dismiss();

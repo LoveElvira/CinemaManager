@@ -60,7 +60,7 @@ public class SplashActivity extends AbstractActivity {
     private void initView() {
         jump = (TextView) findViewById(R.id.splash__jump);
         splash = (ImageView) findViewById(R.id.splash);
-        splash.setVisibility(View.GONE);
+//        splash.setVisibility(View.GONE);
         viewpager = (LockableViewPager) findViewById(R.id.splsh__viewpager);
         viewpager.setSwipeable(true);
         dotLayout = (LinearLayout) findViewById(R.id.splsh__dot_layout);
@@ -89,6 +89,7 @@ public class SplashActivity extends AbstractActivity {
                 views = new ArrayList<>();
                 if (advertModel != null) {
                     if (advertModel.getAdvertList().size() > 0) {
+                        splash.setVisibility(View.GONE);
                         for (int i = 0; i < response.getAdvertList().size(); i++) {
                             views.add(getPageView(response.getAdvertList().get(i).getImageUrl()));
                         }

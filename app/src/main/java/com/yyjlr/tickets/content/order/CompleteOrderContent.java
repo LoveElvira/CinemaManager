@@ -53,6 +53,7 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
     private View notLoadingView;
+    private TextView loadMore;
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
@@ -86,7 +87,6 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Application.getInstance().getCurrentActivity());
         listView.setLayoutManager(linearLayoutManager);
         notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
-
         orderLists = new ArrayList<>();
 
         getOrder(pagable, type);
@@ -187,6 +187,7 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
         headerSta = (TextView) headerView.findViewById(R.id.header_loading_text);
 //        headerTime = (TextView) headerView.findViewById(R.id.header_loading_time);
         headerSta.setText("下拉刷新");
+        headerSta.setTextColor(getResources().getColor(R.color.black_363636));
         headerImage = (ImageView) headerView.findViewById(R.id.header_loading_image);
         headerImage.setVisibility(View.VISIBLE);
         headerProgressBar.setVisibility(View.GONE);

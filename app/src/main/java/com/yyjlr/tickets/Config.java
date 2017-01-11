@@ -7,11 +7,11 @@ package com.yyjlr.tickets;
 
 public class Config {
     public static final boolean DEBUG = true;
-    public static final String URL_SERVICE = "http://192.168.1.85:8080/cgi";//小强本地
-    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.85:8080/uploadFile";//上传文件
+//    public static final String URL_SERVICE = "http://192.168.1.85:8080/cgi";//小强本地
+//    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.85:8080/uploadFile";//上传文件
 
-//    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
-//    public static final String URL_SERVICE_UPLOAD = "http://139.196.51.15/uploadFile";//上传文件
+    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
+    public static final String URL_SERVICE_UPLOAD = "http://139.196.51.15/uploadFile";//上传文件
 
     public static final String REGISTER = "user/register";//用户注册
     public static final String GET_REGISTER_CODE = "user/register/getVerificationCode";//获取注册手机验证码

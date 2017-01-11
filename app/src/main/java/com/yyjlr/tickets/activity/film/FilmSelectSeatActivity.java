@@ -128,15 +128,16 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 //        Log.i("ee", getAssets().toString() + "------" + readFromAsset("seat.json"));
 //        FilmSeatEntity filmSeatEntity = gson.fromJson(readFromAsset("seat.json"), FilmSeatEntity.class);
         confirmSeat.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        seatSelectList.clear();
-        addSelectSeatText();
         CheckNoPayOrder();
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        seatSelectList.clear();
+//        addSelectSeatText();
+//        CheckNoPayOrder();
+//    }
 
     //获取影片（抢票）座位信息接口
     private void getSeatPlan() {
@@ -158,13 +159,18 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 seatDate.setText(ChangeUtils.changeTimeDate(seatBean.getPlayStartTime()));
                 seatTime.setText(ChangeUtils.changeTimeTime(seatBean.getPlayStartTime()));
                 seatHall.setText(seatBean.getHallName());
-                seatHallType.setText(seatBean.getHallType());
+                if (!"".equals(seatBean.getHallType())) {
+                    seatHallType.setVisibility(View.VISIBLE);
+                    seatHallType.setText(seatBean.getHallType());
+                } else {
+                    seatHallType.setVisibility(View.GONE);
+                }
                 language.setText(seatBean.getLanguage());
                 filmType.setText(seatBean.getMovieType());
                 seatTableView.setScreenName(seatBean.getHallName());//设置屏幕名称
                 if (seatBean.getSeatList() != null && seatBean.getSeatList().size() > 0) {
+                    seatTableView.clear();
                     seatTableView.setData(seatBean.getSeatList(), seatBean.getSeatType());
-                    seatTableView.invalidate();
                 }
                 if (seatBean.getSeatType() != null && seatBean.getSeatType().size() > 0) {
                     for (int i = 0; i < seatBean.getSeatType().size(); i++) {
@@ -217,7 +223,9 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 AddMovieOrderBean orderBean = response;
                 Intent intent = new Intent(FilmSelectSeatActivity.this, FilmCompleteActivity.class);
                 intent.putExtra("movieOrderBean", orderBean);
+                intent.putExtra("planId",planId);
                 FilmSelectSeatActivity.this.startActivity(intent);
+                FilmSelectSeatActivity.this.finish();
             }
 
             @Override

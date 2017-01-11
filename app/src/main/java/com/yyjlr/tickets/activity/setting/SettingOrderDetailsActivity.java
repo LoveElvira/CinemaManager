@@ -97,6 +97,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         payPrice = (TextView) findViewById(R.id.item_order_details__pay_price);
 
         moreLayout.setOnClickListener(this);
+        showStatus();
 
 //        initSaleList(4, flag);
     }

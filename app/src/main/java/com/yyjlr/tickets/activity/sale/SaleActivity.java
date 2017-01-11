@@ -119,6 +119,10 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
 
             }
         });
+
+        viewPager.setCurrentItem(1);
+
+
         packageLayout.setOnClickListener(this);
         saleLayout.setOnClickListener(this);
         back.setOnClickListener(this);
