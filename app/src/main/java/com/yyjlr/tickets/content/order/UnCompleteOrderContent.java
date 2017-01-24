@@ -194,7 +194,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             public void onResponse(ResponeNull response) {
                 unCompleteAdapter.notifyItemRemoved(position);
                 pagable = "0";
-                getOrder(pagable,type);
+                getOrder(pagable, type);
                 customDialog.dismiss();
 
             }
@@ -215,6 +215,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
         headerSta = (TextView) headerView.findViewById(R.id.header_loading_text);
 //        headerTime = (TextView) headerView.findViewById(R.id.header_loading_time);
         headerSta.setText("下拉刷新");
+        headerSta.setTextColor(getResources().getColor(R.color.black_363636));
         headerImage = (ImageView) headerView.findViewById(R.id.header_loading_image);
         headerImage.setVisibility(View.VISIBLE);
         headerProgressBar.setVisibility(View.GONE);
@@ -291,7 +292,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             case R.id.item_order_nocomplete__ll_layout:
                 intent.setClass(getContext(), SettingOrderDetailsActivity.class);
                 intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
-                intent.putExtra("status",orderLists.get(position).getOrderStatus());
+                intent.putExtra("status", orderLists.get(position).getOrderStatus());
                 break;
         }
         Application.getInstance().getCurrentActivity().startActivity(intent);

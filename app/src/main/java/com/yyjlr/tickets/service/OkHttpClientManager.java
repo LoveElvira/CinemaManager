@@ -107,7 +107,7 @@ public class OkHttpClientManager {
             requestData.setAppPushToken(deviceId);
         }
         //影院ID
-        requestData.setAppDomain("50120255");
+        requestData.setAppDomain(Constant.AppDomain);
         requestData.setCmd(cmd);
         requestData.setParameters(requestMainDataData);
         requestData.setAppVersion(Build.BRAND + "_" + Build.DISPLAY + "_" + Build.FINGERPRINT + "_" + Build.ID);
@@ -176,7 +176,7 @@ public class OkHttpClientManager {
         //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
         requestData.setCmd(cmd);
         //影院ID
-        requestData.setAppDomain("50120255");
+        requestData.setAppDomain(Constant.AppDomain);
         requestData.setParameters(requestMainDataData);
         String url = Config.URL_SERVICE;
         Request request = buildPostRequest(url, requestData);
@@ -485,7 +485,7 @@ public class OkHttpClientManager {
                         // Application.getInstance().finishAllActivity();
                         Intent intents = new Intent(Application.getInstance().getApplicationContext(), LoginActivity.class);
                         intents.putExtra("loginflag", "1");
-                        Application.getInstance().getCurrentActivity().startActivity(intents);
+                        AbstractActivity.abstractActivity.startActivity(intents);
                         dialog.dismiss();
                     }
                 });

@@ -142,12 +142,13 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
                 customDialog.dismiss();
             }
 
             @Override
             public void onResponse(RegisterCode response) {
-                showShortToast(response.getVerifyCode());
+//                showShortToast(response.getVerifyCode());
                 customDialog.dismiss();
                 timeCount.start();
             }

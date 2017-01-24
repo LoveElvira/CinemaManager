@@ -178,8 +178,10 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
                     Log.v("xxxxxx", "status:" + resultStatus);
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
+                        Log.i("ee", "------------wqqqqqw-----------");
                         times = 0;
-                        checkOrderStatus();
+//                        checkOrderStatus();
+                        startActivity();
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败// "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
@@ -199,6 +201,7 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
 
     //订单状态查询接口
     private void checkOrderStatus() {
+        Log.i("ee", "-----------0000--------------");
         IdRequest idRequest = new IdRequest();
         idRequest.setOrderId(orderId);
         OkHttpClientManager.postAsyn(Config.CHECK_PAY_ORDER_STATUS, new OkHttpClientManager.ResultCallback<ResponseStatus>() {
@@ -213,10 +216,12 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             public void onResponse(final ResponseStatus response) {
                 Log.i("ee", new Gson().toJson(response));
                 if (response.getState() == 1) {//付款成功
+                    Log.i("ee", "------------1111------------");
                     startActivity();
                     Toast.makeText(Application.getInstance().getCurrentActivity(), "支付成功", Toast.LENGTH_SHORT).show();
 
                 } else if (response.getState() == 0) {//待付款
+                    Log.i("ee", "-----------2222-------------");
                     times++;
                     if (times == 20) {
                         startActivity();
@@ -247,9 +252,11 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
     }
 
     private void startActivity() {
+        Log.i("ee", "-------------3333-----------");
 //        customDialog.dismiss();
         Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), SettingOrderDetailsActivity.class)
-                .putExtra("orderId", orderId));
+                .putExtra("orderId", orderId)
+                .putExtra("status", 3));
         PaySelectActivity.activity.finish();
     }
 

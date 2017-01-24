@@ -15,12 +15,15 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FilmScheduleImageAdapter;
 import com.yyjlr.tickets.adapter.FilmScheduleSeasonAdapter;
 import com.yyjlr.tickets.adapter.FilmScheduleTimeAdapter;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmSeasonEntity;
 import com.yyjlr.tickets.model.FilmTimeEntity;
 import com.yyjlr.tickets.model.film.FilmPlan;
@@ -177,7 +180,12 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
         switch (view.getId()) {
             case R.id.item_schedule__buy_ticket://购票
             case R.id.item_schedule__parent://购票
-                startActivity(new Intent(getBaseContext(), FilmSelectSeatActivity.class).putExtra("planId", filmPlanList.get(this.position).getSessionList().get(position).getPlanId()));
+                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", FilmScheduleActivity.this);
+                if (isLogin.equals("1")) {
+                    startActivity(new Intent(getBaseContext(), FilmSelectSeatActivity.class).putExtra("planId", filmPlanList.get(this.position).getSessionList().get(position).getPlanId()));
+                } else {
+                    startActivity(LoginActivity.class);
+                }
                 break;
             case R.id.item_film_schedule__layout_parent://选择时间item
                 List<Map<String, String>> list = new ArrayList<Map<String, String>>();

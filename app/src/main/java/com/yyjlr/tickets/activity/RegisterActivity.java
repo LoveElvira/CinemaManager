@@ -156,7 +156,7 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
             @Override
             public void onResponse(RegisterCode response) {
                 customDialog.dismiss();
-                showShortToast(response.getVerifyCode());
+//                showShortToast(response.getVerifyCode());
                 timeCount.start();
             }
 

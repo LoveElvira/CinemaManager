@@ -22,9 +22,12 @@ import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.adapter.FilmDetailsPeopleAdapter;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmPeopleEntity;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.film.FilmDetailsModel;
@@ -213,24 +216,29 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.base_toolbar__left:
-                FilmDetailsActivity.this.finish();
-                break;
-            case R.id.content_film_details__down://显示全部介绍
-                if (mState == SPREAD_STATE) {//显示全部
-                    introduce.setMaxLines(FILM_CONTENT_DESC_MAX_LINE);
-                    introduce.requestLayout();
-                    upOrDown.setBackgroundResource(R.mipmap.down_arrow);
-                    mState = SHRINK_UP_STATE;
-                } else if (mState == SHRINK_UP_STATE) {//隐藏部分
-                    introduce.setMaxLines(Integer.MAX_VALUE);
-                    introduce.requestLayout();
-                    upOrDown.setBackgroundResource(R.mipmap.up_arrow);
-                    mState = SPREAD_STATE;
-                }
+        if (view.getId() == R.id.base_toolbar__left) {
+            FilmDetailsActivity.this.finish();
+            return;
+        } else if (view.getId() == R.id.content_film_details__down) {//显示全部介绍
+            if (mState == SPREAD_STATE) {//显示全部
+                introduce.setMaxLines(FILM_CONTENT_DESC_MAX_LINE);
+                introduce.requestLayout();
+                upOrDown.setBackgroundResource(R.mipmap.down_arrow);
+                mState = SHRINK_UP_STATE;
+            } else if (mState == SHRINK_UP_STATE) {//隐藏部分
+                introduce.setMaxLines(Integer.MAX_VALUE);
+                introduce.requestLayout();
+                upOrDown.setBackgroundResource(R.mipmap.up_arrow);
+                mState = SPREAD_STATE;
+            }
+        }
 
-                break;
+        String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", FilmDetailsActivity.this);
+        if (!isLogin.equals("1")) {
+            startActivity(LoginActivity.class);
+            return;
+        }
+        switch (view.getId()) {
             case R.id.content_film_details__collect://收藏
                 if ("收藏".equals(collectText.getText().toString().trim())) {
                     collectFilm("1");

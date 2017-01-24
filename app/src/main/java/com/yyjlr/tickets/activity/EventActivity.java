@@ -31,12 +31,14 @@ import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.setting.AccountNameActivity;
 import com.yyjlr.tickets.activity.setting.SettingAccountActivity;
 import com.yyjlr.tickets.adapter.EventCollectUserAdapter;
 import com.yyjlr.tickets.content.MySettingContent;
 import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.cinemainfo.CinemaInfoModel;
 import com.yyjlr.tickets.model.event.EventModel;
@@ -235,20 +237,26 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+
+        if (v.getId() == R.id.base_toolbar__left) {
+            EventActivity.this.finish();
+            return;
+        } else if (v.getId() == R.id.base_toolbar__right_text) {//展示背景图片信息
+            if (!"".equals(path)) {
+                startActivity(new Intent(getBaseContext(), LookPhotoActivity.class)
+                        .putExtra("path", path));
+            } else {
+                showShortToast("没有图片集锦");
+            }
+        }
+
+        String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", EventActivity.this);
+        if (!isLogin.equals("1")) {
+            startActivity(LoginActivity.class);
+            return;
+        }
+
         switch (v.getId()) {
-            case R.id.base_toolbar__left:
-                EventActivity.this.finish();
-                break;
-            case R.id.base_toolbar__right_text://展示背景图片信息
-
-                if (!"".equals(path)) {
-                    startActivity(new Intent(getBaseContext(), LookPhotoActivity.class)
-                            .putExtra("path", path));
-                } else {
-                    showShortToast("没有图片集锦");
-                }
-
-                break;
             case R.id.content_event__collect:
                 if ("收藏".equals(collectText.getText().toString().trim())) {
                     collectFilm("1");

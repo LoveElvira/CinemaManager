@@ -19,11 +19,14 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.activity.film.FilmDetailsActivity;
 import com.yyjlr.tickets.activity.film.FilmScheduleActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FilmAdapter;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmEntity;
 import com.yyjlr.tickets.model.film.MovieBean;
 import com.yyjlr.tickets.model.film.MovieInfo;
@@ -199,8 +202,13 @@ public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerV
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.item_film__buy_ticket:
-                intent.setClass(getInstance().getCurrentActivity(), FilmScheduleActivity.class);
-                intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
+                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+                if (!isLogin.equals("1")) {
+                    intent.setClass(getInstance().getCurrentActivity(), LoginActivity.class);
+                } else {
+                    intent.setClass(getInstance().getCurrentActivity(), FilmScheduleActivity.class);
+                    intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
+                }
                 break;
             case R.id.item_film__cardview:
             case R.id.item_film__image:

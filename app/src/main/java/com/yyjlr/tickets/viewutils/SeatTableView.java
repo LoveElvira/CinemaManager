@@ -1625,7 +1625,8 @@ public class SeatTableView extends View {
     }
 
     //专座推荐 0 普通 1 情侣首座 2 情侣次座 3 特殊人群 4 vip专座
-    public void selectSeatRecommend(int num) {
+    public boolean selectSeatRecommend(int num) {
+        boolean isSelect = false;
         List<List<Map<String, Integer>>> seatRecommendListTwo = new ArrayList<>();
         //最小的绝对值
         int minNum = 100;
@@ -1765,8 +1766,10 @@ public class SeatTableView extends View {
                 seatChecker.checked(newSeatList.get(id));
                 newSeatList.get(id).setType("0-1");
             }
+            isSelect = true;
         }
         invalidate();
+        return isSelect;
     }
 
 

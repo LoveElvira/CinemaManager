@@ -169,7 +169,6 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 filmType.setText(seatBean.getMovieType());
                 seatTableView.setScreenName(seatBean.getHallName());//设置屏幕名称
                 if (seatBean.getSeatList() != null && seatBean.getSeatList().size() > 0) {
-                    seatTableView.clear();
                     seatTableView.setData(seatBean.getSeatList(), seatBean.getSeatType());
                 }
                 if (seatBean.getSeatType() != null && seatBean.getSeatType().size() > 0) {
@@ -223,7 +222,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 AddMovieOrderBean orderBean = response;
                 Intent intent = new Intent(FilmSelectSeatActivity.this, FilmCompleteActivity.class);
                 intent.putExtra("movieOrderBean", orderBean);
-                intent.putExtra("planId",planId);
+                intent.putExtra("planId", planId);
                 FilmSelectSeatActivity.this.startActivity(intent);
                 FilmSelectSeatActivity.this.finish();
             }
@@ -377,8 +376,37 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    seatTableView.cancelSeat(seatSelectList_1.get(finalI));
-                    seatSelectList.remove(finalI);
+                    Log.i("ee", "---------------------------" + finalI + "-----" + seatSelectList_1.get(finalI).getType());
+                    if (seatSelectList_1.get(finalI).getType().equals("1-1")) {//情侣首座
+                        if ((finalI + 1) < seatSelectList_1.size() && seatSelectList_1.get(finalI + 1).getType().equals("2-1")) {
+                            //正常的 首座的在前 次座的在后
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI));
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI + 1));
+                            seatSelectList.remove(finalI);
+                            seatSelectList.remove(finalI);
+                        } else if ((finalI - 1) >= 0 && seatSelectList_1.get(finalI - 1).getType().equals("2-1")) {//非正常的 首座的在后 次座的在前
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI));
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI - 1));
+                            seatSelectList.remove(finalI - 1);
+                            seatSelectList.remove(finalI - 1);
+                        }
+                    } else if (seatSelectList_1.get(finalI).getType().equals("2-1")) {//情侣次座
+                        if ((finalI - 1) >= 0 && seatSelectList_1.get(finalI - 1).getType().equals("1-1")) {
+                            //正常的 首座的在前 次座的在后
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI));
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI - 1));
+                            seatSelectList.remove(finalI - 1);
+                            seatSelectList.remove(finalI - 1);
+                        } else if ((finalI + 1) < seatSelectList_1.size() && seatSelectList_1.get(finalI + 1).getType().equals("1-1")) {//非正常的 首座的在后 次座的在前
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI));
+                            seatTableView.cancelSeat(seatSelectList_1.get(finalI + 1));
+                            seatSelectList.remove(finalI);
+                            seatSelectList.remove(finalI);
+                        }
+                    } else {
+                        seatTableView.cancelSeat(seatSelectList_1.get(finalI));
+                        seatSelectList.remove(finalI);
+                    }
                     addSelectSeatText();
                 }
             });
@@ -499,8 +527,13 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     }
 
     private void seatRecommend(int num) {
-        seatTitle.setText("已选座位");
-        showSeatRecommendLayout.setVisibility(View.GONE);
-        seatTableView.selectSeatRecommend(num);
+        boolean isSelect = seatTableView.selectSeatRecommend(num);
+        if (isSelect) {
+            showShortToast("没有适合的连坐选择");
+        } else {
+            seatTitle.setText("已选座位");
+            showSeatRecommendLayout.setVisibility(View.GONE);
+        }
+
     }
 }

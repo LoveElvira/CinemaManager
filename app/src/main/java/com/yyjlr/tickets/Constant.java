@@ -10,5 +10,6 @@ public class Constant {
 	public static final String REFRESH_TOKEN = "refreshToken";//微信
 	public static final String ACCESS_TOKEN = "accessToken";//微信
 	public static final String OPEN_ID = "openId";//微信
+	public static final String AppDomain = "33040301";//影院ID  "50120255"
 
 }

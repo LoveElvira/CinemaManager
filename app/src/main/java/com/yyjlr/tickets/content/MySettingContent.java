@@ -38,6 +38,7 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CircleImageView;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import static com.yyjlr.tickets.Application.getInstance;
 import static com.yyjlr.tickets.R.mipmap.phone;
 
 /**
@@ -133,6 +134,12 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
+        String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+        if (!isLogin.equals("1")) {
+            Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), LoginActivity.class));
+            return;
+        }
+
         Intent intent = new Intent();
         switch (view.getId()) {
 //            case R.id.fragment_setting__myaccount:
@@ -185,7 +192,7 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
      * show Dialog 呼叫服务电话
      */
     private void showPhoneService() {
-        final String phoneNumber = "15802171337";
+        final String phoneNumber = "4006075588";
         LayoutInflater inflater = LayoutInflater.from(Application.getInstance().getCurrentActivity());
         View layout = inflater.inflate(R.layout.alert_dialog, null);
         final AlertDialog builder = new AlertDialog.Builder(Application.getInstance().getCurrentActivity()).create();
