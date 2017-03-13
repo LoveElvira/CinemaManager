@@ -1,8 +1,11 @@
 package com.yyjlr.tickets.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,24 +13,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
+import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.adapter.ContentAdapter;
+import com.yyjlr.tickets.adapter.PayAdapter;
 import com.yyjlr.tickets.content.pay.OnLinePayContent;
 import com.yyjlr.tickets.content.pay.VipPayContent;
+import com.yyjlr.tickets.content.pay.VoucherPayContent;
 import com.yyjlr.tickets.helputils.ChangeUtils;
-import com.yyjlr.tickets.model.order.BeforePayOrderInfo;
-import com.yyjlr.tickets.model.order.ChangePayTypeBean;
-import com.yyjlr.tickets.model.order.GoodsRecommend;
+import com.yyjlr.tickets.model.order.ConfirmOrderBean;
 import com.yyjlr.tickets.model.order.OrderItemsInfo;
+import com.yyjlr.tickets.model.pay.MemberCard;
+import com.yyjlr.tickets.model.pay.PayModel;
 import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
-import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.LockableViewPager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -38,28 +45,42 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
 
     private OnLinePayContent onLinePayContent;//网上支付
     private VipPayContent vipPayContent;//会员卡支付
+    private VoucherPayContent voucherPayContent;//兑换券支付
     private LockableViewPager viewPager;
     private ContentAdapter adapter;
     private TextView title;
     private ImageView leftArrow;
     private LinearLayout addPackageLayout;
-
-    private TextView onlinePay, cardPay;
-    private View onlineLine, cardLine;
+    //网上支付  会员卡支付  兑换券支付
+    private LinearLayout onlineLayout, cardLayout, voucherLayout;
+    private TextView onlinePay, cardPay, voucherPay;
+    private View onlineLine, cardLine, voucherLine;
 
     //    private ChangePayTypeBean changePayTypeBean;//确认订单传过来的参数
     private TextView price;//订单总金额
     private String orderId = "";
     public static Activity activity;
 
+    //初始位置
+    private int onlinePosition = 0;
+    private int cardPosition = 0;
+    private int voucherPosition = 0;
+
+    private ConfirmOrderBean orderBean;
+    private PayModel payModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_select);
         activity = this;
-//        changePayTypeBean = (ChangePayTypeBean) getIntent().getSerializableExtra("changePayTypeBean");
         orderId = getIntent().getStringExtra("orderId");
+        orderBean = (ConfirmOrderBean) getIntent().getSerializableExtra("orderBean");
+        if ("".equals(orderId)) {
+            orderId = orderBean.getId() + "";
+        }
         initView();
+        getPay();
     }
 
     private void initView() {
@@ -72,82 +93,124 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         addPackageLayout = (LinearLayout) findViewById(R.id.content_pay_select__add_layout);
 
         price = (TextView) findViewById(R.id.content_pay_select__price);
+
+        onlineLayout = (LinearLayout) findViewById(R.id.content_pay_select__online_pay_layout);
+        cardLayout = (LinearLayout) findViewById(R.id.content_pay_select__card_layout);
+        voucherLayout = (LinearLayout) findViewById(R.id.content_pay_select__voucher_layout);
+
         onlinePay = (TextView) findViewById(R.id.content_pay_select__online_pay);
         cardPay = (TextView) findViewById(R.id.content_pay_select__card);
+        voucherPay = (TextView) findViewById(R.id.content_pay_select__voucher);
         onlineLine = findViewById(R.id.content_pay_select__online_pay_line);
         cardLine = findViewById(R.id.content_pay_select__card_line);
-
-//        onlinePay.setOnClickListener(this);
-//        cardPay.setOnClickListener(this);
+        voucherLine = findViewById(R.id.content_pay_select__voucher_line);
 
         viewPager = (LockableViewPager) findViewById(R.id.content_pay_select__viewpager);
 
         onLinePayContent = new OnLinePayContent(getBaseContext(), orderId);
         vipPayContent = new VipPayContent(getBaseContext(), orderId);
+        voucherPayContent = new VoucherPayContent(getBaseContext(), orderId);
 
-        List<View> list = new ArrayList<View>();
-        list.add(onLinePayContent);
-//        list.add(vipPayContent);
+        price.setText(ChangeUtils.save2Decimal(orderBean.getPrice()));
+        addPackageList(orderBean.getItems());
 
-        adapter = new ContentAdapter(list, null);
-        viewPager.setSwipeable(true);
-        viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                initFirstView();
-                if (position == 0) {
-                    onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
-                    onlineLine.setVisibility(View.VISIBLE);
-                }/* else if (position == 1) {
-                    cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
-                    cardLine.setVisibility(View.VISIBLE);
-                }*/
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        getOrderInfo();
+        cardLayout.setVisibility(View.GONE);
+        voucherLayout.setVisibility(View.GONE);
     }
 
     //动态添加商品列表
-    private void addPackageList(List<GoodsRecommend> orderItemsInfoList) {
+    private void addPackageList(List<OrderItemsInfo> orderItemsInfoList) {
         for (int i = 0; i < orderItemsInfoList.size(); i++) {
             View view = LayoutInflater.from(PaySelectActivity.this).inflate(R.layout.item_pay_select_film_sale, addPackageLayout, false);
             TextView packageName = (TextView) view.findViewById(R.id.item_pay_select_filmorsale__name);
             TextView packageOriginalPrice = (TextView) view.findViewById(R.id.item_pay_select_filmorsale__original_price);
             TextView packageVipPrice = (TextView) view.findViewById(R.id.item_pay_select_filmorsale__discount_price);
-            packageName.setText(orderItemsInfoList.get(i).getGoodsName());
-            packageOriginalPrice.setText(ChangeUtils.save2Decimal(orderItemsInfoList.get(i).getPrice()) + "元");
-            packageVipPrice.setText(ChangeUtils.save2Decimal(orderItemsInfoList.get(i).getAppPrice()) + "元");
+            TextView packageTotalPrice = (TextView) view.findViewById(R.id.item_pay_select_filmorsale__total_price);
+            View line = view.findViewById(R.id.item_pay_select_filmorsale__line);
+            line.setVisibility(View.GONE);
+            packageName.setText(orderItemsInfoList.get(i).getName());
+            packageOriginalPrice.setText(ChangeUtils.save2Decimal(orderItemsInfoList.get(i).getPrice()) + " x " + orderItemsInfoList.get(i).getNum());
+            packageTotalPrice.setText(ChangeUtils.save2Decimal(orderItemsInfoList.get(i).getTotalPrice()) + " 元");
+//          packageVipPrice.setText(ChangeUtils.save2Decimal(orderItemsInfoList.get(i).getAppPrice()) + "元");
 
 
             addPackageLayout.addView(view);
-//            if (size > 1 && i < size - 1) {
-//                View lineView = new View(PaySelectActivity.this);
-//                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//                        LinearLayout.LayoutParams.MATCH_PARENT, 1);
-//                lineView.setLayoutParams(lp);
-//                lineView.setBackgroundColor(ContextCompat.getColor(PaySelectActivity.this, R.color.gray));
-//                addPackageLayout.addView(lineView);
-//            }
+            if (orderItemsInfoList.size() > 1 && i < orderItemsInfoList.size() - 1) {
+                line.setVisibility(View.VISIBLE);
+            }
         }
     }
 
-    //获取待处理订单详情
-    private void getOrderInfo() {
+    private void initDate() {
+        List<View> list = new ArrayList<View>();
+        if (payModel.getChannelList() != null && payModel.getChannelList().size() > 0) {
+            list.add(onLinePayContent);
+            onlinePosition = 0;
+            onLinePayContent.initDate(payModel.getChannelList(), orderBean.getPrice());
+            onlinePay.setOnClickListener(this);
+        }
+        //是否显示会员卡支付
+        if (payModel.getShowMemberCard() == 1) {
+            list.add(vipPayContent);
+            cardLayout.setVisibility(View.VISIBLE);
+            cardPosition = onlinePosition + 1;
+            vipPayContent.initDate(payModel.getMemberCardList(), orderBean.getPrice(), payModel.getMemberCardTypeId());
+            cardPay.setOnClickListener(this);
+        }
+        //是否显示兑换券支付
+        if (payModel.getShowCoupon() == 1) {
+            list.add(voucherPayContent);
+            voucherLayout.setVisibility(View.VISIBLE);
+            voucherPosition = cardPosition + 1;
+            voucherPayContent.initDate(payModel.getShowCouponNum(), orderBean.getPrice(), payModel.getCouponTypeId());
+            voucherPay.setOnClickListener(this);
+        }
+
+        if (list.size() > 0) {
+            adapter = new ContentAdapter(list, null);
+            viewPager.setSwipeable(true);
+            viewPager.setAdapter(adapter);
+            viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    initFirstView();
+                    if (position == onlinePosition) {
+                        onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+                        onlineLine.setVisibility(View.VISIBLE);
+                    }
+                    if (payModel.getShowMemberCard() == 1) {
+                        if (position == cardPosition) {
+                            cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+                            cardLine.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    if (payModel.getShowCoupon() == 1) {
+                        if (position == voucherPosition) {
+                            voucherPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+                            voucherLine.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
+
+    }
+
+    //获取支付数据
+    private void getPay() {
         IdRequest idRequest = new IdRequest();
-        idRequest.setOrderId(orderId);
-        OkHttpClientManager.postAsyn(Config.GET_UNPAID_DETAIL, new OkHttpClientManager.ResultCallback<BeforePayOrderInfo>() {
+        idRequest.setId(orderId);
+        OkHttpClientManager.postAsyn(Config.GET_PAY, new OkHttpClientManager.ResultCallback<PayModel>() {
 
             @Override
             public void onError(Request request, Error info) {
@@ -156,68 +219,113 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             }
 
             @Override
-            public void onResponse(BeforePayOrderInfo response) {
-
-                if (response != null) {
-                    onLinePayContent.initPrice(response.getOrderInfo().getTotalPrice());
-                    price.setText(ChangeUtils.save2Decimal(response.getOrderInfo().getTotalPrice()));
-                    //addPackageList(response.getGoods());
+            public void onResponse(PayModel response) {
+                Log.i("ee", new Gson().toJson(response));
+                payModel = response;
+                if (payModel != null) {
+                    initDate();
                 }
+
+//                payList = response.getChannelList();
+//
+//                adapter = new PayAdapter(payList);
+//                listView.setAdapter(adapter);
+//                adapter.setOnRecyclerViewItemChildClickListener(OnLinePayContent.this);
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
             }
-        }, idRequest, BeforePayOrderInfo.class, PaySelectActivity.this);
+        }, idRequest, PayModel.class, Application.getInstance().getCurrentActivity());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        if (!"".equals(vipPayContent.vipCardNum.getText().toString())) {
-//            vipPayContent.boundVipCard.setVisibility(View.GONE);
-//            vipPayContent.noVipCard.setVisibility(View.GONE);
-//            vipPayContent.showVipCardLayout.setVisibility(View.VISIBLE);
-//            vipPayContent.confirmLayout.setVisibility(View.VISIBLE);
-//            vipPayContent.vipCardNum.setText(vipPayContent.vipCardNum.getText().toString());
-//            vipPayContent.vipPrice.setText("998");
-//        }
-//
-//        if ("".equals(vipPayContent.vipCardNum.getText().toString()) && "".equals(vipPayContent.vipPrice.getText().toString())) {
-//            vipPayContent.boundVipCard.setVisibility(View.VISIBLE);
-//            vipPayContent.noVipCard.setVisibility(View.VISIBLE);
-//            vipPayContent.showVipCardLayout.setVisibility(View.GONE);
-//            vipPayContent.confirmLayout.setVisibility(View.GONE);
-//        }
-
-    }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.base_toolbar__left:
-                PaySelectActivity.this.finish();
-                break;
-            case R.id.content_pay_select__online_pay:
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (v.getId()) {
+                case R.id.base_toolbar__left:
+                    showCancelPay();
+                    break;
+                case R.id.content_pay_select__online_pay:
 //                initFirstView();
 //                onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
 //                onlineLine.setVisibility(View.VISIBLE);
-                viewPager.setCurrentItem(0);
-                break;
-            case R.id.content_pay_select__card:
+                    viewPager.setCurrentItem(onlinePosition);
+                    break;
+                case R.id.content_pay_select__card:
 //                initFirstView();
 //                cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
 //                cardLine.setVisibility(View.VISIBLE);
-                viewPager.setCurrentItem(1);
-                break;
+                    viewPager.setCurrentItem(cardPosition);
+                    break;
+                case R.id.content_pay_select__voucher:
+//                initFirstView();
+//                cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
+//                cardLine.setVisibility(View.VISIBLE);
+                    viewPager.setCurrentItem(voucherPosition);
+                    break;
+            }
         }
     }
 
     private void initFirstView() {
         onlinePay.setTextColor(getResources().getColor(R.color.gray_cbcbcb));
         cardPay.setTextColor(getResources().getColor(R.color.gray_cbcbcb));
+        voucherPay.setTextColor(getResources().getColor(R.color.gray_cbcbcb));
         onlineLine.setVisibility(View.GONE);
         cardLine.setVisibility(View.GONE);
+        voucherLine.setVisibility(View.GONE);
+    }
+
+    /**
+     * show Dialog 是否确定 取消支付
+     */
+    private void showCancelPay() {
+        LayoutInflater inflater = LayoutInflater.from(PaySelectActivity.this);
+        View layout = inflater.inflate(R.layout.alert_dialog, null);
+        final AlertDialog builder = new AlertDialog.Builder(PaySelectActivity.this).create();
+        builder.setView(layout);
+        builder.setCancelable(false);
+        builder.show();
+        TextView title = (TextView) layout.findViewById(R.id.alert_dialog_title);
+        TextView message = (TextView) layout.findViewById(R.id.alert_dialog_message);
+        TextView cancel = (TextView) layout.findViewById(R.id.alert_dialog__cancel);
+        TextView confirm = (TextView) layout.findViewById(R.id.alert_dialog__submit);
+        confirm.setText("确定");
+        title.setText("提示");
+        message.setText("是否取消支付?");
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //取消支付
+                PaySelectActivity.this.finish();
+                builder.dismiss();
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode) {
+            case CODE_REQUEST_ONE://获取绑定的会员卡信息
+                List<MemberCard> memberCardList = (List<MemberCard>) data.getSerializableExtra("cardList");
+                vipPayContent.initDate(memberCardList, orderBean.getPrice(), payModel.getMemberCardTypeId());
+                break;
+        }
     }
 }

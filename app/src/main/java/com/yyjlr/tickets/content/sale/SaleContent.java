@@ -26,12 +26,15 @@ import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.activity.sale.PackageDetailsActivity;
 import com.yyjlr.tickets.activity.sale.SaleCompleteActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.SaleAdapter;
 import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.sale.GoodInfo;
 import com.yyjlr.tickets.model.sale.Goods;
 import com.yyjlr.tickets.requestdata.PagableRequest;
@@ -39,8 +42,12 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import static com.yyjlr.tickets.Application.getInstance;
 
 /**
  * Created by Elvira on 2017/1/3.
@@ -48,6 +55,9 @@ import java.util.List;
  */
 
 public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener, View.OnClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
 
     private View view;
     private RecyclerView listView;//列表
@@ -62,6 +72,8 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
     private boolean hasMore = false;
     private String pagable = "0";
     private int delayMillis = 1000;
+    private int position = 0;
+    private long totalPrice = 0;//popupwindow中的价格
 
 
     public SaleContent(Context context) {
@@ -71,6 +83,7 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
     public SaleContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -115,19 +128,21 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
     //获取卖品数据
     private void getSale(final String pagables) {
         PagableRequest pagableRequest = new PagableRequest();
+        pagableRequest.setType("0");
+        pagableRequest.setPagable(pagables);
         OkHttpClientManager.postAsyn(Config.GET_SALE, new OkHttpClientManager.ResultCallback<Goods>() {
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Goods response) {
                 if (response != null) {
                     goodInfoList = response.getGoodsList();
-                    if (goodInfoList != null) {
+                    if (goodInfoList != null && goodInfoList.size() > 0) {
                         if ("0".equals(pagables)) {//第一页
                             goodInfoLists.clear();
                             goodInfoLists.addAll(goodInfoList);
@@ -163,6 +178,7 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, pagableRequest, Goods.class, Application.getInstance().getCurrentActivity());
     }
@@ -220,8 +236,8 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
                     .into(saleImage);
         }
 
-        salePrice.setText(ChangeUtils.save2Decimal(goodInfo.getAppPrice()));
-        goodPrice = goodInfo.getAppPrice();
+        salePrice.setText(ChangeUtils.save2Decimal(goodInfo.getPrice()));
+        goodPrice = goodInfo.getPrice();
 
         buy.setOnClickListener(SaleContent.this);
         lost.setOnClickListener(SaleContent.this);
@@ -293,16 +309,17 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        switch (view.getId()) {
-            case R.id.item_sale__shopping_cart:
-                selectPopupWindow(goodInfoLists.get(position));
-                break;
-            case R.id.item_sale_package__cardview:
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), PackageDetailsActivity.class));
-                break;
-            case R.id.item_sale__cardview:
-                selectPopupWindow(goodInfoLists.get(position));
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            this.position = position;
+            switch (view.getId()) {
+                case R.id.item_sale__shopping_cart:
+                case R.id.item_sale__cardview:
+                    totalPrice = goodInfoLists.get(position).getPrice();
+                    selectPopupWindow(goodInfoLists.get(position));
+                    break;
+            }
         }
     }
 
@@ -310,30 +327,34 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
     public void onClick(View v) {
         Log.i("ee", "------------------");
         int num = 0;
-        long price = 0;
         if (saleNum != null) {
             num = Integer.parseInt(saleNum.getText().toString());
-            int dotIndex = salePrice.getText().toString().trim().indexOf(".");
-            price = Long.parseLong(salePrice.getText().toString().trim().substring(0, dotIndex)) * 100;
         }
         switch (v.getId()) {
             case R.id.popup_sale__buy://购买
-                Toast.makeText(getContext(), "购买功能正在开放中", Toast.LENGTH_SHORT).show();
-//                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SaleCompleteActivity.class));
+                Intent intent = new Intent();
+                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+                if (!isLogin.equals("1")) {
+                    intent.setClass(getInstance().getCurrentActivity(), LoginActivity.class);
+                } else {
+                    intent.setClass(getInstance().getCurrentActivity(), SaleCompleteActivity.class);
+                    intent.putExtra("goodInfo", goodInfoLists.get(position));
+                    intent.putExtra("num", num);
+                }
+//                Toast.makeText(getContext(), "购买功能正在开放中", Toast.LENGTH_SHORT).show();
+                Application.getInstance().getCurrentActivity().startActivity(intent);
                 mPopupWindow.dismiss();
                 break;
             case R.id.popup_sale__lost://减少数量
                 if (num != 1) {
                     num -= 1;
-                    price -= goodPrice;
                 }
-                salePrice.setText(ChangeUtils.save2Decimal(price));
+                salePrice.setText(ChangeUtils.save2Decimal(totalPrice * num));
                 saleNum.setText(num + "");
                 break;
             case R.id.popup_sale__add://增加数量
-                Log.i("ee", "price + goodPrice----" + (price + goodPrice));
                 saleNum.setText((num + 1) + "");
-                salePrice.setText(ChangeUtils.save2Decimal(price + goodPrice));
+                salePrice.setText(ChangeUtils.save2Decimal(totalPrice * (num + 1)));
                 break;
         }
 

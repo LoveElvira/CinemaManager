@@ -11,18 +11,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.EventActivity;
+import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.DataInfo;
 import com.yyjlr.tickets.model.ticket.TicketModel;
 import com.yyjlr.tickets.viewutils.countdown.CountdownView;
+
+import java.util.Calendar;
+
+import static com.yyjlr.tickets.Application.getInstance;
 
 /**
  * Created by Elvira on 2016/9/12.
  * 抢票item内容
  */
 public class ItemTicketLayout extends RelativeLayout implements View.OnClickListener, TicketFrameLayout.OnScrollChangedListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
 
     private float currPercent;//透明度
     private int maxHeight;//最大高度
@@ -53,6 +64,7 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
     }
 
     public void setData(int position, TicketModel data, int childExpandedHeight, int childNormalHeight) {
+        lastClickTime = 0;
         d = data;
         pos = position;
         maxHeight = childExpandedHeight;
@@ -65,14 +77,14 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
 
         if (pos == 0) {
 
-            itemTime.setAlpha(1f);
+//            itemTime.setAlpha(1f);
             itemDate.setAlpha(1f);
             itemPrice.setAlpha(1f);
             itemShadow.setAlpha(0f);
 
         } else {
 
-            itemTime.setAlpha(0f);
+//            itemTime.setAlpha(0f);
             itemDate.setAlpha(0f);
             itemPrice.setAlpha(0f);
             itemShadow.setAlpha(0.5f);
@@ -83,15 +95,15 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
         itemLayout.getLayoutParams().height = maxHeight;
         itemBackground.getLayoutParams().height = maxHeight;
 
-        if ((d.getEndTime() - d.getStartTime()) > 0) {
-            refreshTime(System.currentTimeMillis());
-        } else {
-//            itemTime.allShowZero();
-            endTime(0);
-        }
+//        if ((d.getEndTime() - d.getStartTime()) > 0) {
+//            refreshTime(System.currentTimeMillis());
+//        } else {
+////            itemTime.allShowZero();
+//            endTime(0);
+//        }
         itemTitle.setText(data.getActivityName());
-        itemDate.setText(ChangeUtils.changeTimeDate(d.getStartTime())+"-"+ChangeUtils.changeTimeDate(d.getEndTime()));
-//        itemPrice.setText("人均"+ChangeUtils.save2Decimal(d.getPrice())+"元");
+        itemDate.setText(ChangeUtils.changeTimeDate(d.getStartTime()) + "-" + ChangeUtils.changeTimeDate(d.getEndTime()));
+        itemPrice.setText("人均" + ChangeUtils.save2Decimal(d.getPrice()) + "元");
         Picasso.with(getContext())
                 .load(data.getActivityImg())
                 .resize(getWidth(), maxHeight)
@@ -102,11 +114,21 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
 //        Toast.makeText(v.getContext().getApplicationContext(), "" + (d != null ? d.title : "null"), Toast.LENGTH_SHORT).
 //                show();
-        Intent intent = new Intent(v.getContext(), EventActivity.class);
-        intent.putExtra("eventId",d.getActivityId());
-        v.getContext().startActivity(intent);
+            String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+            Intent intent = new Intent();
+            if (!isLogin.equals("1")) {
+                intent.setClass(v.getContext(), LoginActivity.class);
+            } else {
+                intent.setClass(v.getContext(), EventActivity.class);
+                intent.putExtra("eventId", d.getActivityId());
+            }
+            v.getContext().startActivity(intent);
+        }
     }
 
 
@@ -132,7 +154,7 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
             if (percent > 0.5f)
                 itemShadow.setAlpha(1 - percent);
         }
-        itemTime.setAlpha(percent);
+//        itemTime.setAlpha(percent);
         itemPrice.setAlpha(percent);
         itemDate.setAlpha(percent);
 
@@ -140,14 +162,14 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
         requestLayout();
     }
 
-    public void refreshTime(long curTimeMillis) {
-        if (null == d || (d.getEndTime() - d.getStartTime()) <= 0) return;
-        itemTime.updateShow(d.getEndTime() - curTimeMillis);
-    }
-
-    public void endTime(long curTimeMillis) {
-        itemTime.updateShow(curTimeMillis);
-    }
+//    public void refreshTime(long curTimeMillis) {
+//        if (null == d || (d.getEndTime() - d.getStartTime()) <= 0) return;
+//        itemTime.updateShow(d.getEndTime() - curTimeMillis);
+//    }
+//
+//    public void endTime(long curTimeMillis) {
+//        itemTime.updateShow(curTimeMillis);
+//    }
 
     public TicketModel getBean() {
         return d;

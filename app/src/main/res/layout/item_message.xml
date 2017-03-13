@@ -8,7 +8,6 @@
     <!--app:mrl_rippleOverlay="true">-->
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/item_message__layout"
         style="@style/MatchWrap"
         android:background="@color/white"
@@ -31,6 +30,15 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/text_14"
                 android:lineSpacingMultiplier="1.4"
+                android:layout_marginRight="@dimen/size_10"/>
+
+            <TextView
+                android:id="@+id/item_message__no_read"
+                style="@style/WrapWrap"
+                android:text="新"
+                android:visibility="gone"
+                android:textColor="@color/red_de2500"
+                android:textSize="@dimen/text_12"
                 android:layout_marginRight="@dimen/size_10"/>
 
             <TextView

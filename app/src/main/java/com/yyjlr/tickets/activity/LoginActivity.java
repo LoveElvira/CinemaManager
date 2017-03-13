@@ -24,6 +24,8 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import java.util.Calendar;
+
 /**
  * Created by Elvira on 2016/7/29.
  * 登陆
@@ -101,9 +103,9 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
                 customDialog.dismiss();
-                showShortToast(info.getInfo());
+                showShortToast(info.getInfo().toString());
             }
 
             @Override
@@ -121,6 +123,7 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, registerRequest, RegisterModel.class, LoginActivity.this);
@@ -128,27 +131,31 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.base_toolbar__left:
-                LoginActivity.this.finish();
-                break;
-            case R.id.content_login__register:
-                startActivity(RegisterActivity.class);
-                break;
-            case R.id.content_login__login:
-                if (isNull()) {
-                    login();
-                }
-                break;
-            case R.id.content_login__weixin:
-                break;
-            case R.id.content_login__friend_circle:
-                break;
-            case R.id.content_login__xinlang:
-                break;
-            case R.id.content_login__forger_password:
-                startActivity(FindPasswordActivity.class);
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.base_toolbar__left:
+                    LoginActivity.this.finish();
+                    break;
+                case R.id.content_login__register:
+                    startActivity(RegisterActivity.class);
+                    break;
+                case R.id.content_login__login:
+                    if (isNull()) {
+                        login();
+                    }
+                    break;
+                case R.id.content_login__weixin:
+                    break;
+                case R.id.content_login__friend_circle:
+                    break;
+                case R.id.content_login__xinlang:
+                    break;
+                case R.id.content_login__forger_password:
+                    startActivity(FindPasswordActivity.class);
+                    break;
+            }
         }
     }
 }

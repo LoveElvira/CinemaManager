@@ -29,6 +29,7 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Elvira on 2016/7/29.
@@ -114,9 +115,9 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
                 customDialog.dismiss();
-                showShortToast(info.getInfo());
+                showShortToast(info.getInfo().toString());
             }
 
             @Override
@@ -134,6 +135,7 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, registerRequest, RegisterModel.class, RegisterActivity.this);
@@ -150,6 +152,7 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
                 customDialog.dismiss();
             }
 
@@ -163,6 +166,7 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, codeRequest, RegisterCode.class, RegisterActivity.this);
@@ -170,25 +174,29 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.base_toolbar__left:
-                RegisterActivity.this.finish();
-                break;
-            case R.id.content_register__getcode:
-                if (isMobileNum(phoneNum.getText().toString().trim())) {
-                    getRegisterCode();
-                } else {
-                    showShortToast("手机号码不对");
-                }
-                break;
-            case R.id.content_register__register:
-                if (isNull()) {
-                    register();
-                }
-                break;
-            case R.id.content_regster__have_account:
-                startActivity(LoginActivity.class);
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.base_toolbar__left:
+                    RegisterActivity.this.finish();
+                    break;
+                case R.id.content_register__getcode:
+                    if (isMobileNum(phoneNum.getText().toString().trim())) {
+                        getRegisterCode();
+                    } else {
+                        showShortToast("手机号码不对");
+                    }
+                    break;
+                case R.id.content_register__register:
+                    if (isNull()) {
+                        register();
+                    }
+                    break;
+                case R.id.content_regster__have_account:
+                    startActivity(LoginActivity.class);
+                    break;
+            }
         }
     }
 

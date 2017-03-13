@@ -17,10 +17,10 @@ import java.util.List;
 
 public class ChosenAdapter extends BaseAdapter<EventInfo> {
 
-    private int cardWidth,cardHeight;
+    private int cardWidth, cardHeight;
 
     public ChosenAdapter(List<EventInfo> data) {
-        super(R.layout.item_chosen_film,data);
+        super(R.layout.item_chosen_film, data);
     }
 
     public void setImageSize(int cardWidth, int cardHeight) {
@@ -31,12 +31,12 @@ public class ChosenAdapter extends BaseAdapter<EventInfo> {
     @Override
     protected void convert(BaseViewHolder helper, EventInfo item, int position) {
 //        helper.getConvertView().getLayoutParams().width = cardWidth;
-        helper.setText(R.id.item_chosen__name,item.getActivityName())
-                .setText(R.id.item_chosen__showtime, ChangeUtils.changeTimeYear(item.getStartTime())+"~"+ChangeUtils.changeTimeYear(item.getEndTime()))
-                .setText(R.id.item_chosen__price,item.getPrice())
-                .setOnClickListener(R.id.item_chosen__parent,new OnItemChildClickListener())
-                .setOnClickListener(R.id.item_chosen__enter,new OnItemChildClickListener());
-        if (item.getActivityImg()!=null) {
+        helper.setText(R.id.item_chosen__name, item.getActivityName())
+                .setText(R.id.item_chosen__showtime, ChangeUtils.changeTimeYear(item.getStartTime()) + "~" + ChangeUtils.changeTimeYear(item.getEndTime()))
+                .setText(R.id.item_chosen__price, ChangeUtils.save2Decimal(item.getPrice()) + "元")
+                .setOnClickListener(R.id.item_chosen__parent, new OnItemChildClickListener())
+                .setOnClickListener(R.id.item_chosen__enter, new OnItemChildClickListener());
+        if (item.getActivityImg() != null) {
             Picasso.with(helper.getConvertView().getContext())
                     .load(item.getActivityImg())
                     .placeholder(R.mipmap.icon_logo)

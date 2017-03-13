@@ -22,7 +22,8 @@
                 <com.yyjlr.tickets.viewutils.CircleImageView
                     android:id="@+id/fragment_setting__head_img"
                     android:layout_width="@dimen/size_80"
-                    android:layout_height="@dimen/size_80" />
+                    android:layout_height="@dimen/size_80"
+                    android:src="@mipmap/head_image_default"/>
 
                 <ImageView
                     android:id="@+id/fragment_setting__sex"
@@ -38,6 +39,7 @@
                 android:layout_marginTop="@dimen/size_5"
                 android:padding="@dimen/size_5"
                 android:textColor="@color/white"
+                android:text="未登录"
                 android:textSize="@dimen/text_15" />
 
         </LinearLayout>

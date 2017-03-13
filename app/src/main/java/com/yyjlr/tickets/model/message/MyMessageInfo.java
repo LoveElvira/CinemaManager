@@ -6,9 +6,14 @@ import java.io.Serializable;
  * Created by Richie on 2016/9/13.
  */
 public class MyMessageInfo implements Serializable{
+    /**
+     *  "messageId":1, // 消息ID
+     "title":"标题", // 消息标题
+     "sendDate":166676767667, // 消息发送时间
+     "isRead":"1" // 1代表已读，0代表未读
+     * */
     private Long messageId;//消息id
     private String title;//消息标题
-    private String content;//消息内容
     private Long sendDate;//消息发送时间
     private String isRead;//是否已读，1已读，0未读
 
@@ -26,14 +31,6 @@ public class MyMessageInfo implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public Long getSendDate() {

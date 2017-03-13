@@ -8,136 +8,144 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical"
         android:gravity="bottom"
+        android:orientation="vertical"
         android:padding="@dimen/size_20">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_share_to"
             android:gravity="center"
-            android:textSize="@dimen/text_13"
-            android:textColor="@color/gray_929292"/>
+            android:text="@string/text_share_to"
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_13" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
+            android:orientation="horizontal"
             android:padding="@dimen/size_20">
 
             <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                <!--style="@style/WrapWrap"-->
-                <!--app:mrl_rippleAlpha="0.2"-->
-                <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                <!--app:mrl_rippleHover="true"-->
-                <!--app:mrl_rippleOverlay="true">-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
 
-                <LinearLayout
-                    android:id="@+id/popup_share__weixin"
-                    style="@style/WrapWrap"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="@dimen/size_5"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingLeft="@dimen/size_10"
-                    android:paddingRight="@dimen/size_10">
-                    <ImageView
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_40"
-                        android:src="@mipmap/weixin"/>
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:text="@string/text_weixin"
-                        android:textSize="@dimen/text_12"
-                        android:textColor="@color/gray_a1a1a1"
-                        android:layout_marginTop="@dimen/size_5"/>
-                </LinearLayout>
-            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
-
-            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                <!--style="@style/WrapWrap"-->
-                <!--app:mrl_rippleAlpha="0.2"-->
-                <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                <!--app:mrl_rippleHover="true"-->
-                <!--app:mrl_rippleOverlay="true">-->
-
-                <LinearLayout
-                    android:id="@+id/popup_share__friend_circle"
-                    style="@style/WrapWrap"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="@dimen/size_5"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingLeft="@dimen/size_10"
-                    android:paddingRight="@dimen/size_10">
-                    <ImageView
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_40"
-                        android:src="@mipmap/friend_circle"/>
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:text="@string/text_friend"
-                        android:textSize="@dimen/text_12"
-                        android:textColor="@color/gray_a1a1a1"
-                        android:layout_marginTop="@dimen/size_5"/>
-                </LinearLayout>
-            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
-
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <LinearLayout
+                android:id="@+id/popup_share__weixin"
                 style="@style/WrapWrap"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_5"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:paddingTop="@dimen/size_5">
 
-                <LinearLayout
-                    android:id="@+id/popup_share__xinlangweibo"
+                <ImageView
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:src="@mipmap/weixin" />
+
+                <TextView
                     style="@style/WrapWrap"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/size_5">
-                    <ImageView
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_40"
-                        android:src="@mipmap/xinlangweibo"/>
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:text="@string/text_xinlangweibo"
-                        android:textSize="@dimen/text_12"
-                        android:textColor="@color/gray_a1a1a1"
-                        android:layout_marginTop="@dimen/size_5"/>
-                </LinearLayout>
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="@string/text_weixin"
+                    android:textColor="@color/gray_a1a1a1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
             <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                <!--style="@style/WrapWrap"-->
-                <!--app:mrl_rippleAlpha="0.2"-->
-                <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                <!--app:mrl_rippleHover="true"-->
-                <!--app:mrl_rippleOverlay="true">-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
 
-                <LinearLayout
-                    android:id="@+id/popup_share__qq_kongjian"
+            <LinearLayout
+                android:id="@+id/popup_share__friend_circle"
+                style="@style/WrapWrap"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_5"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:paddingTop="@dimen/size_5">
+
+                <ImageView
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:src="@mipmap/friend_circle" />
+
+                <TextView
                     style="@style/WrapWrap"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="@dimen/size_5"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingLeft="@dimen/size_10"
-                    android:paddingRight="@dimen/size_10">
-                    <ImageView
-                        android:layout_width="@dimen/size_40"
-                        android:layout_height="@dimen/size_40"
-                        android:src="@mipmap/qq_kongjian"/>
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:text="@string/text_qq_kongjian"
-                        android:textSize="@dimen/text_12"
-                        android:textColor="@color/gray_a1a1a1"
-                        android:layout_marginTop="@dimen/size_5"/>
-                </LinearLayout>
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="@string/text_friend"
+                    android:textColor="@color/gray_a1a1a1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
+
+            <LinearLayout
+                android:id="@+id/popup_share__xinlangweibo"
+                style="@style/WrapWrap"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/size_5">
+
+                <ImageView
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:src="@mipmap/xinlangweibo" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="@string/text_xinlangweibo"
+                    android:textColor="@color/gray_a1a1a1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
+
+            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
+
+            <LinearLayout
+                android:id="@+id/popup_share__qq_kongjian"
+                style="@style/WrapWrap"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_5"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:paddingTop="@dimen/size_5">
+
+                <ImageView
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:src="@mipmap/qq_kongjian" />
+
+                <TextView
+                    style="@style/WrapWrap"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="@string/text_qq_kongjian"
+                    android:textColor="@color/gray_a1a1a1"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
             <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
 
@@ -147,24 +155,26 @@
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_20"
+            android:layout_marginRight="@dimen/size_20"
+            android:layout_marginTop="@dimen/size_10"
             app:mrl_rippleAlpha="0.2"
             app:mrl_rippleColor="@color/bg_shadow"
             app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true"
-            android:layout_marginLeft="@dimen/size_20"
-            android:layout_marginRight="@dimen/size_20"
-            android:layout_marginTop="@dimen/size_10">
+            app:mrl_rippleOverlay="true">
 
 
             <TextView
                 android:id="@+id/popup_share__cancel"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_50"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/size_12"
+                android:paddingBottom="@dimen/size_12"
+                android:background="@drawable/radius_blue_4"
                 android:gravity="center"
                 android:text="@string/text_cancel"
-                android:textSize="@dimen/text_18"
                 android:textColor="@color/white"
-                android:background="@drawable/radius_blue_4"/>
+                android:textSize="@dimen/text_15" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
 

@@ -28,6 +28,8 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import java.util.Calendar;
+
 /**
  * Created by Elvira on 2016/10/28.
  * 忘记密码
@@ -108,17 +110,16 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
                 customDialog.dismiss();
-                showShortToast(info.getInfo());
+                showShortToast(info.getInfo().toString());
             }
 
             @Override
             public void onResponse(ResponeNull response) {
-
+                customDialog.dismiss();
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.PHONE, phoneNum.getText().toString().trim(), FindPasswordActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, password.getText().toString().trim(), FindPasswordActivity.this);
-                customDialog.dismiss();
                 startActivity(LoginActivity.class);
                 FindPasswordActivity.this.finish();
             }
@@ -126,6 +127,7 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, registerRequest, ResponeNull.class, FindPasswordActivity.this);
@@ -141,8 +143,8 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
@@ -156,6 +158,7 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, codeRequest, RegisterCode.class, FindPasswordActivity.this);
@@ -164,22 +167,26 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.base_toolbar__left:
-                FindPasswordActivity.this.finish();
-                break;
-            case R.id.content_find_pwd__getcode:
-                if (isMobileNum(phoneNum.getText().toString().trim())) {
-                    getResetCode();
-                } else {
-                    showShortToast("手机号码不对");
-                }
-                break;
-            case R.id.content_find_pwd__next:
-                if (isNull()) {
-                    resetPwd();
-                }
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.base_toolbar__left:
+                    FindPasswordActivity.this.finish();
+                    break;
+                case R.id.content_find_pwd__getcode:
+                    if (isMobileNum(phoneNum.getText().toString().trim())) {
+                        getResetCode();
+                    } else {
+                        showShortToast("手机号码不对");
+                    }
+                    break;
+                case R.id.content_find_pwd__next:
+                    if (isNull()) {
+                        resetPwd();
+                    }
+                    break;
+            }
         }
     }
 

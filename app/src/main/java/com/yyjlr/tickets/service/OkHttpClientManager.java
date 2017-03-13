@@ -86,6 +86,11 @@ public class OkHttpClientManager {
         getInstance()._postAsyn(url, callback, requestMainDataData, resultVOClass, context);
     }
 
+    //特殊返回 兑换券支付
+    public static <T> void postAsyn(String url, final ResultVoucherCallback callback, IRequestMainData requestMainDataData, final Class<T> resultVOClass, Context context) {
+        getInstance()._postAsyn(url, callback, requestMainDataData, resultVOClass, context);
+    }
+
     public static <T> void postAsyn(String url, final ResultCallback callback, IRequestMainData requestMainDataData, final TypeReference typeReference, Context context) {
         getInstance()._postAsyn(url, callback, requestMainDataData, typeReference, context);
     }
@@ -110,7 +115,30 @@ public class OkHttpClientManager {
         requestData.setAppDomain(Constant.AppDomain);
         requestData.setCmd(cmd);
         requestData.setParameters(requestMainDataData);
-        requestData.setAppVersion(Build.BRAND + "_" + Build.DISPLAY + "_" + Build.FINGERPRINT + "_" + Build.ID);
+        requestData.setAppVersion(Constant.AppVersion);
+        //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
+        String url = Config.URL_SERVICE;
+        Request request = buildPostRequest(url, requestData);
+        deliveryResult(callback, request, resultVOClass, context);
+    }
+
+    //异步请求 类(返回普通类) 特殊返回 兑换券支付
+    private <T> void _postAsyn(String cmd, final ResultVoucherCallback callback, IRequestMainData requestMainDataData, final Class<T> resultVOClass, Context context) {
+        String token = SharePrefUtil.getString(Constant.FILE_NAME, "token", "", context);
+        String deviceId = SharePrefUtil.getString(Constant.FILE_NAME, "deviceId", "", context);
+
+        RequestData requestData = new RequestData();
+        if (!"".equals(token)) {
+            requestData.setToken(token);
+        }
+        if (!"".equals(deviceId)) {
+            requestData.setAppPushToken(deviceId);
+        }
+        //影院ID
+        requestData.setAppDomain(Constant.AppDomain);
+        requestData.setCmd(cmd);
+        requestData.setParameters(requestMainDataData);
+        requestData.setAppVersion(Constant.AppVersion);
         //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
         String url = Config.URL_SERVICE;
         Request request = buildPostRequest(url, requestData);
@@ -172,7 +200,7 @@ public class OkHttpClientManager {
         } else {
             requestData.setLanguage("en");
         }
-        requestData.setAppVersion(Build.BRAND + "_" + Build.DISPLAY + "_" + Build.FINGERPRINT + "_" + Build.ID);
+        requestData.setAppVersion(Constant.AppVersion);
         //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
         requestData.setCmd(cmd);
         //影院ID
@@ -259,7 +287,7 @@ public class OkHttpClientManager {
                         JsonNode errorNode = node.get("error");
                         Error error = mapper.treeToValue(errorNode, Error.class);
                         if (401 == statusCode) {
-                            showExitDialog(error.getInfo());
+                            showExitDialog(error.getInfo().toString());
                         }
                         sendErrorStringCallback(request, error, callback);
                     }
@@ -349,7 +377,49 @@ public class OkHttpClientManager {
                         JsonNode errorNode = node.get("error");
                         Error error = mapper.treeToValue(errorNode, Error.class);
                         if (401 == statusCode) {
-                            showExitDialog(error.getInfo());
+                            showExitDialog(error.getInfo().toString());
+                        }
+                        sendErrorStringCallback(request, error, callback);
+                    }
+                } catch (IOException e) {
+                    sendFailedStringCallback(response.request(), e, callback);
+                }
+            }
+        });
+    }
+
+    //特殊返回 兑换券支付
+    private <T> void deliveryResult(final ResultVoucherCallback callback, final Request request, final Class<T> resultVOClass, Context context) {
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Request request, final IOException e) {
+                sendFailedStringCallback(request, e, callback);
+            }
+
+            @Override
+            public void onResponse(final Response response) {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                try {
+                    final String string = response.body().string();
+                    Log.v("xxxxxx", "data:" + string);
+                    JsonNode node = mapper.readValue(string, JsonNode.class);
+                    int statusCode = ((IntNode) node.get("statusCode")).intValue();
+                    if (statusCode == 0) {
+                        if (resultVOClass == ResponseData.class) {//只判断状态(只确定返回是否成功)
+                            ResponseData responseData = new ResponseData();
+                            responseData.setStatusCode(0);
+                            sendSuccessResultCallback(responseData, callback);
+                        } else {
+                            JsonNode responseNode = node.get("response");
+                            T data = mapper.treeToValue(responseNode, resultVOClass);
+                            sendSuccessResultCallback(data, callback);
+                        }
+                    } else {
+                        JsonNode errorNode = node.get("error");
+                        VoucherError error = mapper.treeToValue(errorNode, VoucherError.class);
+                        if (401 == statusCode) {
+                            showExitDialog(error.getInfo().toString());
                         }
                         sendErrorStringCallback(request, error, callback);
                     }
@@ -383,7 +453,7 @@ public class OkHttpClientManager {
                         JsonNode errorNode = node.get("error");
                         Error error = mapper.treeToValue(errorNode, Error.class);
                         if (401 == statusCode) {
-                            showExitDialog(error.getInfo());
+                            showExitDialog(error.getInfo().toString());
                         }
                         sendErrorStringCallback(request, error, callback);
                     }
@@ -416,11 +486,20 @@ public class OkHttpClientManager {
                         sendSuccessResultCallback(result, callback);
                     } else {
                         JsonNode errorNode = node.get("error");
+//                        JsonNode errorNodeCode = mapper.readValue(errorNode.toString(), JsonNode.class);
+//
+//                        if (errorNodeCode.equals("101")) {
+//                            VoucherError voucherError = mapper.treeToValue(errorNode, VoucherError.class);
+//                            sendErrorStringCallback(request, voucherError, callback);
+//                        } else {
+
                         Error error = mapper.treeToValue(errorNode, Error.class);
+//                        Error error = mapper.readValue(errorNode.toString(), Error.class);
                         if (401 == statusCode) {
-                            showExitDialog(error.getInfo());
+                            showExitDialog(error.getInfo().toString());
                         }
                         sendErrorStringCallback(request, error, callback);
+//                        }
                     }
                 } catch (IOException e) {
                     sendFailedStringCallback(response.request(), e, callback);
@@ -461,10 +540,51 @@ public class OkHttpClientManager {
         });
     }
 
-
     public static abstract class ResultCallback<T> {
 
         public abstract void onError(Request request, Error info);
+
+        public abstract void onResponse(T response);
+
+        public abstract void onOtherError(Request request, Exception exception);
+    }
+
+    //特殊返回 兑换券支付
+    private void sendFailedStringCallback(final Request request, final Exception e, final ResultVoucherCallback callback) {
+        mDelivery.post(new Runnable() {
+            @Override
+            public void run() {
+                if (callback != null)
+                    callback.onOtherError(request, e);
+            }
+        });
+    }
+
+    private void sendErrorStringCallback(final Request request, final VoucherError e, final ResultVoucherCallback callback) {
+        mDelivery.post(new Runnable() {
+            @Override
+            public void run() {
+                if (callback != null)
+                    callback.onError(request, e);
+            }
+        });
+    }
+
+    private void sendSuccessResultCallback(final Object object, final ResultVoucherCallback callback) {
+        mDelivery.post(new Runnable() {
+            @Override
+            public void run() {
+                if (callback != null) {
+                    callback.onResponse(object);
+                }
+            }
+        });
+    }
+
+    //特殊返回 兑换券支付
+    public static abstract class ResultVoucherCallback<T> {
+
+        public abstract void onError(Request request, VoucherError info);
 
         public abstract void onResponse(T response);
 

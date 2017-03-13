@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.gson.Gson;
@@ -83,6 +84,7 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -90,21 +92,22 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
                 Log.i("ee", "--" + new Gson().toJson(response));
 
 //                adapter.set(response);
+                if (response != null) {
 //
-                View bottomView = inflate(getContext(), R.layout.item_ticket, null);
-                RelativeLayout parentView = (RelativeLayout) bottomView.findViewById(R.id.item_ticket__parent_layout);
-                TextView bottomTitle = (TextView) bottomView.findViewById(R.id.item_ticket__title);
-                TextView bottomDate = (TextView) bottomView.findViewById(R.id.item_ticket__date);
-                TextView bottomPrice = (TextView) bottomView.findViewById(R.id.item_ticket__price);
-                bottomDate.setVisibility(GONE);
-                bottomPrice.setVisibility(GONE);
-                bottomTitle.setText("更多产品，敬请期待");
-                CountdownView bottomTime = (CountdownView) bottomView.findViewById(R.id.item_ticket__time);
-                bottomTime.setVisibility(GONE);
-                ImageView bottomImageShadow = (ImageView) bottomView.findViewById(R.id.item_ticket__shadow);
-                bottomImageShadow.setAlpha(0.5f);
-                ImageView bottomImage = (ImageView) bottomView.findViewById(R.id.item_ticket__background);
-                bottomImage.setImageResource(R.mipmap.bg);
+                    View bottomView = inflate(getContext(), R.layout.item_ticket, null);
+                    RelativeLayout parentView = (RelativeLayout) bottomView.findViewById(R.id.item_ticket__parent_layout);
+                    TextView bottomTitle = (TextView) bottomView.findViewById(R.id.item_ticket__title);
+                    TextView bottomDate = (TextView) bottomView.findViewById(R.id.item_ticket__date);
+                    TextView bottomPrice = (TextView) bottomView.findViewById(R.id.item_ticket__price);
+                    bottomDate.setVisibility(GONE);
+                    bottomPrice.setVisibility(GONE);
+                    bottomTitle.setText("更多产品，敬请期待");
+                    CountdownView bottomTime = (CountdownView) bottomView.findViewById(R.id.item_ticket__time);
+                    bottomTime.setVisibility(GONE);
+                    ImageView bottomImageShadow = (ImageView) bottomView.findViewById(R.id.item_ticket__shadow);
+                    bottomImageShadow.setAlpha(0.5f);
+                    ImageView bottomImage = (ImageView) bottomView.findViewById(R.id.item_ticket__background);
+                    bottomImage.setImageResource(R.mipmap.bg);
 //        TextView tMoreInfo = new TextView(context);
 //        tMoreInfo.setWidth(MATCH_PARENT);
 //        tMoreInfo.setHeight(MATCH_PARENT);
@@ -113,15 +116,19 @@ public class GrabTicketContent extends LinearLayout implements SuperSwipeRefresh
 //        tMoreInfo.setTextColor(getResources().getColor(R.color.white));
 //        tMoreInfo.setTextSize(18f);
 //        tMoreInfo.setText("更多产品，敬请期待...");
-                ticketFrameLayout.addBottomContent(parentView);
-                adapter = new GrabTicketAdapter(response.getActivityList());
-                ticketFrameLayout.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                    ticketFrameLayout.addBottomContent(parentView);
+                    if (response.getActivityList() != null && response.getActivityList().size() > 0) {
+                        adapter = new GrabTicketAdapter(response.getActivityList());
+                        ticketFrameLayout.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, requestNull, GrabTicketModel.class, Application.getInstance().getCurrentActivity());
     }

@@ -36,6 +36,7 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,9 @@ import java.util.Map;
  * 网上支付
  */
 public class OnLinePayContent extends LinearLayout implements View.OnClickListener, BaseAdapter.OnRecyclerViewItemChildClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
 
     private static final int SDK_PAY_FLAG = 1;
     private int times = 0;//轮询检查订单状态
@@ -68,12 +72,17 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
         view = inflate(context, R.layout.content_pay_select_online_pay_way, this);
 //        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "请稍等。。。");
         this.orderId = orderId;
+        lastClickTime = 0;
         initView();
     }
 
-    public void initPrice(int price) {
+    public void initDate(List<SelectPay> payList, int price) {
+        this.payList = payList;
         this.price = price;
         confirmPrice.setText(ChangeUtils.save2Decimal(price));
+        adapter = new PayAdapter(this.payList);
+        listView.setAdapter(adapter);
+        adapter.setOnRecyclerViewItemChildClickListener(OnLinePayContent.this);
     }
 
     private void initView() {
@@ -87,35 +96,8 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
 
         showConfirmLayout.setVisibility(View.VISIBLE);
         confirm.setOnClickListener(this);
-        getPay();
     }
 
-    //获取支付数据
-    private void getPay() {
-        RequestNull requestNull = new RequestNull();
-        OkHttpClientManager.postAsyn(Config.GET_PAY, new OkHttpClientManager.ResultCallback<PayModel>() {
-
-            @Override
-            public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-            }
-
-            @Override
-            public void onResponse(PayModel response) {
-                Log.i("ee", new Gson().toJson(response));
-                payList = response.getChannelList();
-
-                adapter = new PayAdapter(payList);
-                listView.setAdapter(adapter);
-                adapter.setOnRecyclerViewItemChildClickListener(OnLinePayContent.this);
-            }
-
-            @Override
-            public void onOtherError(Request request, Exception exception) {
-                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-            }
-        }, requestNull, PayModel.class, Application.getInstance().getCurrentActivity());
-    }
 
     //预支付数据
     private void beforePay() {
@@ -127,15 +109,14 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
 //                customDialog.dismiss();
             }
 
             @Override
             public void onResponse(final AlipayResponse response) {
-                Log.i("ee", new Gson().toJson(response));
-                Log.i("ee", response.getData());
+//                Log.i("ee", new Gson().toJson(response));
                 Runnable payRunnable = new Runnable() {
                     @Override
                     public void run() {
@@ -157,7 +138,7 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-//                Toast.makeText(getContext(),exception.getInfo(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
 //                customDialog.dismiss();
             }
         }, idRequest, AlipayResponse.class, Application.getInstance().getCurrentActivity());
@@ -178,7 +159,6 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
                     Log.v("xxxxxx", "status:" + resultStatus);
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        Log.i("ee", "------------wqqqqqw-----------");
                         times = 0;
 //                        checkOrderStatus();
                         startActivity();
@@ -209,7 +189,8 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-//                customDialog.dismiss();
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
+                //                customDialog.dismiss();
             }
 
             @Override
@@ -246,7 +227,8 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-//                customDialog.dismiss();
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                //                customDialog.dismiss();
             }
         }, idRequest, ResponseStatus.class, Application.getInstance().getCurrentActivity());
     }
@@ -262,22 +244,32 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.content_pay_select__confirm_pay://确认支付
-                if ("支付宝".equals(payList.get(position).getName())) {
-                    beforePay();
-                }
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.content_pay_select__confirm_pay://确认支付
+                    if ("支付宝".equals(payList.get(position).getName()) && payList.get(position).getChecked() == 1) {
+                        beforePay();
+                    } else {
+                        Toast.makeText(getContext(), "请选择支付方式", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
         }
     }
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        this.position = position;
-        for (int i = 0; i < payList.size(); i++) {
-            payList.get(i).setChecked(0);
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            this.position = position;
+            for (int i = 0; i < payList.size(); i++) {
+                payList.get(i).setChecked(0);
+            }
+            payList.get(position).setChecked(1);
+            this.adapter.notifyDataSetChanged();
         }
-        payList.get(position).setChecked(1);
-        this.adapter.notifyDataSetChanged();
     }
 }

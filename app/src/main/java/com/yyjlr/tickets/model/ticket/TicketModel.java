@@ -22,7 +22,7 @@ public class TicketModel {
     private String address;
     private long startTime;
     private long endTime;
-    private String price;
+    private long price;
     private String activityImg;
 
     public TicketModel() {
@@ -76,11 +76,11 @@ public class TicketModel {
         this.endTime = endTime;
     }
 
-    public String getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

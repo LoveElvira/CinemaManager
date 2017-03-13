@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
@@ -29,7 +28,7 @@ import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.adapter.FilmDetailsPeopleAdapter;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmPeopleEntity;
-import com.yyjlr.tickets.model.ResponeNull;
+import com.yyjlr.tickets.model.ResponeCollect;
 import com.yyjlr.tickets.model.film.FilmDetailsModel;
 import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.service.Error;
@@ -37,6 +36,7 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.WordWrapView;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -119,43 +119,48 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
                 customDialog.dismiss();
             }
 
             @Override
             public void onResponse(FilmDetailsModel response) {
                 filmDetailsModel = response;
-                title.setText(response.getMovieName());
-                filmName.setText(response.getMovieName());
-                filmEnglishName.setText(response.getMovieAlas());
-                introduce.setText(response.getMovieDesc());
-                if (response.getMovieBanner() != null) {
-                    Picasso.with(getBaseContext())
-                            .load(response.getMovieBanner())
-                            .into(bgImage);
-                }
-                if (response.getMoviePortrait() != null) {
-                    Picasso.with(getBaseContext())
-                            .load(response.getMoviePortrait())
-                            .into(image);
-                }
+                if (filmDetailsModel != null) {
+                    title.setText(response.getMovieName());
+                    filmName.setText(response.getMovieName());
+                    filmEnglishName.setText(response.getMovieAlas());
+                    introduce.setText(response.getMovieDesc());
+                    if (response.getMovieBanner() != null) {
+                        Picasso.with(getBaseContext())
+                                .load(response.getMovieBanner())
+                                .into(bgImage);
+                    }
+                    if (response.getMoviePortrait() != null) {
+                        Picasso.with(getBaseContext())
+                                .load(response.getMoviePortrait())
+                                .into(image);
+                    }
 
-                collectImage.setImageResource(R.mipmap.collect);
-                collectText.setText("收藏");
-                if (response.getIsFavority() == 1) {
-                    collectImage.setImageResource(R.mipmap.collect_select);
-                    collectText.setText("已收藏");
-                }
-                score.setRating(response.getScore() / 2.0f);
-                if (response.getWorker() != null) {
+                    collectImage.setImageResource(R.mipmap.collect);
+                    collectText.setText("收藏");
+                    if (response.getIsFavority() == 1) {
+                        collectImage.setImageResource(R.mipmap.collect_select);
+                        collectText.setText("已收藏");
+                    }
+                    score.setRating(response.getScore() / 2.0f);
+                    if (response.getWorker() != null && response.getWorker().size() > 0) {
 //                    filmPeopleEntityList = Application.getiDataService().getFilmPeopleList();
-                    adapter = new FilmDetailsPeopleAdapter(response.getWorker());
-                    listView.setAdapter(adapter);
-                }
+                        adapter = new FilmDetailsPeopleAdapter(response.getWorker());
+                        listView.setAdapter(adapter);
+                    }
 
-                if (response.getTags() != null) {
-                    for (int i = 0; i < response.getTags().size(); i++) {
-                        wordWrapView.addView(initTag(response.getTags().get(i)));
+                    if (response.getTags() != null && response.getTags().size() > 0) {
+                        for (int i = 0; i < response.getTags().size(); i++) {
+                            if (response.getTags().get(i) != null) {
+                                wordWrapView.addView(initTag(response.getTags().get(i)));
+                            }
+                        }
                     }
                 }
                 customDialog.dismiss();
@@ -164,6 +169,7 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, idRequest, FilmDetailsModel.class, FilmDetailsActivity.this);
@@ -182,19 +188,20 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
         customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
-        idRequest.setMovieId(getIntent().getStringExtra("filmId"));
+        idRequest.setId(getIntent().getStringExtra("filmId"));
+        idRequest.setType("1");
         idRequest.setIsInterest(isCollect);
-        OkHttpClientManager.postAsyn(Config.COLLECT_FILM, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+        OkHttpClientManager.postAsyn(Config.GO_COLLECT, new OkHttpClientManager.ResultCallback<ResponeCollect>() {
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
             @Override
-            public void onResponse(ResponeNull response) {
+            public void onResponse(ResponeCollect response) {
                 if ("收藏".equals(collectText.getText().toString().trim())) {
                     collectImage.setImageResource(R.mipmap.collect_select);
                     collectText.setText("已收藏");
@@ -209,64 +216,69 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
-        }, idRequest, ResponeNull.class, FilmDetailsActivity.this);
+        }, idRequest, ResponeCollect.class, FilmDetailsActivity.this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.base_toolbar__left) {
-            FilmDetailsActivity.this.finish();
-            return;
-        } else if (view.getId() == R.id.content_film_details__down) {//显示全部介绍
-            if (mState == SPREAD_STATE) {//显示全部
-                introduce.setMaxLines(FILM_CONTENT_DESC_MAX_LINE);
-                introduce.requestLayout();
-                upOrDown.setBackgroundResource(R.mipmap.down_arrow);
-                mState = SHRINK_UP_STATE;
-            } else if (mState == SHRINK_UP_STATE) {//隐藏部分
-                introduce.setMaxLines(Integer.MAX_VALUE);
-                introduce.requestLayout();
-                upOrDown.setBackgroundResource(R.mipmap.up_arrow);
-                mState = SPREAD_STATE;
-            }
-        }
-
-        String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", FilmDetailsActivity.this);
-        if (!isLogin.equals("1")) {
-            startActivity(LoginActivity.class);
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.content_film_details__collect://收藏
-                if ("收藏".equals(collectText.getText().toString().trim())) {
-                    collectFilm("1");
-                } else {
-                    collectFilm("0");
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            if (view.getId() == R.id.base_toolbar__left) {
+                FilmDetailsActivity.this.finish();
+                return;
+            } else if (view.getId() == R.id.content_film_details__down) {//显示全部介绍
+                if (mState == SPREAD_STATE) {//显示全部
+                    introduce.setMaxLines(FILM_CONTENT_DESC_MAX_LINE);
+                    introduce.requestLayout();
+                    upOrDown.setBackgroundResource(R.mipmap.down_arrow);
+                    mState = SHRINK_UP_STATE;
+                } else if (mState == SHRINK_UP_STATE) {//隐藏部分
+                    introduce.setMaxLines(Integer.MAX_VALUE);
+                    introduce.requestLayout();
+                    upOrDown.setBackgroundResource(R.mipmap.up_arrow);
+                    mState = SPREAD_STATE;
                 }
-                break;
-            case R.id.content_film_details__share://分享
-                sharePopupWindow();
-                break;
-            case R.id.content_film_details__select_seat://选座购票
-                startActivity(new Intent(getBaseContext(), FilmScheduleActivity.class).putExtra("filmId", filmDetailsModel.getMovieId() + ""));
-                break;
-            case R.id.popup_share__weixin:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__friend_circle:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__xinlangweibo:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__qq_kongjian:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__cancel:
-                mPopupWindow.dismiss();
-                break;
+            }
+
+            String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", FilmDetailsActivity.this);
+            if (!isLogin.equals("1")) {
+                startActivity(LoginActivity.class);
+                return;
+            }
+            switch (view.getId()) {
+                case R.id.content_film_details__collect://收藏
+                    if ("收藏".equals(collectText.getText().toString().trim())) {
+                        collectFilm("1");
+                    } else {
+                        collectFilm("0");
+                    }
+                    break;
+                case R.id.content_film_details__share://分享
+                    sharePopupWindow();
+                    break;
+                case R.id.content_film_details__select_seat://选座购票
+                    startActivity(new Intent(getBaseContext(), FilmScheduleActivity.class).putExtra("filmId", filmDetailsModel.getMovieId() + ""));
+                    break;
+                case R.id.popup_share__weixin:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__friend_circle:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__xinlangweibo:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__qq_kongjian:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__cancel:
+                    mPopupWindow.dismiss();
+                    break;
+            }
         }
     }
 

@@ -37,7 +37,8 @@
             app:suffixTextColor="@color/white"
             app:suffixTextSize="@dimen/text_16"
             app:timeTextColor="@color/white"
-            app:timeTextSize="@dimen/text_16" />
+            app:timeTextSize="@dimen/text_16"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/item_ticket__title"

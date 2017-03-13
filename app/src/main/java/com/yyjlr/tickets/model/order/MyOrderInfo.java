@@ -8,9 +8,18 @@ import java.util.List;
 public class MyOrderInfo {
     private Long orderId;//订单id
     private String orderNo;//订单号
+    private int orderType;//1电影，2卖品，3套餐。。。
     private int orderStatus;//订单状态
     private String movieName;//电影名称
     private List<String> goodsName;//卖品名称
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
 
     public Long getOrderId() {
         return orderId;

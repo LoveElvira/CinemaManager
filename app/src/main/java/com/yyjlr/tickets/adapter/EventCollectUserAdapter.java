@@ -24,7 +24,7 @@ public class EventCollectUserAdapter extends BaseAdapter<CollectUserInfo> {
     @Override
     protected void convert(BaseViewHolder helper, CollectUserInfo item, int position) {
         helper.setVisible(R.id.item_event_collect_user__more, false)
-                .setVisible(R.id.item_event_collect_user__more, true);
+                .setVisible(R.id.item_event_collect_user__headimage, true);
 
         if (position == 4) {
             helper.setText(R.id.item_event_collect_user__more, "+" + data.size())
@@ -35,8 +35,7 @@ public class EventCollectUserAdapter extends BaseAdapter<CollectUserInfo> {
         } else if (position > 4) {
             return;
         } else {
-            helper.setText(R.id.item_event_collect_user__username, item.getNickName())
-                    .setOnClickListener(R.id.item_select_pay__layout, new OnItemChildClickListener());
+            helper.setText(R.id.item_event_collect_user__username, item.getNickName());
 
             if (item.getImageUrl() != null)
                 Picasso.with(helper.getConvertView().getContext())

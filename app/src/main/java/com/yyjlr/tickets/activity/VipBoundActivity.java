@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,8 +19,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.model.pay.MemberCard;
+import com.yyjlr.tickets.model.pay.MemberCardList;
+import com.yyjlr.tickets.requestdata.IdRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
+
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Elvira on 2016/8/3.
@@ -38,12 +51,14 @@ public class VipBoundActivity extends AbstractActivity implements View.OnClickLi
     private TextView unBounOrBoundVip;//解绑会员卡
     private TextView pwdTitle;//解绑会员卡
     private TextView tipTitle;//提示
-    public String card, price;
+
+    private List<MemberCard> memberCardList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_unbound_vip);
+        customDialog = new CustomDialog(VipBoundActivity.this, "加载中...");
         initView();
     }
 
@@ -73,23 +88,70 @@ public class VipBoundActivity extends AbstractActivity implements View.OnClickLi
         unBounOrBoundVip.setOnClickListener(this);
     }
 
+
+    //绑定会员卡
+    private void boundCard(String card, String pwd) {
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setCardNo(card);
+        idRequest.setPwd(pwd);
+        OkHttpClientManager.postAsyn(Config.BIND_CARD, new OkHttpClientManager.ResultCallback<MemberCardList>() {
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(MemberCardList response) {
+                customDialog.dismiss();
+                if (response != null) {
+                    memberCardList = response.getMemberCardList();
+                    if (memberCardList != null && memberCardList.size() > 0) {
+                        setResult(CODE_RESULT, new Intent()
+                                .putExtra("cardList", (Serializable) memberCardList));
+                        VipBoundActivity.this.finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, MemberCardList.class, Application.getInstance().getCurrentActivity());
+    }
+
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.content_setting_vip__unbound_or_bound://绑定或解除绑定
-                card = cardNum.getText().toString();
-                if ("".equals(card)) {
-                    showShortToast("请确认卡号");
-                    return;
-                }
-                this.finish();
-                break;
-            case R.id.base_toolbar__left:
-                VipBoundActivity.this.finish();
-                break;
-            case R.id.base_toolbar__right:
-                showPhoneService();
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.content_setting_vip__unbound_or_bound://绑定或解除绑定
+                    String card = cardNum.getText().toString();
+                    String pwd = cardPassword.getText().toString();
+                    if ("".equals(card)) {
+                        showShortToast("请确认卡号");
+                        return;
+                    }
+                    if ("".equals(pwd)) {
+                        showShortToast("请输入正确的密码");
+                        return;
+                    }
+                    boundCard(card, pwd);
+                    break;
+                case R.id.base_toolbar__left:
+                    VipBoundActivity.this.finish();
+                    break;
+                case R.id.base_toolbar__right:
+                    showPhoneService();
+                    break;
+            }
         }
     }
 
@@ -117,23 +179,27 @@ public class VipBoundActivity extends AbstractActivity implements View.OnClickLi
         layout.findViewById(R.id.alert_dialog__submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //拨打电话
-                if (!"".equals(phoneNumber)) {
-                    TelephonyManager mTelephonyManager = (TelephonyManager) Application.getInstance().getCurrentActivity().getSystemService(Service.TELEPHONY_SERVICE);
-                    int absent = mTelephonyManager.getSimState();
-                    if (absent == TelephonyManager.SIM_STATE_ABSENT) {
-                        Toast.makeText(Application.getInstance().getCurrentActivity(), "请确认sim卡是否插入或者sim卡暂时不可用！",
-                                Toast.LENGTH_SHORT).show();
+                long currentTime = Calendar.getInstance().getTimeInMillis();
+                if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                    lastClickTime = currentTime;
+                    //拨打电话
+                    if (!"".equals(phoneNumber)) {
+                        TelephonyManager mTelephonyManager = (TelephonyManager) Application.getInstance().getCurrentActivity().getSystemService(Service.TELEPHONY_SERVICE);
+                        int absent = mTelephonyManager.getSimState();
+                        if (absent == TelephonyManager.SIM_STATE_ABSENT) {
+                            Toast.makeText(Application.getInstance().getCurrentActivity(), "请确认sim卡是否插入或者sim卡暂时不可用！",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent phoneIntent = new Intent(
+                                    "android.intent.action.CALL", Uri.parse("tel:"
+                                    + phoneNumber));
+                            Application.getInstance().getCurrentActivity().startActivity(phoneIntent);
+                        }
+                        builder.dismiss();
                     } else {
-                        Intent phoneIntent = new Intent(
-                                "android.intent.action.CALL", Uri.parse("tel:"
-                                + phoneNumber));
-                        Application.getInstance().getCurrentActivity().startActivity(phoneIntent);
+                        Toast.makeText(Application.getInstance().getCurrentActivity(), "电话为空",
+                                Toast.LENGTH_LONG).show();
                     }
-                    builder.dismiss();
-                } else {
-                    Toast.makeText(Application.getInstance().getCurrentActivity(), "电话为空",
-                            Toast.LENGTH_LONG).show();
                 }
             }
         });

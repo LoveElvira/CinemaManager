@@ -35,6 +35,7 @@ import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -43,6 +44,9 @@ import java.util.List;
  */
 
 public class FollowEventContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowGrabAdapter.SlidingViewClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
 
     private View view;
     private CustomDialog customDialog;
@@ -69,6 +73,7 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
     public FollowEventContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -96,15 +101,15 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(FollowEventModel response) {
                 if (response != null) {
                     followEventInfoList = response.getActivities();
-                    if (followEventInfoList != null) {
+                    if (followEventInfoList != null && followEventInfoList.size() > 0) {
                         if ("0".equals(pagables)) {//第一页
                             followEventInfoLists.clear();
                             followEventInfoLists.addAll(followEventInfoList);
@@ -140,6 +145,7 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, pagableRequest, FollowEventModel.class, Application.getInstance().getCurrentActivity());
     }
@@ -149,14 +155,15 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
         customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
-        idRequest.setMovieId(followEventInfoLists.get(position).getActivityId() + "");
+        idRequest.setId(followEventInfoLists.get(position).getActivityId() + "");
         idRequest.setIsInterest("0");
-        OkHttpClientManager.postAsyn(Config.COLLECT_EVENT, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+        idRequest.setType("2");
+        OkHttpClientManager.postAsyn(Config.GO_COLLECT, new OkHttpClientManager.ResultCallback<ResponeNull>() {
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
 
@@ -171,6 +178,7 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
         }, idRequest, ResponeNull.class, Application.getInstance().getCurrentActivity());
@@ -245,14 +253,18 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent();
-        switch (view.getId()) {
-            case R.id.item_follow_grab__ll_layout:
-                intent.setClass(getContext(), EventActivity.class);
-                intent.putExtra("eventId", followEventInfoLists.get(position).getActivityId() + "");
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            Intent intent = new Intent();
+            switch (view.getId()) {
+                case R.id.item_follow_grab__ll_layout:
+                    intent.setClass(getContext(), EventActivity.class);
+                    intent.putExtra("eventId", followEventInfoLists.get(position).getActivityId());
+                    break;
+            }
+            Application.getInstance().getCurrentActivity().startActivity(intent);
         }
-        Application.getInstance().getCurrentActivity().startActivity(intent);
     }
 
     @Override

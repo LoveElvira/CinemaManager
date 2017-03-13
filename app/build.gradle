@@ -6,6 +6,22 @@ android {
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
 
+    productFlavors {
+        flavors_formal {//正式
+            manifestPlaceholders = [str: "formalStr", package_name: "com.yyjlr.tickets"]
+            applicationId "com.yyjlr.tickets"
+        }
+
+        flavors_test {//测试
+            manifestPlaceholders = [str: "testStr", package_name: "com.yyjlr.tickets.test"]
+            applicationId "com.yyjlr.tickets.test"
+        }
+        flavors_local {//本地
+            manifestPlaceholders = [str: "localStr", package_name: "com.yyjlr.tickets.local"]
+            applicationId "com.yyjlr.tickets.local"
+        }
+    }
+
     defaultConfig {
         applicationId "com.yyjlr.tickets"
         minSdkVersion 14
@@ -23,7 +39,10 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
+
 }
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

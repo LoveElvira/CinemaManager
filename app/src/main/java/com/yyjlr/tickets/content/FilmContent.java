@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
@@ -36,6 +37,7 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.yyjlr.tickets.Application.getInstance;
@@ -46,12 +48,14 @@ import static com.yyjlr.tickets.Application.getInstance;
  */
 public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener, SuperSwipeRefreshLayout.OnPullRefreshListener {
 
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
+
     private View view;
     private RecyclerView listView;//列表
     private SuperSwipeRefreshLayout refresh;//刷新
     private FilmAdapter filmAdapter;
     private View notLoadingView;
-
 
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
@@ -73,6 +77,7 @@ public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerV
     public FilmContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_film, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -123,16 +128,17 @@ public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerV
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(MovieBean response) {
-                Log.i("ee", new Gson().toJson(response));
+//                Log.i("ee", new Gson().toJson(response));
 
                 if (response != null) {
                     movieInfoList = response.getMovieList();
 
-                    if (movieInfoList != null) {
+                    if (movieInfoList != null && movieInfoList.size() > 0) {
                         if ("0".equals(pagables)) {//第一页
                             movieInfoLists.clear();
                             movieInfoLists.addAll(movieInfoList);
@@ -168,6 +174,7 @@ public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerV
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, pagableRequest, MovieBean.class, Application.getInstance().getCurrentActivity());
     }
@@ -199,24 +206,28 @@ public class FilmContent extends LinearLayout implements BaseAdapter.OnRecyclerV
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        Intent intent = new Intent();
-        switch (view.getId()) {
-            case R.id.item_film__buy_ticket:
-                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
-                if (!isLogin.equals("1")) {
-                    intent.setClass(getInstance().getCurrentActivity(), LoginActivity.class);
-                } else {
-                    intent.setClass(getInstance().getCurrentActivity(), FilmScheduleActivity.class);
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            Intent intent = new Intent();
+            switch (view.getId()) {
+                case R.id.item_film__buy_ticket:
+                    String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+                    if (!isLogin.equals("1")) {
+                        intent.setClass(getInstance().getCurrentActivity(), LoginActivity.class);
+                    } else {
+                        intent.setClass(getInstance().getCurrentActivity(), FilmScheduleActivity.class);
+                        intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
+                    }
+                    break;
+                case R.id.item_film__cardview:
+                case R.id.item_film__image:
+                    intent.setClass(getInstance().getCurrentActivity(), FilmDetailsActivity.class);
                     intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
-                }
-                break;
-            case R.id.item_film__cardview:
-            case R.id.item_film__image:
-                intent.setClass(getInstance().getCurrentActivity(), FilmDetailsActivity.class);
-                intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
-                break;
+                    break;
+            }
+            getInstance().getCurrentActivity().startActivity(intent);
         }
-        getInstance().getCurrentActivity().startActivity(intent);
     }
 
     private View createHeaderView() {

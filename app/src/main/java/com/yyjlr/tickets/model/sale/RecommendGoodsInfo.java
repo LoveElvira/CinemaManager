@@ -8,14 +8,25 @@ import java.io.Serializable;
 public class RecommendGoodsInfo implements Serializable {
     private Long goodsId;//卖品id
     private String goodsName;//卖品名称
-    private String goodsDesc;//卖品描述
+    private String goodsDetail;//卖品描述
     private int price;//原价，单位分
     private int appPrice;//app价格，单位分
-    private int memberPrice;//会员价格，单位分
     private String goodsImg;//卖品图
     private Long startTime;//卖品优惠开始时间
     private Long endTime;//卖品优惠结束时间
-    private int selected;//是否选中，1是，0否
+    private int selected = 0;//是否选中，1是，0否
+    private int num = 1;//数量
+
+    public RecommendGoodsInfo() {
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
 
     public Long getGoodsId() {
         return goodsId;
@@ -33,12 +44,12 @@ public class RecommendGoodsInfo implements Serializable {
         this.goodsName = goodsName;
     }
 
-    public String getGoodsDesc() {
-        return goodsDesc;
+    public String getGoodsDetail() {
+        return goodsDetail;
     }
 
-    public void setGoodsDesc(String goodsDesc) {
-        this.goodsDesc = goodsDesc;
+    public void setGoodsDetail(String goodsDetail) {
+        this.goodsDetail = goodsDetail;
     }
 
     public int getPrice() {
@@ -55,14 +66,6 @@ public class RecommendGoodsInfo implements Serializable {
 
     public void setAppPrice(int appPrice) {
         this.appPrice = appPrice;
-    }
-
-    public int getMemberPrice() {
-        return memberPrice;
-    }
-
-    public void setMemberPrice(int memberPrice) {
-        this.memberPrice = memberPrice;
     }
 
     public String getGoodsImg() {

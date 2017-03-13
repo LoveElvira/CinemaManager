@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap">
+
+    <LinearLayout
+        android:id="@+id/ll_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="@dimen/size_20">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_10"
+            android:gravity="center"
+            android:text="请输入密码"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_40"
+            android:layout_margin="@dimen/size_10"
+            android:background="@color/gray_e7e7e7"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/size_5"
+            android:paddingRight="@dimen/size_5">
+
+            <EditText
+                android:id="@+id/popup_pwd__pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="请输入密码"
+                android:inputType="textPassword"
+                android:textColorHint="@color/gray_a1a1a1"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/popup_pwd__errow_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_5"
+            android:gravity="center"
+            android:text="支付密码错误请重新输入"
+            android:textColor="@color/red_de2500"
+            android:textSize="@dimen/text_13"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10"
+            android:orientation="horizontal">
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/size_10"
+                android:layout_weight="1"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+
+                <TextView
+                    android:id="@+id/popup_pwd__cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_gray_4"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/size_12"
+                    android:paddingTop="@dimen/size_12"
+                    android:text="@string/text_cancel"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_15" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+
+            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_weight="1"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="@color/bg_shadow"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+
+                <TextView
+                    android:id="@+id/popup_pwd__confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_orange_4"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/size_12"
+                    android:paddingTop="@dimen/size_12"
+                    android:text="@string/text_confirm"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_15" />
+            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

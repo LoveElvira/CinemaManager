@@ -45,6 +45,7 @@ import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
         packageContent = new PackageContent(getBaseContext());
 
         List<View> list = new ArrayList<View>();
-        list.add(packageContent);
+//        list.add(packageContent);
         list.add(saleContent);
 
         adapter = new ContentAdapter(list, null);
@@ -120,7 +121,7 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
             }
         });
 
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
 
 
         packageLayout.setOnClickListener(this);
@@ -136,16 +137,20 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fragment_sale__package_layout:
-                viewPager.setCurrentItem(0);
-                break;
-            case R.id.fragment_sale__sale_layout:
-                viewPager.setCurrentItem(1);
-                break;
-            case R.id.base_toolbar__left:
-                SaleActivity.this.finish();
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+//                case R.id.fragment_sale__package_layout:
+//                    viewPager.setCurrentItem(0);
+//                    break;
+//                case R.id.fragment_sale__sale_layout:
+//                    viewPager.setCurrentItem(1);
+//                    break;
+                case R.id.base_toolbar__left:
+                    SaleActivity.this.finish();
+                    break;
+            }
         }
     }
 }

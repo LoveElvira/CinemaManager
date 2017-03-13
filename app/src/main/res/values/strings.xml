@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"影院经理人"</string>
+    <string name="app_name">"影院本地"</string>
     <string name="text_jump">跳过</string>
     <string name="text_enter_main">进入主界面</string>
 
@@ -98,14 +98,14 @@
     <string name="text_complete">已完成</string>
     <string name="text_uncomplete">未完成</string>
     <string name="text_order_num">订单号：</string>
-    <string name="text_order_package">套  餐：</string>
+    <string name="text_order_package">卖  品：</string>
     <string name="text_order_film">电  影：</string>
     <string name="text_order_pay">支付</string>
     <string name="text_order_lose">已失效</string>
     <!--我的订单详情-->
     <string name="text_success">交易成功</string>
     <string name="text_film_ticket_code">电影取票码：</string>
-    <string name="text_package_ticket_code">卖品兑换券：</string>
+    <string name="text_package_ticket_code">卖品取货码：</string>
     <string name="text_pay_phone">付款电话：</string>
     <string name="text_pay_way">付款方式：</string>
     <string name="text_pay_time">付款时间：</string>

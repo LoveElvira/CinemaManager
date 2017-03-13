@@ -6,7 +6,7 @@
     android:background="@color/bg_gray"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.yyjlr.tickets.activity.setting.MessageDetailsActivity"
+    tools:context="com.yyjlr.tickets.activity.setting.SettingMessageDetailsActivity"
     tools:showIn="@layout/activity_message_details">
 
     <LinearLayout

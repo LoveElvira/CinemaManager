@@ -14,17 +14,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.CinemaDetailsActivity;
 import com.yyjlr.tickets.activity.EventActivity;
+import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.ChosenAdapter;
-import com.yyjlr.tickets.model.ChosenFilmEntity;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.chosen.ChosenModel;
 import com.yyjlr.tickets.model.chosen.EventInfo;
 import com.yyjlr.tickets.requestdata.RequestNull;
@@ -34,15 +37,21 @@ import com.yyjlr.tickets.viewutils.chosen.CarouselLayoutManager;
 import com.yyjlr.tickets.viewutils.chosen.CarouselZoomPostLayoutListener;
 import com.yyjlr.tickets.viewutils.chosen.CenterScrollListener;
 
+import java.util.Calendar;
 import java.util.List;
+
+import static com.yyjlr.tickets.Application.getInstance;
 
 /**
  * Created by Elvira on 2016/7/28.
  * 精选页面
  */
 public class ChosenContent extends LinearLayout implements View.OnClickListener, BaseAdapter.OnRecyclerViewItemChildClickListener {
-    private View view;
 
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
+
+    private View view;
     private int cardWidth;
     private int cardHeight;
 
@@ -67,6 +76,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     }
 
     public void initView() {
+        lastClickTime = 0;
         title = (TextView) findViewById(R.id.base_toolbar__text);
         enterCinema = (ImageView) findViewById(R.id.base_toolbar__right);
         enterCinema.setImageResource(R.mipmap.enter_cinema);
@@ -99,6 +109,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -127,6 +138,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, requestNull, ChosenModel.class, Application.getInstance().getCurrentActivity());
     }
@@ -181,9 +193,20 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+            Intent intent = new Intent();
+            if (!isLogin.equals("1")) {
+                intent.setClass(getInstance().getCurrentActivity(), LoginActivity.class);
+            } else {
+                intent.setClass(getInstance().getCurrentActivity(), EventActivity.class);
+                intent.putExtra("eventId", chosenModel.getActivityList().get(position).getActivityId());
+            }
 
-        Application.getInstance().getCurrentActivity().startActivity(
-                new Intent(Application.getInstance().getCurrentActivity(), EventActivity.class).putExtra("eventId", chosenModel.getActivityList().get(position).getActivityId()));
+            Application.getInstance()
+                    .getCurrentActivity().startActivity(intent);
 
 //        if(layoutManager.getOrientation()==CarouselLayoutManager.VERTICAL){
 //            if ((int) view.getY() > 0 && view.getHeight() / 2 > (int) view.getY()) {
@@ -194,6 +217,7 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
 //                Toast.makeText(context, "" + String.valueOf(position), Toast.LENGTH_SHORT).show();
 //            }
 //        }
+        }
     }
 
     //adapter

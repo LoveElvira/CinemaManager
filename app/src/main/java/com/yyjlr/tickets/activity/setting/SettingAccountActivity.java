@@ -107,8 +107,8 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
@@ -142,6 +142,7 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, requestNull, MyInfoModel.class, Application.getInstance().getCurrentActivity());
@@ -184,8 +185,8 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
@@ -220,6 +221,7 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, updateMyInfoRequest, MyInfoModel.class, Application.getInstance().getCurrentActivity());
@@ -238,8 +240,8 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , e = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , e = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customerDialog.dismiss();
             }
 
@@ -260,6 +262,7 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
             @Override
             public void onOtherError(Request request, Exception exception) {
                 customerDialog.dismiss();
+//                showShortToast(exception.getMessage());
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
             }
         }, upload, files, new TypeReference<List<String>>() {
@@ -311,14 +314,15 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
     private void showPopWindowDatePicker() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.content_popup_datepicker, null);
+        View parent = inflater.inflate(R.layout.activity_mysetting_account, null);
         final PopupWindow window = new PopupWindow(view,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setFocusable(true);
         window.setBackgroundDrawable(new BitmapDrawable());
+        window.setFocusable(true);
+        window.setOutsideTouchable(true);
         window.setAnimationStyle(R.style.mypopwindow_anim_style);
-        window.showAtLocation(findViewById(R.id.content_setting_account__phone),
-                Gravity.BOTTOM, 0, 0);
+        window.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
 
         DatePicker datePicker = (DatePicker) view.findViewById(R.id.content_popup_datepicker);
         Calendar calendar = Calendar.getInstance();

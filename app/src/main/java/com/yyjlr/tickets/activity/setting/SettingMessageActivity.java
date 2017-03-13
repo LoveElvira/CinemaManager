@@ -3,22 +3,16 @@ package com.yyjlr.tickets.activity.setting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
@@ -32,12 +26,10 @@ import com.yyjlr.tickets.model.message.MyMessageInfo;
 import com.yyjlr.tickets.requestdata.PagableRequest;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
-import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -67,7 +59,6 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysetting_message);
-        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中。。。");
         initView();
     }
 
@@ -88,28 +79,27 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
         refresh.setHeaderView(createHeaderView());// add headerView
         refresh.setTargetScrollWithLayout(true);
         refresh.setOnPullRefreshListener(this);
-
+        messageInfoLists = new ArrayList<>();
 //        initAdapter();
         getMessage(pagable);
     }
 
     //我的消息
     private void getMessage(final String pagables) {
-        customDialog.show();
         PagableRequest pagableRequest = new PagableRequest();
+        pagableRequest.setPagable(pagables);
         OkHttpClientManager.postAsyn(Config.GET_MESSAGE, new OkHttpClientManager.ResultCallback<MyMessageBean>() {
 
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                customDialog.dismiss();
+                showShortToast(info.getInfo());
             }
 
             @Override
             public void onResponse(MyMessageBean response) {
-                customDialog.dismiss();
                 messageInfoList = response.getMessages();
-                if (messageInfoList != null) {
+                if (messageInfoList != null && messageInfoList.size() > 0) {
                     if ("0".equals(pagables)) {//第一页
                         messageInfoLists.clear();
                         messageInfoLists.addAll(messageInfoList);
@@ -144,7 +134,7 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-                customDialog.dismiss();
+//                showShortToast(exception.getMessage());
             }
         }, pagableRequest, MyMessageBean.class, Application.getInstance().getCurrentActivity());
     }
@@ -214,24 +204,18 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
         headerImage.setRotation(enable ? 180 : 0);
     }
 
-//    private void initAdapter() {
-//        adapter = new MessageAdapter(messageEntityList);
-//        adapter.openLoadAnimation();
-//        listView.setAdapter(adapter);
-//        mCurrentCounter = adapter.getData().size();
-//        adapter.setOnLoadMoreListener(this);
-//        adapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
-//        adapter.setOnRecyclerViewItemChildClickListener(this);
-//    }
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        Intent intent = new Intent(SettingMessageActivity.this, MessageDetailsActivity.class);
-        intent.putExtra("messageInfo", messageInfoLists.get(position));
-//        intent.putExtra("title", messageEntityList.get(position).getTitle());
-//        intent.putExtra("time", messageEntityList.get(position).getTime());
-//        intent.putExtra("message", messageEntityList.get(position).getMessage());
-        startActivity(intent);
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            Intent intent = new Intent(SettingMessageActivity.this, SettingMessageDetailsActivity.class);
+//        intent.putExtra("messageInfo", messageInfoLists.get(position));
+            intent.putExtra("position", position);
+            intent.putExtra("messageId", messageInfoLists.get(position).getMessageId());
+            startActivityForResult(intent, CODE_REQUEST_ONE);
+        }
     }
 
     @Override
@@ -240,6 +224,21 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
             case R.id.base_toolbar__left:
                 SettingMessageActivity.this.finish();
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+
+        if (requestCode == CODE_REQUEST_ONE) {
+            int position = data.getIntExtra("position", -1);
+            if (!"1".equals(messageInfoLists.get(position).getIsRead())) {
+                messageInfoLists.get(position).setIsRead("1");
+                adapter.notifyItemChanged(position);
+            }
         }
     }
 }

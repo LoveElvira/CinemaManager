@@ -13,7 +13,7 @@
         android:text="+99"
         android:textColor="@color/white"
         android:textSize="@dimen/text_20"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.yyjlr.tickets.viewutils.CircleImageView
         android:id="@+id/item_event_collect_user__headimage"
@@ -25,6 +25,9 @@
         android:id="@+id/item_event_collect_user__username"
         style="@style/WrapWrap"
         android:layout_marginTop="@dimen/size_10"
+        android:ellipsize="middle"
+        android:maxEms="6"
+        android:singleLine="true"
         android:textColor="@color/gray_c3c3c3"
         android:textSize="@dimen/text_13" />
 

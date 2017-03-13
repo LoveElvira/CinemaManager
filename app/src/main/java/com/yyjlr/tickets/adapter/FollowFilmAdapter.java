@@ -39,8 +39,8 @@ public class FollowFilmAdapter extends BaseAdapter<MovieInfo> implements Sliding
         helper.setText(R.id.item_follow_film__name, item.getMovieName())
                 .setText(R.id.item_follow_film__director, item.getDirector())
                 .setText(R.id.item_follow_film__star, item.getActors())
-                .setText(R.id.item_follow_film__showtime, item.getShowTime())
-                .setOnClickListener(R.id.item_follow_film__buy_ticket, new OnItemChildClickListener());
+                .setText(R.id.item_follow_film__showtime, item.getShowTime());
+//                .setOnClickListener(R.id.item_follow_film__buy_ticket, new OnItemChildClickListener());
 
         if (item.getMovieImage() != null && !"".equals(item.getMovieImage())) {
             Picasso.with(helper.getConvertView().getContext())

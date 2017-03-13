@@ -1361,7 +1361,7 @@ public class SeatTableView extends View {
         invalidate();
     }
 
-    public void setData(List<SeatInfo> seatList, List<SeatTypeInfo> seatType) {
+    public List<SeatInfo> setData(List<SeatInfo> seatList, List<SeatTypeInfo> seatType) {
 
         this.seatList = seatList;
         this.seatType = seatType;
@@ -1409,6 +1409,7 @@ public class SeatTableView extends View {
         initSeatBitmap();
         init();
         invalidate();
+        return oldSeatList;
     }
 
     private SeatInfo returnSeat(int i, int j) {
@@ -1774,14 +1775,14 @@ public class SeatTableView extends View {
 
 
     //判断是否符合选择规则
-    public boolean isSelect(int row, int col) {
+    public boolean isSelect(int row, int col, boolean flag, List<SeatInfo> seatList) {
 
-        boolean leftOne = isSelectSeat(row, col - 1, 0);
-        boolean leftTwo = isSelectSeat(row, col - 2, 0);
-        boolean rightOne = isSelectSeat(row, col + 1, 2);
-        boolean rightTwo = isSelectSeat(row, col + 2, 2);
+        boolean leftOne = isSelectSeat(row, col - 1, 0, flag, seatList);
+        boolean leftTwo = isSelectSeat(row, col - 2, 0, flag, seatList);
+        boolean rightOne = isSelectSeat(row, col + 1, 2, flag, seatList);
+        boolean rightTwo = isSelectSeat(row, col + 2, 2, flag, seatList);
 
-        Log.i("ee",leftOne+"--"+leftTwo+"--"+rightOne+"--"+rightTwo);
+        Log.i("ee", leftOne + "--" + leftTwo + "--" + rightOne + "--" + rightTwo);
 
         if (leftOne && leftTwo && rightOne && !rightTwo) {
             return false;
@@ -1875,28 +1876,44 @@ public class SeatTableView extends View {
         return true;
     }
 
-    private boolean isSelectSeat(int row, int col, int flag) {
+    private boolean isSelectSeat(int row, int col, int flag, boolean isNewDate, List<SeatInfo> seatList) {
         boolean isTrue = false;
         if (flag == 0) {//真的话  向左
             isTrue = lostIsHave(col);
+            if (!isTrue)
+                return true;
         } else if (flag == 2) {//假的话 向右
             isTrue = addIsHave(col);
-        } else {
-            isTrue = false;
+            if (!isTrue)
+                return true;
         }
 
         if (isTrue) {//判断那个位置是否可选
             int id = getID(row, col);
-            Log.i("ee", "newSeatList.get(id).getType()---" + newSeatList.get(id).getType() +
-                    "-----------" + id + "-------type:------" + oldSeatList.get(id).getType() + "----flag---" + flag + "---col---" + col);
-            if (( oldSeatList.get(id).getType().equals("0"))
-                    ||(oldSeatList.get(id).getType().equals("1"))
-                    ||(oldSeatList.get(id).getType().equals("2"))
-                    ||(oldSeatList.get(id).getType().equals("3"))
-                    ||(oldSeatList.get(id).getType().equals("4"))) {
-                isTrue = true;
+
+            if (isNewDate) {
+//                Log.i("ee", "newSeatList.getId()---" + newSeatList.get(id).getType());
+//                if ((newSeatList.get(id).getType().equals("0-1"))
+//                        || (newSeatList.get(id).getType().equals("1-1"))
+//                        || (newSeatList.get(id).getType().equals("2-1"))
+//                        || (newSeatList.get(id).getType().equals("3-1"))
+//                        || (newSeatList.get(id).getType().equals("4-1"))
+//                        ) {
+//                    isTrue = true;
+//                } else {
+//                    isTrue = false;
+//                }
             } else {
-                isTrue = false;
+                Log.i("ee", "oldSeatList.getId()---" + seatList.get(id).getType());
+                if ((seatList.get(id).getType().equals("0"))
+                        || (seatList.get(id).getType().equals("1"))
+                        || (seatList.get(id).getType().equals("2"))
+                        || (seatList.get(id).getType().equals("3"))
+                        || (seatList.get(id).getType().equals("4"))) {
+                    isTrue = true;
+                } else {
+                    isTrue = false;
+                }
             }
             /*else if (newSeatList.get(id).getType().equals("0-1")) {
                 isTrue = true;
@@ -1905,7 +1922,7 @@ public class SeatTableView extends View {
         return isTrue;
     }
 
-    public void clear(){
+    public void clear() {
         selects.clear();
         seatList.clear();
         oldSeatList.clear();

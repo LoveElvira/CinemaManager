@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.yyjlr.tickets.MainActivity;
 import com.yyjlr.tickets.R;
 
+import java.util.Calendar;
+
 /**
  * Created by Elvira on 2016/10/28.
  * 重设密码
@@ -47,13 +49,17 @@ public class ResetPasswordActivity extends AbstractActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.base_toolbar__left:
-                ResetPasswordActivity.this.finish();
-                break;
-            case R.id.content_reset_pwd__confirm:
-                startActivity(MainActivity.class);
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.base_toolbar__left:
+                    ResetPasswordActivity.this.finish();
+                    break;
+                case R.id.content_reset_pwd__confirm:
+                    startActivity(MainActivity.class);
+                    break;
+            }
         }
     }
 }

@@ -13,13 +13,13 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-            style="@style/WrapWrap"
-            android:layout_alignParentLeft="true"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+            <!--style="@style/WrapWrap"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
 
             <TextView
                 android:id="@+id/date_cancel"
@@ -28,15 +28,15 @@
                 android:padding="@dimen/size_10"
                 android:text="@string/text_cancel"
                 android:textColor="@color/gray_929292" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-            style="@style/WrapWrap"
-            android:layout_alignParentRight="true"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+        <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
+            <!--style="@style/WrapWrap"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
 
             <TextView
                 android:id="@+id/date_submit"
@@ -44,8 +44,9 @@
                 android:gravity="center"
                 android:padding="@dimen/size_10"
                 android:text="@string/text_confirm"
+                android:layout_alignParentRight="true"
                 android:textColor="@color/gray_929292" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
     </RelativeLayout>
 
     <ScrollView

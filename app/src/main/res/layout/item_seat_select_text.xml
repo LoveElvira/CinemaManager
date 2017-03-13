@@ -8,8 +8,8 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/size_10"
-    android:paddingLeft="@dimen/size_5"
-    android:paddingRight="@dimen/size_5"
+    android:paddingLeft="@dimen/size_10"
+    android:paddingRight="@dimen/size_10"
     android:paddingTop="@dimen/size_10">
 
     <TextView
@@ -23,5 +23,6 @@
     <ImageView
         android:layout_width="@dimen/size_10"
         android:layout_height="@dimen/size_10"
-        android:src="@mipmap/seat_cancel" />
+        android:src="@mipmap/seat_cancel"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MatchMatch"
-    android:id="@+id/content_setting_vip__bound_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_setting_vip__bound_layout"
+    style="@style/MatchMatch"
     android:orientation="vertical"
-    android:visibility="gone"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.yyjlr.tickets.activity.VipBoundActivity"
     tools:showIn="@layout/activity_setting_unbound_vip">
@@ -26,8 +25,8 @@
                 android:layout_gravity="center"
                 android:padding="5dp"
                 android:text="@string/text_card_num"
-                android:textSize="@dimen/text_14"
-                android:textColor="@color/gray_929292"/>
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_14" />
 
             <EditText
                 android:id="@+id/content_setting_vip__card"
@@ -36,10 +35,9 @@
                 android:background="@null"
                 android:gravity="center|right"
                 android:inputType="number"
-                android:maxLength="11"
                 android:maxLines="1"
-                android:textSize="@dimen/text_14"
-                android:textColor="@color/black_363636"/>
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_14" />
         </LinearLayout>
 
         <View
@@ -58,8 +56,8 @@
                 android:layout_gravity="center"
                 android:padding="5dp"
                 android:text="@string/text_card_money"
-                android:textSize="@dimen/text_14"
-                android:textColor="@color/gray_929292"/>
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_14" />
 
             <EditText
                 android:id="@+id/content_setting_vip__money"
@@ -67,10 +65,9 @@
                 android:layout_marginLeft="@dimen/size_5"
                 android:background="@null"
                 android:gravity="center|right"
-                android:maxLength="11"
                 android:maxLines="1"
-                android:textSize="@dimen/text_14"
-                android:textColor="@color/black_363636"/>
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_14" />
         </LinearLayout>
 
         <TextView
@@ -83,11 +80,11 @@
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             style="@style/MatchWrap"
+            android:layout_margin="@dimen/size_30"
             app:mrl_rippleAlpha="0.2"
             app:mrl_rippleColor="@color/bg_shadow"
             app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true"
-            android:layout_margin="@dimen/size_30">
+            app:mrl_rippleOverlay="true">
 
             <TextView
                 android:id="@+id/content_setting_vip__unbound_or_bound"
@@ -95,8 +92,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/radius_blue_4"
                 android:gravity="center"
-                android:text="@string/text_bound_vip_confirm"
                 android:padding="@dimen/size_12"
+                android:text="@string/text_bound_vip_confirm"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_16" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>

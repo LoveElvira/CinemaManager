@@ -1,52 +1,19 @@
 package com.yyjlr.tickets.content;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.Request;
-import com.yyjlr.tickets.Application;
-import com.yyjlr.tickets.Config;
-import com.yyjlr.tickets.MainActivity;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.sale.PackageDetailsActivity;
-import com.yyjlr.tickets.activity.sale.SaleCompleteActivity;
-import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.ContentAdapter;
-import com.yyjlr.tickets.adapter.SaleAdapter;
-import com.yyjlr.tickets.adapter.SalePackageAdapter;
-import com.yyjlr.tickets.content.sale.PackageContent;
-import com.yyjlr.tickets.model.SaleEntity;
-import com.yyjlr.tickets.model.sale.GoodInfo;
-import com.yyjlr.tickets.model.sale.Goods;
-import com.yyjlr.tickets.requestdata.PagableRequest;
-import com.yyjlr.tickets.service.Error;
-import com.yyjlr.tickets.service.IRequestMainData;
-import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.LockableViewPager;
-import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -54,6 +21,10 @@ import java.util.List;
  * 卖品页面
  */
 public class SaleContent extends LinearLayout implements View.OnClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
+
     private View view;
     private TextView title;
 
@@ -77,6 +48,7 @@ public class SaleContent extends LinearLayout implements View.OnClickListener {
     public SaleContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_sale, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -92,10 +64,10 @@ public class SaleContent extends LinearLayout implements View.OnClickListener {
         viewPager = (LockableViewPager) findViewById(R.id.content_sale__viewpager);
 
         saleContent = new com.yyjlr.tickets.content.sale.SaleContent(getContext());
-        packageContent = new PackageContent(getContext());
+//        packageContent = new PackageContent(getContext());
 
         List<View> list = new ArrayList<View>();
-        list.add(packageContent);
+//        list.add(packageContent);
         list.add(saleContent);
 
         adapter = new ContentAdapter(list, null);
@@ -125,7 +97,7 @@ public class SaleContent extends LinearLayout implements View.OnClickListener {
 
         packageLayout.setOnClickListener(this);
         saleLayout.setOnClickListener(this);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
 
     }
 
@@ -136,13 +108,21 @@ public class SaleContent extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fragment_sale__package_layout:
-                viewPager.setCurrentItem(0);
-                break;
-            case R.id.fragment_sale__sale_layout:
-                viewPager.setCurrentItem(1);
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.fragment_sale__package_layout:
+                    if (viewPager.getCurrentItem() != 0) {
+                        viewPager.setCurrentItem(0);
+                    }
+                    break;
+                case R.id.fragment_sale__sale_layout:
+                    if (viewPager.getCurrentItem() != 1) {
+                        viewPager.setCurrentItem(1);
+                    }
+                    break;
+            }
         }
     }
 }

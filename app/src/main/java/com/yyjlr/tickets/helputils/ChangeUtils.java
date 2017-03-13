@@ -24,6 +24,11 @@ public class ChangeUtils {
         return format.format(new Date(time));
     }
 
+    public static String changeYearDot(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+        return format.format(new Date(time));
+    }
+
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（6-16"）
      */

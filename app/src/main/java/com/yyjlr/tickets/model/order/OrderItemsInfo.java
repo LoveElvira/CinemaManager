@@ -3,15 +3,22 @@ package com.yyjlr.tickets.model.order;
 import java.io.Serializable;
 
 /**
- * Created by Richie on 2016/8/25.
+ * Created by Elvira on 2017/2/27.
  */
 public class OrderItemsInfo implements Serializable {
+    /**
+     * "name": "商品名称",
+     * "price": 20, // 单价
+     * "num":1, // 购买数量
+     * "totalPrice":20, // 小计
+     */
     private String name;//商品名称
-    private int price;//单价
-    private int couponPrice;//优惠价
+    private long price;//单价
+    private long totalPrice;// 小计
     private int num;//购买数量
-    private String memo;//卖品描述
-    private String imageUtl;//卖品图片
+
+    public OrderItemsInfo() {
+    }
 
     public String getName() {
         return name;
@@ -21,20 +28,20 @@ public class OrderItemsInfo implements Serializable {
         this.name = name;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
-    public int getCouponPrice() {
-        return couponPrice;
+    public long getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setCouponPrice(int couponPrice) {
-        this.couponPrice = couponPrice;
+    public void setTotalPrice(long totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public int getNum() {
@@ -43,21 +50,5 @@ public class OrderItemsInfo implements Serializable {
 
     public void setNum(int num) {
         this.num = num;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
-    public String getImageUtl() {
-        return imageUtl;
-    }
-
-    public void setImageUtl(String imageUtl) {
-        this.imageUtl = imageUtl;
     }
 }

@@ -41,7 +41,7 @@ public class FollowGrabAdapter extends BaseAdapter<FollowEventInfo> implements S
                 .setText(R.id.item_follow_grab__time, ChangeUtils.changeTimeDate(item.getStartTime()) + "~" + ChangeUtils.changeTimeDate(item.getEndTime()))
                 .setText(R.id.item_follow_grab__address, item.getAddress())
                 .setText(R.id.item_follow_grab__price, item.getPrice())
-                .setOnClickListener(R.id.item_follow_grab__enter, new OnItemChildClickListener());
+                /*.setOnClickListener(R.id.item_follow_grab__enter, new OnItemChildClickListener())*/;
 
         if (item.getActivityImg() != null && !"".equals(item.getActivityImg())) {
             Picasso.with(helper.getConvertView().getContext())

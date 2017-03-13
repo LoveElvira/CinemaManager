@@ -21,11 +21,12 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.PaySelectActivity;
+import com.yyjlr.tickets.activity.film.FilmCompleteActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.OrderUncompleteAdapter;
 import com.yyjlr.tickets.model.ResponeNull;
+import com.yyjlr.tickets.model.order.AddMovieOrderBean;
 import com.yyjlr.tickets.model.order.MyOrderBean;
 import com.yyjlr.tickets.model.order.MyOrderInfo;
 import com.yyjlr.tickets.requestdata.IdRequest;
@@ -36,6 +37,7 @@ import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -44,6 +46,10 @@ import java.util.List;
  */
 
 public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderUncompleteAdapter.SlidingViewClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
+
     private View view;
     private CustomDialog customDialog;
     private OrderUncompleteAdapter unCompleteAdapter;
@@ -69,6 +75,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
     public UnCompleteOrderContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -97,48 +104,51 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(MyOrderBean response) {
-                orderList = response.getOrders();
-                if (orderList != null) {
-                    if ("0".equals(pagables)) {//第一页
-                        orderLists.clear();
-                        orderLists.addAll(orderList);
-                        Log.i("ee", orderList.size() + "----" + orderLists.size());
-                        unCompleteAdapter = new OrderUncompleteAdapter(orderList, UnCompleteOrderContent.this);
-                        unCompleteAdapter.openLoadAnimation();
-                        listView.setAdapter(unCompleteAdapter);
-                        unCompleteAdapter.openLoadMore(orderList.size(), true);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
-                        } else {
-                            hasMore = false;
-                        }
-                        pagable = response.getPagable();
-                    } else {
-                        orderLists.addAll(orderList);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
+                if (response != null) {
+                    orderList = response.getOrders();
+                    if (orderList != null && orderList.size() > 0) {
+                        if ("0".equals(pagables)) {//第一页
+                            orderLists.clear();
+                            orderLists.addAll(orderList);
+                            Log.i("ee", orderList.size() + "----" + orderLists.size());
+                            unCompleteAdapter = new OrderUncompleteAdapter(orderList, UnCompleteOrderContent.this);
+                            unCompleteAdapter.openLoadAnimation();
+                            listView.setAdapter(unCompleteAdapter);
+                            unCompleteAdapter.openLoadMore(orderList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
                             pagable = response.getPagable();
-                            unCompleteAdapter.notifyDataChangedAfterLoadMore(orderList, true);
                         } else {
-                            unCompleteAdapter.notifyDataChangedAfterLoadMore(orderList, true);
-                            hasMore = false;
-                            pagable = "";
+                            orderLists.addAll(orderList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                unCompleteAdapter.notifyDataChangedAfterLoadMore(orderList, true);
+                            } else {
+                                unCompleteAdapter.notifyDataChangedAfterLoadMore(orderList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
                         }
+                        unCompleteAdapter.setOnLoadMoreListener(UnCompleteOrderContent.this);
+                        unCompleteAdapter.setOnRecyclerViewItemChildClickListener(UnCompleteOrderContent.this);
                     }
-                    unCompleteAdapter.setOnLoadMoreListener(UnCompleteOrderContent.this);
-                    unCompleteAdapter.setOnRecyclerViewItemChildClickListener(UnCompleteOrderContent.this);
                 }
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, pagableRequest, MyOrderBean.class, Application.getInstance().getCurrentActivity());
     }
@@ -153,8 +163,8 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
 
@@ -169,6 +179,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
         }, idRequest, ResponeNull.class, Application.getInstance().getCurrentActivity());
@@ -185,8 +196,8 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
 
@@ -202,6 +213,7 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
         }, idRequest, ResponeNull.class, Application.getInstance().getCurrentActivity());
@@ -274,28 +286,43 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        switch (view.getId()) {
-            case R.id.item_order_nocomplete__cancel://取消订单
-                showCancelOrDelete(position, "1");
-                break;
-            case R.id.item_order_nocomplete__pay:
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), PaySelectActivity.class)
-                        .putExtra("orderId", orderLists.get(position).getOrderId() + ""));
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.item_order_nocomplete__cancel://取消订单
+                    showCancelOrDelete(position, "1");
+                    break;
+                case R.id.item_order_nocomplete__pay:
+                    if (orderLists.get(position).getOrderType() == 1) {
+                        AddMovieOrderBean movieOrderBean = null;
+                        Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), FilmCompleteActivity.class)
+                                .putExtra("orderId", orderLists.get(position).getOrderId() + "")
+                                .putExtra("movieOrderBean", movieOrderBean)
+                                .putExtra("isNoPay", true));
+                    } else {
+
+                    }
+                    break;
+            }
         }
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent();
-        switch (view.getId()) {
-            case R.id.item_order_nocomplete__ll_layout:
-                intent.setClass(getContext(), SettingOrderDetailsActivity.class);
-                intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
-                intent.putExtra("status", orderLists.get(position).getOrderStatus());
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            Intent intent = new Intent();
+            switch (view.getId()) {
+                case R.id.item_order_nocomplete__ll_layout:
+                    intent.setClass(getContext(), SettingOrderDetailsActivity.class);
+                    intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
+                    intent.putExtra("status", orderLists.get(position).getOrderStatus());
+                    break;
+            }
+            Application.getInstance().getCurrentActivity().startActivity(intent);
         }
-        Application.getInstance().getCurrentActivity().startActivity(intent);
     }
 
     @Override

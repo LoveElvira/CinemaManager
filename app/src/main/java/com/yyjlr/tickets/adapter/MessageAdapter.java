@@ -32,8 +32,12 @@ public class MessageAdapter extends BaseAdapter<MyMessageInfo> {
     @Override
     protected void convert(BaseViewHolder helper, MyMessageInfo item, int position) {
         helper.setText(R.id.item_message__title, item.getTitle())
+                .setVisible(R.id.item_message__no_read, false)
                 .setText(R.id.item_message__time, ChangeUtils.changeTime(item.getSendDate()))
                 .setOnClickListener(R.id.item_message__layout, new OnItemChildClickListener());
+        if (item.getIsRead().equals("0")) {
+            helper.setVisible(R.id.item_message__no_read, true);
+        }
     }
 
 }

@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="bg_gray">#F5F5F5</color>
+    <color name="bg_gray_FAFAFA">#FAFAFA</color>
     <color name="bg_shadow">#585858</color>
 
     <color name="white">#fff</color>

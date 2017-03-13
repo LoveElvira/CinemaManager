@@ -3,6 +3,7 @@ package com.yyjlr.tickets.activity.sale;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,54 +14,130 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.sale.PackageDetails;
+import com.yyjlr.tickets.model.sale.PackageInfo;
+import com.yyjlr.tickets.requestdata.IdRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 /**
  * Created by Elvira on 2016/9/23.
+ * 套餐详情
  */
 
 public class PackageDetailsActivity extends AbstractActivity implements View.OnClickListener {
 
     private TextView title;
     private ImageView leftArrow;
+
+    private TextView packageName;
+    private TextView packageContent;
+    private TextView packageDesc;
+    private TextView packageUnitPrice;
+    private TextView packagePrice;
+    private ImageView packageImage;
+
     private LinearLayout collectPackage;
     private LinearLayout sharePackage;
     private ImageView collectImage;
     private TextView collectText;
     private TextView buyPackage;
     private boolean flag = true;
+    private PackageDetails packageDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_package_details);
         initView();
-
     }
-    private void initView(){
+
+    private void initView() {
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("活动套餐");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
 
+        packageName = (TextView) findViewById(R.id.content_package_details__name);
+        packageContent = (TextView) findViewById(R.id.content_package_details__content);
+        packageDesc = (TextView) findViewById(R.id.content_package_details__desc);
+        packageUnitPrice = (TextView) findViewById(R.id.content_package_details__original_price);
+        packagePrice = (TextView) findViewById(R.id.content_package_details__package_price);
+        packageImage = (ImageView) findViewById(R.id.content_package_details__image);
+
         collectPackage = (LinearLayout) findViewById(R.id.content_package_details__collect);
         sharePackage = (LinearLayout) findViewById(R.id.content_package_details__share);
         collectImage = (ImageView) findViewById(R.id.content_package_details__collect_image);
         collectText = (TextView) findViewById(R.id.content_package_details__collect_text);
         buyPackage = (TextView) findViewById(R.id.content_package_details__buy);
+
         collectPackage.setOnClickListener(this);
         sharePackage.setOnClickListener(this);
         buyPackage.setOnClickListener(this);
+        getPackageDetail();
+    }
+
+    //获取活动套餐
+    private void getPackageDetail() {
+        customDialog = new CustomDialog(this, "加载中...");
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setId(getIntent().getStringExtra("packageId"));
+        OkHttpClientManager.postAsyn(Config.GET_SALE_GOOD_INFO, new OkHttpClientManager.ResultCallback<PackageInfo>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(PackageInfo response) {
+                customDialog.dismiss();
+                packageDetails = response.getGoodsInfo();
+                if (packageDetails != null) {
+                    packageName.setText(packageDetails.getName());
+                    packageContent.setText(packageDetails.getDetail());
+                    packageDesc.setText(packageDetails.getDesc());
+                    packageUnitPrice.setText("原价：" + ChangeUtils.save2Decimal(packageDetails.getCostPrice()) + " 元");
+                    packagePrice.setText(ChangeUtils.save2Decimal(packageDetails.getPrice()));
+
+                    if (packageDetails.getImage() != null && !"".equals(packageDetails.getImage())) {
+                        Picasso.with(getBaseContext())
+                                .load(packageDetails.getImage())
+                                .into(packageImage);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, PackageInfo.class, PackageDetailsActivity.this);
     }
 
     @Override
     public void onClick(View v) {
         int num = 0;
+        long price = 0;
         if (saleNum != null) {
             num = Integer.parseInt(saleNum.getText().toString());
+            int dotIndex = salePrice.getText().toString().trim().indexOf(".");
+            price = Long.parseLong(salePrice.getText().toString().trim().substring(0, dotIndex)) * 100;
         }
         switch (v.getId()) {
             case R.id.base_toolbar__left:
@@ -72,7 +149,7 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
 //                    drawable = getResources().getDrawable(R.mipmap.collect_select);
                     collectImage.setImageResource(R.mipmap.collect_select);
                     collectText.setText("已收藏");
-                }else {
+                } else {
 //                    drawable = getResources().getDrawable(R.mipmap.collect);
                     collectImage.setImageResource(R.mipmap.collect);
                     collectText.setText("收藏");
@@ -88,16 +165,20 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
                 selectPopupWindow();
                 break;
             case R.id.popup_sale__buy://购买
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SaleCompleteActivity.class));
+//                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SaleCompleteActivity.class));
                 mPopupWindow.dismiss();
                 break;
             case R.id.popup_sale__lost://减少数量
-                if (num != 0)
-                    num = num - 1;
+                if (num != 1) {
+                    num -= 1;
+                    price -= goodPrice;
+                }
                 saleNum.setText(num + "");
+                salePrice.setText(ChangeUtils.save2Decimal(price));
                 break;
             case R.id.popup_sale__add://增加数量
                 saleNum.setText((num + 1) + "");
+                salePrice.setText(ChangeUtils.save2Decimal(price + goodPrice));
                 break;
             case R.id.popup_share__weixin:
                 mPopupWindow.dismiss();
@@ -118,9 +199,10 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         }
     }
 
-    TextView price;
+    TextView salePrice;
     TextView saleNum;
     PopupWindow mPopupWindow;
+    private long goodPrice;
 
     //弹出popwindow 选择数量
     private void selectPopupWindow() {
@@ -153,14 +235,26 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
             }
         });
 
-
+        ImageView saleImage = (ImageView) view.findViewById(R.id.popup_sale__image);
         TextView buy = (TextView) view.findViewById(R.id.popup_sale__buy);
         TextView lost = (TextView) view.findViewById(R.id.popup_sale__lost);
         TextView add = (TextView) view.findViewById(R.id.popup_sale__add);
         TextView salePackage = (TextView) view.findViewById(R.id.popup_sale__package);
         TextView salePackageContent = (TextView) view.findViewById(R.id.popup_sale__package_content);
         saleNum = (TextView) view.findViewById(R.id.popup_sale__num);
-        price = (TextView) view.findViewById(R.id.popup_sale_price);
+        salePrice = (TextView) view.findViewById(R.id.popup_sale_price);
+
+        salePackage.setText(packageDetails.getName());
+        salePackageContent.setText(packageDetails.getDesc());
+        if (packageDetails.getImage() != null && !"".equals(packageDetails.getImage())) {
+            Picasso.with(getBaseContext())
+                    .load(packageDetails.getImage())
+                    .into(saleImage);
+        }
+
+        salePrice.setText(ChangeUtils.save2Decimal(packageDetails.getPrice()));
+        goodPrice = packageDetails.getPrice();
+
 
         buy.setOnClickListener(this);
         lost.setOnClickListener(this);

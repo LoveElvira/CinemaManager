@@ -38,6 +38,8 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CircleImageView;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import java.util.Calendar;
+
 import static com.yyjlr.tickets.Application.getInstance;
 import static com.yyjlr.tickets.R.mipmap.phone;
 
@@ -46,6 +48,9 @@ import static com.yyjlr.tickets.R.mipmap.phone;
  * 我的页面
  */
 public class MySettingContent extends LinearLayout implements View.OnClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
 
     private View view;
     private LinearLayout myService;
@@ -66,6 +71,7 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
     public MySettingContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_mysetting, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -92,6 +98,9 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
         String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "0", Application.getInstance().getCurrentActivity());
         if (isLogin.equals("1")) {
             getMyInfo();
+        } else {
+            headImage.setImageResource(R.mipmap.head_image_default);
+            userName.setText("未登录");
         }
     }
 
@@ -103,8 +112,8 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -127,6 +136,7 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, requestNull, MyInfoModel.class, Application.getInstance().getCurrentActivity());
     }
@@ -134,56 +144,59 @@ public class MySettingContent extends LinearLayout implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
-        if (!isLogin.equals("1")) {
-            Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), LoginActivity.class));
-            return;
-        }
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+            if (!isLogin.equals("1")) {
+                Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), LoginActivity.class));
+                return;
+            }
 
-        Intent intent = new Intent();
-        switch (view.getId()) {
+            Intent intent = new Intent();
+            switch (view.getId()) {
 //            case R.id.fragment_setting__myaccount:
 //                intent.setClass(Application.getInstance().getCurrentActivity(), LoginActivity.class);
 //                Application.getInstance().getCurrentActivity().startActivity(intent);
 //                break;
-            case R.id.fragment_setting__myorder:
-                intent.setClass(Application.getInstance().getCurrentActivity(), SettingOrderActivity.class);
-                Application.getInstance().getCurrentActivity().startActivity(intent);
-                break;
-            case R.id.fragment_setting__vip:
-                Toast.makeText(getContext(), "会员功能正在开放中", Toast.LENGTH_SHORT).show();
+                case R.id.fragment_setting__myorder:
+                    intent.setClass(Application.getInstance().getCurrentActivity(), SettingOrderActivity.class);
+                    Application.getInstance().getCurrentActivity().startActivity(intent);
+                    break;
+                case R.id.fragment_setting__vip:
+//                Toast.makeText(getContext(), "会员功能正在开放中", Toast.LENGTH_SHORT).show();
+                    intent.setClass(Application.getInstance().getCurrentActivity(), SettingVipActivity.class);
+                    Application.getInstance().getCurrentActivity().startActivity(intent);
+                    break;
+                case R.id.fragment_setting__message:
+//                Toast.makeText(getContext(), "消息功能正在开放中", Toast.LENGTH_SHORT).show();
 //
-//                intent.setClass(Application.getInstance().getCurrentActivity(), SettingVipActivity.class);
-//                Application.getInstance().getCurrentActivity().startActivity(intent);
-                break;
-            case R.id.fragment_setting__message:
-                Toast.makeText(getContext(), "消息功能正在开放中", Toast.LENGTH_SHORT).show();
+                    intent.setClass(Application.getInstance().getCurrentActivity(), SettingMessageActivity.class);
+                    Application.getInstance().getCurrentActivity().startActivity(intent);
+                    break;
+                case R.id.fragment_setting__follow:
+//                Toast.makeText(getContext(), "收藏功能正在开放中", Toast.LENGTH_SHORT).show();
 //
-//                intent.setClass(Application.getInstance().getCurrentActivity(), SettingMessageActivity.class);
-//                Application.getInstance().getCurrentActivity().startActivity(intent);
-                break;
-            case R.id.fragment_setting__follow:
-                Toast.makeText(getContext(), "收藏功能正在开放中", Toast.LENGTH_SHORT).show();
-//
-//                intent.setClass(Application.getInstance().getCurrentActivity(), SettingFollowActivity.class);
-//                Application.getInstance().getCurrentActivity().startActivity(intent);
-                break;
-            case R.id.fragment_setting__service:
+                    intent.setClass(Application.getInstance().getCurrentActivity(), SettingFollowActivity.class);
+                    Application.getInstance().getCurrentActivity().startActivity(intent);
+                    break;
+                case R.id.fragment_setting__service:
 
-                showPhoneService();
+                    showPhoneService();
 
-                break;
-            case R.id.fragment_setting__points:
-                Toast.makeText(getContext(), "积分功能正在开放中", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.fragment_setting__points:
+                    Toast.makeText(getContext(), "积分功能正在开放中", Toast.LENGTH_SHORT).show();
 //
 //                intent.setClass(Application.getInstance().getCurrentActivity(), SettingPointsActivity.class);
 //                Application.getInstance().getCurrentActivity().startActivity(intent);
-                break;
-            case R.id.fragment_setting__myaccount:
-            case R.id.fragment_setting__head_img:
-                intent.setClass(Application.getInstance().getCurrentActivity(), SettingAccountActivity.class);
-                Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x06);
-                break;
+                    break;
+                case R.id.fragment_setting__myaccount:
+                case R.id.fragment_setting__head_img:
+                    intent.setClass(Application.getInstance().getCurrentActivity(), SettingAccountActivity.class);
+                    Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x06);
+                    break;
+            }
         }
 //        Application.getInstance().getCurrentActivity().startActivity(intent);
     }

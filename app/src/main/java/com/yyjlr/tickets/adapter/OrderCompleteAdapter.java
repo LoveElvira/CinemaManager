@@ -38,8 +38,15 @@ public class OrderCompleteAdapter extends BaseAdapter<MyOrderInfo> implements Sl
     @Override
     protected void convert(final BaseViewHolder helper, MyOrderInfo item, int position) {
         AppManager.getInstance().initWidthHeight(helper.getConvertView().getContext());
-        helper.setText(R.id.item_order_complete__order_num, item.getOrderNo())
-                .setText(R.id.item_order_complete__order_film, item.getMovieName());
+        helper.setVisible(R.id.item_order_complete__order_film_layout, false)
+                .setVisible(R.id.item_order_complete__package_layout, false)
+                .setText(R.id.item_order_complete__order_num, item.getOrderNo());
+
+        if (item.getMovieName() != null) {
+            helper.setVisible(R.id.item_order_complete__order_film_layout, true)
+                    .setText(R.id.item_order_complete__order_film, item.getMovieName());
+        }
+
         String goodName = "";
         for (int i = 0; i < item.getGoodsName().size(); i++) {
             if (i == item.getGoodsName().size() - 1) {
@@ -48,7 +55,11 @@ public class OrderCompleteAdapter extends BaseAdapter<MyOrderInfo> implements Sl
                 goodName = goodName + item.getGoodsName().get(i) + "，";
             }
         }
-        helper.setText(R.id.item_order_complete__package, goodName);
+
+        if (!"".equals(goodName)) {
+            helper.setVisible(R.id.item_order_complete__package_layout, true)
+                    .setText(R.id.item_order_complete__package, goodName);
+        }
 
         helper.getView(R.id.item_order_complete__rl_layout).getLayoutParams().width = AppManager.getInstance().getWidth();
 

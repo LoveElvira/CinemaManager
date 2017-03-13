@@ -36,6 +36,7 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -132,6 +133,7 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
                 customDialog.dismiss();
             }
 
@@ -140,44 +142,53 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                 Log.i("ee", new Gson().toJson(response));
                 cinemaInfoModel = response;
 
-                cinemaName.setText(cinemaInfoModel.getCinemaName());
-                cinemaIntro.setText(cinemaInfoModel.getCinemaDesc());
-                if (cinemaInfoModel.getCinemaImg() != null && !"".equals(cinemaInfoModel.getCinemaImg())) {
-                    Picasso.with(getBaseContext())
-                            .load(cinemaInfoModel.getCinemaImg())
-                            .into(cinemaImage);
-                }
-
-                if (cinemaInfoModel.getAddress() != null && !"".equals(cinemaInfoModel.getAddress())) {
-                    cinemaAddress.setText(cinemaInfoModel.getAddress());
-                    addressLayout.setVisibility(View.VISIBLE);
-                }
-                typeDate = cinemaInfoModel.getHallType();
-                adapter = new CinemaAdapter(CinemaDetailsActivity.this, typeDate);
-                listView.setAdapter(adapter);
-
-                if (cinemaInfoModel.getAddressIcon() != null) {
-                    Picasso.with(getBaseContext())
-                            .load(cinemaInfoModel.getAddressIcon())
-                            .into(cinemaAddressImage);
-                }
-
-                if (cinemaInfoModel.getTimeAndTel() != null) {
-                    timeAndTelLayout.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < cinemaInfoModel.getTimeAndTel().size(); i++) {
-                        timeAndTelLayout.addView(initCinemaType(cinemaInfoModel.getTimeAndTel().get(i)));
+                if (cinemaInfoModel != null) {
+                    cinemaName.setText(cinemaInfoModel.getCinemaName());
+                    cinemaIntro.setText(cinemaInfoModel.getCinemaDesc());
+                    if (cinemaInfoModel.getCinemaImg() != null && !"".equals(cinemaInfoModel.getCinemaImg())) {
+                        Picasso.with(getBaseContext())
+                                .load(cinemaInfoModel.getCinemaImg())
+                                .into(cinemaImage);
                     }
-                }
-                if (cinemaInfoModel.getTraffic() != null) {
-                    trafficLayout.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < cinemaInfoModel.getTraffic().size(); i++) {
-                        trafficLayout.addView(initCinemaType(cinemaInfoModel.getTraffic().get(i)));
+
+                    if (cinemaInfoModel.getAddress() != null && !"".equals(cinemaInfoModel.getAddress())) {
+                        cinemaAddress.setText(cinemaInfoModel.getAddress());
+                        addressLayout.setVisibility(View.VISIBLE);
                     }
-                }
-                if (cinemaInfoModel.getFeature() != null) {
-                    featureLayout.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < cinemaInfoModel.getFeature().size(); i++) {
-                        featureLayout.addView(initCinemaType(cinemaInfoModel.getFeature().get(i)));
+                    typeDate = cinemaInfoModel.getHallType();
+                    if (typeDate != null && typeDate.size() > 0) {
+                        adapter = new CinemaAdapter(CinemaDetailsActivity.this, typeDate);
+                        listView.setAdapter(adapter);
+                    }
+                    if (cinemaInfoModel.getAddressIcon() != null) {
+                        Picasso.with(getBaseContext())
+                                .load(cinemaInfoModel.getAddressIcon())
+                                .into(cinemaAddressImage);
+                    }
+
+                    if (cinemaInfoModel.getTimeAndTel() != null && cinemaInfoModel.getTimeAndTel().size() > 0) {
+                        timeAndTelLayout.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < cinemaInfoModel.getTimeAndTel().size(); i++) {
+                            if (cinemaInfoModel.getTimeAndTel().get(i).getMemo() != null) {
+                                timeAndTelLayout.addView(initCinemaType(cinemaInfoModel.getTimeAndTel().get(i)));
+                            }
+                        }
+                    }
+                    if (cinemaInfoModel.getTraffic() != null && cinemaInfoModel.getTraffic().size() > 0) {
+                        trafficLayout.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < cinemaInfoModel.getTraffic().size(); i++) {
+                            if (cinemaInfoModel.getTraffic().get(i).getMemo() != null) {
+                                trafficLayout.addView(initCinemaType(cinemaInfoModel.getTraffic().get(i)));
+                            }
+                        }
+                    }
+                    if (cinemaInfoModel.getFeature() != null && cinemaInfoModel.getFeature().size() > 0) {
+                        featureLayout.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < cinemaInfoModel.getFeature().size(); i++) {
+                            if (cinemaInfoModel.getFeature().get(i).getMemo() != null) {
+                                featureLayout.addView(initCinemaType(cinemaInfoModel.getFeature().get(i)));
+                            }
+                        }
                     }
                 }
                 customDialog.dismiss();
@@ -186,6 +197,7 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, requestNull, CinemaInfoModel.class, CinemaDetailsActivity.this);
@@ -207,7 +219,11 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                 parent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showPhoneService(type.getMemo());
+                        long currentTime = Calendar.getInstance().getTimeInMillis();
+                        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                            lastClickTime = currentTime;
+                            showPhoneService(type.getMemo());
+                        }
                     }
                 });
             } else if (type.getDesc().contains("营业时间")) {
@@ -216,7 +232,11 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                 parent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CinemaDetailsActivity.this.startActivity(SaleActivity.class);
+                        long currentTime = Calendar.getInstance().getTimeInMillis();
+                        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                            lastClickTime = currentTime;
+                            CinemaDetailsActivity.this.startActivity(SaleActivity.class);
+                        }
                     }
                 });
             }

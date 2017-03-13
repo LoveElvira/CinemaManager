@@ -13,10 +13,10 @@
         android:id="@+id/content_setting_vip__no_card_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
-            android:id="@+id/content_setting_vip__no_card"
             style="@style/WrapWrap"
-            android:src="@mipmap/no_vip_card"/>
+            android:src="@mipmap/no_vip_card" />
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             style="@style/MatchWrap"
@@ -35,13 +35,21 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/radius_blue_4"
                 android:gravity="center"
+                android:padding="@dimen/size_12"
                 android:text="@string/text_bound_vip"
                 android:textColor="@color/white"
-                android:padding="@dimen/size_12"
                 android:textSize="@dimen/text_16" />
         </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
     </RelativeLayout>
 
-    <include layout="@layout/content_mysetting_bound_vip"/>
+    <LinearLayout
+        android:id="@+id/content_setting_vip__layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/size_5"
+        android:visibility="gone" />
+
+    <!--<include layout="@layout/content_mysetting_bound_vip" />-->
 
 </LinearLayout>

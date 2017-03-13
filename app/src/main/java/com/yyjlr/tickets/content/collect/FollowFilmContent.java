@@ -35,6 +35,7 @@ import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -43,6 +44,9 @@ import java.util.List;
  */
 
 public class FollowFilmContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowFilmAdapter.SlidingViewClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
 
     private View view;
     private CustomDialog customDialog;
@@ -70,16 +74,17 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
     public FollowFilmContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
+        lastClickTime = 0;
         initView();
     }
 
     private void initView() {
-        listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
         refresh.setHeaderView(createHeaderView());// add headerView
         refresh.setTargetScrollWithLayout(true);
         refresh.setOnPullRefreshListener(this);
 
+        listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Application.getInstance().getCurrentActivity());
         listView.setLayoutManager(linearLayoutManager);
         notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
@@ -97,15 +102,15 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(MovieBean response) {
                 if (response != null) {
                     movieInfoList = response.getMovieList();
-                    if (movieInfoList != null) {
+                    if (movieInfoList != null && movieInfoList.size() > 0) {
                         if ("0".equals(pagables)) {//第一页
                             movieInfoLists.clear();
                             movieInfoLists.addAll(movieInfoList);
@@ -141,6 +146,7 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, pagableRequest, MovieBean.class, Application.getInstance().getCurrentActivity());
     }
@@ -150,14 +156,15 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
         customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
-        idRequest.setMovieId(movieInfoLists.get(position).getMovieId() + "");
+        idRequest.setId(movieInfoLists.get(position).getMovieId() + "");
+        idRequest.setType("1");
         idRequest.setIsInterest("0");
-        OkHttpClientManager.postAsyn(Config.COLLECT_FILM, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+        OkHttpClientManager.postAsyn(Config.GO_COLLECT, new OkHttpClientManager.ResultCallback<ResponeNull>() {
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
 
@@ -172,6 +179,7 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
         }, idRequest, ResponeNull.class, Application.getInstance().getCurrentActivity());
@@ -246,14 +254,18 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent();
-        switch (view.getId()) {
-            case R.id.item_follow_film__ll_layout:
-                intent.setClass(getContext(), FilmDetailsActivity.class);
-                intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            Intent intent = new Intent();
+            switch (view.getId()) {
+                case R.id.item_follow_film__ll_layout:
+                    intent.setClass(getContext(), FilmDetailsActivity.class);
+                    intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
+                    break;
+            }
+            Application.getInstance().getCurrentActivity().startActivity(intent);
         }
-        Application.getInstance().getCurrentActivity().startActivity(intent);
     }
 
     @Override

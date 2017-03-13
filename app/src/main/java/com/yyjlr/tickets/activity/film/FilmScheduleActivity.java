@@ -35,6 +35,7 @@ import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.gallery.WGallery;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,15 +113,16 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
                 customDialog.dismiss();
             }
 
             @Override
             public void onResponse(FilmPlanModel response) {
                 title.setText(response.getName());
-                mapList = new ArrayList<Map<String, String>>();
-                filmPlanList = new ArrayList<FilmPlan>();
-                if (response.getPlanList() != null) {
+                mapList = new ArrayList<>();
+                filmPlanList = new ArrayList<>();
+                if (response.getPlanList() != null && response.getPlanList().size() > 0) {
                     for (int i = 0; i < response.getPlanList().size(); i++) {
                         Map<String, String> map = new HashMap<String, String>();
                         map.put("date", response.getPlanList().get(i).getDate());
@@ -147,6 +149,7 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, idRequest, FilmPlanModel.class, FilmScheduleActivity.this);
@@ -177,39 +180,45 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        switch (view.getId()) {
-            case R.id.item_schedule__buy_ticket://购票
-            case R.id.item_schedule__parent://购票
-                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", FilmScheduleActivity.this);
-                if (isLogin.equals("1")) {
-                    startActivity(new Intent(getBaseContext(), FilmSelectSeatActivity.class).putExtra("planId", filmPlanList.get(this.position).getSessionList().get(position).getPlanId()));
-                } else {
-                    startActivity(LoginActivity.class);
-                }
-                break;
-            case R.id.item_film_schedule__layout_parent://选择时间item
-                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-                for (int i = 0; i < mapList.size(); i++) {
-                    Map<String, String> map = new HashMap<String, String>();
-                    if (i == position)
-                        map.put("show", "1");
-                    else
-                        map.put("show", "0");
-                    map.put("date", mapList.get(i).get("date"));
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.item_schedule__buy_ticket://购票
+                case R.id.item_schedule__parent://购票
+                    String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", FilmScheduleActivity.this);
+                    if (isLogin.equals("1")) {
+                        startActivity(new Intent(getBaseContext(), FilmSelectSeatActivity.class)
+                                .putExtra("planId", filmPlanList.get(this.position).getSessionList().get(position).getPlanId())
+                                .putExtra("isFirst", true));
+                    } else {
+                        startActivity(LoginActivity.class);
+                    }
+                    break;
+                case R.id.item_film_schedule__layout_parent://选择时间item
+                    List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+                    for (int i = 0; i < mapList.size(); i++) {
+                        Map<String, String> map = new HashMap<String, String>();
+                        if (i == position)
+                            map.put("show", "1");
+                        else
+                            map.put("show", "0");
+                        map.put("date", mapList.get(i).get("date"));
 //                    map.put("time", mapList.get(i).get("time"));
-                    list.add(map);
-                }
-                mapList.clear();
-                mapList = list;
-                timeAdapter.setNewData(mapList);
+                        list.add(map);
+                    }
+                    mapList.clear();
+                    mapList = list;
+                    timeAdapter.setNewData(mapList);
 
-                this.position = position;
-                seasonAdapter = new FilmScheduleSeasonAdapter(filmPlanList.get(position).getSessionList());
-                listView.setAdapter(seasonAdapter);
-                seasonAdapter.setOnRecyclerViewItemChildClickListener(FilmScheduleActivity.this);
-                seasonAdapter.notifyDataSetChanged();
+                    this.position = position;
+                    seasonAdapter = new FilmScheduleSeasonAdapter(filmPlanList.get(position).getSessionList());
+                    listView.setAdapter(seasonAdapter);
+                    seasonAdapter.setOnRecyclerViewItemChildClickListener(FilmScheduleActivity.this);
+                    seasonAdapter.notifyDataSetChanged();
 
-                break;
+                    break;
+            }
         }
     }
 

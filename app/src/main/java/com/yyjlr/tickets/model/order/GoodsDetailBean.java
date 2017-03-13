@@ -6,15 +6,28 @@ import java.util.List;
  * Created by Richie on 2016/9/7.
  */
 public class GoodsDetailBean {
-    private String fetchCode;//卖品兑换券码
+    /**
+     * "ticketCode":"46454242", // 取票码（卖品）
+     * "ticketNo":"4524", // 验证码（卖品）
+     */
+    private String ticketCode;//卖品兑换券码
+    private String ticketNo;// 验证码（卖品）
     private List<GoodsOrderListInfo> goodsList;//卖品列表
 
-    public String getFetchCode() {
-        return fetchCode;
+    public String getTicketCode() {
+        return ticketCode;
     }
 
-    public void setFetchCode(String fetchCode) {
-        this.fetchCode = fetchCode;
+    public void setTicketCode(String ticketCode) {
+        this.ticketCode = ticketCode;
+    }
+
+    public String getTicketNo() {
+        return ticketNo;
+    }
+
+    public void setTicketNo(String ticketNo) {
+        this.ticketNo = ticketNo;
     }
 
     public List<GoodsOrderListInfo> getGoodsList() {

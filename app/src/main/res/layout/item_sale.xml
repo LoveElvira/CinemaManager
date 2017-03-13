@@ -58,14 +58,14 @@
                             style="@style/WrapWrap"
                             android:layout_marginLeft="@dimen/size_10"
                             android:textColor="@color/black_363636"
-                            android:textSize="@dimen/text_15" />
+                            android:textSize="@dimen/text_13" />
 
                         <TextView
                             android:id="@+id/item_sale__package_content"
                             style="@style/WrapWrap"
                             android:layout_marginTop="@dimen/size_5"
                             android:textColor="@color/gray_929292"
-                            android:textSize="@dimen/text_13" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
@@ -104,20 +104,20 @@
                                 style="@style/WrapWrap"
                                 android:text="@string/text_original_price"
                                 android:textColor="@color/gray_c3c3c3"
-                                android:textSize="@dimen/text_12" />
+                                android:textSize="@dimen/text_11" />
 
                             <TextView
                                 android:id="@+id/item_sale__original_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/gray_929292"
-                                android:textSize="@dimen/text_14" />
+                                android:textSize="@dimen/text_13" />
 
                             <TextView
                                 style="@style/WrapWrap"
                                 android:text="@string/text_money_unit"
                                 android:textColor="@color/gray_c3c3c3"
-                                android:textSize="@dimen/text_12" />
+                                android:textSize="@dimen/text_11" />
                         </LinearLayout>
 
                         <View
@@ -125,6 +125,7 @@
                             android:layout_width="0dp"
                             android:layout_height="1dp"
                             android:layout_gravity="left|center"
+                            android:visibility="gone"
                             android:background="@color/red_e60012" />
                     </FrameLayout>
 
@@ -132,26 +133,27 @@
                     <LinearLayout
                         style="@style/WrapWrap"
                         android:layout_marginLeft="@dimen/size_20"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             style="@style/WrapWrap"
                             android:text="@string/text_app_price"
                             android:textColor="@color/gray_c3c3c3"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_11" />
 
                         <TextView
                             android:id="@+id/item_sale__app_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/orange_ff9600"
-                            android:textSize="@dimen/text_14" />
+                            android:textSize="@dimen/text_13" />
 
                         <TextView
                             style="@style/WrapWrap"
                             android:text="@string/text_money_unit"
                             android:textColor="@color/gray_c3c3c3"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_11" />
                     </LinearLayout>
 
                 </LinearLayout>

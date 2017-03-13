@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_70"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <com.yyjlr.tickets.viewutils.MaterialRippleLayout
             android:layout_width="0dp"

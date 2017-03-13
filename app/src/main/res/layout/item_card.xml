@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_5"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/item_card__select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_15"
+            android:src="@mipmap/sale_select"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/item_card__layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_100"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="VIP"
+                android:textColor="@color/orange_ff7b0f"
+                android:textSize="@dimen/text_60" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/item_card__num"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="right|center"
+                    android:text="No.233391946186"
+                    android:textColor="@color/orange_ff9600" />
+
+                <TextView
+                    android:id="@+id/item_card__price"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="right|center"
+                    android:text="123123.00 ¥"
+                    android:textColor="@color/orange_ff9600" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

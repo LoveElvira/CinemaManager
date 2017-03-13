@@ -26,6 +26,7 @@ import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.LockableViewPager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -67,8 +68,12 @@ public class SplashActivity extends AbstractActivity {
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(MainActivity.class);
-                SplashActivity.this.finish();
+                long currentTime = Calendar.getInstance().getTimeInMillis();
+                if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                    lastClickTime = currentTime;
+                    startActivity(MainActivity.class);
+                    SplashActivity.this.finish();
+                }
             }
         });
     }
@@ -81,6 +86,7 @@ public class SplashActivity extends AbstractActivity {
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
             }
 
             @Override
@@ -110,6 +116,7 @@ public class SplashActivity extends AbstractActivity {
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
             }
         }, requestNull, AdvertModel.class, SplashActivity.this);
     }

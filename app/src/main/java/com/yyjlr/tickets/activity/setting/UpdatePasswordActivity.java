@@ -21,6 +21,8 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
+import java.util.Calendar;
+
 /**
  * Created by Elvira on 2016/9/23.
  * 找回密码
@@ -90,9 +92,9 @@ public class UpdatePasswordActivity extends AbstractActivity implements View.OnC
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
                 customDialog.dismiss();
-                showShortToast(info.getInfo());
+                showShortToast(info.getInfo().toString());
             }
 
             @Override
@@ -104,6 +106,7 @@ public class UpdatePasswordActivity extends AbstractActivity implements View.OnC
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, registerRequest, ResponeNull.class, UpdatePasswordActivity.this);
@@ -111,15 +114,19 @@ public class UpdatePasswordActivity extends AbstractActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.base_toolbar__left:
-                UpdatePasswordActivity.this.finish();
-                break;
-            case R.id.content_update__confirm:
-                if (isNull()) {
-                    updatePwd();
-                }
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (v.getId()) {
+                case R.id.base_toolbar__left:
+                    UpdatePasswordActivity.this.finish();
+                    break;
+                case R.id.content_update__confirm:
+                    if (isNull()) {
+                        updatePwd();
+                    }
+                    break;
+            }
         }
     }
 }

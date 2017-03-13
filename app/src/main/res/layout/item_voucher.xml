@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_message__layout"
+    style="@style/MatchWrap"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/size_10"
+            android:text="兑换券号"
+            android:textColor="@color/gray_c3c3c3"
+            android:textSize="@dimen/text_14" />
+
+        <EditText
+            android:id="@+id/item_voucher__num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="right"
+            android:hint="请输入兑换券号"
+            android:textColor="@color/gray_c3c3c3"
+            android:textColorHint="@color/gray_c3c3c3"
+            android:textSize="@dimen/text_13" />
+
+        <ImageView
+            android:id="@+id/item_voucher__is_have"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_10"
+            android:src="@mipmap/sale_select"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/MatchOne"
+        android:background="@color/gray_f4f4f4" />
+</LinearLayout>

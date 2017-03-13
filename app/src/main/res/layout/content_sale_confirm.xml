@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MatchWrap"
+    style="@style/MatchMatch"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.yyjlr.tickets.activity.sale.SaleCompleteActivity"
     tools:showIn="@layout/activity_sale_confirm">
 
     <ScrollView
-        style="@style/MatchWrap">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/bg_gray_FAFAFA">
 
         <LinearLayout
             style="@style/MatchMatch"
@@ -17,6 +21,7 @@
             <include layout="@layout/content_sale_confirm_top" />
 
             <LinearLayout
+                android:id="@+id/content_sale_confirm__add_layout"
                 style="@style/MatchMatch"
                 android:orientation="vertical"
                 android:padding="@dimen/size_10">
@@ -58,31 +63,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@drawable/line_dash"
-                    android:layerType="software"/>
+                    android:layerType="software" />
 
-                <RelativeLayout
-                    style="@style/MatchWrap"
-                    android:layout_marginTop="@dimen/size_20">
-
-                    <TextView
-                        style="@style/WrapWrap"
-                        android:layout_centerVertical="true"
-                        android:text="@string/text_pay_money"
-                        android:textColor="@color/black_363636"
-                        android:textSize="@dimen/text_14" />
-
-                    <TextView
-                        android:id="@+id/content_sale_confirm__pay_price"
-                        style="@style/WrapWrap"
-                        android:layout_alignParentRight="true"
-                        android:text="¥120"
-                        android:textColor="@color/red_de2500"
-                        android:textSize="@dimen/text_18" />
-                </RelativeLayout>
             </LinearLayout>
 
-            <include layout="@layout/content_sale_bill" />
         </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+    <RelativeLayout
+        style="@style/MatchWrap"
+        android:background="@color/white"
+        android:padding="@dimen/size_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/WrapWrap"
+            android:layout_centerVertical="true"
+            android:text="@string/text_pay_money"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
+
+        <TextView
+            android:id="@+id/content_sale_confirm__pay_price"
+            style="@style/WrapWrap"
+            android:layout_alignParentRight="true"
+            android:text="¥ 120"
+            android:textColor="@color/red_de2500"
+            android:textSize="@dimen/text_18" />
+    </RelativeLayout>
+
+    <include layout="@layout/content_sale_bill" />
+</LinearLayout>

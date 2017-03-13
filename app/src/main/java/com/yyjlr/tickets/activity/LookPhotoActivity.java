@@ -1,10 +1,7 @@
 package com.yyjlr.tickets.activity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.R;
@@ -13,6 +10,7 @@ import com.yyjlr.tickets.viewutils.zoom.PhotoViewAttacher;
 
 /**
  * Created by Elvira on 2017/1/11.
+ * 事件当中  查看图片
  */
 
 public class LookPhotoActivity extends AbstractActivity {

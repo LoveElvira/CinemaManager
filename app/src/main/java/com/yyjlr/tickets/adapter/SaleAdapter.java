@@ -38,12 +38,20 @@ public class SaleAdapter extends BaseAdapter<GoodInfo> {
                 .setText(R.id.item_sale__package_content, item.getGoodsDesc())
                 .setText(R.id.item_sale__original_price, ChangeUtils.save2Decimal(item.getPrice()))
                 .setText(R.id.item_sale__app_price, ChangeUtils.save2Decimal(item.getAppPrice()))
-                .setText(R.id.item_sale__time, ChangeUtils.changeTimeDate(item.getStartTime())+"~"+ChangeUtils.changeTimeDate(item.getEndTime()))
                 .setOnClickListener(R.id.item_sale__shopping_cart, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_sale__cardview, new OnItemChildClickListener());
-        Picasso.with(helper.getConvertView().getContext())
-                .load(item.getGoodsImg())
-                .into((ImageView) helper.getView(R.id.item_sale__image));
+
+        if (item.getGoodsImg() != null && !"".equals(item.getGoodsImg())) {
+            Picasso.with(helper.getConvertView().getContext())
+                    .load(item.getGoodsImg())
+                    .into((ImageView) helper.getView(R.id.item_sale__image));
+        }
+
+        if (item.getStartTime() != 0 && item.getEndTime() != 0) {
+            helper.setText(R.id.item_sale__time, ChangeUtils.changeTimeDate(item.getStartTime()) + "~" + ChangeUtils.changeTimeDate(item.getEndTime()));
+        } else if (item.getStartTime() != 0 && item.getEndTime() == 0) {
+            helper.setText(R.id.item_sale__time, ChangeUtils.changeTimeDate(item.getStartTime()));
+        }
 
         LinearLayout priceLayout = helper.getView(R.id.item_sale__price_layout);
         priceLayout.measure(0, 0);

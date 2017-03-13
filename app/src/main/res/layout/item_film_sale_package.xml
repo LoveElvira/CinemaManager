@@ -58,9 +58,12 @@
                 <TextView
                     android:id="@+id/item_film_sale__package"
                     style="@style/WrapWrap"
+                    android:ellipsize="end"
+                    android:maxEms="4"
+                    android:singleLine="true"
                     android:text="套餐1"
                     android:textColor="@color/black_363636"
-                    android:textSize="@dimen/text_14" />
+                    android:textSize="@dimen/text_13" />
 
                 <TextView
                     android:id="@+id/item_film_sale__price"
@@ -68,7 +71,7 @@
                     android:layout_marginLeft="@dimen/size_10"
                     android:text="¥20"
                     android:textColor="@color/red_de2500"
-                    android:textSize="@dimen/text_16" />
+                    android:textSize="@dimen/text_15" />
             </LinearLayout>
 
             <TextView
@@ -94,9 +97,9 @@
         android:id="@+id/item_film_sale__add_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_10"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/size_10"
         android:visibility="gone">
 
         <LinearLayout
@@ -106,20 +109,20 @@
             android:orientation="horizontal">
 
             <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                <!--style="@style/WrapWrap"-->
-                <!--app:mrl_rippleAlpha="0.2"-->
-                <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                <!--app:mrl_rippleHover="true"-->
-                <!--app:mrl_rippleOverlay="true">-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
 
-                <TextView
-                    android:id="@+id/item_film_sale__lost"
-                    android:layout_width="@dimen/size_40"
-                    android:layout_height="@dimen/size_30"
-                    android:gravity="center"
-                    android:text="-"
-                    android:textColor="@color/gray_c3c3c3"
-                    android:textSize="@dimen/text_18" />
+            <TextView
+                android:id="@+id/item_film_sale__lost"
+                android:layout_width="@dimen/size_40"
+                android:layout_height="@dimen/size_30"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/gray_c3c3c3"
+                android:textSize="@dimen/text_18" />
             <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
             <View
@@ -142,20 +145,20 @@
                 android:background="@color/gray_e7e7e7" />
 
             <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                <!--style="@style/WrapWrap"-->
-                <!--app:mrl_rippleAlpha="0.2"-->
-                <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                <!--app:mrl_rippleHover="true"-->
-                <!--app:mrl_rippleOverlay="true">-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
 
-                <TextView
-                    android:id="@+id/item_film_sale__add"
-                    android:layout_width="@dimen/size_40"
-                    android:layout_height="@dimen/size_30"
-                    android:gravity="center"
-                    android:text="+"
-                    android:textColor="@color/gray_c3c3c3"
-                    android:textSize="@dimen/text_18" />
+            <TextView
+                android:id="@+id/item_film_sale__add"
+                android:layout_width="@dimen/size_40"
+                android:layout_height="@dimen/size_30"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/gray_c3c3c3"
+                android:textSize="@dimen/text_18" />
             <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
         </LinearLayout>
     </LinearLayout>

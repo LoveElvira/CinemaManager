@@ -26,6 +26,10 @@ import java.util.regex.Pattern;
  */
 public class AbstractActivity extends AppCompatActivity {
 
+    protected static final int MIN_CLICK_DELAY_TIME = 1000;
+    protected long lastClickTime = 0;
+
+
     protected static final int CODE_REQUEST_ONE = 0x06;
     protected static final int CODE_REQUEST_TWO = 0x07;
     protected static final int CODE_REQUEST_THREE = 0x08;
@@ -84,6 +88,7 @@ public class AbstractActivity extends AppCompatActivity {
         }
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         abstractActivity = this;
+        lastClickTime = 0;
         Application.getInstance().addActivity(this);
     }
 

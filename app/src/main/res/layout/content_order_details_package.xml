@@ -14,11 +14,37 @@
     <include layout="@layout/item_order_sale_details_more"/>
 
     <LinearLayout
+        android:id="@+id/content_order_details__package_code_layout"
         style="@style/MatchWrap"
         android:layout_marginTop="@dimen/size_10"
         android:background="@drawable/radius_4_gray"
         android:orientation="horizontal"
-        android:padding="@dimen/size_10">
+        android:padding="@dimen/size_10"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/WrapWrap"
+            android:text="验证码："
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_12" />
+
+        <TextView
+            android:id="@+id/content_order_details__package_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/content_order_details__package_ticket_code_layout"
+        style="@style/MatchWrap"
+        android:layout_marginTop="@dimen/size_10"
+        android:background="@drawable/radius_4_gray"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10"
+        android:visibility="gone">
 
         <TextView
             style="@style/WrapWrap"

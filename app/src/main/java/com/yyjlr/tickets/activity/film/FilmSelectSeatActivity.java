@@ -40,6 +40,7 @@ import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SeatTableView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -60,6 +61,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     private TextView filmType;
     private SeatTableView seatTableView;
     private LinearLayout addSelectSeatLayout;
+    private List<SeatInfo> oldSeatList = new ArrayList<>();
     private List<SeatInfo> seatSelectList = new ArrayList<SeatInfo>();
     private List<SeatInfo> seatSelectList_1 = null;
     private List<SeatTypeInfo> seatTypeList = new ArrayList<SeatTypeInfo>();
@@ -73,6 +75,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     private TextView seatPrice;
     private String planId = "";
     public static Activity activity;
+    private boolean isFirst = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         setContentView(R.layout.activity_film_select_seat);
         activity = this;
         planId = getIntent().getStringExtra("planId");
+        isFirst = getIntent().getBooleanExtra("isFirst", false);
         initView();
     }
 
@@ -89,6 +93,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
 
+        //为了加载出选座内容 图片
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -124,20 +129,15 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
         seatTableView.setMaxSelected(4);//设置最多选中
         seatTableView.setSeatChecker(seatChecker);
-//        Gson gson = new Gson();
-//        Log.i("ee", getAssets().toString() + "------" + readFromAsset("seat.json"));
-//        FilmSeatEntity filmSeatEntity = gson.fromJson(readFromAsset("seat.json"), FilmSeatEntity.class);
         confirmSeat.setOnClickListener(this);
-        CheckNoPayOrder();
+        if (isFirst) {
+            CheckNoPayOrder();
+        } else {
+            customDialog = new CustomDialog(this, "加载中...");
+            customDialog.show();
+            getSeatPlan();
+        }
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        seatSelectList.clear();
-//        addSelectSeatText();
-//        CheckNoPayOrder();
-//    }
 
     //获取影片（抢票）座位信息接口
     private void getSeatPlan() {
@@ -147,8 +147,8 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
@@ -159,7 +159,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 seatDate.setText(ChangeUtils.changeTimeDate(seatBean.getPlayStartTime()));
                 seatTime.setText(ChangeUtils.changeTimeTime(seatBean.getPlayStartTime()));
                 seatHall.setText(seatBean.getHallName());
-                if (!"".equals(seatBean.getHallType())) {
+                if (seatBean.getHallType() != null) {
                     seatHallType.setVisibility(View.VISIBLE);
                     seatHallType.setText(seatBean.getHallType());
                 } else {
@@ -169,7 +169,11 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 filmType.setText(seatBean.getMovieType());
                 seatTableView.setScreenName(seatBean.getHallName());//设置屏幕名称
                 if (seatBean.getSeatList() != null && seatBean.getSeatList().size() > 0) {
-                    seatTableView.setData(seatBean.getSeatList(), seatBean.getSeatType());
+                    oldSeatList = seatTableView.setData(seatBean.getSeatList(), seatBean.getSeatType());
+                    seatOne.setOnClickListener(FilmSelectSeatActivity.this);
+                    seatTwo.setOnClickListener(FilmSelectSeatActivity.this);
+                    seatThree.setOnClickListener(FilmSelectSeatActivity.this);
+                    seatFour.setOnClickListener(FilmSelectSeatActivity.this);
                 }
                 if (seatBean.getSeatType() != null && seatBean.getSeatType().size() > 0) {
                     for (int i = 0; i < seatBean.getSeatType().size(); i++) {
@@ -182,18 +186,12 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 }
 
                 customDialog.dismiss();
-
-                if (seatBean.getSeatList() != null && seatBean.getSeatList().size() > 0) {
-                    seatOne.setOnClickListener(FilmSelectSeatActivity.this);
-                    seatTwo.setOnClickListener(FilmSelectSeatActivity.this);
-                    seatThree.setOnClickListener(FilmSelectSeatActivity.this);
-                    seatFour.setOnClickListener(FilmSelectSeatActivity.this);
-                }
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, idRequest, SeatBean.class, FilmSelectSeatActivity.this);
@@ -211,8 +209,8 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
@@ -220,16 +218,20 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             public void onResponse(AddMovieOrderBean response) {
                 customDialog.dismiss();
                 AddMovieOrderBean orderBean = response;
-                Intent intent = new Intent(FilmSelectSeatActivity.this, FilmCompleteActivity.class);
-                intent.putExtra("movieOrderBean", orderBean);
-                intent.putExtra("planId", planId);
-                FilmSelectSeatActivity.this.startActivity(intent);
-                FilmSelectSeatActivity.this.finish();
+                if (orderBean != null) {
+                    Intent intent = new Intent(FilmSelectSeatActivity.this, FilmCompleteActivity.class);
+                    intent.putExtra("movieOrderBean", orderBean);
+                    intent.putExtra("planId", planId);
+                    intent.putExtra("isNoPay", false);
+                    FilmSelectSeatActivity.this.startActivity(intent);
+                    FilmSelectSeatActivity.this.finish();
+                }
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, lockSeatRequest, AddMovieOrderBean.class, FilmSelectSeatActivity.this);
@@ -245,8 +247,8 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
@@ -261,35 +263,16 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                 } else {
                     getSeatPlan();
                 }
-//                Intent intent = new Intent(FilmSelectSeatActivity.this, FilmCompleteActivity.class);
-//                intent.putExtra("movieOrderBean", orderBean);
-//                FilmSelectSeatActivity.this.startActivity(intent);
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, idRequest, ResponseId.class, FilmSelectSeatActivity.this);
     }
-
-
-//    public String readFromAsset(String fileName) {
-//
-//        StringBuilder stringBuilder = new StringBuilder();
-//        try {
-//            BufferedReader bf = new BufferedReader(new InputStreamReader(
-//                    getAssets().open(fileName), "UTF-8"));
-//            String line;
-//            while ((line = bf.readLine()) != null) {
-//                stringBuilder.append(line);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return stringBuilder.toString();
-//    }
 
     //选座
     SeatTableView.SeatChecker seatChecker = new SeatTableView.SeatChecker() {
@@ -426,8 +409,8 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
@@ -440,6 +423,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
         }, idRequest, ResponeNull.class, FilmSelectSeatActivity.this);
@@ -460,14 +444,18 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         TextView cancel = (TextView) layout.findViewById(R.id.alert_dialog__cancel);
         TextView confirm = (TextView) layout.findViewById(R.id.alert_dialog__submit);
         confirm.setText("确定");
+        cancel.setText("查看");
         title.setText("提示");
         message.setText("本场次有未支付订单，是否取消此订单?");
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 builder.dismiss();
-                startActivity(new Intent(getBaseContext(), PaySelectActivity.class)
-                        .putExtra("orderId", orderId + ""));
+                AddMovieOrderBean addMovieOrderBean = null;
+                startActivity(new Intent(getBaseContext(), FilmCompleteActivity.class)
+                        .putExtra("orderId", orderId + "")
+                        .putExtra("movieOrderBean", addMovieOrderBean)
+                        .putExtra("isNoPay", true));
                 FilmSelectSeatActivity.this.finish();
             }
         });
@@ -483,52 +471,58 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.base_toolbar__left:
-                FilmSelectSeatActivity.this.finish();
-                break;
-            case R.id.content_film_seat__seat_recommend_one://1人座
-                seatRecommend(1);
-                break;
-            case R.id.content_film_seat__seat_recommend_two://2人座
-                seatRecommend(2);
-                break;
-            case R.id.content_film_seat__seat_recommend_three://3人座
-                seatRecommend(3);
-                break;
-            case R.id.content_film_seat__seat_recommend_four://4人座
-                seatRecommend(4);
-                break;
-            case R.id.content_film_seat__confirm_seat:
-                if (seatSelectList.size() > 0) {
-                    List<Boolean> list = new ArrayList<Boolean>();
-                    for (int i = 0; i < seatSelectList.size(); i++) {
-                        int row = seatSelectList.get(i).getgRow() - 1;
-                        int column = seatSelectList.get(i).getgCol() - 1;
-                        list.add(seatTableView.isSelect(row, column));
-                    }
-                    Log.i("ee", list.toString() + "-------------------");
-
-                    if (list.contains(false)) {
-                        showShortToast("中间不可空一个座位");
-                        return;
-                    } else {
-                        List<String> seatIdList = new ArrayList<>();
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.base_toolbar__left:
+                    FilmSelectSeatActivity.this
+                            .finish();
+                    break;
+                case R.id.content_film_seat__seat_recommend_one://1人座
+                    seatRecommend(1);
+                    break;
+                case R.id.content_film_seat__seat_recommend_two://2人座
+                    seatRecommend(2);
+                    break;
+                case R.id.content_film_seat__seat_recommend_three://3人座
+                    seatRecommend(3);
+                    break;
+                case R.id.content_film_seat__seat_recommend_four://4人座
+                    seatRecommend(4);
+                    break;
+                case R.id.content_film_seat__confirm_seat://确定选座
+                    if (seatSelectList.size() > 0) {
+                        List<Boolean> list = new ArrayList<Boolean>();
                         for (int i = 0; i < seatSelectList.size(); i++) {
-                            seatIdList.add(seatSelectList.get(i).getId());
+                            int row = seatSelectList.get(i).getgRow() - 1;
+                            int column = seatSelectList.get(i).getgCol() - 1;
+//                        list.add(seatTableView.isSelect(row, column, true, null));
+                            list.add(seatTableView.isSelect(row, column, false, oldSeatList));
                         }
-                        lockSeat(seatIdList);
+                        Log.i("ee", list.toString() + "-------------------");
+
+                        if (list.contains(false)) {
+                            showShortToast("不符合选座规则");
+                            return;
+                        } else {
+                            List<String> seatIdList = new ArrayList<>();
+                            for (int i = 0; i < seatSelectList.size(); i++) {
+                                seatIdList.add(seatSelectList.get(i).getId());
+                            }
+                            lockSeat(seatIdList);
+                        }
+                    } else {
+                        showShortToast("请先选择座位");
                     }
-                } else {
-                    showShortToast("请先选择座位");
-                }
-                break;
+                    break;
+            }
         }
     }
 
     private void seatRecommend(int num) {
         boolean isSelect = seatTableView.selectSeatRecommend(num);
-        if (isSelect) {
+        if (!isSelect) {
             showShortToast("没有适合的连坐选择");
         } else {
             seatTitle.setText("已选座位");

@@ -1,11 +1,13 @@
 package com.yyjlr.tickets.model.sale;
 
+import java.io.Serializable;
+
 /**
  * Created by Elvira on 2016/12/20.
  * 商品信息
  */
 
-public class GoodInfo {
+public class GoodInfo implements Serializable{
     /**
      *  "goodsId": 300674, //卖品ID
      "goodsName": "卖品名称",

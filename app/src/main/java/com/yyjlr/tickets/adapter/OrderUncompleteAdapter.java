@@ -37,22 +37,33 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
         AppManager.getInstance().initWidthHeight(helper.getConvertView().getContext());
 
         helper.setText(R.id.item_order_nocomplete__order_num, item.getOrderNo())
-                .setText(R.id.item_order_nocomplete__order_film, item.getMovieName())
+                .setVisible(R.id.item_order_nocomplete__order_film_layout, false)
+                .setVisible(R.id.item_order_nocomplete__package_layout, false)
                 .setVisible(R.id.item_order_nocomplete__pay, true)
                 .setVisible(R.id.item_order_nocomplete__lost, true)
                 .setVisible(R.id.item_order_nocomplete__cancel, true)
                 .setOnClickListener(R.id.item_order_nocomplete__cancel, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_order_nocomplete__pay, new OnItemChildClickListener());
 
+        if (item.getMovieName() != null) {
+            helper.setVisible(R.id.item_order_nocomplete__order_film_layout, true)
+                    .setText(R.id.item_order_nocomplete__order_film, item.getMovieName());
+        }
+
         String goodName = "";
-        for (int i = 0; i < item.getGoodsName().size(); i++) {
-            if (i == item.getGoodsName().size() - 1) {
-                goodName = goodName + item.getGoodsName().get(i);
-            } else {
-                goodName = goodName + item.getGoodsName().get(i) + "，";
+        if (item.getGoodsName() != null) {
+            for (int i = 0; i < item.getGoodsName().size(); i++) {
+                if (i == item.getGoodsName().size() - 1) {
+                    goodName = goodName + item.getGoodsName().get(i);
+                } else {
+                    goodName = goodName + item.getGoodsName().get(i) + "，";
+                }
             }
         }
-        helper.setText(R.id.item_order_nocomplete__package, goodName);
+        if (!"".equals(goodName)) {
+            helper.setVisible(R.id.item_order_nocomplete__package_layout, true)
+                    .setText(R.id.item_order_nocomplete__package, goodName);
+        }
 
         // 订单状态，1：待支付；2：待出票；3：已完成；4：用户取消；5：待退款；6：已退款；7：购买卖品失败；8：出票失败；9：超时失效
         if (item.getOrderStatus() == 1) {
@@ -64,7 +75,7 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
         } else if (item.getOrderStatus() == 4) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);
-            helper.setText(R.id.item_order_nocomplete__lost, "用户已取消");
+            helper.setText(R.id.item_order_nocomplete__lost, "已取消");
         } else if (item.getOrderStatus() == 5) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);
@@ -76,7 +87,7 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
         } else if (item.getOrderStatus() == 7) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);
-            helper.setText(R.id.item_order_nocomplete__lost, "购买卖品失败");
+            helper.setText(R.id.item_order_nocomplete__lost, "购买失败");
         } else if (item.getOrderStatus() == 8) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);

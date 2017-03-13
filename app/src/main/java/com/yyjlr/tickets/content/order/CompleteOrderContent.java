@@ -36,6 +36,7 @@ import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
@@ -46,6 +47,9 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
  */
 
 public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderCompleteAdapter.SlidingViewClickListener {
+
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
 
     private View view;
     private CustomDialog customDialog;
@@ -74,6 +78,7 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
     public CompleteOrderContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -101,48 +106,51 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(MyOrderBean response) {
-                orderList = response.getOrders();
-                if (orderList != null) {
-                    if ("0".equals(pagables)) {//第一页
-                        orderLists.clear();
-                        orderLists.addAll(orderList);
-                        Log.i("ee", orderList.size() + "----" + orderLists.size());
-                        completeAdapter = new OrderCompleteAdapter(orderList, CompleteOrderContent.this);
-                        completeAdapter.openLoadAnimation();
-                        listView.setAdapter(completeAdapter);
-                        completeAdapter.openLoadMore(orderList.size(), true);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
-                        } else {
-                            hasMore = false;
-                        }
-                        pagable = response.getPagable();
-                    } else {
-                        orderLists.addAll(orderList);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
+                if (response != null) {
+                    orderList = response.getOrders();
+                    if (orderList != null && orderList.size() > 0) {
+                        if ("0".equals(pagables)) {//第一页
+                            orderLists.clear();
+                            orderLists.addAll(orderList);
+                            Log.i("ee", orderList.size() + "----" + orderLists.size());
+                            completeAdapter = new OrderCompleteAdapter(orderList, CompleteOrderContent.this);
+                            completeAdapter.openLoadAnimation();
+                            listView.setAdapter(completeAdapter);
+                            completeAdapter.openLoadMore(orderList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
                             pagable = response.getPagable();
-                            completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
                         } else {
-                            completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
-                            hasMore = false;
-                            pagable = "";
+                            orderLists.addAll(orderList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
+                            } else {
+                                completeAdapter.notifyDataChangedAfterLoadMore(orderList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
                         }
+                        completeAdapter.setOnLoadMoreListener(CompleteOrderContent.this);
+                        completeAdapter.setOnRecyclerViewItemChildClickListener(CompleteOrderContent.this);
                     }
-                    completeAdapter.setOnLoadMoreListener(CompleteOrderContent.this);
-                    completeAdapter.setOnRecyclerViewItemChildClickListener(CompleteOrderContent.this);
                 }
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, pagableRequest, MyOrderBean.class, Application.getInstance().getCurrentActivity());
     }
@@ -157,8 +165,8 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                Toast.makeText(getContext(), info.getInfo(), Toast.LENGTH_SHORT).show();
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
 
@@ -174,6 +182,7 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 customDialog.dismiss();
             }
         }, idRequest, ResponeNull.class, Application.getInstance().getCurrentActivity());
@@ -251,15 +260,19 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent();
-        switch (view.getId()) {
-            case R.id.item_order_complete__ll_layout:
-                intent.setClass(getContext(), SettingOrderDetailsActivity.class);
-                intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
-                intent.putExtra("status",orderLists.get(position).getOrderStatus());
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            Intent intent = new Intent();
+            switch (view.getId()) {
+                case R.id.item_order_complete__ll_layout:
+                    intent.setClass(getContext(), SettingOrderDetailsActivity.class);
+                    intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
+                    intent.putExtra("status", orderLists.get(position).getOrderStatus());
+                    break;
+            }
+            Application.getInstance().getCurrentActivity().startActivity(intent);
         }
-        Application.getInstance().getCurrentActivity().startActivity(intent);
     }
 
     @Override

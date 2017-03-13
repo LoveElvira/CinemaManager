@@ -39,6 +39,7 @@ import com.yyjlr.tickets.adapter.EventCollectUserAdapter;
 import com.yyjlr.tickets.content.MySettingContent;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
+import com.yyjlr.tickets.model.ResponeCollect;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.cinemainfo.CinemaInfoModel;
 import com.yyjlr.tickets.model.event.EventModel;
@@ -47,6 +48,8 @@ import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
+
+import java.util.Calendar;
 
 /**
  * Created by Elvira on 2016/8/3.
@@ -84,6 +87,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+        customDialog = new CustomDialog(EventActivity.this, "加载中...");
         initView();
         getEventInfo();
     }
@@ -130,6 +134,7 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
 
     //获取活动信息
     private void getEventInfo() {
+        customDialog.show();
         IdRequest idRequest = new IdRequest();
         idRequest.setActivityId(getIntent().getLongExtra("eventId", 0) + "");
         OkHttpClientManager.postAsyn(Config.GET_EVENT_INFO, new OkHttpClientManager.ResultCallback<EventModel>() {
@@ -137,43 +142,50 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
             }
 
             @Override
             public void onResponse(EventModel response) {
                 Log.i("ee", new Gson().toJson(response));
+                customDialog.dismiss();
                 eventModel = response;
-                title.setText(eventModel.getActivityName());
-                startTime.setText(ChangeUtils.changeTimeDot(eventModel.getStartTime()));
-                address.setText(eventModel.getAddress());
-                joinNum.setText(eventModel.getInterestUsers() + "");
-                collectNum.setText(eventModel.getInterestUsers() + "位用户收藏了这个信息");
-                price.setText("¥" + eventModel.getPrice());
-                description.setText(eventModel.getActivityDesc());
+                if (eventModel != null) {
+                    title.setText(eventModel.getActivityName());
+                    startTime.setText(ChangeUtils.changeTimeDot(eventModel.getStartTime()));
+                    address.setText(eventModel.getAddress());
+                    joinNum.setText(eventModel.getInterestUsers() + "");
+                    collectNum.setText(eventModel.getInterestUsers() + "位用户收藏了这个信息");
+                    price.setText("¥ " + ChangeUtils.save2Decimal(eventModel.getPrice()));
+                    description.setText(eventModel.getActivityDesc());
 
-                collectImage.setImageResource(R.mipmap.collect);
-                collectText.setText("收藏");
-                if (response.getIsInterest() == 1) {
-                    collectImage.setImageResource(R.mipmap.collect_select);
-                    collectText.setText("已收藏");
-                }
+                    collectImage.setImageResource(R.mipmap.collect);
+                    collectText.setText("收藏");
+                    if (response.getIsInterest() == 1) {
+                        collectImage.setImageResource(R.mipmap.collect_select);
+                        collectText.setText("已收藏");
+                    }
 
-                if (eventModel.getInterestUserInfo() != null) {
-                    adapter = new EventCollectUserAdapter(eventModel.getInterestUserInfo());
-                    listView.setAdapter(adapter);
-                }
+                    if (eventModel.getInterestUserInfo() != null && eventModel.getInterestUserInfo().size() > 0) {
+                        adapter = new EventCollectUserAdapter(eventModel.getInterestUserInfo());
+                        listView.setAdapter(adapter);
+                    }
 
-                path = eventModel.getActivityImg();
-                if (!"".equals(path)) {
-                    Picasso.with(getBaseContext())
-                            .load(path)
-                            .into(imagebg);
+                    path = eventModel.getActivityImg();
+                    if (!"".equals(path)) {
+                        Picasso.with(getBaseContext())
+                                .load(path)
+                                .into(imagebg);
+                    }
                 }
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
+                customDialog.dismiss();
             }
         }, idRequest, EventModel.class, EventActivity.this);
     }
@@ -198,93 +210,105 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
 
     //关注影片或取消关注
     private void collectFilm(String isCollect) {
-        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "加载中...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
-        idRequest.setActivityId(eventModel.getActivityId() + "");
+        idRequest.setId(eventModel.getActivityId() + "");
         idRequest.setIsInterest(isCollect);
-        idRequest.setActivityType(eventModel.getActivityType() + "");
-        OkHttpClientManager.postAsyn(Config.COLLECT_EVENT, new OkHttpClientManager.ResultCallback<ResponeNull>() {
+        idRequest.setType(/*eventModel.getActivityType() +*/ "2");
+        OkHttpClientManager.postAsyn(Config.GO_COLLECT, new OkHttpClientManager.ResultCallback<ResponeCollect>() {
 
             @Override
             public void onError(Request request, Error info) {
-                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-                showShortToast(info.getInfo());
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
                 customDialog.dismiss();
             }
 
             @Override
-            public void onResponse(ResponeNull response) {
-                if ("收藏".equals(collectText.getText().toString().trim())) {
-                    collectImage.setImageResource(R.mipmap.collect_select);
-                    collectText.setText("已收藏");
-                } else {
+            public void onResponse(ResponeCollect response) {
+                customDialog.dismiss();
+                if (response != null) {
                     collectImage.setImageResource(R.mipmap.collect);
                     collectText.setText("收藏");
+                    if (response.getIsInterest() == 1) {
+                        collectImage.setImageResource(R.mipmap.collect_select);
+                        collectText.setText("已收藏");
+                    }
+                    joinNum.setText(response.getInterestUsers() + "");
+                    collectNum.setText(response.getInterestUsers() + "位用户收藏了这个信息");
+
+                    if (response.getInterestUserInfo() != null && response.getInterestUserInfo().size() > 0) {
+                        adapter = new EventCollectUserAdapter(response.getInterestUserInfo());
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
-                customDialog.dismiss();
 
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
                 customDialog.dismiss();
             }
-        }, idRequest, ResponeNull.class, EventActivity.this);
+        }, idRequest, ResponeCollect.class, EventActivity.this);
     }
 
 
     @Override
     public void onClick(View v) {
-
-        if (v.getId() == R.id.base_toolbar__left) {
-            EventActivity.this.finish();
-            return;
-        } else if (v.getId() == R.id.base_toolbar__right_text) {//展示背景图片信息
-            if (!"".equals(path)) {
-                startActivity(new Intent(getBaseContext(), LookPhotoActivity.class)
-                        .putExtra("path", path));
-            } else {
-                showShortToast("没有图片集锦");
-            }
-        }
-
-        String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", EventActivity.this);
-        if (!isLogin.equals("1")) {
-            startActivity(LoginActivity.class);
-            return;
-        }
-
-        switch (v.getId()) {
-            case R.id.content_event__collect:
-                if ("收藏".equals(collectText.getText().toString().trim())) {
-                    collectFilm("1");
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            if (v.getId() == R.id.base_toolbar__left) {
+                EventActivity.this.finish();
+                return;
+            } else if (v.getId() == R.id.base_toolbar__right_text) {//展示背景图片信息
+                if (!"".equals(path)) {
+                    startActivity(new Intent(getBaseContext(), LookPhotoActivity.class)
+                            .putExtra("path", path));
                 } else {
-                    collectFilm("0");
+                    showShortToast("没有图片集锦");
                 }
-                break;
-            case R.id.content_event__share:
-                sharePopupWindow();
-                break;
-            case R.id.content_event__join:
-                showShortToast("参加功能正在开放中");
-                break;
-            case R.id.popup_share__weixin:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__friend_circle:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__xinlangweibo:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__qq_kongjian:
-                mPopupWindow.dismiss();
-                break;
-            case R.id.popup_share__cancel:
-                mPopupWindow.dismiss();
-                break;
+            }
+
+            String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", EventActivity.this);
+            if (!isLogin.equals("1")) {
+                startActivity(LoginActivity.class);
+                return;
+            }
+
+            switch (v.getId()) {
+                case R.id.content_event__collect:
+                    if ("收藏".equals(collectText.getText().toString().trim())) {
+                        collectFilm("1");
+                    } else {
+                        collectFilm("0");
+                    }
+                    break;
+                case R.id.content_event__share:
+                    sharePopupWindow();
+                    break;
+                case R.id.content_event__join:
+                    showShortToast("参加功能正在开放中");
+                    break;
+                case R.id.popup_share__weixin:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__friend_circle:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__xinlangweibo:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__qq_kongjian:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_share__cancel:
+                    mPopupWindow.dismiss();
+                    break;
+            }
         }
     }
 

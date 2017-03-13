@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.sale.PackageDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
+import com.yyjlr.tickets.adapter.SaleAdapter;
 import com.yyjlr.tickets.adapter.SalePackageAdapter;
 import com.yyjlr.tickets.model.SaleEntity;
+import com.yyjlr.tickets.model.sale.GoodInfo;
+import com.yyjlr.tickets.model.sale.Goods;
+import com.yyjlr.tickets.requestdata.PagableRequest;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -32,6 +43,9 @@ import java.util.List;
 
 public class PackageContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener {
 
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
+
     private View view;
     private RecyclerView listView;//列表
     private SuperSwipeRefreshLayout refresh;//刷新
@@ -39,17 +53,12 @@ public class PackageContent extends LinearLayout implements SuperSwipeRefreshLay
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
+    private List<GoodInfo> goodInfoList;
+    private List<GoodInfo> goodInfoLists;
     private View notLoadingView;
-
-    protected int TOTAL_COUNTER = 20;
-
-    protected static final int PAGE_SIZE = 10;
-
-    protected int delayMillis = 1000;
-
-    protected int mPackageCounter = 0;
-
-    private List<SaleEntity> saleEntityList;
+    private boolean hasMore = false;
+    private String pagable = "0";
+    private int delayMillis = 1000;
 
 
     public PackageContent(Context context) {
@@ -59,6 +68,7 @@ public class PackageContent extends LinearLayout implements SuperSwipeRefreshLay
     public PackageContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
+        lastClickTime = 0;
         initView();
     }
 
@@ -70,12 +80,12 @@ public class PackageContent extends LinearLayout implements SuperSwipeRefreshLay
         refresh.setOnPullRefreshListener(this);
 
 //        saleEntityList = Application.getiDataService().getSaleList();
-        saleEntityList = new ArrayList<>();
+//        saleEntityList = new ArrayList<>();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Application.getInstance().getCurrentActivity());
         listView.setLayoutManager(linearLayoutManager);
         notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
-
+        goodInfoLists = new ArrayList<>();
 
         listView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -101,13 +111,67 @@ public class PackageContent extends LinearLayout implements SuperSwipeRefreshLay
             }
         });
 
-        salePackageAdapter = new SalePackageAdapter(saleEntityList);
-        salePackageAdapter.openLoadAnimation();
-        listView.setAdapter(salePackageAdapter);
-        mPackageCounter = salePackageAdapter.getData().size();
-//        salePackageAdapter.setOnLoadMoreListener(this);
-        salePackageAdapter.setOnRecyclerViewItemChildClickListener(this);
+        getPackage(pagable);
     }
+
+    //获取套餐数据
+    private void getPackage(final String pagables) {
+        PagableRequest pagableRequest = new PagableRequest();
+        pagableRequest.setType("1");
+        pagableRequest.setPagable(pagables);
+        OkHttpClientManager.postAsyn(Config.GET_SALE, new OkHttpClientManager.ResultCallback<Goods>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Goods response) {
+                if (response != null) {
+                    goodInfoList = response.getGoodsList();
+                    if (goodInfoList != null && goodInfoList.size() > 0) {
+                        if ("0".equals(pagables)) {//第一页
+                            goodInfoLists.clear();
+                            goodInfoLists.addAll(goodInfoList);
+                            Log.i("ee", goodInfoList.size() + "----" + goodInfoLists.size());
+                            salePackageAdapter = new SalePackageAdapter(goodInfoList);
+                            salePackageAdapter.openLoadAnimation();
+                            listView.setAdapter(salePackageAdapter);
+                            salePackageAdapter.openLoadMore(goodInfoList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
+                            pagable = response.getPagable();
+                        } else {
+                            goodInfoLists.addAll(goodInfoList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                salePackageAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
+                            } else {
+                                salePackageAdapter.notifyDataChangedAfterLoadMore(goodInfoList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
+                        }
+                        salePackageAdapter.setOnLoadMoreListener(PackageContent.this);
+                        salePackageAdapter.setOnRecyclerViewItemChildClickListener(PackageContent.this);
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        }, pagableRequest, Goods.class, Application.getInstance().getCurrentActivity());
+    }
+
 
     private View createHeaderView() {
         View headerView = LayoutInflater.from(getContext())
@@ -130,13 +194,8 @@ public class PackageContent extends LinearLayout implements SuperSwipeRefreshLay
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                salePackageAdapter.setNewData(saleEntityList);
-                salePackageAdapter.openLoadMore(PAGE_SIZE, true);
-                salePackageAdapter.removeAllFooterView();
-                mPackageCounter = PAGE_SIZE;
-//                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-//                Date curDate = new Date(System.currentTimeMillis());
-//                headerTime.setText("最后更新：今天"+formatter.format(curDate));
+                pagable = "0";
+                getPackage(pagable);
                 refresh.setRefreshing(false);
                 headerProgressBar.setVisibility(View.GONE);
             }
@@ -160,14 +219,14 @@ public class PackageContent extends LinearLayout implements SuperSwipeRefreshLay
         listView.post(new Runnable() {
             @Override
             public void run() {
-                if (mPackageCounter >= TOTAL_COUNTER) {
+                if (!hasMore) {
                     salePackageAdapter.notifyDataChangedAfterLoadMore(false);
+//                    saleAdapter.addFooterView(notLoadingView);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            salePackageAdapter.notifyDataChangedAfterLoadMore(saleEntityList, true);
-                            mPackageCounter = salePackageAdapter.getData().size();
+                            getPackage(pagable);
                         }
                     }, delayMillis);
                 }
@@ -178,13 +237,16 @@ public class PackageContent extends LinearLayout implements SuperSwipeRefreshLay
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        switch (view.getId()) {
-            case R.id.item_sale_package__right:
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), PackageDetailsActivity.class));
-                break;
-            case R.id.item_sale_package__cardview:
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), PackageDetailsActivity.class));
-                break;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (view.getId()) {
+                case R.id.item_sale_package__right:
+                case R.id.item_sale_package__cardview:
+                    Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), PackageDetailsActivity.class)
+                            .putExtra("packageId", goodInfoLists.get(position).getGoodsId() + ""));
+                    break;
+            }
         }
     }
 }
