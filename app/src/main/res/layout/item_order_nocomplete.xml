@@ -43,7 +43,7 @@
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/size_20"
+                android:paddingBottom="@dimen/size_10"
                 android:paddingLeft="@dimen/size_10"
                 android:paddingRight="@dimen/size_10"
                 android:paddingTop="@dimen/size_20">
@@ -75,6 +75,7 @@
                     <LinearLayout
                         android:id="@+id/item_order_nocomplete__order_film_layout"
                         style="@style/MatchWrap"
+                        android:layout_marginBottom="@dimen/size_10"
                         android:orientation="horizontal">
 
                         <TextView
@@ -95,14 +96,15 @@
                     <LinearLayout
                         android:id="@+id/item_order_nocomplete__package_layout"
                         style="@style/MatchWrap"
-                        android:layout_marginTop="@dimen/size_10"
+                        android:layout_marginBottom="@dimen/size_10"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/WrapWrap"
                             android:text="@string/text_order_package"
                             android:textColor="@color/gray_c3c3c3"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_12"
+                            android:id="@+id/textView2" />
 
                         <TextView
                             android:id="@+id/item_order_nocomplete__package"

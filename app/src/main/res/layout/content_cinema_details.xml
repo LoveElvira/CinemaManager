@@ -10,6 +10,7 @@
     tools:showIn="@layout/activity_cinema_details">
 
     <LinearLayout
+        android:id="@+id/content_cinema__listview_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_60"
         android:gravity="center"

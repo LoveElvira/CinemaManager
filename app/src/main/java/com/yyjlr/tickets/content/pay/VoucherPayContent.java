@@ -60,19 +60,19 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
     private List<String> couponList;
     private List<CouponInfo> couponInfoList = null;//后台返回的数据 兑换券是否可用
 
-    public VoucherPayContent(Context context, String orderId) {
-        this(context, null, orderId);
+    public VoucherPayContent(Context context) {
+        this(context, null);
     }
 
-    public VoucherPayContent(Context context, AttributeSet attrs, String orderId) {
+    public VoucherPayContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_voucher_pay_way, this);
-        this.orderId = orderId;
         lastClickTime = 0;
         initView();
     }
 
-    public void initDate(int num, int price, int payTypeId) {
+    public void initDate(int num, int price, int payTypeId, String orderId) {
+        this.orderId = orderId;
         this.num = num;
         this.price = price;
         this.payTypeId = payTypeId;
@@ -100,8 +100,10 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.item_voucher, null, false);
         final EditText voucherNum = (EditText) view.findViewById(R.id.item_voucher__num);
         final ImageView isHave = (ImageView) view.findViewById(R.id.item_voucher__is_have);
+        final TextView msg = (TextView) view.findViewById(R.id.item_voucher__msg);
         isHave.setVisibility(GONE);
-        voucherNum.setTextColor(getResources().getColor(R.color.gray_c3c3c3));
+        msg.setVisibility(GONE);
+        voucherNum.setVisibility(VISIBLE);
         voucherNum.setSelection(voucherNum.getText().toString().length());
         if (isShow) {
             isHave.setVisibility(VISIBLE);
@@ -109,9 +111,10 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
                 voucherNum.setText("");
                 isHave.setImageResource(R.mipmap.sale_select);
             } else {
-                voucherNum.setText(couponInfoList.get(position).getErrMsg());
-                voucherNum.setTextColor(getResources().getColor(R.color.red_de2500));
+                msg.setText(couponInfoList.get(position).getErrMsg());
                 isHave.setImageResource(R.mipmap.select_error);
+                msg.setVisibility(VISIBLE);
+                voucherNum.setVisibility(GONE);
             }
         }
 
@@ -120,7 +123,8 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
             public void onClick(View v) {
                 if (isShow) {
                     isHave.setVisibility(GONE);
-                    voucherNum.setTextColor(getResources().getColor(R.color.gray_c3c3c3));
+                    msg.setVisibility(GONE);
+                    voucherNum.setVisibility(VISIBLE);
                     voucherNum.setText(couponInfoList.get(position).getCouponNo());
                     couponList.set(position, couponInfoList.get(position).getCouponNo());
                     voucherNum.setSelection(couponInfoList.get(position).getCouponNo().length());
@@ -128,12 +132,13 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
             }
         });
 
-        voucherNum.setOnClickListener(new OnClickListener() {
+        msg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isShow) {
                     isHave.setVisibility(GONE);
-                    voucherNum.setTextColor(getResources().getColor(R.color.gray_c3c3c3));
+                    msg.setVisibility(GONE);
+                    voucherNum.setVisibility(VISIBLE);
                     voucherNum.setText(couponInfoList.get(position).getCouponNo());
                     couponList.set(position, couponInfoList.get(position).getCouponNo());
                     voucherNum.setSelection(couponInfoList.get(position).getCouponNo().length());
@@ -254,6 +259,14 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
                             Toast.makeText(getContext(), "请认真填写兑换券号", Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        for (int j = couponList.size() - 1; j > i; j--)  //内循环是 外循环一次比较的次数
+                        {
+                            if (couponList.get(i).equals(couponList.get(j))) {
+                                Toast.makeText(getContext(), "兑换券号不能重复", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
                     }
                     beforePay();
                     break;

@@ -73,14 +73,17 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_select);
+        initView();
         activity = this;
         orderId = getIntent().getStringExtra("orderId");
         orderBean = (ConfirmOrderBean) getIntent().getSerializableExtra("orderBean");
         if ("".equals(orderId)) {
-            orderId = orderBean.getId() + "";
+            if (orderBean != null) {
+                initDetailsDate();
+            }
+        } else {
+            getGoodsDetails();
         }
-        initView();
-        getPay();
     }
 
     private void initView() {
@@ -107,15 +110,20 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
 
         viewPager = (LockableViewPager) findViewById(R.id.content_pay_select__viewpager);
 
-        onLinePayContent = new OnLinePayContent(getBaseContext(), orderId);
-        vipPayContent = new VipPayContent(getBaseContext(), orderId);
-        voucherPayContent = new VoucherPayContent(getBaseContext(), orderId);
-
-        price.setText(ChangeUtils.save2Decimal(orderBean.getPrice()));
-        addPackageList(orderBean.getItems());
+        onLinePayContent = new OnLinePayContent(getBaseContext());
+        vipPayContent = new VipPayContent(getBaseContext());
+        voucherPayContent = new VoucherPayContent(getBaseContext());
 
         cardLayout.setVisibility(View.GONE);
         voucherLayout.setVisibility(View.GONE);
+    }
+
+    //明细
+    private void initDetailsDate() {
+        orderId = orderBean.getId() + "";
+        getPay();
+        price.setText(ChangeUtils.save2Decimal(orderBean.getPrice()));
+        addPackageList(orderBean.getItems());
     }
 
     //动态添加商品列表
@@ -146,24 +154,24 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         if (payModel.getChannelList() != null && payModel.getChannelList().size() > 0) {
             list.add(onLinePayContent);
             onlinePosition = 0;
-            onLinePayContent.initDate(payModel.getChannelList(), orderBean.getPrice());
-            onlinePay.setOnClickListener(this);
+            onLinePayContent.initDate(payModel.getChannelList(), orderBean.getPrice(), orderId);
+            onlineLayout.setOnClickListener(this);
         }
         //是否显示会员卡支付
         if (payModel.getShowMemberCard() == 1) {
             list.add(vipPayContent);
             cardLayout.setVisibility(View.VISIBLE);
             cardPosition = onlinePosition + 1;
-            vipPayContent.initDate(payModel.getMemberCardList(), orderBean.getPrice(), payModel.getMemberCardTypeId());
-            cardPay.setOnClickListener(this);
+            vipPayContent.initDate(payModel.getMemberCardList(), orderBean.getPrice(), payModel.getMemberCardTypeId(), orderId);
+            cardLayout.setOnClickListener(this);
         }
         //是否显示兑换券支付
         if (payModel.getShowCoupon() == 1) {
             list.add(voucherPayContent);
             voucherLayout.setVisibility(View.VISIBLE);
             voucherPosition = cardPosition + 1;
-            voucherPayContent.initDate(payModel.getShowCouponNum(), orderBean.getPrice(), payModel.getCouponTypeId());
-            voucherPay.setOnClickListener(this);
+            voucherPayContent.initDate(payModel.getShowCouponNum(), orderBean.getPrice(), payModel.getCouponTypeId(), orderId);
+            voucherLayout.setOnClickListener(this);
         }
 
         if (list.size() > 0) {
@@ -204,6 +212,41 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             });
         }
 
+    }
+
+    //获取待处理订单数据 卖品
+    private void getGoodsDetails() {
+        IdRequest idRequest = new IdRequest();
+        idRequest.setOrderId(orderId);
+        OkHttpClientManager.postAsyn(Config.GET_UNPAID_GOODS_DETAILS, new OkHttpClientManager.ResultCallback<ConfirmOrderBean>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+            }
+
+            @Override
+            public void onResponse(ConfirmOrderBean response) {
+                Log.i("ee", new Gson().toJson(response));
+                orderBean = response;
+                if (orderBean != null) {
+                    initDetailsDate();
+                }
+
+//                payList = response.getChannelList();
+//
+//                adapter = new PayAdapter(payList);
+//                listView.setAdapter(adapter);
+//                adapter.setOnRecyclerViewItemChildClickListener(OnLinePayContent.this);
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
+            }
+        }, idRequest, ConfirmOrderBean.class, Application.getInstance().getCurrentActivity());
     }
 
     //获取支付数据
@@ -251,19 +294,19 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                 case R.id.base_toolbar__left:
                     showCancelPay();
                     break;
-                case R.id.content_pay_select__online_pay:
+                case R.id.content_pay_select__online_pay_layout:
 //                initFirstView();
 //                onlinePay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
 //                onlineLine.setVisibility(View.VISIBLE);
                     viewPager.setCurrentItem(onlinePosition);
                     break;
-                case R.id.content_pay_select__card:
+                case R.id.content_pay_select__card_layout:
 //                initFirstView();
 //                cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
 //                cardLine.setVisibility(View.VISIBLE);
                     viewPager.setCurrentItem(cardPosition);
                     break;
-                case R.id.content_pay_select__voucher:
+                case R.id.content_pay_select__voucher_layout:
 //                initFirstView();
 //                cardPay.setTextColor(getResources().getColor(R.color.orange_ff7a0f));
 //                cardLine.setVisibility(View.VISIBLE);
@@ -298,7 +341,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         TextView confirm = (TextView) layout.findViewById(R.id.alert_dialog__submit);
         confirm.setText("确定");
         title.setText("提示");
-        message.setText("是否取消支付?");
+        message.setText("是否稍后支付?");
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,7 +367,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         switch (requestCode) {
             case CODE_REQUEST_ONE://获取绑定的会员卡信息
                 List<MemberCard> memberCardList = (List<MemberCard>) data.getSerializableExtra("cardList");
-                vipPayContent.initDate(memberCardList, orderBean.getPrice(), payModel.getMemberCardTypeId());
+                vipPayContent.initDate(memberCardList, orderBean.getPrice(), payModel.getMemberCardTypeId(), orderId);
                 break;
         }
     }

@@ -1,16 +1,43 @@
 package com.yyjlr.tickets.model.order;
 
 /**
- * Created by Richie on 2016/9/7.
+ * Created by Elvira on 2017/03/01.
  */
 public class OrderDetailBean {
+    private long id;//订单id
+    private int orderType;//订单类型
     private String orderNo;//订单号
+    private int status;//订单状态
     private String payPhone;//付款手机
     private String payType;//支付方式
     private Long payTime;//支付时间
     private int payMoney;//支付金额，单位分
     private MovieOrderDetailInfo movieDetail;//电影订单详情
     private GoodsDetailBean goodsDetail;//卖品订单列表
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getOrderNo() {
         return orderNo;

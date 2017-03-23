@@ -7,14 +7,14 @@ package com.yyjlr.tickets;
 
 public class Config {
     public static final boolean DEBUG = true;
-    public static final String URL_SERVICE = "http://192.168.1.60:8080/cgi";//小强本地
-    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.60:8080/uploadFile";//上传文件
+//    public static final String URL_SERVICE = "http://192.168.1.59:8080/cgi";//小强本地
+//    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.59:8080/uploadFile";//上传文件
 
 //    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
 //    public static final String URL_SERVICE_UPLOAD = "http://139.196.51.15/uploadFile";//上传文件
 
-//    public static final String URL_SERVICE = "http://139.196.249.63/cgi";//正式环境
-//    public static final String URL_SERVICE_UPLOAD = "http://139.196.249.63/uploadFile";//上传文件
+    public static final String URL_SERVICE = "http://139.196.249.63/cgi";//正式环境
+    public static final String URL_SERVICE_UPLOAD = "http://139.196.249.63/uploadFile";//上传文件
 
     public static final String REGISTER = "user/register";//用户注册
     public static final String GET_REGISTER_CODE = "user/register/getVerificationCode";//获取注册手机验证码
@@ -64,6 +64,7 @@ public class Config {
     public static final String GET_CARD_PRICE = "pay/card/price";//获取会员卡价格
     public static final String PAY_CARD_CHECKOUT = "pay/card/checkout";//会员卡支付密码校验
     public static final String GET_CARD = "user/memberCard";//会员中心
+    public static final String GET_UNPAID_GOODS_DETAILS = "order/unpaid/goodsDetail";//待处理卖品订单
 
 
 }

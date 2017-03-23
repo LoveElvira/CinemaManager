@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"影院本地"</string>
+    <string name="app_name">"宁波影都"</string>
     <string name="text_jump">跳过</string>
     <string name="text_enter_main">进入主界面</string>
 
@@ -184,5 +184,5 @@
     <string name="text_xinlangweibo">新浪微博</string>
     <string name="text_qq_kongjian">QQ空间</string>
     <string name="text_next">下一步</string>
-
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>

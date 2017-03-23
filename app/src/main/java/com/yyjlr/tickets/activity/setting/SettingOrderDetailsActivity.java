@@ -1,5 +1,6 @@
 package com.yyjlr.tickets.activity.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,15 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
+import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.activity.PaySelectActivity;
+import com.yyjlr.tickets.activity.film.FilmCompleteActivity;
 import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.model.order.AddMovieOrderBean;
+import com.yyjlr.tickets.model.order.ConfirmOrderBean;
 import com.yyjlr.tickets.model.order.GoodsOrderListInfo;
 import com.yyjlr.tickets.model.order.MovieOrderDetailInfo;
 import com.yyjlr.tickets.model.order.OrderDetailBean;
@@ -49,18 +55,23 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     private TextView getGoodCode;//套餐验证码
 
     private OrderDetailBean orderDetailBean;
+    private LinearLayout bottomPayLayout;//底部支付界面
+    private TextView price;
+    private TextView confirmPay;
 
     //goodCodeLayout卖品取货码
     private LinearLayout filmLayout, goodLayout, ticketCodeLayout, filmCodeLayout, goodNumLayout, goodCodeLayout;
     //付款电话 付款方式 付款时间 支付金额
     private TextView payPhone, payType, payTime, payPrice;
     private int status = -1;//订单状态
+    private LinearLayout payLayout;//支付信息
+    private String orderId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
-        status = getIntent().getIntExtra("status", -1);
+        orderId = getIntent().getStringExtra("orderId");
         initView();
         getOrderInfo();
     }
@@ -97,20 +108,26 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         moreImage = (ImageView) findViewById(R.id.item_order_sale_details_more__down);
         moreText = (TextView) findViewById(R.id.item_order_sale_details_more__text);
 
-        moreLayout.setVisibility(View.GONE);
-
         filmLayout = (LinearLayout) findViewById(R.id.content_order_details_film);
-        filmLayout.setVisibility(View.VISIBLE);
         goodLayout = (LinearLayout) findViewById(R.id.content_order_details_package);
+        payLayout = (LinearLayout) findViewById(R.id.item_order_details__pay_layout);
         goodLayout.setVisibility(View.GONE);
+        payLayout.setVisibility(View.GONE);
+        filmLayout.setVisibility(View.GONE);
+        moreLayout.setVisibility(View.GONE);
 
         payPhone = (TextView) findViewById(R.id.item_order_details__pay_phone);
         payType = (TextView) findViewById(R.id.item_order_details__pay_way);
         payTime = (TextView) findViewById(R.id.item_order_details__pay_time);
         payPrice = (TextView) findViewById(R.id.item_order_details__pay_price);
 
+        bottomPayLayout = (LinearLayout) findViewById(R.id.content_order_details__bottom_layout);
+        price = (TextView) findViewById(R.id.content_order_details__confirm_price);
+        confirmPay = (TextView) findViewById(R.id.content_order_details__confirm_pay);
+        bottomPayLayout.setVisibility(View.GONE);
+
         moreLayout.setOnClickListener(this);
-        showStatus();
+        confirmPay.setOnClickListener(this);
 
 //        initSaleList(4, flag);
     }
@@ -120,27 +137,34 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         switch (status) {
             case 1:
                 statusText.setText("待支付");
+                bottomPayLayout.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 statusText.setText("待出票");
+                payLayout.setVisibility(View.VISIBLE);
                 break;
             case 3:
                 statusText.setText("交易完成");
+                payLayout.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 statusText.setText("已取消");
                 break;
             case 5:
                 statusText.setText("待退款");
+                payLayout.setVisibility(View.VISIBLE);
                 break;
             case 6:
                 statusText.setText("已退款");
+                payLayout.setVisibility(View.VISIBLE);
                 break;
             case 7:
                 statusText.setText("购买失败");
+                payLayout.setVisibility(View.VISIBLE);
                 break;
             case 8:
                 statusText.setText("出票失败");
+                payLayout.setVisibility(View.VISIBLE);
                 break;
             case 9:
                 statusText.setText("超时失效");
@@ -152,8 +176,11 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     private void initDate() {
 
         orderNum.setText(orderDetailBean.getOrderNo());
+        status = orderDetailBean.getStatus();
+        showStatus();
 
         if (orderDetailBean.getMovieDetail() != null) {
+            filmLayout.setVisibility(View.VISIBLE);
             MovieOrderDetailInfo movieOrderDetailInfo = orderDetailBean.getMovieDetail();
             filmName.setText(movieOrderDetailInfo.getMovieName());
             filmDate.setText(ChangeUtils.changeTimeYear(movieOrderDetailInfo.getStartTime()));
@@ -186,8 +213,6 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
                         .into(filmImage);
             }
 
-        } else {
-            filmLayout.setVisibility(View.GONE);
         }
 
         if (orderDetailBean.getGoodsDetail() != null) {
@@ -202,8 +227,9 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
                 getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketNo());
             }
 //            getGoodNum.setText(orderDetailBean.getGoodsDetail().getFetchCode());
-            goodLayout.setVisibility(View.VISIBLE);
+
             if (orderDetailBean.getGoodsDetail().getGoodsList() != null && orderDetailBean.getGoodsDetail().getGoodsList().size() > 0) {
+                goodLayout.setVisibility(View.VISIBLE);
                 initSaleList(orderDetailBean.getGoodsDetail().getGoodsList(), flag);
             }
         }
@@ -226,6 +252,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         }
         if (!"".equals(orderDetailBean.getPayMoney())) {
             payPrice.setText(ChangeUtils.save2Decimal(orderDetailBean.getPayMoney()));
+            price.setText(ChangeUtils.save2Decimal(orderDetailBean.getPayMoney()));
         }
     }
 
@@ -267,7 +294,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         customDialog = new CustomDialog(this, "加载中...");
         customDialog.show();
         IdRequest idRequest = new IdRequest();
-        idRequest.setOrderId(getIntent().getStringExtra("orderId"));
+        idRequest.setOrderId(orderId);
         OkHttpClientManager.postAsyn(Config.GET_MY_ORDER_INFO, new OkHttpClientManager.ResultCallback<OrderDetailBean>() {
 
             @Override
@@ -318,6 +345,23 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
                     }
 
                     initSaleList(orderDetailBean.getGoodsDetail().getGoodsList(), flag);
+
+                    break;
+                case R.id.content_order_details__confirm_pay:
+                    if (orderDetailBean.getOrderType() == 1) {
+                        AddMovieOrderBean movieOrderBean = null;
+                        startActivity(new Intent(SettingOrderDetailsActivity.this,
+                                FilmCompleteActivity.class)
+                                .putExtra("orderId", orderId)
+                                .putExtra("movieOrderBean", movieOrderBean)
+                                .putExtra("isNoPay", true));
+                    } else {
+                        ConfirmOrderBean confirmOrderBean = null;
+                        startActivity(new Intent(SettingOrderDetailsActivity.this,
+                                PaySelectActivity.class)
+                                .putExtra("orderId", orderId)
+                                .putExtra("orderBean", confirmOrderBean));
+                    }
 
                     break;
             }

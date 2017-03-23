@@ -12,8 +12,8 @@ public class Constant {
     public static final String REFRESH_TOKEN = "refreshToken";//微信
     public static final String ACCESS_TOKEN = "accessToken";//微信
     public static final String OPEN_ID = "openId";//微信
-    //    public static final String AppDomain = "33040301";//正式 影院ID
-    public static final String AppDomain = "50120255";//测试 影院ID
+    public static final String AppDomain = "33040301";//正式 影院ID
+//        public static final String AppDomain = "50120255";//测试 影院ID
     //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
     public static final String AppVersion = Build.BRAND + "_" + Build.DISPLAY + "_" + Build.FINGERPRINT + "_" + Build.ID;
 

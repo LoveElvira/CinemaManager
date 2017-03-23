@@ -56,7 +56,9 @@ public class OkHttpClientManager {
         mOkHttpClient = new OkHttpClient();
         //cookie enabled
         mOkHttpClient.setCookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ORIGINAL_SERVER));
-        mOkHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        mOkHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);//设置连接超时时间
+        mOkHttpClient.setReadTimeout(100, TimeUnit.SECONDS);//设置读取超时时间
+        mOkHttpClient.setWriteTimeout(60, TimeUnit.SECONDS);//设置写的超时时间
         mDelivery = new Handler(Looper.getMainLooper());
         mGson = new Gson();
     }

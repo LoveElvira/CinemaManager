@@ -45,6 +45,7 @@ import java.util.List;
  */
 public class CinemaDetailsActivity extends AbstractActivity implements View.OnClickListener, AppBarLayout.OnOffsetChangedListener {
 
+    private LinearLayout listViewLayout;
     private RecyclerView listView;
     private CinemaAdapter adapter;
     private List<String> typeDate;
@@ -104,6 +105,8 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
         cinemaAddress = (TextView) findViewById(R.id.content_cinema__address);
         cinemaAddressImage = (ImageView) findViewById(R.id.content_cinema__address_image);
 
+        listViewLayout = (LinearLayout) findViewById(R.id.content_cinema__listview_layout);
+        listViewLayout.setVisibility(View.VISIBLE);
         listView = (RecyclerView) findViewById(R.id.content_cinema__listview);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -159,6 +162,8 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                     if (typeDate != null && typeDate.size() > 0) {
                         adapter = new CinemaAdapter(CinemaDetailsActivity.this, typeDate);
                         listView.setAdapter(adapter);
+                    } else {
+                        listViewLayout.setVisibility(View.GONE);
                     }
                     if (cinemaInfoModel.getAddressIcon() != null) {
                         Picasso.with(getBaseContext())
@@ -169,7 +174,8 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                     if (cinemaInfoModel.getTimeAndTel() != null && cinemaInfoModel.getTimeAndTel().size() > 0) {
                         timeAndTelLayout.setVisibility(View.VISIBLE);
                         for (int i = 0; i < cinemaInfoModel.getTimeAndTel().size(); i++) {
-                            if (cinemaInfoModel.getTimeAndTel().get(i).getMemo() != null) {
+                            if (cinemaInfoModel.getTimeAndTel().get(i).getMemo() != null &&
+                                    !"".equals(cinemaInfoModel.getTimeAndTel().get(i).getMemo())) {
                                 timeAndTelLayout.addView(initCinemaType(cinemaInfoModel.getTimeAndTel().get(i)));
                             }
                         }
@@ -177,7 +183,8 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                     if (cinemaInfoModel.getTraffic() != null && cinemaInfoModel.getTraffic().size() > 0) {
                         trafficLayout.setVisibility(View.VISIBLE);
                         for (int i = 0; i < cinemaInfoModel.getTraffic().size(); i++) {
-                            if (cinemaInfoModel.getTraffic().get(i).getMemo() != null) {
+                            if (cinemaInfoModel.getTraffic().get(i).getMemo() != null &&
+                                    !"".equals(cinemaInfoModel.getTraffic().get(i).getMemo())) {
                                 trafficLayout.addView(initCinemaType(cinemaInfoModel.getTraffic().get(i)));
                             }
                         }
@@ -185,7 +192,8 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                     if (cinemaInfoModel.getFeature() != null && cinemaInfoModel.getFeature().size() > 0) {
                         featureLayout.setVisibility(View.VISIBLE);
                         for (int i = 0; i < cinemaInfoModel.getFeature().size(); i++) {
-                            if (cinemaInfoModel.getFeature().get(i).getMemo() != null) {
+                            if (cinemaInfoModel.getFeature().get(i).getMemo() != null &&
+                                    !"".equals(cinemaInfoModel.getFeature().get(i).getMemo())) {
                                 featureLayout.addView(initCinemaType(cinemaInfoModel.getFeature().get(i)));
                             }
                         }

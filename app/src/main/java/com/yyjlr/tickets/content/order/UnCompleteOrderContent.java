@@ -21,12 +21,14 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.activity.film.FilmCompleteActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.OrderUncompleteAdapter;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
+import com.yyjlr.tickets.model.order.ConfirmOrderBean;
 import com.yyjlr.tickets.model.order.MyOrderBean;
 import com.yyjlr.tickets.model.order.MyOrderInfo;
 import com.yyjlr.tickets.requestdata.IdRequest;
@@ -301,7 +303,10 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
                                 .putExtra("movieOrderBean", movieOrderBean)
                                 .putExtra("isNoPay", true));
                     } else {
-
+                        ConfirmOrderBean confirmOrderBean = null;
+                        Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), PaySelectActivity.class)
+                                .putExtra("orderId", orderLists.get(position).getOrderId() + "")
+                                .putExtra("orderBean", confirmOrderBean));
                     }
                     break;
             }
@@ -318,7 +323,6 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
                 case R.id.item_order_nocomplete__ll_layout:
                     intent.setClass(getContext(), SettingOrderDetailsActivity.class);
                     intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
-                    intent.putExtra("status", orderLists.get(position).getOrderStatus());
                     break;
             }
             Application.getInstance().getCurrentActivity().startActivity(intent);

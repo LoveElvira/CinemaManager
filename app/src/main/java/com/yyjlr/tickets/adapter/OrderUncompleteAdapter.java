@@ -68,6 +68,9 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
         // 订单状态，1：待支付；2：待出票；3：已完成；4：用户取消；5：待退款；6：已退款；7：购买卖品失败；8：出票失败；9：超时失效
         if (item.getOrderStatus() == 1) {
             helper.setVisible(R.id.item_order_nocomplete__lost, false);
+            if (item.getOrderType() == 2 || item.getOrderType() == 3) {
+                helper.setVisible(R.id.item_order_nocomplete__cancel, false);
+            }
         } else if (item.getOrderStatus() == 2) {
             helper.setVisible(R.id.item_order_nocomplete__pay, false)
                     .setVisible(R.id.item_order_nocomplete__cancel, false);
@@ -106,7 +109,7 @@ public class OrderUncompleteAdapter extends BaseAdapter<MyOrderInfo> implements 
         int height = helper.getView(R.id.item_order_nocomplete__ll_layout).getMeasuredHeight();
         helper.getView(R.id.item_order__delete).getLayoutParams().height = height;
 
-        helper.setOnClickListener(R.id.item_order_nocomplete__ll_layout, new View.OnClickListener() {
+        helper.setOnClickListener(R.id.item_order_nocomplete__ll_layout,    new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                判断是否有删除菜单打开

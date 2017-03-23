@@ -55,7 +55,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="right|center"
-                    android:text="123123.00 ¥"
+                    android:text="¥ 123123.00"
                     android:textColor="@color/orange_ff9600" />
 
             </LinearLayout>

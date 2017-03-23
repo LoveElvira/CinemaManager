@@ -19,17 +19,35 @@
             android:textColor="@color/gray_c3c3c3"
             android:textSize="@dimen/text_14" />
 
-        <EditText
-            android:id="@+id/item_voucher__num"
+        <!-- 限定类型 android:digits="@string/filter_vcode"-->
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@null"
-            android:gravity="right"
-            android:hint="请输入兑换券号"
-            android:textColor="@color/gray_c3c3c3"
-            android:textColorHint="@color/gray_c3c3c3"
-            android:textSize="@dimen/text_13" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/item_voucher__num"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="right|center"
+                android:hint="请输入兑换券号"
+                android:inputType="number"
+                android:textColor="@color/gray_c3c3c3"
+                android:textColorHint="@color/gray_c3c3c3"
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:id="@+id/item_voucher__msg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|center"
+                android:textColor="@color/red_de2500"
+                android:textSize="@dimen/text_13"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/item_voucher__is_have"
@@ -38,7 +56,6 @@
             android:layout_marginLeft="@dimen/size_10"
             android:src="@mipmap/sale_select"
             android:visibility="gone" />
-
     </LinearLayout>
 
     <View

@@ -74,19 +74,19 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
     private int payTypeId;//支付分类
     private String cardNo = "";
 
-    public VipPayContent(Context context, String orderId) {
-        this(context, null, orderId);
+    public VipPayContent(Context context) {
+        this(context, null);
     }
 
-    public VipPayContent(Context context, AttributeSet attrs, String orderId) {
+    public VipPayContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_vip_pay, this);
-        this.orderId = orderId;
         lastClickTime = 0;
         initView();
     }
 
-    public void initDate(List<MemberCard> cardList, int price, int payTypeId) {
+    public void initDate(List<MemberCard> cardList, int price, int payTypeId, String orderId) {
+        this.orderId = orderId;
         this.cardList = cardList;
         this.price = price;
         this.payTypeId = payTypeId;
@@ -126,7 +126,7 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
         TextView cardPrice = (TextView) view.findViewById(R.id.item_card__price);
         final ImageView select = (ImageView) view.findViewById(R.id.item_card__select);
         cardNo.setText("No." + memberCard.getCardNo());
-        cardPrice.setText(ChangeUtils.save2Decimal(memberCard.getBalance()) + " ¥");
+        cardPrice.setText("¥ " + ChangeUtils.save2Decimal(memberCard.getBalance()));
         select.setVisibility(GONE);
         //添加点击事件
         cardLayout.setOnClickListener(new OnClickListener() {

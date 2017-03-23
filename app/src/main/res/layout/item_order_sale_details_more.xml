@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchWrap"
-    app:mrl_rippleAlpha="0.2"
-    app:mrl_rippleColor="@color/bg_shadow"
-    app:mrl_rippleHover="true"
-    app:mrl_rippleOverlay="true">
-<LinearLayout
+<!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout -->
+   <!--style="@style/MatchWrap"-->
+    <!--app:mrl_rippleAlpha="0.2"-->
+    <!--app:mrl_rippleColor="@color/bg_shadow"-->
+    <!--app:mrl_rippleHover="true"-->
+    <!--app:mrl_rippleOverlay="true">-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_order_sale_details__more_layout"
     style="@style/MatchWrap"
     android:gravity="center"
@@ -25,5 +24,4 @@
         android:textColor="@color/gray_929292"
         android:textSize="@dimen/text_12"
         android:text="@string/text_details_more"/>
-</LinearLayout>
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+</LinearLayout><!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->

@@ -268,7 +268,6 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
                 case R.id.item_order_complete__ll_layout:
                     intent.setClass(getContext(), SettingOrderDetailsActivity.class);
                     intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
-                    intent.putExtra("status", orderLists.get(position).getOrderStatus());
                     break;
             }
             Application.getInstance().getCurrentActivity().startActivity(intent);

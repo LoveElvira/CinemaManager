@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_order_details">
 
     <ScrollView
-        style="@style/MatchMatch"
+        style="@style/MatchAuto"
         android:background="@color/bg_gray">
 
         <LinearLayout
@@ -52,6 +52,7 @@
                 layout="@layout/content_order_details_package" />
 
             <LinearLayout
+                android:id="@+id/item_order_details__pay_layout"
                 style="@style/MatchWrap"
                 android:layout_marginTop="@dimen/size_10"
                 android:background="@color/white"
@@ -160,4 +161,62 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content_order_details__bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/size_10"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="支付："
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_12" />
+
+        <TextView
+            android:id="@+id/content_order_details__confirm_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_5"
+            android:layout_marginTop="-2dp"
+            android:text="0"
+            android:textColor="@color/red_de2500"
+            android:textSize="@dimen/text_18" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="元"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_12" />
+
+        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            style="@style/WrapMatch"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/bg_shadow"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/content_order_details__confirm_pay"
+                android:layout_width="@dimen/size_90"
+                android:layout_height="match_parent"
+                android:background="@color/orange_ff7a0f"
+                android:gravity="center"
+                android:text="去支付"
+                android:paddingLeft="@dimen/size_20"
+                android:paddingRight="@dimen/size_20"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+    </LinearLayout>
+
 </LinearLayout>
