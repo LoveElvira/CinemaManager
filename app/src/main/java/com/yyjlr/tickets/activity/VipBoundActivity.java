@@ -70,7 +70,8 @@ public class VipBoundActivity extends AbstractActivity implements View.OnClickLi
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
         rightService = (ImageView) findViewById(R.id.base_toolbar__right);
-        rightService.setImageResource(R.mipmap.service);
+//        rightService.setImageResource(R.mipmap.service);
+        rightService.setImageResource(R.mipmap.service_icon);
         rightService.setAlpha(1.0f);
         rightService.setOnClickListener(this);
 

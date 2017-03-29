@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/item_card__item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
@@ -47,7 +48,7 @@
                     android:layout_weight="1"
                     android:gravity="right|center"
                     android:text="No.233391946186"
-                    android:textColor="@color/orange_ff9600" />
+                    android:textColor="@color/black_363636" />
 
                 <TextView
                     android:id="@+id/item_card__price"
@@ -56,7 +57,7 @@
                     android:layout_weight="1"
                     android:gravity="right|center"
                     android:text="¥ 123123.00"
-                    android:textColor="@color/orange_ff9600" />
+                    android:textColor="@color/black_363636" />
 
             </LinearLayout>
 

@@ -1,13 +1,18 @@
 package com.yyjlr.tickets.activity.setting;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,7 +25,6 @@ import com.yyjlr.tickets.activity.VipBoundActivity;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.pay.MemberCard;
 import com.yyjlr.tickets.model.pay.MemberCardList;
-import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
@@ -38,14 +42,8 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
     private ImageView leftArrow;
 
     private TextView boundVip;//绑定会员卡
-    private LinearLayout haveVipLayout;//有会员卡的布局
     private RelativeLayout noHaveVipLayout;//没有会员卡的布局
     private LinearLayout cardLayout;//存放会员卡列表的父布局
-
-    private EditText cardNum;//卡号
-    private EditText cardMoney;//余额
-    private TextView unBoundVip;//解绑会员卡
-    private TextView boundTip;//绑定提示
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,36 +63,44 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
         cardLayout = (LinearLayout) findViewById(R.id.content_setting_vip__layout);
 
         boundVip = (TextView) findViewById(R.id.content_setting_vip__bound);
-//        haveVipLayout = (LinearLayout) findViewById(R.id.content_setting_vip__bound_layout);
         noHaveVipLayout = (RelativeLayout) findViewById(R.id.content_setting_vip__no_card_layout);
-//        cardNum = (EditText) findViewById(R.id.content_setting_vip__card);
-//        cardMoney = (EditText) findViewById(R.id.content_setting_vip__money);
-//        unBoundVip = (TextView) findViewById(R.id.content_setting_vip__unbound_or_bound);
-//        boundTip = (TextView) findViewById(R.id.content_setting_vip__tip);
-//        cardNum.setEnabled(false);
-//        cardMoney.setEnabled(false);
         boundVip.setOnClickListener(this);
-//        unBoundVip.setOnClickListener(this);
-//        if (!"".equals(VipPayContent.vipCardNum.getText().toString()) && !"".equals(VipPayContent.vipPrice.getText().toString())) {
-//            haveVipLayout.setVisibility(View.VISIBLE);
-//            noHaveVipLayout.setVisibility(View.GONE);
-//            cardNum.setText(VipPayContent.vipCardNum.getText().toString());
-//            cardMoney.setText(VipPayContent.vipPrice.getText().toString());
-//            unBoundVip.setText("解绑会员卡");
-//            boundTip.setVisibility(View.GONE);
-//        } else {
-//            haveVipLayout.setVisibility(View.GONE);
-//            noHaveVipLayout.setVisibility(View.VISIBLE);
-//        }
     }
 
     //动态添加会员卡信息
-    private View addVipCard(MemberCard memberCard) {
+    private View addVipCard(final MemberCard memberCard) {
         View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_card, null, false);
+        LinearLayout parent = (LinearLayout) view.findViewById(R.id.item_card__item_layout);
         TextView cardNo = (TextView) view.findViewById(R.id.item_card__num);
         TextView cardPrice = (TextView) view.findViewById(R.id.item_card__price);
+        TextView recharge = (TextView) view.findViewById(R.id.item_card__recharge);
+        TextView unBound = (TextView) view.findViewById(R.id.item_card__unbound);
         cardNo.setText("No." + memberCard.getCardNo());
         cardPrice.setText(ChangeUtils.save2Decimal(memberCard.getBalance()) + " ¥");
+//        parent.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivityForResult(
+//                        new Intent(SettingVipActivity.this, VipUnBoundActivity.class)
+//                                .putExtra("cardInfo", memberCard),
+//                        CODE_REQUEST_TWO);
+//            }
+//        });
+        recharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(
+                        new Intent(SettingVipActivity.this, RechargeActivity.class)
+                                .putExtra("cardInfo", memberCard),
+                        CODE_REQUEST_TWO);
+            }
+        });
+        unBound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelPopupWindow();
+            }
+        });
         return view;
     }
 
@@ -151,10 +157,56 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                             new Intent(SettingVipActivity.this, VipBoundActivity.class),
                             CODE_REQUEST_ONE);
                     break;
-                case R.id.content_setting_vip__unbound_or_bound://解除绑定
+                case R.id.popup_unbound__confirm:
+                    mPopupWindow.dismiss();
+                    break;
+                case R.id.popup_unbound__cancel:
+                    mPopupWindow.dismiss();
                     break;
             }
         }
+    }
+
+    PopupWindow mPopupWindow;
+
+    //弹出分享选择
+    private void cancelPopupWindow() {
+
+        View parent = View
+                .inflate(SettingVipActivity.this, R.layout.activity_mysetting_vip, null);
+        View view = View
+                .inflate(SettingVipActivity.this, R.layout.popupwindows_unbound, null);
+        view.startAnimation(AnimationUtils.loadAnimation(SettingVipActivity.this,
+                R.anim.fade_in));
+        mPopupWindow = new PopupWindow(view);
+        mPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setContentView(view);
+        // 设置背景颜色变暗
+        final WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.6f;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
+
+        mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                lp.alpha = 1.0f;
+                SettingVipActivity.this.getWindow().setAttributes(lp);
+            }
+        });
+
+
+        TextView unBound = (TextView) view.findViewById(R.id.popup_unbound__confirm);
+        TextView cancel = (TextView) view.findViewById(R.id.popup_unbound__cancel);
+
+        unBound.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+
     }
 
     @Override
@@ -170,6 +222,13 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                 noHaveVipLayout.setVisibility(View.GONE);
                 for (int i = 0; i < memberCardList.size(); i++) {
                     cardLayout.addView(addVipCard(memberCardList.get(i)));
+                }
+                break;
+            case CODE_REQUEST_TWO:
+                if (data.getBooleanExtra("isUnBound", false)) {
+                    cardLayout.removeAllViews();
+                    cardLayout.setVisibility(View.GONE);
+                    noHaveVipLayout.setVisibility(View.VISIBLE);
                 }
                 break;
         }
