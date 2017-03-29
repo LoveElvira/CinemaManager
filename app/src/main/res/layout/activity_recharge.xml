@@ -1,0 +1,11 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:fitsSystemWindows="true"
+    tools:context=".activity.setting.RechargeActivity"
+    tools:openDrawer="start">
+
+    <include layout="@layout/base_toolbar" />
+
+    <include layout="@layout/content_recharge" />
+</android.support.design.widget.CoordinatorLayout>
