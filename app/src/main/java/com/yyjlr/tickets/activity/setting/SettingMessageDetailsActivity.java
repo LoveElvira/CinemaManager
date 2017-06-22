@@ -3,6 +3,7 @@ package com.yyjlr.tickets.activity.setting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,6 +45,8 @@ public class SettingMessageDetailsActivity extends AbstractActivity implements V
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("消息详情");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -98,5 +101,16 @@ public class SettingMessageDetailsActivity extends AbstractActivity implements V
                 SettingMessageDetailsActivity.this.finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setResult(CODE_RESULT, new Intent()
+                    .putExtra("position", position));
+            SettingMessageDetailsActivity.this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

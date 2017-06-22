@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context="com.yyjlr.tickets.MainActivity">
+    android:orientation="vertical">
 
-    <include layout="@layout/base_toolbar_" />
+    <!--<include layout="@layout/base_toolbar_" />-->
 
     <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
         android:id="@+id/fragment_film__refresh"

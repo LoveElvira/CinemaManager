@@ -3,6 +3,7 @@ package com.yyjlr.tickets.activity.setting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -46,8 +47,8 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
 
     private TextView orderNum;//订单号
     private TextView statusText;//状态
-    //电影名称 日期 时间 类型 几号厅 座位 电话 图片
-    private TextView filmName, filmDate, filmTime, filmType, filmHall, filmSeat, filmPhone;
+    //电影名称 日期 时间 类型 几号厅 座位 电话 图片  影片购买状态  卖品购买状态
+    private TextView filmName, filmDate, filmTime, filmType, filmHall, filmSeat, filmPhone, filmTip, packageTip;
     private ImageView filmImage;
     private TextView getFilmNum;//电影取票码
     private TextView getFilmCode;//电影序列号
@@ -77,6 +78,8 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("订单详情");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -98,6 +101,8 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         getFilmCode = (TextView) findViewById(R.id.content_order_details__film_code);
         getGoodNum = (TextView) findViewById(R.id.content_order_details__package_ticket_code);
         getGoodCode = (TextView) findViewById(R.id.content_order_details__package_code);
+        filmTip = (TextView) findViewById(R.id.content_order_details__film_tip);
+        packageTip = (TextView) findViewById(R.id.content_order_details__package_tip);
 
         saleLayout = (LinearLayout) findViewById(R.id.content_order_details__package_layout);
         moreLayout = (LinearLayout) findViewById(R.id.item_order_sale_details__more_layout);
@@ -182,10 +187,22 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         if (orderDetailBean.getMovieDetail() != null) {
             filmLayout.setVisibility(View.VISIBLE);
             MovieOrderDetailInfo movieOrderDetailInfo = orderDetailBean.getMovieDetail();
+            if (!"".equals(movieOrderDetailInfo.getState()) && movieOrderDetailInfo.getState() != null) {
+                filmTip.setText(movieOrderDetailInfo.getState());
+            } else {
+                filmTip.setVisibility(View.GONE);
+            }
             filmName.setText(movieOrderDetailInfo.getMovieName());
             filmDate.setText(ChangeUtils.changeTimeYear(movieOrderDetailInfo.getStartTime()));
             filmTime.setText(ChangeUtils.changeTimeTime(movieOrderDetailInfo.getStartTime()) + "~" + ChangeUtils.changeTimeTime(movieOrderDetailInfo.getEndTime()));
-            filmType.setText("(" + movieOrderDetailInfo.getLanguage() + movieOrderDetailInfo.getMovieType() + ")");
+            String type = "";
+            if (!"".equals(movieOrderDetailInfo.getLanguage()) && movieOrderDetailInfo.getLanguage() != null) {
+                type = movieOrderDetailInfo.getLanguage();
+            }
+            if (!"".equals(movieOrderDetailInfo.getMovieType()) && movieOrderDetailInfo.getMovieType() != null) {
+                type = type + movieOrderDetailInfo.getMovieType();
+            }
+            filmType.setText("(" + type + ")");
             filmHall.setText("(" + movieOrderDetailInfo.getCinemaName() + ")" + movieOrderDetailInfo.getHallName());
             String seatStr = "";
             for (int i = 0; i < movieOrderDetailInfo.getSeatInfo().size(); i++) {
@@ -216,15 +233,24 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         }
 
         if (orderDetailBean.getGoodsDetail() != null) {
+            if (!"".equals(orderDetailBean.getGoodsDetail().getState()) && orderDetailBean.getGoodsDetail().getState() != null) {
+                packageTip.setText(orderDetailBean.getGoodsDetail().getState());
+            } else {
+                packageTip.setVisibility(View.GONE);
+            }
             if (orderDetailBean.getGoodsDetail().getTicketCode() != null
                     && !"".equals(orderDetailBean.getGoodsDetail().getTicketCode())) {
-                goodCodeLayout.setVisibility(View.VISIBLE);
-                getGoodNum.setText(orderDetailBean.getGoodsDetail().getTicketCode());
+                goodNumLayout.setVisibility(View.VISIBLE);
+                getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketCode());
+//                goodCodeLayout.setVisibility(View.VISIBLE);
+//                getGoodNum.setText(orderDetailBean.getGoodsDetail().getTicketCode());
             }
             if (orderDetailBean.getGoodsDetail().getTicketNo() != null
                     && !"".equals(orderDetailBean.getGoodsDetail().getTicketNo())) {
-                goodNumLayout.setVisibility(View.VISIBLE);
-                getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketNo());
+                goodCodeLayout.setVisibility(View.VISIBLE);
+                getGoodNum.setText(orderDetailBean.getGoodsDetail().getTicketNo());
+//                goodNumLayout.setVisibility(View.VISIBLE);
+//                getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketNo());
             }
 //            getGoodNum.setText(orderDetailBean.getGoodsDetail().getFetchCode());
 
@@ -326,45 +352,54 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
 
     @Override
     public void onClick(View view) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            switch (view.getId()) {
-                case R.id.base_toolbar__left:
-                    SettingOrderDetailsActivity.this.finish();
-                    break;
-                case R.id.item_order_sale_details__more_layout:
-                    if (!flag) {
-                        moreImage.setImageResource(R.mipmap.more_up);
-                        moreText.setText("隐藏部分卖品");
-                        flag = true;
-                    } else if (flag) {
-                        moreImage.setImageResource(R.mipmap.more_down);
-                        moreText.setText("显示更多卖品");
-                        flag = false;
-                    }
+        switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                setResult(CODE_RESULT, new Intent()
+                        .putExtra("isPay", true));
+                SettingOrderDetailsActivity.this.finish();
+                break;
+            case R.id.item_order_sale_details__more_layout:
+                if (!flag) {
+                    moreImage.setImageResource(R.mipmap.more_up);
+                    moreText.setText("隐藏部分卖品");
+                    flag = true;
+                } else if (flag) {
+                    moreImage.setImageResource(R.mipmap.more_down);
+                    moreText.setText("显示更多卖品");
+                    flag = false;
+                }
 
-                    initSaleList(orderDetailBean.getGoodsDetail().getGoodsList(), flag);
+                initSaleList(orderDetailBean.getGoodsDetail().getGoodsList(), flag);
 
-                    break;
-                case R.id.content_order_details__confirm_pay:
-                    if (orderDetailBean.getOrderType() == 1) {
-                        AddMovieOrderBean movieOrderBean = null;
-                        startActivity(new Intent(SettingOrderDetailsActivity.this,
-                                FilmCompleteActivity.class)
-                                .putExtra("orderId", orderId)
-                                .putExtra("movieOrderBean", movieOrderBean)
-                                .putExtra("isNoPay", true));
-                    } else {
-                        ConfirmOrderBean confirmOrderBean = null;
-                        startActivity(new Intent(SettingOrderDetailsActivity.this,
-                                PaySelectActivity.class)
-                                .putExtra("orderId", orderId)
-                                .putExtra("orderBean", confirmOrderBean));
-                    }
+                break;
+            case R.id.content_order_details__confirm_pay:
+                if (orderDetailBean.getOrderType() == 1) {
+                    AddMovieOrderBean movieOrderBean = null;
+                    startActivity(new Intent(SettingOrderDetailsActivity.this,
+                            FilmCompleteActivity.class)
+                            .putExtra("orderId", orderId)
+                            .putExtra("movieOrderBean", movieOrderBean)
+                            .putExtra("isNoPay", true));
+                } else {
+                    ConfirmOrderBean confirmOrderBean = null;
+                    startActivity(new Intent(SettingOrderDetailsActivity.this,
+                            PaySelectActivity.class)
+                            .putExtra("orderId", orderId)
+                            .putExtra("orderBean", confirmOrderBean));
+                }
 
-                    break;
-            }
+                break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setResult(CODE_RESULT, new Intent()
+                    .putExtra("isPay", true));
+            SettingOrderDetailsActivity.this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

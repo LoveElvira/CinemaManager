@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,7 +84,13 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
     private List<RecommendGoodsInfo> goodList = null;
     private List<RecommendGoodsInfo> goodMoreList;
     private List<RecommendGoodsInfo> goodMoreLists;
+
+    private GoodMoreList packageList;
+    private GoodMoreList saleList;
+
+
     private String pagable = "0";
+    private int type = 0;//0 卖品单品 1 卖品套餐
     private boolean hasMore = false;
     private long totlalPrice = 0;
 
@@ -98,7 +106,8 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
     }
 
     private void initView() {
-
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("卖品确认");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -136,7 +145,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         if (goodInfo != null) {
             initTopDate();
         }
-        getPackageRecommend();
+//        getPackageRecommend();
     }
 
     //顶部商品数据
@@ -247,7 +256,8 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         if (goodList.get(i).getSelected() == 1) {
             selectImage.setImageResource(R.mipmap.sale_select);
             addLayout.setVisibility(View.VISIBLE);
-            saleNum.setText("1");
+//            saleNum.setText("1");
+            saleNum.setText(goodList.get(i).getNum() + "");
         }
         final int finalI = i;
         saleAdd.setOnClickListener(new View.OnClickListener() {
@@ -303,21 +313,6 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onClick(View view) {
 
-//                if (goodList.get(finalI).getSelected() == 1) {
-//                    totlalPrice = totlalPrice - goodList.get(finalI).getPrice() * goodList.get(finalI).getNum();
-//                    payPrice.setText("¥ " + ChangeUtils.save2Decimal(totlalPrice));
-//                    selectImage.setImageResource(R.mipmap.sale_no_select);
-//                    goodList.get(finalI).setSelected(0);
-//                    addLayout.setVisibility(View.GONE);
-//                } else {
-//                    totlalPrice = totlalPrice - goodList.get(finalI).getPrice();
-//                    payPrice.setText("¥ " + ChangeUtils.save2Decimal(totlalPrice));
-//                    selectImage.setImageResource(R.mipmap.sale_select);
-//                    goodList.get(finalI).setSelected(1);
-//                    goodList.get(finalI).setNum(1);
-//                    addLayout.setVisibility(View.VISIBLE);
-//                    saleNum.setText("1");
-//                }
                 if (goodList.get(finalI).getSelected() == 1) {
                     totlalPrice = totlalPrice - goodList.get(finalI).getPrice() * goodList.get(finalI).getNum();
                     payPrice.setText("¥ " + ChangeUtils.save2Decimal(totlalPrice));
@@ -341,8 +336,11 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         initAddPackage(i);
     }
 
-    private void showAllDatePopupWindow() {
+    PopupWindow mPopupWindow;
+    TextView saleLayout;
+    TextView packageLayout;
 
+    private void showAllDatePopupWindow() {
         View parent = LayoutInflater.from(SaleCompleteActivity.this).inflate(R.layout.content_film_complete_seat, null, false);
         View view = LayoutInflater.from(SaleCompleteActivity.this).inflate(
                 R.layout.popupwindow_film_sale, null, false);
@@ -350,8 +348,9 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         view.startAnimation(AnimationUtils.loadAnimation(getBaseContext(),
                 R.anim.fade_in));
 
-        final PopupWindow mPopupWindow = new PopupWindow(view);
-        mPopupWindow.setWidth(AppManager.getInstance().getWidth() - AppManager.getInstance().getWidth() / 6);
+        mPopupWindow = new PopupWindow(view);
+        //AppManager.getInstance().getWidth() - AppManager.getInstance().getWidth() / 6
+        mPopupWindow.setWidth(AppManager.getInstance().getWidth() - 60);
         mPopupWindow.setHeight(AppManager.getInstance().getHeight() - AppManager.getInstance().getHeight() / 4);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         mPopupWindow.setFocusable(true);
@@ -367,42 +366,51 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                resetAddPackage();
                 lp.alpha = 1.0f;
                 getWindow().setAttributes(lp);
             }
         });
 
+        TextView confirm = (TextView) view.findViewById(R.id.content_film_sale__confirm);
         ImageView cancel = (ImageView) view.findViewById(R.id.content_film_sale__cancel);
+        saleLayout = (TextView) view.findViewById(R.id.content_film_sale__sale);
+        packageLayout = (TextView) view.findViewById(R.id.content_film_sale__package);
         listView = (RecyclerView) view.findViewById(R.id.content_film_sale__listview);
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        params.width = AppManager.getInstance().getWidth() - 60;
+        params.height = AppManager.getInstance().getHeight() - AppManager.getInstance().getHeight() / 6;
+        listView.setLayoutParams(params);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SaleCompleteActivity.this);
         listView.setLayoutManager(linearLayoutManager);
-//        initAdapter(listView);
+        saleLayout.setOnClickListener(this);
+        packageLayout.setOnClickListener(this);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPopupWindow.dismiss();
             }
         });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetAddPackage();
+            }
+        });
         goodMoreLists = new ArrayList<>();
         pagable = "0";
-        getGoodMore(pagable);
+        type = 0;
+        getGoodMore(pagable, 1, true);
+        getGoodMore(pagable, 0, true);
     }
 
-    private void initAdapter(RecyclerView listView) {
-//        filmSaleAdapter = new FilmSaleAdapter(allDate);
-//        filmSaleAdapter.openLoadAnimation();
-//        listView.setAdapter(filmSaleAdapter);
-//        mCurrentCounter = filmSaleAdapter.getData().size();
-////        filmSaleAdapter.setOnLoadMoreListener(this);
-//        filmSaleAdapter.openLoadMore(PAGE_SIZE, true);//or call mQuickAdapter.setPageSize(PAGE_SIZE);  mQuickAdapter.openLoadMore(true);
-//        filmSaleAdapter.setOnRecyclerViewItemChildClickListener(this);
-    }
 
     //获取更多卖品列表
-    private void getGoodMore(final String pagables) {
+    private void getGoodMore(final String pagables, final int type, final boolean isFirst) {
         PagableRequest pagableRequest = new PagableRequest();
         pagableRequest.setPagable(pagables);
+        pagableRequest.setType(type + "");
         OkHttpClientManager.postAsyn(Config.GET_GOOD_MORE, new OkHttpClientManager.ResultCallback<GoodMoreList>() {
 
             @Override
@@ -414,6 +422,13 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onResponse(GoodMoreList response) {
                 if (response != null) {
+                    if (isFirst) {
+                        if (type == 0) {
+                            saleList = response;
+                        } else {
+                            packageList = response;
+                        }
+                    }
                     goodMoreList = response.getGoodsList();
                     if (goodMoreList != null && goodMoreList.size() > 0) {
                         resetGoodMoreList(goodMoreList, pagables, response);
@@ -441,10 +456,10 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
 
                         if (goodList.get(i).getSelected() == 1) {
                             goodMoreList.get(j).setSelected(1);
+                            goodMoreList.get(j).setNum(goodList.get(i).getNum());
                         } else {
                             goodMoreList.get(j).setSelected(0);
                         }
-
                     }
                 }
             }
@@ -490,12 +505,18 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                     if ((goodMoreLists.get(i).getGoodsId() + "").equals(goodList.get(j).getGoodsId() + "") && goodMoreLists.get(i).getSelected() == 1) {
                         if (goodList.get(j).getSelected() == 0) {
                             goodList.get(j).setSelected(1);
-                            totlalPrice = totlalPrice + goodList.get(j).getPrice();
+                            goodList.get(j).setNum(goodMoreLists.get(i).getNum());
+                            totlalPrice = totlalPrice + goodList.get(j).getPrice() * goodList.get(j).getNum();
+                        } else {
+                            if (goodMoreLists.get(i).getNum() != goodList.get(j).getNum()) {
+                                totlalPrice = totlalPrice + goodList.get(j).getPrice() * (goodMoreLists.get(i).getNum() - goodList.get(j).getNum());
+                            }
+                            goodList.get(j).setNum(goodMoreLists.get(i).getNum());
                         }
                         break;
                     } else if (goodMoreLists.get(i).getSelected() == 1 && !list.contains(goodMoreLists.get(i).getGoodsId() + "")) {
                         goodList.add(goodMoreLists.get(i));
-                        totlalPrice = totlalPrice + goodMoreLists.get(i).getPrice();
+                        totlalPrice = totlalPrice + goodMoreLists.get(i).getPrice() * goodMoreLists.get(i).getNum();
                         break;
                     } else if ((goodMoreLists.get(i).getGoodsId() + "").equals(goodList.get(j).getGoodsId() + "") && goodMoreLists.get(i).getSelected() == 0) {
                         if (goodList.get(j).getSelected() == 1) {
@@ -512,7 +533,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
             for (int i = 0; i < goodMoreLists.size(); i++) {
                 if (goodMoreLists.get(i).getSelected() == 1) {
                     goodList.add(goodMoreLists.get(i));
-                    totlalPrice = totlalPrice + goodMoreLists.get(i).getPrice();
+                    totlalPrice = totlalPrice + goodMoreLists.get(i).getPrice() * goodMoreLists.get(i).getNum();
                 }
             }
         }
@@ -520,6 +541,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         addPackageLayout.removeAllViews();
         Log.i("ee", partDate.size() + "----------------" + addPackageLayout.getChildCount());
         initAddPackage(0);
+        mPopupWindow.dismiss();
     }
 
     //卖品下单接口
@@ -535,17 +557,24 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
                 showShortToast(info.getInfo());
                 customDialog.dismiss();
+                if ("410".equals(info.getCode())) {
+                    setResult(CODE_RESULT, new Intent()
+                            .putExtra("isFirst", false));
+                    SaleCompleteActivity.this.finish();
+                }
             }
 
             @Override
             public void onResponse(ConfirmOrderBean response) {
                 customDialog.dismiss();
                 if (response != null) {
-                    startActivity(new Intent(getBaseContext(),
-                            PaySelectActivity.class)
-                            .putExtra("orderId", "")
-                            .putExtra("orderBean", response));
-                    SaleCompleteActivity.this.finish();
+                    startActivityForResult(new Intent(getBaseContext(),
+                                    PaySelectActivity.class)
+                                    .putExtra("orderId", "")
+                                    .putExtra("position", -1)
+                                    .putExtra("orderBean", response)
+                            , CODE_REQUEST_ONE);
+//                    SaleCompleteActivity.this.finish();
                 }
             }
 
@@ -560,12 +589,26 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        if (goodMoreLists.get(position).getSelected() == 1) {
-            goodMoreLists.get(position).setSelected(0);
-        } else {
-            goodMoreLists.get(position).setSelected(1);
+        int num = goodMoreLists.get(position).getNum();
+        switch (view.getId()) {
+            case R.id.item_film_sale__add_:
+                goodMoreLists.get(position).setNum(num + 1);
+                break;
+            case R.id.item_film_sale__lost_:
+                if (num > 1) {
+                    goodMoreLists.get(position).setNum(num - 1);
+                }
+                break;
+            case R.id.item_film_sale__layout:
+            case R.id.item_film_sale__select:
+                if (goodMoreLists.get(position).getSelected() == 1) {
+                    goodMoreLists.get(position).setSelected(0);
+                } else {
+                    goodMoreLists.get(position).setSelected(1);
+                }
+                break;
         }
-        filmSaleAdapter.notifyDataSetChanged();
+        filmSaleAdapter.notifyItemChanged(position);
     }
 
     @Override
@@ -580,7 +623,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            getGoodMore(pagable);
+                            getGoodMore(pagable, type, false);
                         }
                     }, delayMillis);
                 }
@@ -591,17 +634,17 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
 
     @Override
     public void onClick(View view) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            switch (view.getId()) {
-                case R.id.base_toolbar__left:
-                    SaleCompleteActivity.this.finish();
-                    break;
-                case R.id.content_sale_bill__delete_phone:
-                    phone.setText("");
-                    break;
-                case R.id.content_sale_bill__confirm_order:
+        switch (view.getId()) {
+            case R.id.base_toolbar__left:
+                SaleCompleteActivity.this.finish();
+                break;
+            case R.id.content_sale_bill__delete_phone:
+                phone.setText("");
+                break;
+            case R.id.content_sale_bill__confirm_order:
+                long currentTime = Calendar.getInstance().getTimeInMillis();
+                if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                    lastClickTime = currentTime;
                     String num = phone.getText().toString().trim();
                     if (isMobileNum(num)) {
                         List<com.yyjlr.tickets.requestdata.confirmfilmorder.GoodInfo> goodInfoList = new ArrayList<>();
@@ -624,12 +667,61 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                     } else {
                         showShortToast("手机号码不对");
                     }
-                    break;
-                case R.id.content_sale_confirm__add:
-                    showAllDatePopupWindow();
-                    break;
-            }
+                }
+                break;
+            case R.id.content_sale_confirm__add:
+                showAllDatePopupWindow();
+                break;
+            case R.id.content_film_sale__sale:
+                if (type == 1) {
+                    saleLayout.setTextColor(getResources().getColor(R.color.black_363636));
+                    packageLayout.setTextColor(getResources().getColor(R.color.gray_929292));
+                    pagable = "0";
+                    type = 0;
+                    if (saleList.getGoodsList() != null && saleList.getGoodsList().size() > 0) {
+                        resetGoodMoreList(saleList.getGoodsList(), pagable, saleList);
+                    } else {
+                        List<RecommendGoodsInfo> goodsInfoList = new ArrayList<>();
+                        filmSaleAdapter = new FilmSaleAdapter(goodsInfoList);
+                        listView.setAdapter(filmSaleAdapter);
+                        filmSaleAdapter.notifyDataSetChanged();
+                    }
+                }
+//                    getGoodMore(pagable, type, false);
+                break;
+            case R.id.content_film_sale__package:
+                if (type == 0) {
+                    packageLayout.setTextColor(getResources().getColor(R.color.black_363636));
+                    saleLayout.setTextColor(getResources().getColor(R.color.gray_929292));
+                    pagable = "0";
+                    type = 1;
+                    if (packageList.getGoodsList() != null && packageList.getGoodsList().size() > 0) {
+                        resetGoodMoreList(packageList.getGoodsList(), pagable, packageList);
+                    } else {
+                        List<RecommendGoodsInfo> goodsInfoList = new ArrayList<>();
+                        filmSaleAdapter = new FilmSaleAdapter(goodsInfoList);
+                        listView.setAdapter(filmSaleAdapter);
+                        filmSaleAdapter.notifyDataSetChanged();
+                    }
+                }
+//                    getGoodMore(pagable, type, false);
+                break;
+
         }
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode) {
+            case CODE_REQUEST_ONE:
+                if (data.getBooleanExtra("isPay", false)) {
+                    SaleCompleteActivity.this.finish();
+                }
+                break;
+        }
+    }
 }

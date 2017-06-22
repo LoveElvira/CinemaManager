@@ -15,8 +15,8 @@ public class PointList {
      */
     private int hasMore;//是否还有卖品信息：1：有；0：所有卖品信息已经全部加载完成
     private String pagable;//分页参数
-    private long newPoints; //当前积分
-    private long oldPoints;//历史积分
+    private String newPoints; //当前积分
+    private String oldPoints;//历史积分
     private List<PointDetail> pointsDetail;
 
     public PointList() {
@@ -38,19 +38,19 @@ public class PointList {
         this.pagable = pagable;
     }
 
-    public long getNewPoints() {
+    public String getNewPoints() {
         return newPoints;
     }
 
-    public void setNewPoints(long newPoints) {
+    public void setNewPoints(String newPoints) {
         this.newPoints = newPoints;
     }
 
-    public long getOldPoints() {
+    public String getOldPoints() {
         return oldPoints;
     }
 
-    public void setOldPoints(long oldPoints) {
+    public void setOldPoints(String oldPoints) {
         this.oldPoints = oldPoints;
     }
 

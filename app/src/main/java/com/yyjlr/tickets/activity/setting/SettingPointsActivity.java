@@ -24,6 +24,7 @@ import com.yyjlr.tickets.model.point.PointList;
 import com.yyjlr.tickets.requestdata.PagableRequest;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
     private PointsAdapter adapter;
     private TextView title;
     private ImageView leftArrow;
+    private TextView presentPoints;
+    private TextView historyPoints;
 
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
@@ -58,15 +61,22 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysetting_points);
+        customDialog = new CustomDialog(SettingPointsActivity.this, "加载中...");
         initView();
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("我的积分");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
+
+        presentPoints = (TextView) findViewById(R.id.content_setting_points__precent_points);
+        historyPoints = (TextView) findViewById(R.id.content_setting_points__history_points);
+
         listView = (RecyclerView) findViewById(R.id.content_setting_points__listview);
 
         pointDetailLists = new ArrayList<>();
@@ -106,6 +116,14 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
             public void onResponse(PointList response) {
                 customDialog.dismiss();
                 pointDetailList = response.getPointsDetail();
+                if (response.getNewPoints() != null) {
+                    presentPoints.setText(response.getNewPoints());
+                }
+
+                if (response.getOldPoints() != null) {
+                    historyPoints.setText(response.getOldPoints());
+                }
+
                 if (pointDetailList != null && pointDetailList.size() > 0) {
                     if ("0".equals(pagables)) {//第一页
                         pointDetailLists.clear();
@@ -155,10 +173,6 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
             public void run() {
                 if (!hasMore) {
                     adapter.notifyDataChangedAfterLoadMore(false);
-//                    if (notLoadingView == null) {
-//                        notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
-//                    }
-//                    filmAdapter.addFooterView(notLoadingView);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override

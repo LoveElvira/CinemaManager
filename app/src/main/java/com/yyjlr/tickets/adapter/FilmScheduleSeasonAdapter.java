@@ -43,15 +43,15 @@ public class FilmScheduleSeasonAdapter extends BaseAdapter<FilmPlanContent> {
                 .setText(R.id.item_schedule__type, item.getMovieType())
                 .setText(R.id.item_schedule__hall, item.getHallName())
                 .setText(R.id.item_schedule__hall_type, item.getHallType())
-                .setVisible(R.id.item_schedule__hall_type, true)
+//                .setVisible(R.id.item_schedule__hall_type, true)
                 .setText(R.id.item_schedule__original_price, "￥" + ChangeUtils.save2Decimal(Long.parseLong(item.getOrgPrice())))
                 .setFlags(R.id.item_schedule__original_price, Paint.STRIKE_THRU_TEXT_FLAG)
                 .setText(R.id.item_schedule__app_price, "￥" + ChangeUtils.save2Decimal(Long.parseLong(item.getAppPrice())))
                 .setOnClickListener(R.id.item_schedule__buy_ticket, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_schedule__parent, new OnItemChildClickListener());
-        if (item.getHallType() == null) {
-            helper.setVisible(R.id.item_schedule__hall_type, false);
-        }
+//        if (item.getHallType() == null) {
+//            helper.setVisible(R.id.item_schedule__hall_type, false);
+//        }
 
         if (item.getPlayTimeIconType() == 0) {
             helper.setImageResource(R.id.item_schedule__sun_or_moon, R.mipmap.moon);

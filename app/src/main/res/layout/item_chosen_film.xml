@@ -79,20 +79,13 @@
                 </LinearLayout>
 
 
-                <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-                    style="@style/MatchWrap"
-                    android:layout_marginLeft="@dimen/size_40"
-                    android:layout_marginRight="@dimen/size_40"
-                    android:layout_marginTop="@dimen/size_15"
-                    app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="@color/bg_shadow"
-                    app:mrl_rippleHover="true"
-                    app:mrl_rippleOverlay="true">
 
                     <TextView
                         android:id="@+id/item_chosen__enter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/MatchWrap"
+                        android:layout_marginLeft="@dimen/size_40"
+                        android:layout_marginRight="@dimen/size_40"
+                        android:layout_marginTop="@dimen/size_15"
                         android:background="@drawable/radius_blue_4"
                         android:gravity="center"
                         android:text="@string/text_enter"
@@ -100,7 +93,6 @@
                         android:paddingBottom="@dimen/size_12"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_15" />
-                </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
             </LinearLayout>
 
         </LinearLayout>

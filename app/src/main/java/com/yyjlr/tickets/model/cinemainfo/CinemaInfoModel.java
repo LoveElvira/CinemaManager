@@ -9,13 +9,13 @@ import java.util.List;
 
 public class CinemaInfoModel {
     /**
-     *  "cinemaName": "影院名称",
-     "cinemaDesc": "影院描述",
-     "cinemaImg": "http://XXXXXXX.jpg", //影院图片
-     "district":"上海市浦东新区", // 影院所在行政区域
-     "address": "影院地址", // 影院详细地址
-     "hallType": ["IMAX","4D","4K","ATMOS"], // 影院特色
-     * */
+     * "cinemaName": "影院名称",
+     * "cinemaDesc": "影院描述",
+     * "cinemaImg": "http://XXXXXXX.jpg", //影院图片
+     * "district":"上海市浦东新区", // 影院所在行政区域
+     * "address": "影院地址", // 影院详细地址
+     * "hallType": ["IMAX","4D","4K","ATMOS"], // 影院特色
+     */
     private String cinemaName;
     private String cinemaDesc;
     private String cinemaImg;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.SelectCinemaActivity"
+    tools:showIn="@layout/activity_select_cinema">
+
+    <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
+        android:id="@+id/content_select_cinema__refresh"
+        style="@style/MatchMatch">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/content_select_cinema__listview"
+            style="@style/MatchWrap" />
+    </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
+
+</LinearLayout>

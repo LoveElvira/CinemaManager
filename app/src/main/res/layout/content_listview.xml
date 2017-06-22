@@ -3,6 +3,66 @@
     style="@style/MatchMatch"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/content_listview__search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:layout_marginRight="@dimen/size_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/size_10"
+        android:paddingRight="@dimen/size_10"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/size_15"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/search"
+            android:tint="@color/white" />
+
+        <EditText
+            android:id="@+id/content_listview__search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center|left"
+            android:hint="输入商品名称搜索"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:padding="@dimen/size_10"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray_f4f4f4"
+            android:textSize="@dimen/text_13" />
+
+        <LinearLayout
+            android:id="@+id/content_listview__cancel"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/size_15"
+                android:layout_height="@dimen/size_15"
+                android:src="@mipmap/cancel_search" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/content_listview__go_search"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_13"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
     <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
         android:id="@+id/content_listview__refresh"
         style="@style/MatchMatch">

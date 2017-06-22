@@ -1,5 +1,6 @@
 package com.yyjlr.tickets.activity;
 
+import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,16 +14,31 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
+import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.adapter.ContentAdapter;
+import com.yyjlr.tickets.content.BaseLinearLayout;
+import com.yyjlr.tickets.helputils.NetWorkUtils;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
+import com.yyjlr.tickets.model.AppConfigEntity;
+import com.yyjlr.tickets.requestdata.RequestNull;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
+import com.yyjlr.tickets.viewutils.snakebar.Prompt;
+import com.yyjlr.tickets.viewutils.snakebar.TSnackbar;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,10 +51,12 @@ public class AbstractActivity extends AppCompatActivity {
     protected long lastClickTime = 0;
 
 
+    protected static final int CODE_REQUEST_DIALOG = 0x05;
     protected static final int CODE_REQUEST_ONE = 0x06;
     protected static final int CODE_REQUEST_TWO = 0x07;
     protected static final int CODE_REQUEST_THREE = 0x08;
     protected static final int CODE_REQUEST_FOUR = 0x09;
+
     public static final int CODE_RESULT = 0x10;
 
 
@@ -55,9 +73,19 @@ public class AbstractActivity extends AppCompatActivity {
     protected InputMethodManager imm;
 
     protected boolean flag = true;
-    public static AbstractActivity abstractActivity;
+    //    public static AbstractActivity abstractActivity;
     protected CustomDialog customDialog;
 
+    /**
+     * 网络类型
+     */
+    private int netMobile;
+    private TSnackbar snackBar = null;
+    private int APP_DOWN = TSnackbar.APPEAR_FROM_TOP_TO_DOWN;
+
+    public static AppConfigEntity appConfig = null;
+    protected ImageView bgTitle;
+    protected boolean isUpdateAppConfig = false;
 
     @Override
     protected void onResume() {
@@ -84,17 +112,39 @@ public class AbstractActivity extends AppCompatActivity {
 //                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
 //                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 //        }
-        if (Build.VERSION.SDK_INT >= 21) {
+        setWindowStatusBarColor();
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//        abstractActivity = this;
+        lastClickTime = 0;
+        Application.getInstance().addActivity(this);
+    }
+
+    protected void initBgTitle(ImageView bg) {
+        if (appConfig != null) {
+            Picasso.with(getBaseContext())
+                    .load(appConfig.getStyleImage() != null ? appConfig.getStyleImage() : "https://")
+                    .error(R.mipmap.bg_title)
+                    .into(bg);
+        }
+    }
+
+    //设置状态栏的颜色
+    public void setWindowStatusBarColor() {
+        if (appConfig == null)
+            appConfig = (AppConfigEntity) SharePrefUtil.get(Constant.FILE_NAME, "appConfig", AbstractActivity.this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            if (appConfig != null) {
+                if (appConfig.getFontColor() != null) {
+                    getWindow().setStatusBarColor(Color.parseColor("#" + appConfig.getFontColor()));
+                }
+            } else {
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+            }
         }
-        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        abstractActivity = this;
-        lastClickTime = 0;
-        Application.getInstance().addActivity(this);
     }
 
     /**
@@ -221,4 +271,71 @@ public class AbstractActivity extends AppCompatActivity {
         }
         return strNetworkType;
     }
+
+    /**
+     * 初始化时判断有没有网络
+     */
+
+    protected boolean inspectNet() {
+        this.netMobile = NetWorkUtils.getNetWorkState(AbstractActivity.this);
+        return isNetConnect();
+    }
+
+    protected boolean isNetConnect() {
+        if (netMobile == 1) {//连接wifi
+            return true;
+        } else if (netMobile == 0) {//连接移动数据
+            return true;
+        } else if (netMobile == -1) {//当前没有网络
+            return false;
+
+        }
+        return false;
+    }
+
+    //显示无网络数据的toast
+    protected void showTopToast() {
+        final ViewGroup viewGroup = (ViewGroup) this.getWindow().getDecorView().findViewById(android.R.id.content).getRootView();
+        snackBar = TSnackbar.make(viewGroup, "网络不给力", TSnackbar.LENGTH_SHORT, APP_DOWN);
+        snackBar.addIcon(-1, 0, 0);
+//        snackBar.setAction("取消", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+        snackBar.setPromptThemBackground(Prompt.ERROR);
+        snackBar.show();
+    }
+
+    //获取APP设置信息
+    protected void getAppConfig() {
+        final RequestNull requestNull = new RequestNull();
+        OkHttpClientManager.postAsyn(Config.GET_APP_CONFIG, new OkHttpClientManager.ResultCallback<AppConfigEntity>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+            }
+
+            @Override
+            public void onResponse(AppConfigEntity response) {
+                appConfig = response;
+                BaseLinearLayout.appConfig = response;
+                SharePrefUtil.save(Constant.FILE_NAME, "appConfig", response, AbstractActivity.this);
+                setWindowStatusBarColor();
+                setResult(CODE_RESULT, new Intent().putExtra("isUpdate", true));
+                SelectCinemaActivity.activity.finish();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
+            }
+        }, requestNull, AppConfigEntity.class, AbstractActivity.this);
+    }
+
+
 }

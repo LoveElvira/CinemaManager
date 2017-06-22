@@ -24,6 +24,7 @@ import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.PayAdapter;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.ResponseStatus;
 import com.yyjlr.tickets.model.pay.AlipayResponse;
@@ -44,24 +45,21 @@ import java.util.Map;
  * Created by Elvira on 2016/8/17.
  * 网上支付
  */
-public class OnLinePayContent extends LinearLayout implements View.OnClickListener, BaseAdapter.OnRecyclerViewItemChildClickListener {
+public class OnLinePayContent extends BaseLinearLayout implements View.OnClickListener, BaseAdapter.OnRecyclerViewItemChildClickListener {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
-
-    private static final int SDK_PAY_FLAG = 1;
+    private final int SDK_PAY_FLAG = 1;
     private int times = 0;//轮询检查订单状态
-    private View view;
     private LinearLayout showConfirmLayout;
     private TextView confirm;
     private TextView confirmPrice;
     private RecyclerView listView;
     private PayAdapter adapter;
     private List<SelectPay> payList;
-    private int position = 0;
     private String orderId;
     //    private CustomDialog customDialog;
     private int price;
+    private int position = 0;
+    private int positions = -1;
 
     public OnLinePayContent(Context context) {
         this(context, null);
@@ -71,18 +69,23 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_online_pay_way, this);
 //        customDialog = new CustomDialog(Application.getInstance().getCurrentActivity(), "请稍等。。。");
-        lastClickTime = 0;
         initView();
     }
 
-    public void initDate(List<SelectPay> payList, int price, String orderId) {
+    public void initDate(List<SelectPay> payList, int price, String orderId, int position) {
         this.orderId = orderId;
         this.payList = payList;
         this.price = price;
+        this.positions = position;
         confirmPrice.setText(ChangeUtils.save2Decimal(price));
         adapter = new PayAdapter(this.payList);
         listView.setAdapter(adapter);
         adapter.setOnRecyclerViewItemChildClickListener(OnLinePayContent.this);
+    }
+
+    public void setConfirmClickable() {
+        confirm.setClickable(false);
+        confirm.setBackgroundColor(getResources().getColor(R.color.gray_c7c7c7));
     }
 
     private void initView() {
@@ -111,6 +114,12 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
                 Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
+                if ("410".equals(info.getCode())) {
+                    Application.getInstance().getCurrentActivity().setResult(0x10, new Intent()
+                            .putExtra("isCancel", true)
+                            .putExtra("position", positions));
+                    PaySelectActivity.activity.finish();
+                }
 //                customDialog.dismiss();
             }
 
@@ -205,8 +214,8 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
                     if (times == 20) {
                         startActivity();
                         Toast.makeText(Application.getInstance().getCurrentActivity(), "支付失败", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                } else {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -233,39 +242,34 @@ public class OnLinePayContent extends LinearLayout implements View.OnClickListen
     private void startActivity() {
         Log.i("ee", "-------------3333-----------");
 //        customDialog.dismiss();
-        Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), SettingOrderDetailsActivity.class)
-                .putExtra("orderId", orderId));
-        PaySelectActivity.activity.finish();
+        Application.getInstance().getCurrentActivity().startActivityForResult(new Intent(getContext(), SettingOrderDetailsActivity.class)
+                .putExtra("orderId", orderId), 0x09);
     }
 
     @Override
     public void onClick(View view) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            switch (view.getId()) {
-                case R.id.content_pay_select__confirm_pay://确认支付
-                    if ("支付宝".equals(payList.get(position).getName()) && payList.get(position).getChecked() == 1) {
-                        beforePay();
+        switch (view.getId()) {
+            case R.id.content_pay_select__confirm_pay://确认支付
+                if ("支付宝".equals(payList.get(position).getName()) && payList.get(position).getChecked() == 1) {
+                    beforePay();
+                } else {
+                    if ("微信".equals(payList.get(position).getName())) {
+                        Toast.makeText(getContext(), "微信支付暂未开放", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), "请选择支付方式", Toast.LENGTH_SHORT).show();
                     }
-                    break;
-            }
+                }
+                break;
         }
     }
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            this.position = position;
-            for (int i = 0; i < payList.size(); i++) {
-                payList.get(i).setChecked(0);
-            }
-            payList.get(position).setChecked(1);
-            this.adapter.notifyDataSetChanged();
+        this.position = position;
+        for (int i = 0; i < payList.size(); i++) {
+            payList.get(i).setChecked(0);
         }
+        payList.get(position).setChecked(1);
+        this.adapter.notifyDataSetChanged();
     }
 }

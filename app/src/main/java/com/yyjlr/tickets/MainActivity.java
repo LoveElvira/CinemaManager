@@ -1,45 +1,47 @@
 package com.yyjlr.tickets;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.TabLayout;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.activity.AbstractActivity;
-import com.yyjlr.tickets.activity.CinemaDetailsActivity;
+import com.yyjlr.tickets.activity.EventActivity;
 import com.yyjlr.tickets.adapter.ContentAdapter;
-import com.yyjlr.tickets.content.ChosenContent;
+import com.yyjlr.tickets.content.EventContent;
 import com.yyjlr.tickets.content.FilmContent;
 import com.yyjlr.tickets.content.GrabTicketContent;
+import com.yyjlr.tickets.content.HomeContent;
+import com.yyjlr.tickets.content.HomeNewContent;
 import com.yyjlr.tickets.content.MySettingContent;
 import com.yyjlr.tickets.content.SaleContent;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
+import com.yyjlr.tickets.model.AppConfigEntity;
+import com.yyjlr.tickets.model.CinemaStatusEntity;
+import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.DownLoadReceive;
+import com.yyjlr.tickets.service.Error;
+import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.LockableViewPager;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Elvira on 2016/7/28.
@@ -47,56 +49,68 @@ import java.util.List;
  */
 public class MainActivity extends AbstractActivity implements View.OnClickListener {
 
-    private ContentAdapter adapter;
-    private LockableViewPager viewPager;
-
-    private ChosenContent chosenContent;
+    private long mExitTime; //退出时间
     private FilmContent filmContent;
-    private MySettingContent mySettingContent;
+    private EventContent eventContent;
+    public static MySettingContent mySettingContent;
     private GrabTicketContent grabTicketContent;
     private SaleContent saleContent;
+    private HomeNewContent homeContent;
 
     private View view;
 
     private LinearLayout chosenLayout, filmLayout, grabLayout, saleLayout, myLayout;
-    private ImageView chosenImage, filmImage, grabImage, saleImage, myImage;
+    private ImageView chosenImage;
+    private ImageView filmImage;
+    private ImageView grabImage;
+    private ImageView saleImage;
+    private ImageView myImage;
+    private TextView chosenText;
+    private TextView filmText;
+    private TextView grabText;
+    private TextView saleText;
+    private TextView myText;
 
     private DownloadManager downloadManager;
     private DownLoadReceive receiver;
+    private boolean isUpdateCinema;
+    private boolean isUpdateFilm;
+    private boolean isUpdateSale;
+    private boolean isUpdateMy;
+    private boolean isUpdateEvent;
+    private boolean isFirstFilm;
+    private boolean isFirstTicket;
+    private boolean isFirstSale;
+    private boolean isHot = true;
+    private String isError = "https://";
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        customDialog = new CustomDialog(MainActivity.this, "切换中...");
+        isUpdateCinema = false;
+        isUpdateFilm = true;
+        isUpdateSale = true;
+        isUpdateEvent = true;
+        isUpdateMy = true;
         view = findViewById(R.id.content_main_view);
         dealStatusBar(view);
 
         initView();
         //检查更新
         checkUpdate();
-//        initPagerContent();
-//        List<View> list = new ArrayList<View>();
-//        list.add(chosenContent);
-//        list.add(filmContent);
-//        list.add(grabTicketContent);
-//        list.add(saleContent);
-//        list.add(mySettingContent);
-//        adapter = new ContentAdapter(list, null);
-//        viewPager.setSwipeable(false);
-//        viewPager.setAdapter(adapter);
-//        viewPager.setCurrentItem(0);
     }
 
     private void initView() {
-//        viewPager = (LockableViewPager) findViewById(R.id.content_main_viewpager);
-        chosenContent = (ChosenContent) findViewById(R.id.content_main__chosen);
+        homeContent = (HomeNewContent) findViewById(R.id.content_main__home);
+        homeContent.setMainActivity(this);
         filmContent = (FilmContent) findViewById(R.id.content_main__film);
+        eventContent = (EventContent) findViewById(R.id.content_main__event);
         grabTicketContent = (GrabTicketContent) findViewById(R.id.content_main__ticket);
         saleContent = (SaleContent) findViewById(R.id.content_main__sale);
         mySettingContent = (MySettingContent) findViewById(R.id.content_main__my);
-
 
         chosenLayout = (LinearLayout) findViewById(R.id.bottom_button__chosen);
         filmLayout = (LinearLayout) findViewById(R.id.bottom_button__film);
@@ -108,84 +122,203 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
         grabImage = (ImageView) findViewById(R.id.bottom_button__grab_image);
         saleImage = (ImageView) findViewById(R.id.bottom_button__sale_image);
         myImage = (ImageView) findViewById(R.id.bottom_button__my_image);
+        chosenText = (TextView) findViewById(R.id.bottom_button__chosen_text);
+        filmText = (TextView) findViewById(R.id.bottom_button__film_text);
+        grabText = (TextView) findViewById(R.id.bottom_button__grab_text);
+        saleText = (TextView) findViewById(R.id.bottom_button__sale_text);
+        myText = (TextView) findViewById(R.id.bottom_button__my_text);
 
         chosenLayout.setOnClickListener(this);
         filmLayout.setOnClickListener(this);
         grabLayout.setOnClickListener(this);
         saleLayout.setOnClickListener(this);
         myLayout.setOnClickListener(this);
-
-        initVisibility();
-        chosenContent.setVisibility(View.VISIBLE);
-        chosenContent.initView();
+        getCinemaStatus();
+//        homeContent.updateView(isUpdateFilm);
     }
 
-    private void initVisibility() {
-        chosenContent.setVisibility(View.GONE);
-        filmContent.setVisibility(View.GONE);
-        grabTicketContent.setVisibility(View.GONE);
+    public void initVisibility(int type) {
+        homeContent.setVisibility(View.GONE);
+//        filmContent.setVisibility(View.GONE);
+        eventContent.setVisibility(View.GONE);
+//        grabTicketContent.setVisibility(View.GONE);
         saleContent.setVisibility(View.GONE);
         mySettingContent.setVisibility(View.GONE);
+
+        chosenText.setTextColor(getResources().getColor(R.color.black_343434));
+        filmText.setTextColor(getResources().getColor(R.color.black_343434));
+        saleText.setTextColor(getResources().getColor(R.color.black_343434));
+        grabText.setTextColor(getResources().getColor(R.color.black_343434));
+        myText.setTextColor(getResources().getColor(R.color.black_343434));
+
+//        chosenImage.setImageResource(R.mipmap.bottom_film_default);
+        Picasso.with(getBaseContext())
+                .load((appConfig != null && appConfig.getMovieIconImage() != null) ? appConfig.getMovieIconImage() : isError)
+                .error(R.mipmap.bottom_film_default)
+                .into(filmImage);
+        Picasso.with(getBaseContext())
+                .load((appConfig != null && appConfig.getActivityIconImage() != null) ? appConfig.getActivityIconImage() : isError)
+                .error(R.mipmap.bottom_event_default)
+                .into(grabImage);
+        Picasso.with(getBaseContext())
+                .load((appConfig != null && appConfig.getStoreIconImage() != null) ? appConfig.getStoreIconImage() : isError)
+                .error(R.mipmap.bottom_mall_default)
+                .into(saleImage);
+        Picasso.with(getBaseContext())
+                .load((appConfig != null && appConfig.getMyIconImage() != null) ? appConfig.getMyIconImage() : isError)
+                .error(R.mipmap.bottom_mine_default)
+                .into(myImage);
+        switch (type) {
+            case 0://影片
+                hideInput();
+                Picasso.with(getBaseContext())
+                        .load((appConfig != null && appConfig.getMovieIconoptImage() != null) ? appConfig.getMovieIconoptImage() : isError)
+                        .error(R.mipmap.bottom_film_select)
+                        .into(filmImage);
+                filmText.setTextColor((appConfig != null && appConfig.getFontColor() != null) ? Color.parseColor("#" + appConfig.getFontColor()) : getResources().getColor(R.color.blue_2AABE2));
+//                filmImage.setImageResource(R.mipmap.bottom_film_select);
+                homeContent.setVisibility(View.VISIBLE);
+                homeContent.updateView((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateFilm);
+                isUpdateFilm = false;
+                break;
+            case 1://活动
+                hideInput();
+                Picasso.with(getBaseContext())
+                        .load((appConfig != null && appConfig.getActivityIconoptImage() != null) ? appConfig.getActivityIconoptImage() : isError)
+                        .error(R.mipmap.bottom_event_select)
+                        .into(grabImage);
+                grabText.setTextColor((appConfig != null && appConfig.getFontColor() != null) ? Color.parseColor("#" + appConfig.getFontColor()) : getResources().getColor(R.color.blue_2AABE2));
+//                filmImage.setImageResource(R.mipmap.bottom_film_select);
+                eventContent.setVisibility(View.VISIBLE);
+                eventContent.updateView((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateEvent);
+                isUpdateEvent = false;
+                break;
+            case 2://商城
+                hideInput();
+                Picasso.with(getBaseContext())
+                        .load((appConfig != null && appConfig.getStoreIconoptImage() != null) ? appConfig.getStoreIconoptImage() : isError)
+                        .error(R.mipmap.bottom_mall_select)
+                        .into(saleImage);
+                saleText.setTextColor((appConfig != null && appConfig.getFontColor() != null) ? Color.parseColor("#" + appConfig.getFontColor()) : getResources().getColor(R.color.blue_2AABE2));
+//                filmImage.setImageResource(R.mipmap.bottom_film_select);
+                saleContent.setVisibility(View.VISIBLE);
+                saleContent.updateView((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateSale);
+                isUpdateSale = false;
+                break;
+            case 3://我的
+                hideInput();
+                Picasso.with(getBaseContext())
+                        .load((appConfig != null && appConfig.getMyIconoptImage() != null) ? appConfig.getMyIconoptImage() : isError)
+                        .error(R.mipmap.bottom_mine_select)
+                        .into(myImage);
+                myText.setTextColor((appConfig != null && appConfig.getFontColor() != null) ? Color.parseColor("#" + appConfig.getFontColor()) : getResources().getColor(R.color.blue_2AABE2));
+//                filmImage.setImageResource(R.mipmap.bottom_film_select);
+                mySettingContent.setVisibility(View.VISIBLE);
+                mySettingContent.updateView((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateMy);
+                isUpdateMy = false;
+                break;
+        }
+
     }
 
-
-    private void initPagerContent() {
-//        Context context = getBaseContext();
-//        chosenContent = new ChosenContent(context);
-//        mySettingContent = new MySettingContent(context);
-//        filmContent = new FilmContent(context);
-//        grabTicketContent = new GrabTicketContent(context);
-//        saleContent = new SaleContent(context);
-    }
-
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
-        setBottomView();
-        initVisibility();
         switch (v.getId()) {
             case R.id.bottom_button__chosen://精选
+                hideInput();
                 chosenImage.setImageResource(R.mipmap.jingxuan_select);
-                chosenContent.setVisibility(View.VISIBLE);
-                chosenContent.initView();
-//                viewPager.setCurrentItem(0);
+                chosenText.setTextColor(getResources().getColor(R.color.blue_2AABE2));
+                homeContent.setVisibility(View.VISIBLE);
+//                homeContent.hideInput();
                 break;
             case R.id.bottom_button__film://影片
-                filmImage.setImageResource(R.mipmap.yingpian_select);
-                filmContent.setVisibility(View.VISIBLE);
-//                filmContent.initView();
-//                viewPager.setCurrentItem(1);
+                if (homeContent.getVisibility() == View.GONE) {
+                    initVisibility(0);
+                }
+
+//                hideInput();
+//                filmText.setTextColor(getResources().getColor(R.color.blue_2AABE2));
+//                filmImage.setImageResource(R.mipmap.bottom_film_select);
+//                homeContent.setVisibility(View.VISIBLE);
+//
+//                if (isFirstFilm) {
+//                    filmContent.initView(isHot);
+//                    isFirstFilm = false;
+//                    return;
+//                }
+//                if ((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateFilm) {
+//                    filmContent.initView(isHot);
+//                    isUpdateFilm = false;
+//                    return;
+//                }
+//                if (isUpdateFilm && isHot) {
+//                    filmContent.initView(isHot);
+//                    isUpdateFilm = false;
+//                    return;
+//                }
                 break;
             case R.id.bottom_button__grab://抢票
-                grabImage.setImageResource(R.mipmap.qiangpiao_select);
-                grabTicketContent.setVisibility(View.VISIBLE);
-                grabTicketContent.initView();
-//                viewPager.setCurrentItem(2);
-//                grabTicketContent.adapter.set();
+                if (grabTicketContent.getVisibility() == View.GONE) {
+                    initVisibility(1);
+                }
+
+//                hideInput();
+//                grabText.setTextColor(getResources().getColor(R.color.blue_2AABE2));
+//                grabImage.setImageResource(R.mipmap.bottom_event_select);
+//                eventContent.setVisibility(View.VISIBLE);
+//                if (isFirstTicket) {
+//                    eventContent.updateView();
+//                    isFirstTicket = false;
+//                }
+//                if ((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateTicket) {
+////                    grabTicketContent.updateView();
+//                    eventContent.updateView();
+//                    isUpdateTicket = false;
+//                }
+////                grabTicketContent.updateAdapter();
+//                eventContent.updateAdapter();
                 break;
             case R.id.bottom_button__sale://卖品
-                saleImage.setImageResource(R.mipmap.maipin_select);
-                saleContent.setVisibility(View.VISIBLE);
+                if (saleContent.getVisibility() == View.GONE) {
+                    initVisibility(2);
+                }
 
-//                viewPager.setCurrentItem(3);
+//                saleText.setTextColor(getResources().getColor(R.color.blue_2AABE2));
+//                saleImage.setImageResource(R.mipmap.bottom_mall_select);
+//                saleContent.setVisibility(View.VISIBLE);
+//                if (isFirstSale) {
+////                    saleContent.initView();
+//                    isFirstSale = false;
+//                }
+//                if ((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateSale) {
+////                    saleContent.initView();
+//                    isUpdateSale = false;
+//                }
                 break;
             case R.id.bottom_button__my://我的
-                myImage.setImageResource(R.mipmap.wode_select);
-                mySettingContent.setVisibility(View.VISIBLE);
-//                viewPager.setCurrentItem(4);
+                if (mySettingContent.getVisibility() == View.GONE) {
+                    initVisibility(3);
+                }
+
+//                hideInput();
+//                myText.setTextColor(getResources().getColor(R.color.blue_2AABE2));
+//                myImage.setImageResource(R.mipmap.bottom_mine_select);
+//                mySettingContent.setVisibility(View.VISIBLE);
+////                mySettingContent.hideInput();
+//                mySettingContent.updateView();
                 break;
         }
     }
 
-    /**
-     * 初始底部View样式
-     */
-    private void setBottomView() {
-        chosenImage.setImageResource(R.mipmap.jingxuan);
-        filmImage.setImageResource(R.mipmap.yingpian);
-        grabImage.setImageResource(R.mipmap.qiangpiao);
-        saleImage.setImageResource(R.mipmap.maipin);
-        myImage.setImageResource(R.mipmap.wode);
+    //隐藏虚拟键盘
+    public void hideInput() {
+        if (saleContent.getEditText() != null) {
+            boolean isOpen = imm.isActive();
+            if (isOpen) {
+                imm.hideSoftInputFromWindow(saleContent.getEditText().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 
     @Override
@@ -195,10 +328,92 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
             return;
         switch (requestCode) {
             case CODE_REQUEST_ONE://更新个人信息
-                mySettingContent.getMyInfo();
+                if (data.getBooleanExtra("isExit", false)) {
+                    //退出登录
+                    mySettingContent.updateTopView(false, "", "", "");
+                } else {
+                    String headImage = data.getStringExtra("headImage");
+                    String sex = data.getStringExtra("sex");
+                    String name = data.getStringExtra("name");
+                    mySettingContent.updateTopView(true, headImage, sex, name);
+                }
                 break;
+            case CODE_REQUEST_TWO://更新cinema ID
+                if (data.getBooleanExtra("isUpdate", false)) {
+//                    customDialog.show();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                Thread.sleep(2000);
+//                                customDialog.dismiss();
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }).start();
+                    isUpdateCinema = true;
+                    isUpdateFilm = true;
+                    isUpdateSale = true;
+                    isUpdateEvent = true;
+                    isUpdateMy = true;
+                    initVisibility(0);
+                }
+                break;
+            case CODE_REQUEST_THREE:
+                if (data.getBooleanExtra("isRead", false)) {
+                    mySettingContent.getMyMessageNum();
+                }
+                break;
+            case CODE_REQUEST_FOUR:
+//                if (data.getBooleanExtra("isUpdate", false)) {
+                int isHaveCollect = data.getIntExtra("isHaveCollect", -1);
+                if (isHaveCollect != 0 && isHaveCollect != -1) {
+                    int position = data.getIntExtra("position", -1);
+                    eventContent.updateAdapter(position, isHaveCollect);
+                }
+//                }
+                break;
+
         }
     }
+
+//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//    public static void startContent(View view, boolean isFilmHot) {
+//        setBottomView();
+//        initVisibility();
+//        switch (view.getId()) {
+//            case R.id.fragment_home__film_more_layout:
+//                filmImage.setImageResource(R.mipmap.bottom_film_select);
+//                filmContent.setVisibility(View.VISIBLE);
+//                isHot = isFilmHot;
+//                if (isFirstFilm) {
+//                    filmContent.initView(isHot);
+//                    isFirstFilm = false;
+//                } else if ((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateFilm) {
+//                    filmContent.initView(isHot);
+//                    isUpdateFilm = false;
+//                } else {
+//                    filmContent.setCurrentView(isHot);
+//                }
+//                break;
+//            case R.id.fragment_home__sale_more_layout:
+//                saleImage.setImageResource(R.mipmap.bottom_mall_select);
+//                saleContent.setVisibility(View.VISIBLE);
+//                if (isFirstSale) {
+//                    saleContent.initView();
+//                    isFirstSale = false;
+//                } else if ((homeContent.getIsUpdateCinema() || isUpdateCinema) && isUpdateSale) {
+//                    saleContent.initView();
+//                    isUpdateSale = false;
+//                } else {
+////                    saleContent.setCurrentView();
+//                }
+//
+//                break;
+//        }
+//    }
+
 
     //检查更新
     private void checkUpdate() {
@@ -343,4 +558,51 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
             }
         }.start();
     }
+
+    //获取影院是否在维护中的信息
+    protected void getCinemaStatus() {
+        final RequestNull requestNull = new RequestNull();
+        OkHttpClientManager.postAsyn(Config.GET_CINEMA_STATUS, new OkHttpClientManager.ResultCallback<CinemaStatusEntity>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+            }
+
+            @Override
+            public void onResponse(CinemaStatusEntity response) {
+                if (response != null) {
+                    if ("0".equals(response.getState())) {//门店正常
+                        initVisibility(0);
+                    } else {//门店维护中
+                        showShortToast(response.getMessage());
+                        SharePrefUtil.putBoolean(Constant.FILE_NAME, "isFirstAction", false, Application.getInstance().getCurrentActivity());
+                        homeContent.showSelectCinemaPopupWindow(true,response.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
+            }
+        }, requestNull, CinemaStatusEntity.class, MainActivity.this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - mExitTime > 2000) {
+                showShortToast("再按一次退出应用程序");
+                mExitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

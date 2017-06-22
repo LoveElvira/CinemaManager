@@ -1,5 +1,6 @@
 package com.yyjlr.tickets.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,16 +43,20 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
     private LinearLayout forgetPassword;
     private TextView title;
     private ImageView leftArrow;
+    private String pager = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        pager = getIntent().getStringExtra("pager");
         initView();
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_login));
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -116,7 +121,11 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, password.getText().toString().trim(), LoginActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, "flag", "1", LoginActivity.this);
                 customDialog.dismiss();
-                startActivity(MainActivity.class);
+//                if (pager.equals("FilmSelectSeatActivity")) {
+//                } else {
+//                    startActivity(MainActivity.class);
+//                }
+                MainActivity.mySettingContent.updateView(true);
                 LoginActivity.this.finish();
             }
 
@@ -136,6 +145,8 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
             lastClickTime = currentTime;
             switch (view.getId()) {
                 case R.id.base_toolbar__left:
+                    setResult(CODE_RESULT, new Intent()
+                            .putExtra("isFinish", true));
                     LoginActivity.this.finish();
                     break;
                 case R.id.content_login__register:

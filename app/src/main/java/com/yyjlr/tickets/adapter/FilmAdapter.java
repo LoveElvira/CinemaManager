@@ -24,9 +24,9 @@ import java.util.List;
  */
 public class FilmAdapter extends BaseAdapter<MovieInfo> {
 
-    private int first = -1;
-    private int first1 = -1;
-    private int last = -1;
+//    private int first = -1;
+//    private int first1 = -1;
+//    private int last = -1;
 
     public FilmAdapter(List<MovieInfo> data) {
         super(R.layout.item_film, data);
@@ -38,6 +38,8 @@ public class FilmAdapter extends BaseAdapter<MovieInfo> {
                 .setText(R.id.item_film__director, item.getDirector())
                 .setText(R.id.item_film__star, item.getActors())
                 .setText(R.id.item_film__showtime, item.getShowTime())
+                .setText(R.id.item_film__buy_ticket, "购票")
+                .setBackgroundRes(R.id.item_film__buy_ticket, R.drawable.radius_orange_4)
                 .setOnClickListener(R.id.item_film__cardview, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_film__buy_ticket, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_film__image, new OnItemChildClickListener());
@@ -46,6 +48,14 @@ public class FilmAdapter extends BaseAdapter<MovieInfo> {
                     .load(item.getMovieImage())
                     .into((ImageView) helper.getView(R.id.item_film__image));
         }
+
+        if (!"".equals(item.getPresell()) && item.getPresell() != null) {
+            helper.setText(R.id.item_film__buy_ticket, "预售");
+        }
+        if ("0".equals(item.getPresell())) {
+            helper.setBackgroundRes(R.id.item_film__buy_ticket, R.drawable.radius_gray_4);
+        }
+
 
 //        helper.setText(R.id.item_film__name,item.getFilmName())
 //                .setBackgroundRes(R.id.item_film__image,R.mipmap.bird)
@@ -56,31 +66,31 @@ public class FilmAdapter extends BaseAdapter<MovieInfo> {
 //                .setOnClickListener(R.id.item_film__buy_ticket,new OnItemChildClickListener())
 //                .setOnClickListener(R.id.item_film__image,new OnItemChildClickListener());
 
-        boolean f = false;
-        if (position == first) {
-            helper.getView(R.id.item_film__cardview).setAlpha((float) 0.8);
-            if (position == first1) {
-                helper.getView(R.id.item_film__cardview).setAlpha(1);
-            }
-            f = true;
-        } else {
-            helper.getView(R.id.item_film__cardview).setAlpha(1);
-        }
-        if (!f) {
-            if (position == last) {
-                helper.getView(R.id.item_film__cardview).setAlpha((float) 0.7);
-            } else {
-                helper.getView(R.id.item_film__cardview).setAlpha(1);
-            }
-        }
+//        boolean f = false;
+//        if (position == first) {
+//            helper.getView(R.id.item_film__cardview).setAlpha((float) 0.8);
+//            if (position == first1) {
+//                helper.getView(R.id.item_film__cardview).setAlpha(1);
+//            }
+//            f = true;
+//        } else {
+//            helper.getView(R.id.item_film__cardview).setAlpha(1);
+//        }
+//        if (!f) {
+//            if (position == last) {
+//                helper.getView(R.id.item_film__cardview).setAlpha((float) 0.7);
+//            } else {
+//                helper.getView(R.id.item_film__cardview).setAlpha(1);
+//            }
+//        }
 
     }
 
-    public void changeBgFristAndLast(int first, int last, int first1) {
-        this.first = first;
-        this.first1 = first1;
-        this.last = last;
-        notifyDataSetChanged();
-    }
+//    public void changeBgFristAndLast(int first, int last, int first1) {
+//        this.first = first;
+//        this.first1 = first1;
+//        this.last = last;
+//        notifyDataSetChanged();
+//    }
 
 }

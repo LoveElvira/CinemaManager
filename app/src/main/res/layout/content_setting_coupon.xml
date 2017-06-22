@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.setting.SettingCouponActivity"
+    tools:showIn="@layout/activity_setting_coupon">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_45"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_coupon__no_use_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:text="未使用"
+                android:textColor="@color/orange_ff7b0f"
+                android:textSize="@dimen/text_13" />
+
+            <View
+                android:id="@+id/content_coupon__no_use_line"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="1dp"
+                android:layout_marginTop="-10dp"
+                android:background="@color/orange_ff7b0f" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_coupon__use_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:text="已使用"
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_13" />
+
+            <View
+                android:id="@+id/content_coupon__use_line"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="1dp"
+                android:layout_marginTop="-10dp"
+                android:background="@color/orange_ff7b0f"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_coupon__old_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:text="已过期"
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_13" />
+
+            <View
+                android:id="@+id/content_coupon__old_line"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="1dp"
+                android:layout_marginTop="-10dp"
+                android:background="@color/orange_ff7b0f"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.yyjlr.tickets.content.coupon.UseCouponContent
+            android:id="@+id/content_coupon__use_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.yyjlr.tickets.content.coupon.NoUseCouponContent
+            android:id="@+id/content_coupon__no_use_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <com.yyjlr.tickets.content.coupon.OldCouponContent
+            android:id="@+id/content_coupon__old_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

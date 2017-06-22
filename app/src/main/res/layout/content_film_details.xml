@@ -13,7 +13,14 @@
         android:layout_height="@dimen/size_50"
         android:layout_alignParentBottom="true"
         android:alpha="0.85"
-        android:background="@color/white"></LinearLayout>
+        android:background="@color/white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_e7e7e7" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/content_film_details__layout"
@@ -22,91 +29,69 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <LinearLayout
+            android:id="@+id/content_film_details__comment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/content_film_details__collect"
-                style="@style/MatchMatch"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/content_film_details__collect_image"
-                    android:layout_width="@dimen/size_20"
-                    android:layout_height="@dimen/size_20"
-                    android:src="@mipmap/collect" />
-
-                <TextView
-                    android:id="@+id/content_film_details__collect_text"
-                    style="@style/WrapWrap"
-                    android:text="@string/text_film_collection"
-                    android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_13" />
-            </LinearLayout>
-
-
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
-
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
-
-            <LinearLayout
-                android:id="@+id/content_film_details__share"
-                style="@style/MatchMatch"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="@dimen/size_20"
-                    android:layout_height="@dimen/size_20"
-                    android:src="@mipmap/share" />
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:text="@string/text_film_share"
-                    android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_13" />
-            </LinearLayout>
-
-
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
-
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            <ImageView
+                android:id="@+id/content_film_details__collect_image"
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_30"
+                android:layout_marginRight="@dimen/size_5"
+                android:src="@mipmap/comment" />
 
             <TextView
-                android:id="@+id/content_film_details__select_seat"
-                style="@style/MatchMatch"
-                android:background="@color/orange_ff7b0f"
-                android:gravity="center"
-                android:text="@string/text_film_select_seat"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_15" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                android:id="@+id/content_film_details__collect_text"
+                style="@style/WrapWrap"
+                android:text="@string/text_film_comment"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_13" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/content_film_details__share"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_20"
+                android:layout_marginRight="@dimen/size_5"
+                android:src="@mipmap/share" />
+
+            <TextView
+                style="@style/WrapWrap"
+                android:text="@string/text_film_share"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_13" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/content_film_details__select_seat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/orange_ff7b0f"
+            android:gravity="center"
+            android:text="@string/text_film_select_seat"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
     </LinearLayout>
 
-    <com.yyjlr.tickets.viewutils.ScrollView
+    <ScrollView
+        android:id="@+id/content_film_details__scrollview"
         style="@style/MatchMatch"
-        android:layout_above="@id/content_film_details__layout">
+        android:layout_above="@id/content_film_details__layout"
+        android:scrollbars="none">
 
         <FrameLayout style="@style/MatchMatch">
 
@@ -130,6 +115,6 @@
 
             <include layout="@layout/content_film_details_" />
         </FrameLayout>
-    </com.yyjlr.tickets.viewutils.ScrollView>
+    </ScrollView>
 
 </RelativeLayout>

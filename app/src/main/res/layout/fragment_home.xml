@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.yyjlr.tickets.MainActivity">
+
+    <include layout="@layout/base_toolbar_" />
+
+    <ScrollView
+        android:id="@+id/fragment_home__scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            style="@style/MatchMatch"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.youth.banner.Banner
+                android:id="@+id/fragment_home__banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_120"
+                android:layout_gravity="center"
+                app:delay_time="3000"
+                app:indicator_drawable_selected="@drawable/selector_bgabanner_point"
+                app:indicator_drawable_unselected="@drawable/selector_bgabanner_point_select"
+                app:indicator_height="@dimen/size_5"
+                app:indicator_margin="@dimen/size_3"
+                app:indicator_width="@dimen/size_5"
+                app:is_auto_play="true"
+                app:title_height="5dp" />
+
+            <LinearLayout
+                android:id="@+id/fragment_home__film_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_7"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/size_10">
+
+                    <View
+                        android:layout_width="@dimen/size_3"
+                        android:layout_height="@dimen/size_10"
+                        android:background="@color/orange_ff7a0f"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-10dp"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/fragment_home__hot_film_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fragment_home__hot_film_text"
+                                style="@style/WrapWrap"
+                                android:padding="@dimen/size_10"
+                                android:text="正在热映"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_14" />
+
+                            <View
+                                android:id="@+id/fragment_home__hot_film_line"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/size_2"
+                                android:layout_marginLeft="@dimen/size_15"
+                                android:layout_marginRight="@dimen/size_15"
+                                android:layout_marginTop="-2.5dp"
+                                android:background="@color/orange_ff7a0f" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:background="@color/gray_e4e4e4" />
+
+                        <LinearLayout
+                            android:id="@+id/fragment_home__next_film_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fragment_home__next_film_text"
+                                style="@style/WrapWrap"
+                                android:padding="@dimen/size_10"
+                                android:text="即将上映"
+                                android:textColor="@color/gray_e4e4e4"
+                                android:textSize="@dimen/text_14" />
+
+                            <View
+                                android:id="@+id/fragment_home__next_film_line"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/size_2"
+                                android:layout_marginLeft="@dimen/size_15"
+                                android:layout_marginRight="@dimen/size_15"
+                                android:layout_marginTop="-2.5dp"
+                                android:background="@color/orange_ff7a0f"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fragment_home__film_more_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/size_10"
+                        android:paddingRight="@dimen/size_10"
+                        android:paddingTop="@dimen/size_10">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_weight="1"
+                            android:text="更多"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_13" />
+
+                        <ImageView
+                            android:layout_width="@dimen/size_15"
+                            android:layout_height="@dimen/size_15"
+                            android:src="@mipmap/right_arrow"
+                            android:tint="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/fragment_home__film_listview"
+                    style="@style/MatchWrap"
+                    android:overScrollMode="never"
+                    android:paddingLeft="@dimen/size_10"
+                    android:scrollbars="none" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_home__sale_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_10">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/size_10">
+
+                    <View
+                        android:layout_width="@dimen/size_3"
+                        android:layout_height="@dimen/size_10"
+                        android:background="@color/orange_ff7a0f"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="推荐卖品"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_14" />
+
+                    <LinearLayout
+                        android:id="@+id/fragment_home__sale_more_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/size_10"
+                        android:paddingRight="@dimen/size_10"
+                        android:paddingTop="@dimen/size_10">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_weight="1"
+                            android:text="更多"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_13" />
+
+                        <ImageView
+                            android:layout_width="@dimen/size_15"
+                            android:layout_height="@dimen/size_15"
+                            android:src="@mipmap/right_arrow"
+                            android:tint="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/fragment_home__event_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_100"
+                    android:paddingLeft="@dimen/size_10"
+                    android:paddingRight="@dimen/size_10"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/bg"
+                    android:visibility="gone" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/fragment_home__sale_listview"
+                    style="@style/MatchWrap"
+                    android:overScrollMode="never"
+                    android:paddingLeft="@dimen/size_10"
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="@dimen/size_3"
+                    android:layout_height="@dimen/size_10"
+                    android:background="@color/orange_ff7a0f" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:layout_weight="1"
+                    android:text="推荐影院"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+
+            <com.yyjlr.tickets.viewutils.AutoRecyclerView
+                android:id="@+id/fragment_home__cinema_listview"
+                style="@style/MatchWrap"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

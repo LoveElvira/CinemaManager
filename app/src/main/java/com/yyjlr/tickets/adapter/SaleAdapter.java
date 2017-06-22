@@ -24,9 +24,9 @@ import java.util.List;
  * 卖品Adapter
  */
 public class SaleAdapter extends BaseAdapter<GoodInfo> {
-    private int first = -1;
-    private int first1 = -1;
-    private int last = -1;
+//    private int first = -1;
+//    private int first1 = -1;
+//    private int last = -1;
 
     public SaleAdapter(List<GoodInfo> data) {
         super(R.layout.item_sale, data);
@@ -48,9 +48,9 @@ public class SaleAdapter extends BaseAdapter<GoodInfo> {
         }
 
         if (item.getStartTime() != 0 && item.getEndTime() != 0) {
-            helper.setText(R.id.item_sale__time, ChangeUtils.changeTimeDate(item.getStartTime()) + "~" + ChangeUtils.changeTimeDate(item.getEndTime()));
+            helper.setText(R.id.item_sale__time, ChangeUtils.changeTimeYear(item.getStartTime()) + "~" + ChangeUtils.changeTimeYear(item.getEndTime()));
         } else if (item.getStartTime() != 0 && item.getEndTime() == 0) {
-            helper.setText(R.id.item_sale__time, ChangeUtils.changeTimeDate(item.getStartTime()));
+            helper.setText(R.id.item_sale__time, ChangeUtils.changeTimeYear(item.getStartTime()));
         }
 
         LinearLayout priceLayout = helper.getView(R.id.item_sale__price_layout);
@@ -58,32 +58,32 @@ public class SaleAdapter extends BaseAdapter<GoodInfo> {
         int width = priceLayout.getMeasuredWidth();
         helper.getView(R.id.item_sale__line).getLayoutParams().width = width;
 
-        boolean f = false;
-
-        if (position == first) {
-            helper.getView(R.id.item_sale__cardview).setAlpha((float) 0.8);
-            if (position == first1) {
-                helper.getView(R.id.item_sale__cardview).setAlpha(1);
-            }
-            f = true;
-        } else {
-            helper.getView(R.id.item_sale__cardview).setAlpha(1);
-        }
-        if (!f) {
-            if (position == last) {
-                helper.getView(R.id.item_sale__cardview).setAlpha((float) 0.7);
-            } else {
-                helper.getView(R.id.item_sale__cardview).setAlpha(1);
-            }
-        }
+//        boolean f = false;
+//
+//        if (position == first) {
+//            helper.getView(R.id.item_sale__cardview).setAlpha((float) 0.8);
+//            if (position == first1) {
+//                helper.getView(R.id.item_sale__cardview).setAlpha(1);
+//            }
+//            f = true;
+//        } else {
+//            helper.getView(R.id.item_sale__cardview).setAlpha(1);
+//        }
+//        if (!f) {
+//            if (position == last) {
+//                helper.getView(R.id.item_sale__cardview).setAlpha((float) 0.7);
+//            } else {
+//                helper.getView(R.id.item_sale__cardview).setAlpha(1);
+//            }
+//        }
 
     }
 
-    public void changeBgFristAndLast(int first, int last, int first1) {
-        this.first = first;
-        this.first1 = first1;
-        this.last = last;
-        notifyDataSetChanged();
-    }
+//    public void changeBgFristAndLast(int first, int last, int first1) {
+//        this.first = first;
+//        this.first1 = first1;
+//        this.last = last;
+//        notifyDataSetChanged();
+//    }
 
 }

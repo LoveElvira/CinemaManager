@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"宁波影都"</string>
+    <string name="app_name">宁波影都</string>
     <string name="text_jump">跳过</string>
     <string name="text_enter_main">进入主界面</string>
 
@@ -19,14 +19,14 @@
     <string name="text_confirm_password">确认密码</string>
     <string name="text_have_account">已有账号</string>
     <!--抢票电影名-->
-    <string name="text_grab_title">抢票</string>
+    <string name="text_grab_title">活动</string>
     <string name="title1">God of War Ascension</string>
     <string name="title2">Assassin\'s Creed III</string>
     <string name="title3">Hitman Absolution</string>
     <string name="title4">Dishonored</string>
     <!--我的-->
     <string name="text_name">小蛮缠</string>
-    <string name="text_my_account">我的账号</string>
+    <string name="text_my_account">我的账户</string>
     <string name="text_my_order">我的订单</string>
     <string name="text_huiyuan">会员中心</string>
     <string name="text_message">我的消息</string>
@@ -65,6 +65,7 @@
         然而法官大人却无视“胖红”的忠告，导致蠢萌“绿猪”诡计得逞。
     </string>
     <string name="text_film_collection">收藏</string>
+    <string name="text_film_comment">写评论</string>
     <string name="text_film_share">分享</string>
     <string name="text_film_select_seat">选座购票</string>
     <!--影院详情-->
@@ -124,10 +125,10 @@
     <string name="text_cancel">取消</string>
     <!--主页底部tab-->
     <string name="text_call_phone">呼叫</string>
-    <string name="text_chosen">精选</string>
+    <string name="text_home">首页</string>
     <string name="text_film">影片</string>
-    <string name="text_grab">抢票</string>
-    <string name="text_sale">卖品</string>
+    <string name="text_grab">活动</string>
+    <string name="text_sale">商城</string>
     <string name="text_my">我的</string>
     <string name="text_sex_boy">男</string>
     <string name="text_sex_girl">女</string>

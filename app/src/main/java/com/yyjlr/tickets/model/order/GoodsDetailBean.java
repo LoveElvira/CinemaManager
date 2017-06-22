@@ -12,10 +12,19 @@ public class GoodsDetailBean {
      */
     private String ticketCode;//卖品兑换券码
     private String ticketNo;// 验证码（卖品）
+    private String state;// 子订单状态
     private List<GoodsOrderListInfo> goodsList;//卖品列表
 
     public String getTicketCode() {
         return ticketCode;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public void setTicketCode(String ticketCode) {

@@ -11,15 +11,13 @@
     <TextView
         android:id="@+id/content_sale_confirm__package"
         style="@style/WrapWrap"
-        android:text="套餐一"
-        android:textColor="@color/black_363636"
         android:layout_marginBottom="@dimen/size_10"
+        android:textColor="@color/black_363636"
         android:textSize="@dimen/text_15" />
 
     <TextView
         android:id="@+id/content_sale_confirm__package_content"
         style="@style/WrapWrap"
-        android:text="中份爆米花1份+2杯可乐"
         android:textColor="@color/gray_929292"
         android:textSize="@dimen/text_12" />
 
@@ -27,7 +25,6 @@
     <TextView
         android:id="@+id/content_sale_confirm__package_date"
         style="@style/WrapWrap"
-        android:text="2016-08-16~2016-08-20"
         android:layout_marginTop="@dimen/size_5"
         android:textColor="@color/gray_c3c3c3"
         android:textSize="@dimen/text_11" />
@@ -43,7 +40,6 @@
             android:id="@+id/content_sale_confirm__package_unit_price"
             style="@style/WrapWrap"
             android:layout_marginRight="@dimen/size_10"
-            android:text="单价：20元，共1份"
             android:textColor="@color/gray_929292"
             android:textSize="@dimen/text_12" />
 
@@ -52,7 +48,6 @@
             style="@style/MatchWrap"
             android:layout_marginRight="@dimen/size_10"
             android:gravity="right"
-            android:text="¥20"
             android:textColor="@color/red_de2500"
             android:textSize="@dimen/text_16" />
     </LinearLayout>

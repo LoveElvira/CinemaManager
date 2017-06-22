@@ -21,9 +21,38 @@ public class IdRequest implements IRequestMainData {
     //绑定会员卡
     private String cardNo;//卡号
     private String pwd;//密码
+    private String amount;//充值金额 以分的形式录入
+    //评论
+    private String grade;//评分
+    private String content;//评论内容
 
     private List<String> couponList;//兑换券券号,字符串数组
+
     public IdRequest() {
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public List<String> getCouponList() {

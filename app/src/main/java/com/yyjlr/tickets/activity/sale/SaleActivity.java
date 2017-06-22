@@ -3,8 +3,10 @@ package com.yyjlr.tickets.activity.sale;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -56,18 +60,17 @@ import java.util.List;
 
 public class SaleActivity extends AbstractActivity implements View.OnClickListener {
 
-    private TextView title;
     private ImageView back;
-
-    private LinearLayout packageLayout;
-    private LinearLayout saleLayout;
-    private ImageView packageImage;
-    private ImageView saleImage;
     private LockableViewPager viewPager;
     private ContentAdapter adapter;
 
+    private TextView saleText;
+    private TextView packageText;
+
     private com.yyjlr.tickets.content.sale.SaleContent saleContent;
     private com.yyjlr.tickets.content.sale.PackageContent packageContent;
+    private EditText search;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +80,13 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
     }
 
     private void initView() {
-        title = (TextView) findViewById(R.id.base_toolbar__text);
-        title.setText(getResources().getText(R.string.text_sale_title));
-        back = (ImageView) findViewById(R.id.base_toolbar__left);
-        back.setAlpha(1.0f);
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
+        back = (ImageView) findViewById(R.id.base_toolbar__left_image);
+        back.setOnClickListener(this);
 
-        packageLayout = (LinearLayout) findViewById(R.id.fragment_sale__package_layout);
-        saleLayout = (LinearLayout) findViewById(R.id.fragment_sale__sale_layout);
-        packageImage = (ImageView) findViewById(R.id.fragment_sale__package_image);
-        saleImage = (ImageView) findViewById(R.id.fragment_sale__sale_image);
+        saleText = (TextView) findViewById(R.id.base_toolbar__left);
+        packageText = (TextView) findViewById(R.id.base_toolbar__right);
 
         viewPager = (LockableViewPager) findViewById(R.id.content_sale__viewpager);
 
@@ -93,7 +94,7 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
         packageContent = new PackageContent(getBaseContext());
 
         List<View> list = new ArrayList<View>();
-//        list.add(packageContent);
+        list.add(packageContent);
         list.add(saleContent);
 
         adapter = new ContentAdapter(list, null);
@@ -105,13 +106,20 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
 
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onPageSelected(int position) {
                 initFirstView();
                 if (position == 0) {
-                    packageImage.setImageResource(R.mipmap.sale_package_select);
+                    packageText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    packageText.setBackground(getResources().getDrawable(R.drawable.bg_right_white));
+                    //search = saleContent.getEditText();
+                    //hideInput();
                 } else if (position == 1) {
-                    saleImage.setImageResource(R.mipmap.sale_sale_select);
+                    saleText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    saleText.setBackground(getResources().getDrawable(R.drawable.bg_left_white));
+                   // search = packageContent.getEditText();
+                   // hideInput();
                 }
             }
 
@@ -121,36 +129,46 @@ public class SaleActivity extends AbstractActivity implements View.OnClickListen
             }
         });
 
-        viewPager.setCurrentItem(0);
-
-
-        packageLayout.setOnClickListener(this);
-        saleLayout.setOnClickListener(this);
-        back.setOnClickListener(this);
+        packageText.setOnClickListener(this);
+        saleText.setOnClickListener(this);
+        viewPager.setCurrentItem(1);
 
     }
 
+    //隐藏虚拟键盘
+    public void hideInput() {
+        boolean isOpen = imm.isActive();
+        if (isOpen) {
+//            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);//没有显示则显示
+            imm.hideSoftInputFromWindow(search.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initFirstView() {
-        saleImage.setImageResource(R.mipmap.sale_sale);
-        packageImage.setImageResource(R.mipmap.sale_package);
+        saleText.setTextColor(getResources().getColor(R.color.white));
+        packageText.setTextColor(getResources().getColor(R.color.white));
+        saleText.setBackground(getResources().getDrawable(R.drawable.bg_border_left_white));
+        packageText.setBackground(getResources().getDrawable(R.drawable.bg_border_right_white));
     }
 
     @Override
     public void onClick(View view) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            switch (view.getId()) {
-//                case R.id.fragment_sale__package_layout:
-//                    viewPager.setCurrentItem(0);
-//                    break;
-//                case R.id.fragment_sale__sale_layout:
-//                    viewPager.setCurrentItem(1);
-//                    break;
-                case R.id.base_toolbar__left:
-                    SaleActivity.this.finish();
-                    break;
-            }
+        switch (view.getId()) {
+            case R.id.base_toolbar__right:
+                if (viewPager.getCurrentItem() != 0) {
+                    viewPager.setCurrentItem(0);
+                }
+                break;
+            case R.id.base_toolbar__left:
+                if (viewPager.getCurrentItem() != 1) {
+                    viewPager.setCurrentItem(1);
+                }
+                break;
+            case R.id.base_toolbar__left_image:
+                SaleActivity.this.finish();
+                break;
         }
     }
 }

@@ -57,6 +57,8 @@ public class RegisterActivity extends AbstractActivity implements View.OnClickLi
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_register));
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);

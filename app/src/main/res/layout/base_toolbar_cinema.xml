@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_50">
+
+    <ImageView
+        android:id="@+id/base_toolbar__bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/size_50"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/base_toolbar__left_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:padding="@dimen/size_10"
+                android:src="@drawable/circle_black" />
+
+            <ImageView
+                android:id="@+id/base_toolbar__left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:padding="@dimen/size_15"
+                android:src="@mipmap/left_arrow" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/base_toolbar__text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_17" />
+
+        <TextView
+            android:id="@+id/base_toolbar__right_text"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15"
+            android:visibility="gone" />
+
+
+        <ImageView
+            android:id="@+id/base_toolbar__right"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:padding="@dimen/size_15"
+            android:src="@mipmap/enter_cinema" />
+    </LinearLayout>
+</FrameLayout>

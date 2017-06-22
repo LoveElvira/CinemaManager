@@ -6,12 +6,27 @@
 
     <include layout="@layout/base_toolbar_" />
 
-    <!--<com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout-->
-    <!--android:id="@+id/fragment_grab__refresh"-->
-    <!--style="@style/MatchMatch">-->
-
     <com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout
         android:id="@+id/fragment_grab__layout"
-        style="@style/MatchMatch" />
-    <!--</com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>-->
+        style="@style/MatchMatch"
+        android:visibility="gone"/>
+
+    <include layout="@layout/content_listview" />
+
+    <LinearLayout
+        android:id="@+id/fragment_grab__no_date"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_20"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ticket_no_date" />
+
+    </LinearLayout>
 </LinearLayout>

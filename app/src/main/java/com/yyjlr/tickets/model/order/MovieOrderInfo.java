@@ -18,6 +18,15 @@ public class MovieOrderInfo implements Serializable {
     private int nums;//座位数
     private int price;//单价（app价），单位分
     private int totalPrice;//总价，单位分
+    private String mobile;//手机
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public Long getId() {
         return id;

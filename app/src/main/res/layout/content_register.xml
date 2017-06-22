@@ -167,20 +167,12 @@
         android:paddingLeft="@dimen/size_20"
         android:paddingRight="@dimen/size_20">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <Button
+            android:id="@+id/content_register__register"
             style="@style/AutoMatch"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
-
-            <Button
-                android:id="@+id/content_register__register"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_blue_4"
-                android:text="@string/text_register"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_15" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            android:background="@drawable/radius_blue_4"
+            android:text="@string/text_register"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
     </LinearLayout>
 </LinearLayout>

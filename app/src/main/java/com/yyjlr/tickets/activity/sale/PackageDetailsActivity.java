@@ -18,15 +18,20 @@ import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.helputils.ChangeUtils;
+import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.sale.PackageDetails;
 import com.yyjlr.tickets.model.sale.PackageInfo;
 import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
+
+import static com.yyjlr.tickets.Application.getInstance;
 
 /**
  * Created by Elvira on 2016/9/23.
@@ -61,6 +66,8 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("活动套餐");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -165,7 +172,17 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
                 selectPopupWindow();
                 break;
             case R.id.popup_sale__buy://购买
-//                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SaleCompleteActivity.class));
+//                Intent intent = new Intent();
+//                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+//                if (!isLogin.equals("1")) {
+//                    intent.setClass(getInstance().getCurrentActivity(), LoginActivity.class);
+//                } else {
+//                    intent.setClass(getInstance().getCurrentActivity(), SaleCompleteActivity.class);
+//                    intent.putExtra("goodInfo", goodInfoLists.get(position));
+//                    intent.putExtra("num", num);
+//                }
+//                Toast.makeText(getContext(), "购买功能正在开放中", Toast.LENGTH_SHORT).show();
+//                Application.getInstance().getCurrentActivity().startActivity(intent);
                 mPopupWindow.dismiss();
                 break;
             case R.id.popup_sale__lost://减少数量

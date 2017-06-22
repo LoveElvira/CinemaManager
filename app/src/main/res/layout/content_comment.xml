@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:star="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.film.CommentActivity"
+    tools:showIn="@layout/activity_comment">
+
+    <LinearLayout
+        style="@style/MatchMatch"
+        android:layout_marginBottom="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_10"
+        android:background="@drawable/radius_white_2"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/size_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.yyjlr.tickets.viewutils.Star
+                android:id="@+id/content_comment__star"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_40"
+                android:layout_marginTop="@dimen/size_2"
+                star:starBackground="@mipmap/star_gray_"
+                star:starClickable="false"
+                star:starDistance="1dp"
+                star:starDrawBackground="@mipmap/star_yellow_"
+                star:starHeight="@dimen/size_40"
+                star:starWidth="@dimen/size_40"
+                star:starsNum="5" />
+
+            <TextView
+                android:id="@+id/content_comment__num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_5"
+                android:text="0"
+                android:textColor="@color/red_de2500"
+                android:textSize="@dimen/text_22" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:text="."
+                android:textColor="@color/red_de2500"
+                android:textSize="@dimen/text_18" />
+
+
+            <TextView
+                android:id="@+id/content_comment__dot_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:text="0"
+                android:textColor="@color/red_de2500"
+                android:textSize="@dimen/text_16" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:gravity="center"
+            android:text="请评论"
+            android:textSize="@dimen/text_13" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_15"
+            android:background="@color/gray_f4f4f4" />
+
+        <EditText
+            android:id="@+id/content_comment__my_word"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/size_50"
+            android:background="@null"
+            android:gravity="left"
+            android:hint="我想说..."
+            android:maxEms="200"
+            android:padding="@dimen/size_10"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_929292"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_f4f4f4" />
+
+        <TextView
+            android:id="@+id/content_comment__film_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_50"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="aaaa"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+
+</RelativeLayout>

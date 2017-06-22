@@ -7,6 +7,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
     private TextView title;
     private ImageView leftArrowBg;
     private ImageView leftArrow;
+    private ImageView bgTitle_;
 
     private View view;
     private LinearLayout cinemaLayout;//透明背景
@@ -74,6 +76,7 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
     }
 
     private void initView() {
+        bgTitle_ = (ImageView) findViewById(R.id.content_cinema__image_);
 
         AppManager.getInstance().initWidthHeight(CinemaDetailsActivity.this);
 
@@ -92,6 +95,10 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
         leftArrow.setOnClickListener(this);
 //        CollapsingToolbarLayout collapsingToolbar =
 //                (CollapsingToolbarLayout) findViewById(R.id.content_cinema__collapsing_toolbar);
+
+//        collapsingToolbar.setContentScrim();
+
+
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.content_cinema__appbar);
         appBarLayout.addOnOffsetChangedListener(this);
 
@@ -295,6 +302,7 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         if (verticalOffset == 0) {
             if (state != CollapsingToolbarLayoutState.EXPANDED) {
+                bgTitle_.setAlpha(0.0f);
                 state = CollapsingToolbarLayoutState.EXPANDED;//修改状态标记为展开
                 title.setText("");
                 leftArrowBg.setAlpha(1.0f);
@@ -304,12 +312,19 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
                 if (cinemaInfoModel != null)
                     title.setText(cinemaInfoModel.getCinemaName());
 
-
+                if (appConfig != null) {
+                    Picasso.with(getBaseContext())
+                            .load(appConfig.getStyleImage() != null ? appConfig.getStyleImage() : "https://")
+                            .error(R.mipmap.bg_title)
+                            .into(bgTitle_);
+                    bgTitle_.setAlpha(1.0f);
+                }
                 leftArrowBg.setAlpha(0.0f);
                 state = CollapsingToolbarLayoutState.COLLAPSED;//修改状态标记为折叠
             }
         } else {
             if (state != CollapsingToolbarLayoutState.INTERNEDIATE) {
+                bgTitle_.setAlpha(0.0f);
                 title.setText("");
                 leftArrowBg.setAlpha(1.0f);
                 state = CollapsingToolbarLayoutState.INTERNEDIATE;//修改状态标记为中间

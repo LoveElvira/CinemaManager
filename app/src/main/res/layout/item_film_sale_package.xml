@@ -19,20 +19,12 @@
         android:orientation="horizontal"
         android:padding="@dimen/size_10">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <ImageView
+            android:id="@+id/item_film_sale__select"
             style="@style/WrapWrap"
             android:layout_marginRight="@dimen/size_10"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
-
-            <ImageView
-                android:id="@+id/item_film_sale__select"
-                style="@style/WrapWrap"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/cancle" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            android:scaleType="centerCrop"
+            android:src="@mipmap/cancle" />
 
         <ImageView
             android:id="@+id/item_film_sale__image"
@@ -78,6 +70,7 @@
                 android:id="@+id/item_film_sale__package_content"
                 style="@style/WrapWrap"
                 android:layout_marginTop="@dimen/size_5"
+                android:maxLines="2"
                 android:text="中份爆米花+++++++"
                 android:textColor="@color/gray_929292"
                 android:textSize="@dimen/text_13" />
@@ -90,6 +83,52 @@
                 android:text="2016-08-09~2016-08-16"
                 android:textColor="@color/gray_c3c3c3"
                 android:textSize="@dimen/text_12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_film_sale__add_layout_"
+            style="@style/WrapWrap"
+            android:layout_marginLeft="@dimen/size_10"
+            android:background="@drawable/border_gray"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/item_film_sale__lost_"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_25"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/gray_c3c3c3"
+                android:textSize="@dimen/text_18" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray_e7e7e7" />
+
+            <TextView
+                android:id="@+id/item_film_sale__num_"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_25"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_14" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray_e7e7e7" />
+
+            <TextView
+                android:id="@+id/item_film_sale__add_"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_25"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/orange_ff9600"
+                android:textSize="@dimen/text_18" />
         </LinearLayout>
     </LinearLayout>
 
@@ -108,13 +147,6 @@
             android:background="@drawable/border_gray"
             android:orientation="horizontal">
 
-            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-            <!--style="@style/WrapWrap"-->
-            <!--app:mrl_rippleAlpha="0.2"-->
-            <!--app:mrl_rippleColor="@color/bg_shadow"-->
-            <!--app:mrl_rippleHover="true"-->
-            <!--app:mrl_rippleOverlay="true">-->
-
             <TextView
                 android:id="@+id/item_film_sale__lost"
                 android:layout_width="@dimen/size_40"
@@ -123,7 +155,6 @@
                 android:text="-"
                 android:textColor="@color/gray_c3c3c3"
                 android:textSize="@dimen/text_18" />
-            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
             <View
                 android:layout_width="1px"
@@ -144,22 +175,14 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray_e7e7e7" />
 
-            <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-            <!--style="@style/WrapWrap"-->
-            <!--app:mrl_rippleAlpha="0.2"-->
-            <!--app:mrl_rippleColor="@color/bg_shadow"-->
-            <!--app:mrl_rippleHover="true"-->
-            <!--app:mrl_rippleOverlay="true">-->
-
             <TextView
                 android:id="@+id/item_film_sale__add"
                 android:layout_width="@dimen/size_40"
                 android:layout_height="@dimen/size_30"
                 android:gravity="center"
                 android:text="+"
-                android:textColor="@color/gray_c3c3c3"
+                android:textColor="@color/orange_ff9600"
                 android:textSize="@dimen/text_18" />
-            <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

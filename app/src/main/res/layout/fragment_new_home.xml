@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.yyjlr.tickets.MainActivity"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:id="@+id/fragment_home__parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/fragment_home__appbar"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/fragment_home__collapsing_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:statusBarScrim="@android:color/transparent">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_home__banner_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_160"
+                        android:layout_marginTop="@dimen/size_45"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.youth.banner.Banner
+                            android:id="@+id/fragment_home__banner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            app:delay_time="3000"
+                            app:indicator_drawable_selected="@drawable/selector_bgabanner_point"
+                            app:indicator_drawable_unselected="@drawable/selector_bgabanner_point_select"
+                            app:indicator_height="@dimen/size_5"
+                            app:indicator_margin="@dimen/size_3"
+                            app:indicator_width="@dimen/size_5"
+                            app:is_auto_play="true"
+                            app:title_height="5dp" />
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/fragment_home__toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp"
+                        android:layout_marginLeft="-16.5dp"
+                        android:layout_marginTop="-6dp"
+                        android:gravity="top"
+                        app:layout_collapseMode="pin">
+
+                        <include layout="@layout/base_toolbar_" />
+
+                    </android.support.v7.widget.Toolbar>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_45"
+                        android:layout_gravity="bottom"
+                        android:background="@color/gray_eeeeee"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fragment_home__hot_film_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/size_10"
+                                android:paddingRight="@dimen/size_10"
+                                android:text="正在热映"
+                                android:textColor="@color/orange_ff7b0f"
+                                android:textSize="@dimen/text_13" />
+
+                            <View
+                                android:id="@+id/fragment_home__hot_film_line"
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="-10dp"
+                                android:background="@color/orange_ff7b0f" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fragment_home__next_film_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/size_10"
+                                android:paddingRight="@dimen/size_10"
+                                android:text="即将上映"
+                                android:textColor="@color/black_363636"
+                                android:textSize="@dimen/text_13" />
+
+                            <View
+                                android:id="@+id/fragment_home__next_film_line"
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="-10dp"
+                                android:background="@color/orange_ff7b0f"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <com.yyjlr.tickets.viewutils.LockableViewPager
+                    android:id="@+id/content_my_home_pager__viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+        </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

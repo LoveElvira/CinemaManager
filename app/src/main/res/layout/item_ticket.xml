@@ -5,6 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/item_ticket__no_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/item_ticket__background"
         android:layout_width="match_parent"
@@ -15,6 +29,7 @@
         android:id="@+id/item_ticket__shadow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="0.5"
         android:background="@color/black" />
 
     <LinearLayout
@@ -23,13 +38,15 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <com.yyjlr.tickets.viewutils.countdown.CountdownView
             android:id="@+id/item_ticket__time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/size_20"
+            android:visibility="gone"
             app:isShowMillisecond="true"
             app:isShowMinute="true"
             app:isShowSecond="true"
@@ -37,45 +54,44 @@
             app:suffixTextColor="@color/white"
             app:suffixTextSize="@dimen/text_16"
             app:timeTextColor="@color/white"
-            app:timeTextSize="@dimen/text_16"
-            android:visibility="gone"/>
+            app:timeTextSize="@dimen/text_16" />
 
         <TextView
             android:id="@+id/item_ticket__title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/size_10"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_18"
             android:shadowColor="@color/gray_929292"
-            android:shadowRadius="1"
             android:shadowDx="1.5"
-            android:shadowDy="1.5"/>
+            android:shadowDy="1.5"
+            android:shadowRadius="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_18" />
 
         <TextView
             android:id="@+id/item_ticket__date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/white"
-            android:text="11月25日-12月25日"
-            android:textSize="@dimen/text_12"
             android:shadowColor="@color/gray_929292"
-            android:shadowRadius="1"
             android:shadowDx="1.5"
-            android:shadowDy="1.5"/>
+            android:shadowDy="1.5"
+            android:shadowRadius="1"
+            android:text="11月25日-12月25日"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_12" />
 
         <TextView
             android:id="@+id/item_ticket__price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="人均15元"
-            android:textSize="@dimen/text_12"
             android:shadowColor="@color/gray_929292"
-            android:shadowRadius="1"
             android:shadowDx="1.5"
-            android:shadowDy="1.5"/>
+            android:shadowDy="1.5"
+            android:shadowRadius="1"
+            android:text="人均15元"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_12" />
 
     </LinearLayout>
 

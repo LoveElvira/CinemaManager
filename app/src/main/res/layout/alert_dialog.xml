@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/size_40"
@@ -40,56 +39,40 @@
         <View
             style="@style/MatchOne"
             android:layout_marginTop="10dp"
-            android:background="@color/gray_f4f4f4"/>
+            android:background="@color/gray_f4f4f4" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <TextView
+                android:id="@+id/alert_dialog__cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:paddingBottom="@dimen/size_10"
                 android:paddingTop="@dimen/size_10"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <TextView
-                    android:id="@+id/alert_dialog__cancel"
-                    style="@style/MatchMatch"
-                    android:gravity="center"
-                    android:text="@string/text_cancel"
-                    android:textColor="@color/black_363636"
-                    android:textSize="@dimen/text_18" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                android:text="@string/text_cancel"
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_18" />
 
             <View
                 style="@style/OneMatch"
                 android:background="@color/gray_f4f4f4" />
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <TextView
+                android:id="@+id/alert_dialog__submit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:paddingBottom="@dimen/size_10"
                 android:paddingTop="@dimen/size_10"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <TextView
-                    android:id="@+id/alert_dialog__submit"
-                    style="@style/MatchMatch"
-                    android:gravity="center"
-                    android:text="@string/text_call_phone"
-                    android:textColor="@color/black_363636"
-                    android:textSize="@dimen/text_18" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                android:text="@string/text_call_phone"
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_18" />
         </LinearLayout>
     </LinearLayout>
 

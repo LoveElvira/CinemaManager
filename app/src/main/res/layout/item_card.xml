@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_15"
-            android:src="@mipmap/sale_select"
+            android:src="@mipmap/sale_no_select"
             android:visibility="gone" />
 
         <LinearLayout

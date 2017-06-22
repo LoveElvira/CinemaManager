@@ -43,10 +43,8 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/size_3"
         android:paddingLeft="@dimen/size_12"
-        android:paddingRight="@dimen/size_5"
-        android:paddingTop="@dimen/size_3">
+        android:paddingRight="@dimen/size_5">
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,8 +59,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@null"
+            android:gravity="left|center"
             android:hint="建议充值100以上金额"
-            android:inputType="numberDecimal"
+            android:inputType="number"
+            android:paddingBottom="@dimen/size_12"
+            android:paddingTop="@dimen/size_12"
             android:textColorHint="@color/gray_c3c3c3"
             android:textSize="@dimen/text_13" />
 
@@ -74,8 +76,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/size_10"
-                android:layout_height="@dimen/size_10"
+                android:layout_width="@dimen/size_15"
+                android:layout_height="@dimen/size_15"
                 android:src="@mipmap/select_error" />
         </LinearLayout>
 

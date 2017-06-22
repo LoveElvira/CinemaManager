@@ -153,24 +153,16 @@
 
             </LinearLayout>
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <TextView
+                android:id="@+id/popup_sale__buy"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <TextView
-                    android:id="@+id/popup_sale__buy"
-                    style="@style/MatchMatch"
-                    android:background="@color/orange_ff7b0f"
-                    android:gravity="center"
-                    android:text="@string/text_package_buy"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_15" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                android:background="@color/orange_ff7b0f"
+                android:gravity="center"
+                android:text="@string/text_package_buy"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_15" />
 
         </LinearLayout>
 
@@ -202,6 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/popup_sale__add_layout"
             android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_5"
             android:layout_toRightOf="@+id/popup_sale__image_layout"
             android:ellipsize="end"
             android:singleLine="true"

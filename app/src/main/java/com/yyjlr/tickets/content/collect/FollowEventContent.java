@@ -24,6 +24,7 @@ import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.EventActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FollowGrabAdapter;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.event.FollowEventInfo;
 import com.yyjlr.tickets.model.event.FollowEventModel;
@@ -43,24 +44,17 @@ import java.util.List;
  * 收藏 抢票
  */
 
-public class FollowEventContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowGrabAdapter.SlidingViewClickListener {
+public class FollowEventContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowGrabAdapter.SlidingViewClickListener {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
-
-    private View view;
     private CustomDialog customDialog;
-    private FollowGrabAdapter adapter;
+    private FollowGrabAdapter adapter = null;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
-    private View notLoadingView;
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
     private boolean hasMore = false;
     private String pagable = "0";
-    private int delayMillis = 1000;
-
 
     private List<FollowEventInfo> followEventInfoList;
     private List<FollowEventInfo> followEventInfoLists;
@@ -73,8 +67,13 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
     public FollowEventContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
-        lastClickTime = 0;
         initView();
+    }
+
+    public void refreshView(int position) {
+        adapter.remove(position);
+        followEventInfoLists.remove(position);
+        adapter.notifyDataSetChanged();
     }
 
     private void initView() {
@@ -138,6 +137,12 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
                         }
                         adapter.setOnLoadMoreListener(FollowEventContent.this);
                         adapter.setOnRecyclerViewItemChildClickListener(FollowEventContent.this);
+                    }else {
+                        if (adapter != null) {
+                            followEventInfoList = new ArrayList<>();
+                            adapter = new FollowGrabAdapter(followEventInfoList);
+                            listView.setAdapter(adapter);
+                        }
                     }
                 }
             }
@@ -261,9 +266,10 @@ public class FollowEventContent extends LinearLayout implements SuperSwipeRefres
                 case R.id.item_follow_grab__ll_layout:
                     intent.setClass(getContext(), EventActivity.class);
                     intent.putExtra("eventId", followEventInfoLists.get(position).getActivityId());
+                    intent.putExtra("position", position);
                     break;
             }
-            Application.getInstance().getCurrentActivity().startActivity(intent);
+            Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x09);
         }
     }
 

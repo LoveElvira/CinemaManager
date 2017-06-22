@@ -24,6 +24,7 @@ import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.film.FilmDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FollowFilmAdapter;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.film.MovieBean;
 import com.yyjlr.tickets.model.film.MovieInfo;
@@ -43,29 +44,20 @@ import java.util.List;
  * 收藏 影片
  */
 
-public class FollowFilmContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowFilmAdapter.SlidingViewClickListener {
+public class FollowFilmContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowFilmAdapter.SlidingViewClickListener {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
-
-    private View view;
-    private CustomDialog customDialog;
-    private FollowFilmAdapter adapter;
+    private FollowFilmAdapter adapter = null;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
-    private View notLoadingView;
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
     private boolean hasMore = false;
     private String pagable = "0";
-    private int delayMillis = 1000;
-
 
     private List<MovieInfo> movieInfoList;
     private List<MovieInfo> movieInfoLists;
     private int position;
-
 
     public FollowFilmContent(Context context) {
         this(context, null);
@@ -76,6 +68,12 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
         view = inflate(context, R.layout.content_listview, this);
         lastClickTime = 0;
         initView();
+    }
+
+    public void refreshView(int position) {
+        adapter.remove(position);
+        movieInfoLists.remove(position);
+        adapter.notifyDataSetChanged();
     }
 
     private void initView() {
@@ -139,6 +137,12 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
                         }
                         adapter.setOnLoadMoreListener(FollowFilmContent.this);
                         adapter.setOnRecyclerViewItemChildClickListener(FollowFilmContent.this);
+                    } else {
+                        if (adapter != null) {
+                            movieInfoList = new ArrayList<>();
+                            adapter = new FollowFilmAdapter(movieInfoList);
+                            listView.setAdapter(adapter);
+                        }
                     }
                 }
             }
@@ -262,9 +266,11 @@ public class FollowFilmContent extends LinearLayout implements SuperSwipeRefresh
                 case R.id.item_follow_film__ll_layout:
                     intent.setClass(getContext(), FilmDetailsActivity.class);
                     intent.putExtra("filmId", movieInfoLists.get(position).getMovieId() + "");
+                    intent.putExtra("position", position);
+                    intent.putExtra("isHot", movieInfoLists.get(position).getPresell());
                     break;
             }
-            Application.getInstance().getCurrentActivity().startActivity(intent);
+            Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x06);
         }
     }
 

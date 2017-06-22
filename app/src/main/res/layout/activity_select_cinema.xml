@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:fitsSystemWindows="true"
+    tools:context=".activity.SelectCinemaActivity"
+    tools:openDrawer="start">
+
+    <include layout="@layout/base_toolbar" />
+
+    <include layout="@layout/content_select_cinema" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.BasePhotoActivity;
-import com.yyjlr.tickets.utils.BitmapUtils;
-import com.yyjlr.tickets.utils.ImageFileUtils;
+import com.yyjlr.tickets.helputils.BitmapUtils;
+import com.yyjlr.tickets.helputils.ImageFileUtils;
 import com.yyjlr.tickets.viewutils.cilpphoto.ClipImageLayout;
 
 import java.io.File;
@@ -40,6 +40,8 @@ public class ClipPhotoActivity extends BasePhotoActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_clip_photo);
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("裁剪图片");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);

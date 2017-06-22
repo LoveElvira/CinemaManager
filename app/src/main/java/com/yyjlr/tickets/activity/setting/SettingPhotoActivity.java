@@ -9,8 +9,8 @@ import android.widget.ImageView;
 
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.BasePhotoActivity;
-import com.yyjlr.tickets.utils.BitmapUtils;
-import com.yyjlr.tickets.utils.ImageFileUtils;
+import com.yyjlr.tickets.helputils.BitmapUtils;
+import com.yyjlr.tickets.helputils.ImageFileUtils;
 import com.yyjlr.tickets.viewutils.cilpphoto.ClipImageLayout;
 
 import java.io.IOException;

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_event__layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/size_5"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/item_event__image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_150"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/size_10"
+        android:paddingRight="@dimen/size_10"
+        android:paddingTop="@dimen/size_5">
+
+        <TextView
+            android:id="@+id/item_event__name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="舞马2017中国巡演北京站购票通道"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_13" />
+
+        <LinearLayout
+            android:id="@+id/item_event__collect_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_5">
+
+            <ImageView
+                android:layout_width="@dimen/size_15"
+                android:layout_height="@dimen/size_15"
+                android:layout_marginRight="@dimen/size_5"
+                android:tint="@color/orange_ff7a0f"
+                android:src="@mipmap/collect" />
+
+            <TextView
+                android:id="@+id/item_event__collect_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="112321"
+                android:textColor="@color/orange_ff7a0f"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/size_10"
+        android:paddingLeft="@dimen/size_10"
+        android:paddingRight="@dimen/size_10">
+
+        <TextView
+            android:id="@+id/item_event__time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="2017/04/05—2017/04/05"
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_12" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="剩"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12" />
+
+            <TextView
+                android:id="@+id/item_event__date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_5"
+                android:text="112321"
+                android:textColor="@color/red_de2500"
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

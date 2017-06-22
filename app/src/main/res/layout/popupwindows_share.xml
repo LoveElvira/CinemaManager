@@ -47,7 +47,8 @@
                 <ImageView
                     android:layout_width="@dimen/size_40"
                     android:layout_height="@dimen/size_40"
-                    android:src="@mipmap/weixin" />
+                    android:src="@mipmap/weixin"
+                    android:id="@+id/imageView" />
 
                 <TextView
                     style="@style/WrapWrap"
@@ -151,32 +152,20 @@
 
         </LinearLayout>
 
-
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <TextView
+            android:id="@+id/popup_share__cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_20"
             android:layout_marginRight="@dimen/size_20"
             android:layout_marginTop="@dimen/size_10"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
-
-
-            <TextView
-                android:id="@+id/popup_share__cancel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/size_12"
-                android:paddingBottom="@dimen/size_12"
-                android:background="@drawable/radius_blue_4"
-                android:gravity="center"
-                android:text="@string/text_cancel"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_15" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
-
+            android:background="@drawable/radius_blue_4"
+            android:gravity="center"
+            android:paddingBottom="@dimen/size_12"
+            android:paddingTop="@dimen/size_12"
+            android:text="@string/text_cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
 
     </LinearLayout>
 

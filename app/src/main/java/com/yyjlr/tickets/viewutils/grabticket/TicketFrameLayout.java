@@ -2,6 +2,7 @@ package com.yyjlr.tickets.viewutils.grabticket;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.model.ticket.TicketModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,7 @@ public class TicketFrameLayout extends FrameLayout {
 
     private int realIndex;
     private float realPercent;
+    private int dataSize = 0;
 
     public TicketFrameLayout(Context context) {
         this(context, null);
@@ -65,6 +68,7 @@ public class TicketFrameLayout extends FrameLayout {
     }
 
     public void addBottomContent(View vBottomContent) {
+        layBottomContainer.removeAllViews();
         layBottomContainer.addView(vBottomContent);
     }
 
@@ -75,8 +79,11 @@ public class TicketFrameLayout extends FrameLayout {
         mHeight = h;//获取屏幕的高度
 
         //初始化item  高 最大childExpandedHeight  最小childNormalHeight
-        childExpandedHeight = (int) (mWidth / 588f * 340);
-        childNormalHeight = (int) (mWidth / 588f * 244);
+//        childExpandedHeight = (int) (mWidth / 588f * 340);
+//        childNormalHeight = (int) (mWidth / 588f * 244);
+        childExpandedHeight = (int) (mHeight / 2f);
+        childNormalHeight = (int) (mHeight / 4f);
+
 
         if (!isInitFinish) {
             dataSetChanged();
@@ -102,7 +109,7 @@ public class TicketFrameLayout extends FrameLayout {
 
         if (mAdapter == null)
             return;
-        final int dataSize = mAdapter.getCount();
+        dataSize = mAdapter.getCount();
         childTotalHeight = (dataSize < 1 ? 0 : childNormalHeight * (dataSize - 1));
 
         scrollCallbacks.clear();
@@ -121,11 +128,13 @@ public class TicketFrameLayout extends FrameLayout {
             retailMeNotView.setTranslationY(i * childNormalHeight);
             addView(retailMeNotView);
         }
-
 //        layBottomContainer.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, childTotalHeight));
         layBottomContainer.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mHeight - (dataSize < 1 ? 0 : childExpandedHeight)));
+        TicketModel ticketModel = null;
+//        layBottomContainer.setData(dataSize, ticketModel, mHeight - (dataSize < 1 ? 0 : childExpandedHeight), mHeight - (dataSize < 1 ? 0 : childExpandedHeight));
         View view = layBottomContainer.getChildAt(0);
         view.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//        view.setLayoutParams(new RelativeLayout.LayoutParams(0, 0));
         int bottomTranslateY;
         if (dataSize < 1) {
             bottomTranslateY = 0;
@@ -134,11 +143,14 @@ public class TicketFrameLayout extends FrameLayout {
         } else {
             bottomTranslateY = childExpandedHeight + childNormalHeight * (dataSize - 1);
         }
-
-
         layBottomContainer.setTranslationY(bottomTranslateY);
         //layBottomContainer.setBackgroundColor(getResources().getColor(R.color.white));
+//        if (!(layBottomContainer instanceof OnScrollChangedListener))
+//            throw new IllegalArgumentException("adapter getView return child -> must impl RetailMeNotLayout.OnScrollChangedListener");
+//        else
+//            registerScrollChangedCallback(layBottomContainer);
         addView(layBottomContainer);
+
     }
 
     public void setAdapter(Adapter adapter) {
@@ -198,6 +210,7 @@ public class TicketFrameLayout extends FrameLayout {
                 mScroller.forceFinished(true);
                 int currIndex = realIndex + (realPercent > 0.5f ? 1 : 0);
                 int flingAbortScrollY = mScroller.getCurrY();
+                Log.i("ee", "----------------------aaa");
                 scrollerStartScroll(flingAbortScrollY, -flingAbortScrollY + currIndex * childNormalHeight, animationTime);
                 return;
             }
@@ -241,6 +254,7 @@ public class TicketFrameLayout extends FrameLayout {
             boolean handled = super.onTouchEvent(ev);
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_UP:
+                    Log.i("ee", "up");
                     mListener.onUp(ev);
                     break;
             }
@@ -287,16 +301,23 @@ public class TicketFrameLayout extends FrameLayout {
             isFling = true;
             touchUpScrollY = getScrollY();
             if (touchUpScrollY < 0) {
+                Log.i("ee", "----------------------bbb");
                 scrollerStartScroll(touchUpScrollY, 0 - touchUpScrollY, animationTime);
             } else if (touchUpScrollY > childTotalHeight) {
+                Log.i("ee", "----------------------ccc");
+                if (dataSize == 1) {
+                    isFling = false;
+                }
                 scrollerStartScroll(touchUpScrollY, childTotalHeight - touchUpScrollY, animationTime);
             } else {
                 if (Math.abs(velocityY) > minVelocity) {
                     isAnimMoving = true;
+                    Log.i("ee", "----------------------eee");
                     mScroller.fling(0, touchUpScrollY, 0, (int) -velocityY, 0, 0, 0, childTotalHeight);
                     computeScroll();
                 } else {
                     int currIndex = realIndex + (realPercent > 0.5f ? 1 : 0);
+                    Log.i("ee", "----------------------ddd");
                     scrollerStartScroll(touchUpScrollY, -touchUpScrollY + currIndex * childNormalHeight, animationTime);
                 }
             }
@@ -308,13 +329,18 @@ public class TicketFrameLayout extends FrameLayout {
             touchUpScrollY = getScrollY();
             if (!isFling) {
                 if (touchUpScrollY < 0) {
+                    Log.i("ee", "----------------------fff");
                     scrollerStartScroll(touchUpScrollY, 0 - touchUpScrollY, animationTime);
                 } else if (touchUpScrollY > childTotalHeight) {
+                    Log.i("ee", "----------------------ggg");
+                    if (dataSize == 1) {
+                        isFling = false;
+                    }
                     scrollerStartScroll(touchUpScrollY, childTotalHeight - touchUpScrollY, animationTime);
                 } else {
                     int currIndex = realIndex + (realPercent > 0.5f ? 1 : 0);
+                    Log.i("ee", "----------------------hhh");
                     scrollerStartScroll(touchUpScrollY, -touchUpScrollY + currIndex * childNormalHeight, animationTime);
-
                 }
             }
             return false;

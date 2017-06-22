@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/item_cinema__layout"
+        style="@style/MatchWrap"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_cinema__name"
+                style="@style/WrapWrap"
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/item_cinema__address"
+                style="@style/WrapWrap"
+                android:layout_marginTop="@dimen/size_5"
+                android:ellipsize="end"
+                android:maxEms="20"
+                android:singleLine="true"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_cinema__distance"
+            style="@style/WrapWrap"
+            android:textColor="@color/gray_929292"
+            android:textSize="@dimen/text_12" />
+
+        <ImageView
+            android:id="@+id/item_cinema__select"
+            android:layout_width="@dimen/size_20"
+            android:layout_height="@dimen/size_20"
+            android:src="@mipmap/sale_select"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/MatchOne"
+        android:background="@color/gray_f4f4f4" />
+
+</LinearLayout>

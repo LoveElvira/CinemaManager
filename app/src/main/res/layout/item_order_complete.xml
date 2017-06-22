@@ -5,25 +5,16 @@
 
     <RelativeLayout style="@style/MatchMatch">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            style="@style/MatchWrap"
+        <TextView
+            android:id="@+id/item_order__delete"
+            android:layout_width="@dimen/size_80"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/item_order_complete__rl_layout"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
-
-            <TextView
-                android:id="@+id/item_order__delete"
-                android:layout_width="@dimen/size_80"
-                android:layout_height="match_parent"
-                android:background="@color/red_de2500"
-                android:gravity="center"
-                android:text="@string/text_delete"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_14" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            android:background="@color/red_de2500"
+            android:gravity="center"
+            android:text="@string/text_delete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_14" />
 
         <RelativeLayout
             android:id="@+id/item_order_complete__rl_layout"

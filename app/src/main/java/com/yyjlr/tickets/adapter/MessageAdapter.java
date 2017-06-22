@@ -33,10 +33,22 @@ public class MessageAdapter extends BaseAdapter<MyMessageInfo> {
     protected void convert(BaseViewHolder helper, MyMessageInfo item, int position) {
         helper.setText(R.id.item_message__title, item.getTitle())
                 .setVisible(R.id.item_message__no_read, false)
+                .setVisible(R.id.item_message__select, false)
+                .setVisible(R.id.item_message__time_layout, true)
                 .setText(R.id.item_message__time, ChangeUtils.changeTime(item.getSendDate()))
                 .setOnClickListener(R.id.item_message__layout, new OnItemChildClickListener());
         if (item.getIsRead().equals("0")) {
             helper.setVisible(R.id.item_message__no_read, true);
+        }
+
+        if (item.isDelete() == true) {//TRUE 显示按钮
+            helper.setVisible(R.id.item_message__select, true)
+                    .setVisible(R.id.item_message__time_layout, false)
+                    .setImageResource(R.id.item_message__select, R.mipmap.sale_no_select);
+
+            if (item.getIsSelect() == 1) {
+                helper.setImageResource(R.id.item_message__select, R.mipmap.sale_select);
+            }
         }
     }
 

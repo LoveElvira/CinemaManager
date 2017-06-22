@@ -115,6 +115,9 @@ public class OkHttpClientManager {
         }
         //影院ID
         requestData.setAppDomain(Constant.AppDomain);
+
+        Log.i("appdomain", Constant.AppDomain);
+
         requestData.setCmd(cmd);
         requestData.setParameters(requestMainDataData);
         requestData.setAppVersion(Constant.AppVersion);
@@ -138,6 +141,7 @@ public class OkHttpClientManager {
         }
         //影院ID
         requestData.setAppDomain(Constant.AppDomain);
+        Log.i("appdomain", Constant.AppDomain);
         requestData.setCmd(cmd);
         requestData.setParameters(requestMainDataData);
         requestData.setAppVersion(Constant.AppVersion);
@@ -207,6 +211,7 @@ public class OkHttpClientManager {
         requestData.setCmd(cmd);
         //影院ID
         requestData.setAppDomain(Constant.AppDomain);
+        Log.i("appdomain", Constant.AppDomain);
         requestData.setParameters(requestMainDataData);
         String url = Config.URL_SERVICE;
         Request request = buildPostRequest(url, requestData);
@@ -597,7 +602,7 @@ public class OkHttpClientManager {
         mDelivery.post(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder builer = new AlertDialog.Builder(AbstractActivity.abstractActivity);
+                AlertDialog.Builder builer = new AlertDialog.Builder(Application.getInstance().getCurrentActivity());
                 // builer.setTitle(versionInfo.getAndrTitle());
                 //  builer.setMessage(versionInfo.getAndrDescription().toString());
                 // builer.setTitle(R.string.sure_log_out);
@@ -605,9 +610,11 @@ public class OkHttpClientManager {
                 builer.setPositiveButton(Application.getInstance().getCurrentActivity().getResources().getString(R.string.text_confirm), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Application.getInstance().finishAllActivity();
+                        SharePrefUtil.putString(Constant.FILE_NAME, "flag", "0", Application.getInstance().getCurrentActivity());
+                        SharePrefUtil.putString(Constant.FILE_NAME, "token", "", Application.getInstance().getCurrentActivity());
                         Intent intents = new Intent(Application.getInstance().getApplicationContext(), LoginActivity.class);
                         intents.putExtra("loginflag", "1");
-                        AbstractActivity.abstractActivity.startActivity(intents);
+                        Application.getInstance().getCurrentActivity().startActivityForResult(intents, 0x05);
                         dialog.dismiss();
                     }
                 });

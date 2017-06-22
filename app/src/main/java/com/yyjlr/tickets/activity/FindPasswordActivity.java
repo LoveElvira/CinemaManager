@@ -55,6 +55,8 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("找回密码");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);

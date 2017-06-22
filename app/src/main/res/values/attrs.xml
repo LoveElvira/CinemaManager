@@ -77,26 +77,26 @@
     </declare-styleable>
 
     <declare-styleable name="SeatTableView">
-        <attr name="seat_type_ordinary" format="reference"/>
-        <attr name="seat_type_ordinary_1" format="reference"/>
-        <attr name="seat_type_ordinary_2" format="reference"/>
-        <attr name="seat_type_ordinary_3" format="reference"/>
-        <attr name="seat_type_lovers_left" format="reference"/>
-        <attr name="seat_type_lovers_left_1" format="reference"/>
-        <attr name="seat_type_lovers_left_2" format="reference"/>
-        <attr name="seat_type_lovers_left_3" format="reference"/>
-        <attr name="seat_type_lovers_right" format="reference"/>
-        <attr name="seat_type_lovers_right_1" format="reference"/>
-        <attr name="seat_type_lovers_right_2" format="reference"/>
-        <attr name="seat_type_lovers_right_3" format="reference"/>
-        <attr name="seat_type_disabled" format="reference"/>
-        <attr name="seat_type_disabled_1" format="reference"/>
-        <attr name="seat_type_disabled_2" format="reference"/>
-        <attr name="seat_type_disabled_3" format="reference"/>
-        <attr name="seat_type_vip" format="reference"/>
-        <attr name="seat_type_vip_1" format="reference"/>
-        <attr name="seat_type_vip_2" format="reference"/>
-        <attr name="seat_type_vip_3" format="reference"/>
+        <attr name="seat_type_ordinary" format="reference" />
+        <attr name="seat_type_ordinary_1" format="reference" />
+        <attr name="seat_type_ordinary_2" format="reference" />
+        <attr name="seat_type_ordinary_3" format="reference" />
+        <attr name="seat_type_lovers_left" format="reference" />
+        <attr name="seat_type_lovers_left_1" format="reference" />
+        <attr name="seat_type_lovers_left_2" format="reference" />
+        <attr name="seat_type_lovers_left_3" format="reference" />
+        <attr name="seat_type_lovers_right" format="reference" />
+        <attr name="seat_type_lovers_right_1" format="reference" />
+        <attr name="seat_type_lovers_right_2" format="reference" />
+        <attr name="seat_type_lovers_right_3" format="reference" />
+        <attr name="seat_type_disabled" format="reference" />
+        <attr name="seat_type_disabled_1" format="reference" />
+        <attr name="seat_type_disabled_2" format="reference" />
+        <attr name="seat_type_disabled_3" format="reference" />
+        <attr name="seat_type_vip" format="reference" />
+        <attr name="seat_type_vip_1" format="reference" />
+        <attr name="seat_type_vip_2" format="reference" />
+        <attr name="seat_type_vip_3" format="reference" />
 
         <attr name="overview_checked" format="color" />
         <attr name="overview_sold" format="color" />
@@ -133,6 +133,27 @@
             <enum name="bottom" value="2" />
         </attr>
 
+    </declare-styleable>
+    <!-- 自定义星星属性 -->
+    <declare-styleable name="Star">
+        <!--//星星数量-->
+        <attr name="starsNum" format="integer"></attr>
+        <!--//星星宽度-->
+        <attr name="starWidth" format="dimension"></attr>
+        <!--//星星高度-->
+        <attr name="starHeight" format="dimension"></attr>
+        <!--//星星间距-->
+        <attr name="starDistance" format="dimension"></attr>
+        <!--//星星背景-->
+        <attr name="starBackground" format="reference"></attr>
+        <!--//星星变化背景-->
+        <attr name="starDrawBackground" format="reference"></attr>
+        <!--//控件是否可以点击-->
+        <attr name="starClickable" format="boolean"></attr>
+
+    </declare-styleable>
+    <declare-styleable name="CircleTextProgressbar">
+        <attr name="in_circle_color" format="color" />
     </declare-styleable>
 
 </resources>

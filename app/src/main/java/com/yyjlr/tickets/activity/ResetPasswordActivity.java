@@ -35,6 +35,8 @@ public class ResetPasswordActivity extends AbstractActivity implements View.OnCl
     }
 
     private void initView(){
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("重设密码");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);

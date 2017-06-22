@@ -46,6 +46,8 @@ public class UpdatePasswordActivity extends AbstractActivity implements View.OnC
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("修改密码");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);

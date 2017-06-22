@@ -25,7 +25,7 @@ public class Application extends android.app.Application {
     private static IDataService iDataService;
     private ArrayList<AbstractActivity> activitys;          // 全局Activity集合
 
-    static {
+    {
         if (Config.DEBUG) {
             iDataService = new MockupDataServiceImp();
         } else {
@@ -84,7 +84,7 @@ public class Application extends android.app.Application {
     /**
      * 结束指定Activity
      */
-    public void finishActivity(AbstractActivity activity) {
+    public void finishActivity(Activity activity) {
         String className = activity.getClass().getName();
         for (Activity at : activitys) {
             if (className.equals(at.getClass().getName())) {

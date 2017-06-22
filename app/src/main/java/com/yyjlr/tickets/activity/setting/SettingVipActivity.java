@@ -25,9 +25,11 @@ import com.yyjlr.tickets.activity.VipBoundActivity;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.pay.MemberCard;
 import com.yyjlr.tickets.model.pay.MemberCardList;
+import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
+import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import java.util.Calendar;
 import java.util.List;
@@ -44,16 +46,20 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
     private TextView boundVip;//绑定会员卡
     private RelativeLayout noHaveVipLayout;//没有会员卡的布局
     private LinearLayout cardLayout;//存放会员卡列表的父布局
+    private String cardNo = "";//解绑的会员卡卡号
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysetting_vip);
+        customDialog = new CustomDialog(SettingVipActivity.this, "加载中...");
         initView();
         getCardList();
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_card_title));
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -69,7 +75,7 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
 
     //动态添加会员卡信息
     private View addVipCard(final MemberCard memberCard) {
-        View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_card, null, false);
+        View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_card_, null, false);
         LinearLayout parent = (LinearLayout) view.findViewById(R.id.item_card__item_layout);
         TextView cardNo = (TextView) view.findViewById(R.id.item_card__num);
         TextView cardPrice = (TextView) view.findViewById(R.id.item_card__price);
@@ -91,13 +97,14 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
             public void onClick(View v) {
                 startActivityForResult(
                         new Intent(SettingVipActivity.this, RechargeActivity.class)
-                                .putExtra("cardInfo", memberCard),
+                                .putExtra("cardNo", memberCard.getCardNo()),
                         CODE_REQUEST_TWO);
             }
         });
         unBound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SettingVipActivity.this.cardNo = memberCard.getCardNo();
                 cancelPopupWindow();
             }
         });
@@ -107,6 +114,7 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
 
     //获取会员卡列表
     private void getCardList() {
+        customDialog.show();
         RequestNull requestNull = new RequestNull();
         OkHttpClientManager.postAsyn(Config.GET_CARD, new OkHttpClientManager.ResultCallback<MemberCardList>() {
 
@@ -114,6 +122,7 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
                 showShortToast(info.getInfo());
+                customDialog.dismiss();
             }
 
             @Override
@@ -131,15 +140,61 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                     cardLayout.setVisibility(View.GONE);
                     noHaveVipLayout.setVisibility(View.VISIBLE);
                 }
-
+                customDialog.dismiss();
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
 //                showShortToast(exception.getMessage());
+                customDialog.dismiss();
             }
         }, requestNull, MemberCardList.class, Application.getInstance().getCurrentActivity());
+    }
+
+    //解绑会员卡
+    private void removeCard(String cardNo, String pwd) {
+        customDialog.show();
+        IdRequest idRequest = new IdRequest();
+        idRequest.setCardNo(cardNo);
+        OkHttpClientManager.postAsyn(Config.REMOVE_CARD, new OkHttpClientManager.ResultCallback<MemberCardList>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+                showShortToast(info.getInfo());
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(MemberCardList response) {
+                if (response != null) {
+                    if (response.getMemberCardList() != null && response.getMemberCardList().size() > 0) {
+                        cardLayout.removeAllViews();
+                        cardLayout.setVisibility(View.VISIBLE);
+                        noHaveVipLayout.setVisibility(View.GONE);
+                        for (int i = 0; i < response.getMemberCardList().size(); i++) {
+                            cardLayout.addView(addVipCard(response.getMemberCardList().get(i)));
+                        }
+                    } else {
+                        cardLayout.removeAllViews();
+                        cardLayout.setVisibility(View.GONE);
+                        noHaveVipLayout.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    cardLayout.setVisibility(View.GONE);
+                    noHaveVipLayout.setVisibility(View.VISIBLE);
+                }
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+//                showShortToast(exception.getMessage());
+                customDialog.dismiss();
+            }
+        }, idRequest, MemberCardList.class, Application.getInstance().getCurrentActivity());
     }
 
 
@@ -158,6 +213,7 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                             CODE_REQUEST_ONE);
                     break;
                 case R.id.popup_unbound__confirm:
+                    removeCard(SettingVipActivity.this.cardNo, null);
                     mPopupWindow.dismiss();
                     break;
                 case R.id.popup_unbound__cancel:
@@ -225,10 +281,8 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                 }
                 break;
             case CODE_REQUEST_TWO:
-                if (data.getBooleanExtra("isUnBound", false)) {
-                    cardLayout.removeAllViews();
-                    cardLayout.setVisibility(View.GONE);
-                    noHaveVipLayout.setVisibility(View.VISIBLE);
+                if (data.getBooleanExtra("isUpdate", false)) {
+                    getCardList();
                 }
                 break;
         }

@@ -21,6 +21,7 @@ import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.activity.VipBoundActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.pay.CouponInfo;
@@ -43,22 +44,19 @@ import java.util.List;
  * Created by Elvira on 2017/2/3.
  * 兑换券支付
  */
-public class VoucherPayContent extends LinearLayout implements View.OnClickListener {
-
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
+public class VoucherPayContent extends BaseLinearLayout implements View.OnClickListener {
 
     private LinearLayout voucherLayout;
     private TextView confirm;//确认
     private TextView confirmPrice;//确认金额
 
-    private View view;
     private String orderId;
     private int price;
     private int num;//兑换券数量
     private int payTypeId;//支付类型
     private List<String> couponList;
     private List<CouponInfo> couponInfoList = null;//后台返回的数据 兑换券是否可用
+    private int position = -1;
 
     public VoucherPayContent(Context context) {
         this(context, null);
@@ -67,15 +65,15 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
     public VoucherPayContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_voucher_pay_way, this);
-        lastClickTime = 0;
         initView();
     }
 
-    public void initDate(int num, int price, int payTypeId, String orderId) {
+    public void initDate(int num, int price, int payTypeId, String orderId, int position) {
         this.orderId = orderId;
         this.num = num;
         this.price = price;
         this.payTypeId = payTypeId;
+        this.position = position;
         if (num > 0) {
             voucherLayout.removeAllViews();
             couponList = new ArrayList<>();
@@ -85,6 +83,11 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
             }
         }
         confirmPrice.setText(ChangeUtils.save2Decimal(price));
+    }
+
+    public void setConfirmClickable(){
+        confirm.setClickable(false);
+        confirm.setBackgroundColor(getResources().getColor(R.color.gray_c7c7c7));
     }
 
     private void initView() {
@@ -190,6 +193,12 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
                     }
                 } else {
                     Toast.makeText(getContext(), info.getInfo().getErrMsg().toString(), Toast.LENGTH_SHORT).show();
+                    if ("410".equals(info.getCode())) {
+                        Application.getInstance().getCurrentActivity().setResult(0x10, new Intent()
+                                .putExtra("isCancel", true)
+                                .putExtra("position", position));
+                        PaySelectActivity.activity.finish();
+                    }
                 }
 //                if ("101".equals(info.getCode())) {
 //                    Log.i("ee", "---------------------" + info.getInfo().toString());
@@ -231,10 +240,9 @@ public class VoucherPayContent extends LinearLayout implements View.OnClickListe
             public void onResponse(CouponList response) {
 //                Log.i("ee", new Gson().toJson(response));
 //                couponInfoList = response.getCouponList();
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), SettingOrderDetailsActivity.class)
+                Application.getInstance().getCurrentActivity().startActivityForResult(new Intent(getContext(), SettingOrderDetailsActivity.class)
                         .putExtra("orderId", orderId)
-                        .putExtra("status", 3));
-                PaySelectActivity.activity.finish();
+                        .putExtra("status", 3), 0x09);
             }
 
             @Override

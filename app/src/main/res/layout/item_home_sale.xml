@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_home_sale__layout"
+    android:layout_width="@dimen/size_70"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/size_10"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/item_home_sale__image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_80"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_f4f4f4"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_home_sale__name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_3"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="奇幻城堡"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_13" />
+
+        <TextView
+            android:id="@+id/item_home_sale__price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_3"
+            android:layout_marginTop="@dimen/size_3"
+            android:gravity="center"
+            android:text="¥ 15.00"
+            android:textColor="@color/orange_ffb171"
+            android:textSize="@dimen/text_11"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -24,7 +24,17 @@ public class EventModel {
     private int interestUsers;
     private List<CollectUserInfo> interestUserInfo;
 
+    private String jumpUrl;
+
     public EventModel() {
+    }
+
+    public String getJumpUrl() {
+        return jumpUrl;
+    }
+
+    public void setJumpUrl(String jumpUrl) {
+        this.jumpUrl = jumpUrl;
     }
 
     public long getActivityId() {

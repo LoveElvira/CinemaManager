@@ -18,13 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.utils.ImageFileUtils;
+import com.yyjlr.tickets.helputils.ImageFileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

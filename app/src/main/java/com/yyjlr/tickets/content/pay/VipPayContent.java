@@ -1,13 +1,8 @@
 package com.yyjlr.tickets.content.pay;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.os.Message;
-import android.support.v7.app.AlertDialog;
-import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,15 +18,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.sdk.app.PayTask;
 import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.EventActivity;
 import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.activity.VipBoundActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.pay.MemberCard;
@@ -40,18 +34,13 @@ import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Elvira on 2016/8/17.
  * 会员卡支付
  */
-public class VipPayContent extends LinearLayout implements View.OnClickListener {
-
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
+public class VipPayContent extends BaseLinearLayout implements View.OnClickListener {
 
     private TextView boundVipCard;//绑定会员卡
     private ImageView noVipCard;//没有会员卡
@@ -67,12 +56,12 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
     private TextView msg;
     private EditText pwd;
 
-    private View view;
     private String orderId;
     private int price;
     private List<MemberCard> cardList;
     private int payTypeId;//支付分类
     private String cardNo = "";
+    private int position = -1;
 
     public VipPayContent(Context context) {
         this(context, null);
@@ -81,15 +70,15 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
     public VipPayContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_pay_select_vip_pay, this);
-        lastClickTime = 0;
         initView();
     }
 
-    public void initDate(List<MemberCard> cardList, int price, int payTypeId, String orderId) {
+    public void initDate(List<MemberCard> cardList, int price, int payTypeId, String orderId, int position) {
         this.orderId = orderId;
         this.cardList = cardList;
         this.price = price;
         this.payTypeId = payTypeId;
+        this.position = position;
         if (cardList.size() > 0) {
             confirmLayout.setVisibility(VISIBLE);
             cardLayout.setVisibility(VISIBLE);
@@ -97,10 +86,15 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
             noVipCard.setVisibility(GONE);
             cardLayout.removeAllViews();
             for (int i = 0; i < this.cardList.size(); i++) {
-                cardLayout.addView(addVipCard(this.cardList.get(i)));
+                cardLayout.addView(addVipCard(i, this.cardList.get(i)));
             }
         }
         confirmPrice.setText(ChangeUtils.save2Decimal(price));
+    }
+
+    public void setConfirmClickable(){
+        confirm.setClickable(false);
+        confirm.setBackgroundColor(getResources().getColor(R.color.gray_c7c7c7));
     }
 
     private void initView() {
@@ -119,7 +113,7 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
     }
 
     //动态添加会员卡信息
-    private View addVipCard(final MemberCard memberCard) {
+    private View addVipCard(int position, final MemberCard memberCard) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.item_card, null, false);
         LinearLayout cardLayout = (LinearLayout) view.findViewById(R.id.item_card__layout);
         final TextView cardNo = (TextView) view.findViewById(R.id.item_card__num);
@@ -127,18 +121,14 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
         final ImageView select = (ImageView) view.findViewById(R.id.item_card__select);
         cardNo.setText("No." + memberCard.getCardNo());
         cardPrice.setText("¥ " + ChangeUtils.save2Decimal(memberCard.getBalance()));
-        select.setVisibility(GONE);
+        select.setVisibility(VISIBLE);
         //添加点击事件
         cardLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                long currentTime = Calendar.getInstance().getTimeInMillis();
-                if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-                    lastClickTime = currentTime;
-                    VipPayContent.this.cardNo = memberCard.getCardNo();
-                    getVipPrice(memberCard.getCardNo());
-                    select.setVisibility(VISIBLE);
-                }
+                VipPayContent.this.cardNo = memberCard.getCardNo();
+                getVipPrice(memberCard.getCardNo());
+                select.setImageResource(R.mipmap.sale_select);
             }
         });
 
@@ -216,16 +206,21 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
                 Toast.makeText(getContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
+                if ("410".equals(info.getCode())) {
+                    Application.getInstance().getCurrentActivity().setResult(0x10, new Intent()
+                            .putExtra("isCancel", true)
+                            .putExtra("position", position));
+                    PaySelectActivity.activity.finish();
+                }
 //                customDialog.dismiss();
             }
 
             @Override
             public void onResponse(ResponeNull response) {
 //                Log.i("ee", new Gson().toJson(response));
-                Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), SettingOrderDetailsActivity.class)
+                Application.getInstance().getCurrentActivity().startActivityForResult(new Intent(getContext(), SettingOrderDetailsActivity.class)
                         .putExtra("orderId", orderId)
-                        .putExtra("status", 3));
-                PaySelectActivity.activity.finish();
+                        .putExtra("status", 3), 0x09);
             }
 
             @Override
@@ -280,35 +275,35 @@ public class VipPayContent extends LinearLayout implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            switch (view.getId()) {
-                case R.id.content_pay_select__vip_bound:
-                    Application.getInstance().getCurrentActivity()
-                            .startActivityForResult(new Intent(
-                                    Application.getInstance().getCurrentActivity(),
-                                    VipBoundActivity.class), 0x06);
-                    break;
-                case R.id.content_pay_select__confirm_pay://确认支付
+        switch (view.getId()) {
+            case R.id.content_pay_select__vip_bound:
+                Application.getInstance().getCurrentActivity()
+                        .startActivityForResult(new Intent(
+                                Application.getInstance().getCurrentActivity(),
+                                VipBoundActivity.class), 0x08);
+                break;
+            case R.id.content_pay_select__confirm_pay://确认支付
+                if (!"".equals(cardNo)) {
                     showEditPwd();
-                    break;
+                } else {
+                    Toast.makeText(getContext(), "请先选择会员卡", Toast.LENGTH_SHORT).show();
+                }
+                break;
 
-                case R.id.popup_pwd__cancel:
-                    mPopupWindow.dismiss();
-                    break;
-                case R.id.popup_pwd__confirm:
+            case R.id.popup_pwd__cancel:
+                mPopupWindow.dismiss();
+                break;
+            case R.id.popup_pwd__confirm:
 
-                    String pwd = this.pwd.getText().toString().trim();
-                    if ("".equals(pwd)) {
-                        msg.setText("请输入正确的密码");
-                        msg.setVisibility(VISIBLE);
-                        return;
-                    }
+                String pwd = this.pwd.getText().toString().trim();
+                if ("".equals(pwd)) {
+                    msg.setText("请输入正确的密码");
+                    msg.setVisibility(VISIBLE);
+                    return;
+                }
 
-                    checkoutPwd(cardNo, pwd);
-                    break;
-            }
+                checkoutPwd(cardNo, pwd);
+                break;
         }
     }
 }

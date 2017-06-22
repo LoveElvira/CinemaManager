@@ -12,7 +12,7 @@ public class AdvertModel {
 //    "showTime": -1, // 自动跳过延迟时间（毫秒），只有当启用自动跳过时该参数才有效
 //    "advertList":
     private int autoSkip; // 是否自动跳过
-    private int showTime;// 自动跳过延迟时间（毫秒），只有当启用自动跳过时该参数才有效
+    private long showTime;// 自动跳过延迟时间（秒），只有当启用自动跳过时该参数才有效
     private List<Advert> advertList;//广告信息列表
 
     public AdvertModel() {
@@ -26,11 +26,11 @@ public class AdvertModel {
         this.autoSkip = autoSkip;
     }
 
-    public int getShowTime() {
+    public long getShowTime() {
         return showTime;
     }
 
-    public void setShowTime(int showTime) {
+    public void setShowTime(long showTime) {
         this.showTime = showTime;
     }
 

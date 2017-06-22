@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch"
     android:orientation="vertical"
@@ -23,7 +22,7 @@
                     android:id="@+id/fragment_setting__head_img"
                     android:layout_width="@dimen/size_80"
                     android:layout_height="@dimen/size_80"
-                    android:src="@mipmap/head_image_default"/>
+                    android:src="@mipmap/head_image_default" />
 
                 <ImageView
                     android:id="@+id/fragment_setting__sex"
@@ -38,46 +37,37 @@
                 style="@style/WrapWrap"
                 android:layout_marginTop="@dimen/size_5"
                 android:padding="@dimen/size_5"
-                android:textColor="@color/white"
                 android:text="未登录"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_15" />
 
         </LinearLayout>
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+
+        <LinearLayout
+            android:id="@+id/fragment_setting__service"
             style="@style/WrapWrap"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:background="@drawable/right_circle_gray"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_7">
 
-            <LinearLayout
-                android:id="@+id/fragment_setting__service"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/right_circle_gray"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/size_7">
+            <ImageView
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_20"
+                android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_5"
+                android:src="@mipmap/service_icon" />
 
-                <ImageView
-                    android:layout_width="@dimen/size_20"
-                    android:layout_height="@dimen/size_20"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:layout_marginRight="@dimen/size_5"
-                    android:src="@mipmap/service_icon" />
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:text="@string/text_call_service"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_12" />
-            </LinearLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <TextView
+                style="@style/WrapWrap"
+                android:text="@string/text_call_service"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
     </RelativeLayout>
-    l
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,110 +76,89 @@
         android:paddingLeft="@dimen/size_20"
         android:paddingRight="@dimen/size_20">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+
+        <RelativeLayout
+            android:id="@+id/fragment_setting__myaccount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:background="@drawable/radius_white_4_alpha_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
 
-            <RelativeLayout
-                android:id="@+id/fragment_setting__myaccount"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_white_4_alpha_3"
-                android:orientation="vertical"
-                android:padding="@dimen/size_10">
+            <ImageView
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@mipmap/my_account" />
 
-                <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:src="@mipmap/my_account" />
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/text_my_account"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
 
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/text_my_account"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
+        </RelativeLayout>
 
-            </RelativeLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <RelativeLayout
+            android:id="@+id/fragment_setting__myorder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/size_5"
             android:layout_marginRight="@dimen/size_5"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:background="@drawable/radius_white_4_alpha_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
 
-            <RelativeLayout
-                android:id="@+id/fragment_setting__myorder"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_white_4_alpha_3"
-                android:orientation="vertical"
-                android:padding="@dimen/size_10">
-
-                <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:src="@mipmap/my_order" />
+            <ImageView
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@mipmap/my_order" />
 
 
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="@string/text_my_order"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
-            </RelativeLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:text="@string/text_my_order"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+        </RelativeLayout>
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+
+        <RelativeLayout
+            android:id="@+id/fragment_setting__vip"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:background="@drawable/radius_white_4_alpha_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
 
-            <RelativeLayout
-                android:id="@+id/fragment_setting__vip"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_white_4_alpha_3"
-                android:orientation="vertical"
-                android:padding="@dimen/size_10">
+            <ImageView
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@mipmap/huiyuan" />
 
-                <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:src="@mipmap/huiyuan" />
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="@string/text_huiyuan"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
-            </RelativeLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:text="@string/text_huiyuan"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -200,112 +169,102 @@
         android:paddingLeft="@dimen/size_20"
         android:paddingRight="@dimen/size_20">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+
+        <RelativeLayout
+            android:id="@+id/fragment_setting__points"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:background="@drawable/radius_white_4_alpha_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
 
-            <RelativeLayout
-                android:id="@+id/fragment_setting__points"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_white_4_alpha_3"
-                android:orientation="vertical"
-                android:padding="@dimen/size_10">
+            <ImageView
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@mipmap/points" />
 
-                <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:src="@mipmap/points" />
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:text="我的积分"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
 
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="我的积分"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
+        </RelativeLayout>
 
-            </RelativeLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
-
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <RelativeLayout
+            android:id="@+id/fragment_setting__message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/size_5"
             android:layout_marginRight="@dimen/size_5"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:background="@drawable/radius_white_4_alpha_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
 
-            <RelativeLayout
-                android:id="@+id/fragment_setting__message"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_white_4_alpha_3"
-                android:orientation="vertical"
-                android:padding="@dimen/size_10">
+            <ImageView
+                android:id="@+id/fragment_setting__message_image"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@mipmap/message" />
 
-                <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:src="@mipmap/message" />
+            <TextView
+                android:id="@+id/fragment_setting__message_num"
+                android:layout_width="@dimen/size_15"
+                android:layout_height="@dimen/size_15"
+                android:layout_marginLeft="-10dp"
+                android:layout_marginTop="@dimen/size_7"
+                android:layout_toRightOf="@+id/fragment_setting__message_image"
+                android:background="@drawable/circle_red"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_8"
+                android:visibility="gone" />
 
 
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="@string/text_message"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
-            </RelativeLayout>
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:text="@string/text_message"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+        </RelativeLayout>
 
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
-
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <RelativeLayout
+            android:id="@+id/fragment_setting__follow"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:background="@drawable/radius_white_4_alpha_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
 
-            <RelativeLayout
-                android:id="@+id/fragment_setting__follow"
-                style="@style/MatchMatch"
-                android:background="@drawable/radius_white_4_alpha_3"
-                android:orientation="vertical"
-                android:padding="@dimen/size_10">
+            <ImageView
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@mipmap/guanzhu" />
 
-                <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:src="@mipmap/guanzhu" />
-
-                <TextView
-                    style="@style/WrapWrap"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="@string/text_collect"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
-            </RelativeLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10"
+                android:text="@string/text_collect"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -240,25 +240,18 @@
         </LinearLayout>
         <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
-
     </LinearLayout>
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+    <TextView
+        android:id="@+id/content_setting_account__quit"
         style="@style/MatchWrap"
+        android:layout_marginBottom="@dimen/size_20"
         android:layout_marginLeft="@dimen/size_30"
         android:layout_marginRight="@dimen/size_30"
-        android:layout_marginBottom="@dimen/size_20"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
-
-        <Button
-            android:id="@+id/content_setting_account__quit"
-            style="@style/MatchWrap"
-            android:background="@drawable/radius_blue_4"
-            android:text="退出登录"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_15" />
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        android:padding="@dimen/size_15"
+        android:gravity="center"
+        android:background="@drawable/radius_blue_4"
+        android:text="退出登录"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
 </LinearLayout>

@@ -27,6 +27,7 @@ import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.FilmSeasonEntity;
 import com.yyjlr.tickets.model.FilmTimeEntity;
 import com.yyjlr.tickets.model.film.FilmPlan;
+import com.yyjlr.tickets.model.film.FilmPlanContent;
 import com.yyjlr.tickets.model.film.FilmPlanModel;
 import com.yyjlr.tickets.requestdata.IdRequest;
 import com.yyjlr.tickets.service.Error;
@@ -72,6 +73,8 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
@@ -180,12 +183,14 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            switch (view.getId()) {
-                case R.id.item_schedule__buy_ticket://购票
-                case R.id.item_schedule__parent://购票
+
+        switch (view.getId()) {
+
+            case R.id.item_schedule__buy_ticket://购票
+            case R.id.item_schedule__parent://购票
+                long currentTime = Calendar.getInstance().getTimeInMillis();
+                if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                    lastClickTime = currentTime;
                     String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", FilmScheduleActivity.this);
                     if (isLogin.equals("1")) {
                         startActivity(new Intent(getBaseContext(), FilmSelectSeatActivity.class)
@@ -194,31 +199,38 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
                     } else {
                         startActivity(LoginActivity.class);
                     }
-                    break;
-                case R.id.item_film_schedule__layout_parent://选择时间item
-                    List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-                    for (int i = 0; i < mapList.size(); i++) {
-                        Map<String, String> map = new HashMap<String, String>();
-                        if (i == position)
-                            map.put("show", "1");
-                        else
-                            map.put("show", "0");
-                        map.put("date", mapList.get(i).get("date"));
+                }
+                break;
+            case R.id.item_film_schedule__layout_parent://选择时间item
+                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+                for (int i = 0; i < mapList.size(); i++) {
+                    Map<String, String> map = new HashMap<String, String>();
+                    if (i == position)
+                        map.put("show", "1");
+                    else
+                        map.put("show", "0");
+                    map.put("date", mapList.get(i).get("date"));
 //                    map.put("time", mapList.get(i).get("time"));
-                        list.add(map);
-                    }
-                    mapList.clear();
-                    mapList = list;
-                    timeAdapter.setNewData(mapList);
+                    list.add(map);
+                }
+                mapList.clear();
+                mapList = list;
+                timeAdapter.setNewData(mapList);
 
-                    this.position = position;
-                    seasonAdapter = new FilmScheduleSeasonAdapter(filmPlanList.get(position).getSessionList());
+                this.position = position;
+                if (filmPlanList.get(this.position).getSessionList() != null && filmPlanList.get(this.position).getSessionList().size() > 0) {
+                    seasonAdapter = new FilmScheduleSeasonAdapter(filmPlanList.get(this.position).getSessionList());
                     listView.setAdapter(seasonAdapter);
                     seasonAdapter.setOnRecyclerViewItemChildClickListener(FilmScheduleActivity.this);
                     seasonAdapter.notifyDataSetChanged();
+                } else {
+                    List<FilmPlanContent> filmPlanContentList = new ArrayList<>();
+                    seasonAdapter = new FilmScheduleSeasonAdapter(filmPlanContentList);
+                    listView.setAdapter(seasonAdapter);
+                    seasonAdapter.notifyDataSetChanged();
+                }
 
-                    break;
-            }
+                break;
         }
     }
 

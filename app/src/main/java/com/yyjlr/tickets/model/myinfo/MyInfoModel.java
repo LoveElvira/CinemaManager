@@ -13,8 +13,17 @@ public class MyInfoModel {
     private String birthday; // 生日
     private String phone; // 手机号码
     private String sexImgUrl;//性别图标
+    private String unReadMsg;
 
     public MyInfoModel() {
+    }
+
+    public String getUnReadMsg() {
+        return unReadMsg;
+    }
+
+    public void setUnReadMsg(String unReadMsg) {
+        this.unReadMsg = unReadMsg;
     }
 
     public int getUserId() {

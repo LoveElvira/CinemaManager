@@ -10,8 +10,8 @@ import android.view.WindowManager;
 public class AppManager {
 
     private static AppManager mAppManager = null;
-    private static int width = 0;
-    private static int height = 0;
+    private int width = 0;
+    private int height = 0;
 
     public static AppManager getInstance() {
         if (null == mAppManager) {

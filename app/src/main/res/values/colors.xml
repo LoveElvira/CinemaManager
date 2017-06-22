@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6677cf</color>
-    <color name="colorPrimaryDark">#6677cf</color>
+    <color name="colorPrimary">#486FBD</color><!--6499d6-->
+    <color name="colorPrimaryDark">#486FBD</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="bg_gray">#F5F5F5</color>
@@ -16,24 +16,30 @@
     <color name="black">#000</color>
     <color name="black_2c2c2c">#2c2c2c</color>
     <color name="black_333333">#333333</color>
+    <color name="black_343434">#343434</color>
     <color name="black_363636">#363636</color>
+    <color name="black_666666">#666666</color>
     <color name="black_alpha_3">#33000000</color>
 
 
     <color name="gray_929292">#929292</color>
+    <color name="gray_eeeeee">#eeeeee</color>
     <color name="gray_a1a1a1">#a1a1a1</color>
     <color name="gray_b9b9b9">#b9b9b9</color>
     <color name="gray_c3c3c3">#c3c3c3</color>
+    <color name="gray_b2b2b2">#b2b2b2</color>
     <color name="gray_c6c6c6">#c6c6c6</color>
     <color name="gray_c7c7c7">#c7c7c7</color>
     <color name="gray_cccccc">#cccccc</color>
     <color name="gray_cbcbcb">#cbcbcb</color>
     <color name="gray_cfcfcf">#cfcfcf</color>
     <color name="gray_dcdcdc">#dcdcdc</color>
-    <color name="gray_e7e7e7">#e7e7e7</color>
+    <!--<color name="gray_e7e7e7">#e7e7e7</color>-->
+    <color name="gray_e7e7e7">#dcdcdc</color>
     <color name="gray_e4e4e4">#e4e4e4</color>
     <color name="gray_ebebeb">#ebebeb</color>
     <color name="gray_f4f4f4">#f4f4f4</color>
+    <color name="gray_f7f7f7">#F7F7F7</color>
     <color name="gray_alpha_2">#22aaaaaa</color>
 
     <color name="orange_ff7b0f">#ff7b0f</color>
@@ -43,7 +49,8 @@
     <color name="orange_alpha_4">#44ff7a0f</color>
     <color name="orange_alpha_6">#66ff6c00</color>
 
-    <color name="blue_6499d6">#6499d6</color>
+    <color name="blue_6499d6">#645db6</color>
+    <color name="blue_2AABE2">#2AABE2</color>
 
     <color name="red_c80f0f">#c80f0f</color>
     <color name="red_e00102">#e00102</color>
@@ -51,5 +58,11 @@
     <color name="red_de2500">#de2500</color>
 
     <color name="green">#7fbe26</color>
+
+
+    <color name="prompt_success">#31c27c</color>
+    <!--ff0000-->
+    <color name="prompt_error">#99000000</color>
+    <color name="prompt_warning">#f0633d</color>
 
 </resources>

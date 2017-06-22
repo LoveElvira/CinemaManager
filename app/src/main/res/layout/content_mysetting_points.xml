@@ -32,7 +32,7 @@
                     style="@style/WrapWrap"
                     android:layout_marginBottom="@dimen/size_10"
                     android:layout_marginTop="@dimen/size_20"
-                    android:text="10000"
+                    android:text="0"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_18" />
 
@@ -62,7 +62,7 @@
                     style="@style/WrapWrap"
                     android:layout_marginBottom="@dimen/size_10"
                     android:layout_marginTop="@dimen/size_20"
-                    android:text="32500"
+                    android:text="0"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_18" />
 
@@ -98,7 +98,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/content_setting_points__listview"
                 style="@style/MatchMatch"
-                android:scrollbars="none"/>
+                android:scrollbars="none" />
 
         </LinearLayout>
 

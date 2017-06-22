@@ -18,6 +18,7 @@ public class GoodInfo implements Serializable{
      "goodsImg": "http://xxxx1.jpg", //卖品图
      "startTime": 1234567888, //卖品优惠开始时间
      "endTime": 12345678 //卖品优惠结束时间
+     "limitedCount":null
      * */
     private long goodsId;
     private String goodsName;
@@ -28,8 +29,17 @@ public class GoodInfo implements Serializable{
     private String goodsImg;
     private long startTime;
     private long endTime;
+    private int limitedCount;
 
     public GoodInfo() {
+    }
+
+    public int getLimitedCount() {
+        return limitedCount;
+    }
+
+    public void setLimitedCount(int limitedCount) {
+        this.limitedCount = limitedCount;
     }
 
     public long getGoodsId() {

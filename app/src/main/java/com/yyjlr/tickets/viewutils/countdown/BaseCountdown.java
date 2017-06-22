@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.utils.Utils;
+import com.yyjlr.tickets.helputils.Utils;
 
 /**
  * Base Countdown

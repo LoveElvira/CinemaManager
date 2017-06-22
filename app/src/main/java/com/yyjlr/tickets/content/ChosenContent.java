@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.CinemaDetailsActivity;
 import com.yyjlr.tickets.activity.EventActivity;
 import com.yyjlr.tickets.activity.LoginActivity;
+import com.yyjlr.tickets.activity.SelectCinemaActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.ChosenAdapter;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
@@ -48,7 +50,7 @@ import static com.yyjlr.tickets.Application.getInstance;
  */
 public class ChosenContent extends LinearLayout implements View.OnClickListener, BaseAdapter.OnRecyclerViewItemChildClickListener {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
+    private final int MIN_CLICK_DELAY_TIME = 1000;
     private long lastClickTime = 0;
 
     private View view;
@@ -62,9 +64,11 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     private List<String> typeDate;
 
     private ImageView enterCinema;//进入影院
+    private ImageView selectAddress;//选择影院
     private TextView title;
     private TextView address;
     private ChosenModel chosenModel;
+    private InputMethodManager imm;
 
     public ChosenContent(Context context) {
         this(context, null);
@@ -78,6 +82,10 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
     public void initView() {
         lastClickTime = 0;
         title = (TextView) findViewById(R.id.base_toolbar__text);
+        selectAddress = (ImageView) findViewById(R.id.base_toolbar__left);
+        selectAddress.setImageResource(R.mipmap.address_white);
+        selectAddress.setAlpha(1.0f);
+        selectAddress.setOnClickListener(this);
         enterCinema = (ImageView) findViewById(R.id.base_toolbar__right);
         enterCinema.setImageResource(R.mipmap.enter_cinema);
         enterCinema.setAlpha(1.0f);
@@ -187,6 +195,9 @@ public class ChosenContent extends LinearLayout implements View.OnClickListener,
             case R.id.fragment_chosen__address:
             case R.id.fragment_chosen__listview:
                 Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), CinemaDetailsActivity.class));
+                break;
+            case R.id.base_toolbar__left://进入选择影院的地方
+                Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SelectCinemaActivity.class));
                 break;
         }
     }

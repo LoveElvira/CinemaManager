@@ -6,12 +6,20 @@
     android:orientation="vertical"
     android:padding="@dimen/size_10">
 
+    <TextView
+        android:id="@+id/content_order_details__package_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_5"
+        android:textColor="@color/orange_ff7a0f"
+        android:textSize="@dimen/text_13" />
+
     <LinearLayout
         android:id="@+id/content_order_details__package_layout"
         style="@style/MatchWrap"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
-    <include layout="@layout/item_order_sale_details_more"/>
+    <include layout="@layout/item_order_sale_details_more" />
 
     <LinearLayout
         android:id="@+id/content_order_details__package_code_layout"

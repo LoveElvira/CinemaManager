@@ -6,13 +6,20 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-    <ProgressBar
+    <!--<ProgressBar-->
+        <!--android:id="@+id/header_loading_progress"-->
+        <!--android:layout_width="@dimen/size_25"-->
+        <!--android:layout_height="@dimen/size_25"-->
+        <!--android:indeterminate="false"-->
+        <!--android:layout_marginRight="@dimen/size_10"-->
+        <!--android:indeterminateDrawable="@drawable/progressbar_color_gray"-->
+        <!--android:visibility="gone"/>-->
+ <ProgressBar
         android:id="@+id/header_loading_progress"
         android:layout_width="@dimen/size_25"
         android:layout_height="@dimen/size_25"
         android:indeterminate="false"
         android:layout_marginRight="@dimen/size_10"
-        android:indeterminateDrawable="@drawable/progressbar_color_gray"
         android:visibility="gone"/>
 
     <ImageView
@@ -20,8 +27,7 @@
         android:layout_width="@dimen/size_20"
         android:layout_height="@dimen/size_20"
         android:layout_marginRight="@dimen/size_10"
-        android:src="@mipmap/more_down"
-        android:tint="@color/white"/>
+        android:src="@mipmap/more_down"/>
 
 
     <LinearLayout
@@ -34,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_refresh"
-            android:textColor="@color/white"
             android:textSize="@dimen/text_12" />
         <!--<TextView-->
             <!--android:id="@+id/header_loading_time"-->

@@ -31,9 +31,11 @@ public class PointsAdapter extends BaseAdapter<PointDetail> {
 //            helper.setBackgroundRes(R.id.item_points__image,R.mipmap.shou);
 //        }
 
-        Picasso.with(helper.getConvertView().getContext())
-                .load(item.getImage())
-                .into((ImageView) helper.getView(R.id.item_points__image));
+        if (item.getImage() != null && !"".equals(item.getImage())) {
+            Picasso.with(helper.getConvertView().getContext())
+                    .load(item.getImage())
+                    .into((ImageView) helper.getView(R.id.item_points__image));
+        }
 
     }
 }

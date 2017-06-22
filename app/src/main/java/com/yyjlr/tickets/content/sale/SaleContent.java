@@ -6,18 +6,25 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +40,7 @@ import com.yyjlr.tickets.activity.sale.PackageDetailsActivity;
 import com.yyjlr.tickets.activity.sale.SaleCompleteActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.SaleAdapter;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.sale.GoodInfo;
@@ -47,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.yyjlr.tickets.Application.getInstance;
 
 /**
@@ -54,26 +63,21 @@ import static com.yyjlr.tickets.Application.getInstance;
  * 卖品
  */
 
-public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener, View.OnClickListener {
+public class SaleContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener, View.OnClickListener {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
-
-    private View view;
     private RecyclerView listView;//列表
     private SuperSwipeRefreshLayout refresh;//刷新
-    private SaleAdapter saleAdapter;
+    private SaleAdapter saleAdapter = null;
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
     private List<GoodInfo> goodInfoList;
     private List<GoodInfo> goodInfoLists;
-    private View notLoadingView;
     private boolean hasMore = false;
-    private String pagable = "0";
-    private int delayMillis = 1000;
+    private String pagable;
     private int position = 0;
     private long totalPrice = 0;//popupwindow中的价格
+    private String searchText = "";
 
 
     public SaleContent(Context context) {
@@ -83,11 +87,15 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
     public SaleContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
-        lastClickTime = 0;
         initView();
     }
 
+    public String getSearchText() {
+        return searchText;
+    }
+
     private void initView() {
+
         listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
         refresh.setHeaderView(createHeaderView());// add headerView
@@ -99,37 +107,91 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
         notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
         goodInfoLists = new ArrayList<>();
 
-        listView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                //判断是当前layoutManager是否为LinearLayoutManager
-                // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
-                if (layoutManager instanceof LinearLayoutManager) {
-                    LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
-                    //获取最后一个可见view的位置
-                    int lastItemPosition = linearManager.findLastVisibleItemPosition();
-                    //获取第一个可见view的位置
-                    int firstItemPosition = linearManager.findFirstVisibleItemPosition();
-                    int first = linearManager.findFirstCompletelyVisibleItemPosition();
-                    saleAdapter.changeBgFristAndLast(firstItemPosition, lastItemPosition, first);
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-        getSale(pagable);
+//        listView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+//                //判断是当前layoutManager是否为LinearLayoutManager
+//                // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
+//                if (layoutManager instanceof LinearLayoutManager) {
+//                    LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+//                    //获取最后一个可见view的位置
+//                    int lastItemPosition = linearManager.findLastVisibleItemPosition();
+//                    //获取第一个可见view的位置
+//                    int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+//                    int first = linearManager.findFirstCompletelyVisibleItemPosition();
+//                    saleAdapter.changeBgFristAndLast(firstItemPosition, lastItemPosition, first);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//        });
     }
 
+    public void updateView(boolean isUpdate) {
+        if (isUpdate) {
+            isFirst = isUpdate;
+        }
+        if (isFirst) {
+            isFirst = false;
+            pagable = "0";
+            getSale(pagable, "");
+        }
+    }
+
+
+//    private void keySearch() {
+//        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+//                    //跳转页面
+//                    imm.hideSoftInputFromWindow(search.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                    pagable = "0";
+//                    getSale(pagable, search.getText().toString().trim());
+//                }
+//                return false;
+//            }
+//        });
+//    }
+//
+//    TextWatcher textWatcher = new TextWatcher() {
+//        @Override
+//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//        }
+//
+//        @Override
+//        public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//        }
+//
+//        @Override
+//        public void afterTextChanged(Editable s) {
+//            if (s.length() > 0) {
+//                cancelSearch.setVisibility(VISIBLE);
+//                goSearch.setVisibility(VISIBLE);
+//            } else {
+//                pagable = "0";
+//                cancelSearch.setVisibility(GONE);
+//                goSearch.setVisibility(GONE);
+//                getSale(pagable, "");
+//            }
+//        }
+//    };
+
     //获取卖品数据
-    private void getSale(final String pagables) {
+    public void getSale(final String pagables, String searchContent) {
+        searchText = searchContent;
         PagableRequest pagableRequest = new PagableRequest();
         pagableRequest.setType("0");
         pagableRequest.setPagable(pagables);
+        if (searchContent.length() > 0) {
+            pagableRequest.setGoodsName(searchContent);
+        }
         OkHttpClientManager.postAsyn(Config.GET_SALE, new OkHttpClientManager.ResultCallback<Goods>() {
 
             @Override
@@ -171,6 +233,13 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
                         }
                         saleAdapter.setOnLoadMoreListener(SaleContent.this);
                         saleAdapter.setOnRecyclerViewItemChildClickListener(SaleContent.this);
+                    } else {
+                        if (saleAdapter != null) {
+                            goodInfoList = new ArrayList<>();
+                            goodInfoLists.clear();
+                            saleAdapter = new SaleAdapter(goodInfoList);
+                            listView.setAdapter(saleAdapter);
+                        }
                     }
                 }
             }
@@ -270,7 +339,7 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            getSale(pagable);
+                            getSale(pagable, searchText);
                         }
                     }, delayMillis);
                 }
@@ -288,7 +357,7 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
             @Override
             public void run() {
                 pagable = "0";
-                getSale(pagable);
+                getSale(pagable, searchText);
                 refresh.setRefreshing(false);
                 headerProgressBar.setVisibility(View.GONE);
             }
@@ -309,6 +378,7 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
 
     @Override
     public void onItemChildClick(BaseAdapter adapter, View view, int position) {
+        com.yyjlr.tickets.content.SaleContent.hideInput();
         long currentTime = Calendar.getInstance().getTimeInMillis();
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;
@@ -353,8 +423,17 @@ public class SaleContent extends LinearLayout implements SuperSwipeRefreshLayout
                 saleNum.setText(num + "");
                 break;
             case R.id.popup_sale__add://增加数量
-                saleNum.setText((num + 1) + "");
-                salePrice.setText(ChangeUtils.save2Decimal(totalPrice * (num + 1)));
+                if (goodInfoLists.get(this.position).getLimitedCount() == -1) {
+                    saleNum.setText((num + 1) + "");
+                    salePrice.setText(ChangeUtils.save2Decimal(totalPrice * (num + 1)));
+                } else if (goodInfoLists.get(this.position).getLimitedCount() > 0) {
+                    if (num < goodInfoLists.get(this.position).getLimitedCount()) {
+                        saleNum.setText((num + 1) + "");
+                        salePrice.setText(ChangeUtils.save2Decimal(totalPrice * (num + 1)));
+                    } else {
+                        Toast.makeText(getContext(), "最多可以购买" + goodInfoLists.get(this.position).getLimitedCount() + "份", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
         }
 

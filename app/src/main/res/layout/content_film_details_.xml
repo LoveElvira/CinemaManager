@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:star="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch"
     android:layout_marginTop="@dimen/size_125"
     android:orientation="vertical">
@@ -39,22 +40,32 @@
             <TextView
                 android:id="@+id/content_film_details__name"
                 style="@style/WrapWrap"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_15" />
 
             <TextView
                 android:id="@+id/content_film_details__english_name"
                 style="@style/WrapWrap"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_10" />
 
-            <RatingBar
+            <com.yyjlr.tickets.viewutils.Star
                 android:id="@+id/content_film_details__star"
-                style="@style/myRatingBarStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/size_15"
                 android:layout_marginBottom="@dimen/size_5"
-                android:numStars="5" />
+                star:starBackground="@mipmap/star_gray"
+                star:starClickable="false"
+                star:starDistance="1dp"
+                star:starDrawBackground="@mipmap/star_yellow"
+                star:starHeight="@dimen/size_15"
+                star:starWidth="@dimen/size_15"
+                star:starsNum="5" />
+
 
             <com.yyjlr.tickets.viewutils.WordWrapView
                 android:id="@+id/content_film_details__tags"
@@ -105,5 +116,36 @@
         android:id="@+id/content_film_details__listview"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_100" />
+
+    <LinearLayout
+        android:id="@+id/content_film_details__comment_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_12"
+            android:text="评论"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/size_7"
+            android:layout_marginRight="@dimen/size_7"
+            android:background="@color/gray_e7e7e7" />
+
+        <com.yyjlr.tickets.viewutils.AutoRecyclerView
+            android:id="@+id/content_film_details__comment_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
+
+    </LinearLayout>
 
 </LinearLayout>

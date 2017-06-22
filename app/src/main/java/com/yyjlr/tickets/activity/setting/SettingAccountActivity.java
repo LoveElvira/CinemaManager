@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,6 +25,7 @@ import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.BasePhotoActivity;
 import com.yyjlr.tickets.activity.LoginActivity;
+import com.yyjlr.tickets.helputils.ImageFileUtils;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.myinfo.MyInfoModel;
 import com.yyjlr.tickets.requestdata.RequestNull;
@@ -31,7 +33,6 @@ import com.yyjlr.tickets.requestdata.UpdateMyInfoRequest;
 import com.yyjlr.tickets.requestdata.UploadRequest;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
-import com.yyjlr.tickets.utils.ImageFileUtils;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
 import java.io.File;
@@ -70,6 +71,8 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("我的账户");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -235,7 +238,6 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         files.add(file);
         UploadRequest upload = new UploadRequest();
         upload.setType("my");
-        Log.i("ee", "--------------55555555555--------------");
         OkHttpClientManager.postAsyn(Config.UPDATE_MY_HEAD_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
 
             @Override
@@ -276,7 +278,10 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         switch (view.getId()) {
             case R.id.base_toolbar__left:
                 if (isUpdate) {
-                    setResult(CODE_RESULT, new Intent());
+                    setResult(CODE_RESULT, new Intent()
+                            .putExtra("headImage", myInfoModel.getHeadImgUrl())
+                            .putExtra("sex", myInfoModel.getSex())
+                            .putExtra("name", myInfoModel.getNickname()));
                 }
                 SettingAccountActivity.this.finish();
                 break;
@@ -302,9 +307,9 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                 startActivity(UpdatePasswordActivity.class);
                 break;
             case R.id.content_setting_account__quit://退出登录
+                SharePrefUtil.putString(Constant.FILE_NAME, "token", "", SettingAccountActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, "flag", "0", SettingAccountActivity.this);
-                Application.getInstance().finishAllActivity();
-                startActivity(LoginActivity.class);
+                startActivityForResult(new Intent(SettingAccountActivity.this, LoginActivity.class), CODE_REQUEST_THREE);
                 break;
         }
     }
@@ -329,6 +334,8 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
         year = calendar.get(Calendar.YEAR);
         monthOfYear = calendar.get(Calendar.MONTH);
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        Calendar calendarMax = Calendar.getInstance();
+        datePicker.setMaxDate(calendarMax.getTimeInMillis());
         datePicker.init(year, monthOfYear, dayOfMonth, new DatePicker.OnDateChangedListener() {
 
             public void onDateChanged(DatePicker view, int years,
@@ -337,7 +344,6 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                 monthOfYear = monthOfYears;
                 dayOfMonth = dayOfMonths;
             }
-
         });
         TextView dateCancel = (TextView) view.findViewById(R.id.date_cancel);
         TextView datesubmit = (TextView) view.findViewById(R.id.date_submit);
@@ -388,6 +394,13 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                         updateInfo("sex", "1");
                     else if (sex.equals("女"))
                         updateInfo("sex", "2");
+                    break;
+                case CODE_REQUEST_THREE:
+                    if (data.getBooleanExtra("isFinish", false)) {
+                        setResult(CODE_RESULT, getIntent()
+                                .putExtra("isExit", true));
+                        SettingAccountActivity.this.finish();
+                    }
                     break;
             }
         }
@@ -463,6 +476,21 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (isUpdate) {
+                setResult(CODE_RESULT, new Intent()
+                        .putExtra("headImage",myInfoModel.getHeadImgUrl())
+                        .putExtra("sex",myInfoModel.getSex())
+                        .putExtra("name",myInfoModel.getNickname()));
+            }
+            SettingAccountActivity.this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

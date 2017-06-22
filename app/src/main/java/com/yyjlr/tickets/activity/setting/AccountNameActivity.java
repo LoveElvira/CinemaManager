@@ -27,7 +27,6 @@ public class AccountNameActivity extends AbstractActivity implements View.OnClic
     private ImageView leftArrow;
     private ImageView rightArrow;
     private TextView rightSave;
-    private TextView saveName;
     private EditText userName;
 
     @Override
@@ -38,7 +37,8 @@ public class AccountNameActivity extends AbstractActivity implements View.OnClic
     }
 
     private void initView() {
-
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("修改昵称");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -77,30 +77,6 @@ public class AccountNameActivity extends AbstractActivity implements View.OnClic
         }
     };
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        menu.getItem(0).setTitle("保存");
-        menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                return false;
-            }
-        });
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                AccountNameActivity.this.finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

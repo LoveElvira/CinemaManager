@@ -17,7 +17,7 @@ import java.util.List;
 public class FilmSaleAdapter extends BaseAdapter<RecommendGoodsInfo> {
 
     public FilmSaleAdapter(List<RecommendGoodsInfo> data) {
-        super(R.layout.item_film_sale_package, data);
+        super(R.layout.item_film_sale_package__, data);
     }
 
     @Override
@@ -29,7 +29,11 @@ public class FilmSaleAdapter extends BaseAdapter<RecommendGoodsInfo> {
         helper.setText(R.id.item_film_sale__package, item.getGoodsName())
                 .setText(R.id.item_film_sale__price, "￥ " + ChangeUtils.save2Decimal(item.getPrice()))
                 .setText(R.id.item_film_sale__package_content, item.getGoodsDetail())
+                .setText(R.id.item_film_sale__num_, item.getNum() + "")
                 .setImageResource(R.id.item_film_sale__select, R.mipmap.sale_no_select)
+                .setVisible(R.id.item_film_sale__add_layout_, true)
+                .setOnClickListener(R.id.item_film_sale__add_, new OnItemChildClickListener())
+                .setOnClickListener(R.id.item_film_sale__lost_, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_film_sale__layout, new OnItemChildClickListener())
                 .setOnClickListener(R.id.item_film_sale__select, new OnItemChildClickListener());
 

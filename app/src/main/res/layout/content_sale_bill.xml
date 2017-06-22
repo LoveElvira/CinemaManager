@@ -2,25 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchWrap"
+    android:layout_gravity="bottom"
     android:background="@color/white"
     android:orientation="vertical"
-    android:layout_gravity="bottom"
     android:padding="@dimen/size_20">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_40"
-        android:orientation="horizontal"
+        android:background="@drawable/radius_border_gray"
         android:gravity="center_vertical"
-        android:background="@drawable/radius_border_gray">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/content_sale_bill__phone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:hint="@string/text_sale_bill_phone"
             android:background="@null"
+            android:gravity="center|left"
+            android:hint="@string/text_sale_bill_phone"
             android:inputType="number"
             android:maxLength="11"
             android:maxLines="1"
@@ -32,28 +33,20 @@
             android:id="@+id/content_sale_bill__delete_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/seat_cancel"
             android:padding="@dimen/size_5"
-            android:visibility="gone"/>
+            android:src="@mipmap/seat_cancel"
+            android:visibility="gone" />
 
     </LinearLayout>
 
-    <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+    <TextView
+        android:id="@+id/content_sale_bill__confirm_order"
         style="@style/MatchWrap"
         android:layout_marginTop="@dimen/size_10"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="@color/bg_shadow"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
-
-        <TextView
-            android:id="@+id/content_sale_bill__confirm_order"
-            style="@style/MatchWrap"
-            android:background="@drawable/radius_blue_4"
-            android:text="@string/text_sale_bill_confirm"
-            android:gravity="center"
-            android:padding="@dimen/size_12"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_15" />
-    </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+        android:background="@drawable/radius_blue_4"
+        android:gravity="center"
+        android:padding="@dimen/size_12"
+        android:text="@string/text_sale_bill_confirm"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_15" />
 </LinearLayout>

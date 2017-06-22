@@ -26,6 +26,7 @@ import com.yyjlr.tickets.activity.film.FilmCompleteActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.OrderUncompleteAdapter;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
 import com.yyjlr.tickets.model.order.ConfirmOrderBean;
@@ -47,13 +48,8 @@ import java.util.List;
  * 订单未完成
  */
 
-public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderUncompleteAdapter.SlidingViewClickListener {
+public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderUncompleteAdapter.SlidingViewClickListener {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
-
-    private View view;
-    private CustomDialog customDialog;
     private OrderUncompleteAdapter unCompleteAdapter;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
@@ -63,7 +59,6 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
     private TextView headerSta/*, headerTime*/;
     private boolean hasMore = false;
     private String pagable = "0";
-    private int delayMillis = 1000;
     private String type = "2";//订单类别,1:已完成；2：未完成
 
 
@@ -77,7 +72,6 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
     public UnCompleteOrderContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
-        lastClickTime = 0;
         initView();
     }
 
@@ -143,6 +137,13 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
                         }
                         unCompleteAdapter.setOnLoadMoreListener(UnCompleteOrderContent.this);
                         unCompleteAdapter.setOnRecyclerViewItemChildClickListener(UnCompleteOrderContent.this);
+                    } else {
+                        orderLists.clear();
+                        orderList = new ArrayList<>();
+                        orderLists.addAll(orderList);
+                        unCompleteAdapter = new OrderUncompleteAdapter(orderList, UnCompleteOrderContent.this);
+                        listView.setAdapter(unCompleteAdapter);
+                        unCompleteAdapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -153,6 +154,11 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
 //                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }, pagableRequest, MyOrderBean.class, Application.getInstance().getCurrentActivity());
+    }
+
+    public void cancelOrderSuccess(int position) {
+        orderLists.get(position).setOrderStatus(4);
+        unCompleteAdapter.notifyItemChanged(position);
     }
 
     //取消订单
@@ -298,15 +304,17 @@ public class UnCompleteOrderContent extends LinearLayout implements SuperSwipeRe
                 case R.id.item_order_nocomplete__pay:
                     if (orderLists.get(position).getOrderType() == 1) {
                         AddMovieOrderBean movieOrderBean = null;
-                        Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), FilmCompleteActivity.class)
+                        Application.getInstance().getCurrentActivity().startActivityForResult(new Intent(getContext(), FilmCompleteActivity.class)
                                 .putExtra("orderId", orderLists.get(position).getOrderId() + "")
                                 .putExtra("movieOrderBean", movieOrderBean)
-                                .putExtra("isNoPay", true));
+                                .putExtra("position", position)
+                                .putExtra("isNoPay", true), 0x06);
                     } else {
                         ConfirmOrderBean confirmOrderBean = null;
-                        Application.getInstance().getCurrentActivity().startActivity(new Intent(getContext(), PaySelectActivity.class)
+                        Application.getInstance().getCurrentActivity().startActivityForResult(new Intent(getContext(), PaySelectActivity.class)
                                 .putExtra("orderId", orderLists.get(position).getOrderId() + "")
-                                .putExtra("orderBean", confirmOrderBean));
+                                .putExtra("position", position)
+                                .putExtra("orderBean", confirmOrderBean), 0x06);
                     }
                     break;
             }

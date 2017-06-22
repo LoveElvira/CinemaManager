@@ -64,6 +64,8 @@ public class SettingFollowActivity extends AbstractActivity implements View.OnCl
     }
 
     private void initView() {
+        bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
+        initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_collect));
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
@@ -139,6 +141,25 @@ public class SettingFollowActivity extends AbstractActivity implements View.OnCl
                 break;
             case R.id.content_setting_follow__grab_layout:
                 viewPager.setCurrentItem(1);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode) {
+            case CODE_REQUEST_ONE:
+                if (data.getBooleanExtra("isUpdate", false)) {
+                    filmContent.refreshView(data.getIntExtra("position", -1));
+                }
+                break;
+            case CODE_REQUEST_FOUR:
+                if (data.getBooleanExtra("isUpdate", false)) {
+                    eventContent.refreshView(data.getIntExtra("position", -1));
+                }
                 break;
         }
     }

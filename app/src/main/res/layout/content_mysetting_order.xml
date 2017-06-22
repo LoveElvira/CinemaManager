@@ -15,75 +15,60 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+
+        <LinearLayout
+            android:id="@+id/content_setting_order__complete_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/size_5">
 
-            <LinearLayout
-                android:id="@+id/content_setting_order__complete_layout"
-                style="@style/MatchMatch"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/size_5">
+            <ImageView
+                android:id="@+id/content_setting_order__complete"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:src="@mipmap/complete_select" />
 
-                <ImageView
-                    android:id="@+id/content_setting_order__complete"
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:src="@mipmap/complete_select" />
-
-                <TextView
-                    android:id="@+id/content_setting_order__complete_title"
-                    style="@style/WrapWrap"
-                    android:text="@string/text_complete"
-                    android:textColor="@color/orange_ff7a0f"
-                    android:textSize="@dimen/text_10" />
-            </LinearLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <TextView
+                android:id="@+id/content_setting_order__complete_title"
+                style="@style/WrapWrap"
+                android:text="@string/text_complete"
+                android:textColor="@color/orange_ff7a0f"
+                android:textSize="@dimen/text_10" />
+        </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="@dimen/size_20"
             android:background="@color/gray_c3c3c3" />
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <LinearLayout
+            android:id="@+id/content_setting_order__uncomplete_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/size_5">
 
-            <LinearLayout
-                android:id="@+id/content_setting_order__uncomplete_layout"
-                style="@style/MatchMatch"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/size_5">
+            <ImageView
+                android:id="@+id/content_setting_order__uncomplete"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:src="@mipmap/uncomplete" />
 
-                <ImageView
-                    android:id="@+id/content_setting_order__uncomplete"
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:src="@mipmap/uncomplete" />
-
-                <TextView
-                    android:id="@+id/content_setting_order__uncomplete_title"
-                    style="@style/WrapWrap"
-                    android:text="@string/text_uncomplete"
-                    android:textColor="@color/gray_c3c3c3"
-                    android:textSize="@dimen/text_10" />
-            </LinearLayout>
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            <TextView
+                android:id="@+id/content_setting_order__uncomplete_title"
+                style="@style/WrapWrap"
+                android:text="@string/text_uncomplete"
+                android:textColor="@color/gray_c3c3c3"
+                android:textSize="@dimen/text_10" />
+        </LinearLayout>
     </LinearLayout>
 
     <com.yyjlr.tickets.viewutils.LockableViewPager
         android:id="@+id/content_order__viewpager"
-        style="@style/MatchMatch"/>
+        style="@style/MatchMatch" />
 </LinearLayout>

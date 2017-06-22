@@ -181,24 +181,16 @@
 
         </LinearLayout>
 
-        <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+        <TextView
+            android:id="@+id/content_film_seat__confirm_seat"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/bg_shadow"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true">
-
-            <TextView
-                android:id="@+id/content_film_seat__confirm_seat"
-                style="@style/MatchMatch"
-                android:background="@color/orange_ff7b0f"
-                android:gravity="center"
-                android:text="@string/text_select_seat_confirm"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_15" />
-        </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+            android:background="@color/orange_ff7b0f"
+            android:gravity="center"
+            android:text="@string/text_select_seat_confirm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
     </LinearLayout>
 
     <LinearLayout
@@ -226,88 +218,58 @@
             android:paddingLeft="@dimen/size_10"
             android:paddingRight="@dimen/size_10">
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <TextView
+                android:id="@+id/content_film_seat__seat_recommend_one"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
+                android:background="@drawable/radius_border_gray"
+                android:gravity="center"
+                android:padding="@dimen/size_10"
+                android:text="@string/text_select_seat_one"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12" />
 
-                <TextView
-                    android:id="@+id/content_film_seat__seat_recommend_one"
-                    style="@style/MatchMatch"
-                    android:background="@drawable/radius_border_gray"
-                    android:gravity="center"
-                    android:padding="@dimen/size_10"
-                    android:text="@string/text_select_seat_one"
-                    android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_12" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <TextView
+                android:id="@+id/content_film_seat__seat_recommend_two"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_5"
                 android:layout_marginRight="@dimen/size_5"
                 android:layout_weight="1"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
+                android:background="@drawable/radius_border_gray"
+                android:gravity="center"
+                android:padding="@dimen/size_10"
+                android:text="@string/text_select_seat_two"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12" />
 
-                <TextView
-                    android:id="@+id/content_film_seat__seat_recommend_two"
-                    style="@style/MatchMatch"
-                    android:background="@drawable/radius_border_gray"
-                    android:gravity="center"
-                    android:padding="@dimen/size_10"
-                    android:text="@string/text_select_seat_two"
-                    android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_12" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
 
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <TextView
+                android:id="@+id/content_film_seat__seat_recommend_three"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/size_5"
                 android:layout_weight="1"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
+                android:background="@drawable/radius_border_gray"
+                android:gravity="center"
+                android:padding="@dimen/size_10"
+                android:text="@string/text_select_seat_three"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12" />
 
-                <TextView
-                    android:id="@+id/content_film_seat__seat_recommend_three"
-                    style="@style/MatchMatch"
-                    android:background="@drawable/radius_border_gray"
-                    android:gravity="center"
-                    android:padding="@dimen/size_10"
-                    android:text="@string/text_select_seat_three"
-                    android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_12" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
-
-            <com.yyjlr.tickets.viewutils.MaterialRippleLayout
+            <TextView
+                android:id="@+id/content_film_seat__seat_recommend_four"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/bg_shadow"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <TextView
-                    android:id="@+id/content_film_seat__seat_recommend_four"
-                    style="@style/MatchMatch"
-                    android:background="@drawable/radius_border_gray"
-                    android:gravity="center"
-                    android:padding="@dimen/size_10"
-                    android:text="@string/text_select_seat_four"
-                    android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_12" />
-            </com.yyjlr.tickets.viewutils.MaterialRippleLayout>
+                android:background="@drawable/radius_border_gray"
+                android:gravity="center"
+                android:padding="@dimen/size_10"
+                android:text="@string/text_select_seat_four"
+                android:textColor="@color/gray_929292"
+                android:textSize="@dimen/text_12" />
         </LinearLayout>
 
         <com.yyjlr.tickets.viewutils.ScrollView

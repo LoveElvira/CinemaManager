@@ -42,6 +42,7 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
     private TicketModel d;//数据
 
     private ImageView itemBackground;//背景图片
+    private ImageView itemNoDate;
     private ImageView itemShadow;
     private LinearLayout itemLayout;//文字区域的layout
     private TextView itemTitle;//标题
@@ -53,6 +54,7 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
         super(context);
         LayoutInflater.from(getContext()).inflate(R.layout.item_ticket, this);
         itemBackground = (ImageView) findViewById(R.id.item_ticket__background);
+        itemNoDate = (ImageView) findViewById(R.id.item_ticket__no_date);
         itemShadow = (ImageView) findViewById(R.id.item_ticket__shadow);
         itemLayout = (LinearLayout) findViewById(R.id.item_ticket__layout);
         itemTime = (CountdownView) findViewById(R.id.item_ticket__time);
@@ -101,45 +103,54 @@ public class ItemTicketLayout extends RelativeLayout implements View.OnClickList
 ////            itemTime.allShowZero();
 //            endTime(0);
 //        }
-        itemTitle.setText(data.getActivityName());
-        itemDate.setText(ChangeUtils.changeTimeDate(d.getStartTime()) + "-" + ChangeUtils.changeTimeDate(d.getEndTime()));
-        itemPrice.setText("人均" + ChangeUtils.save2Decimal(d.getPrice()) + "元");
-        Picasso.with(getContext())
-                .load(data.getActivityImg())
-                .resize(getWidth(), maxHeight)
-                .placeholder(R.mipmap.bg)
-                .into(itemBackground);
-
+        if (d == null) {
+            itemShadow.setAlpha(0.5f);
+            itemTitle.setText("更多产品，敬请期待");
+            itemNoDate.setImageResource(R.mipmap.ticket_no_date);
+        } else {
+            itemTitle.setText(data.getActivityName());
+            itemDate.setText(ChangeUtils.changeTimeDate(d.getStartTime()) + "-" + ChangeUtils.changeTimeDate(d.getEndTime()));
+            itemPrice.setText("人均" + ChangeUtils.save2Decimal(d.getPrice()) + "元");
+            Picasso.with(getContext())
+                    .load(data.getActivityImg())
+                    .resize(getWidth(), maxHeight)
+                    .placeholder(R.mipmap.bg)
+                    .into(itemBackground);
+        }
     }
 
     @Override
     public void onClick(View v) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
+        if (d != null) {
+            long currentTime = Calendar.getInstance().getTimeInMillis();
+            if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                lastClickTime = currentTime;
 //        Toast.makeText(v.getContext().getApplicationContext(), "" + (d != null ? d.title : "null"), Toast.LENGTH_SHORT).
 //                show();
-            String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
-            Intent intent = new Intent();
-            if (!isLogin.equals("1")) {
-                intent.setClass(v.getContext(), LoginActivity.class);
-            } else {
-                intent.setClass(v.getContext(), EventActivity.class);
-                intent.putExtra("eventId", d.getActivityId());
+                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+                Intent intent = new Intent();
+                if (!isLogin.equals("1")) {
+                    intent.setClass(v.getContext(), LoginActivity.class);
+                } else {
+                    intent.setClass(v.getContext(), EventActivity.class);
+                    intent.putExtra("eventId", d.getActivityId());
+                }
+                v.getContext().startActivity(intent);
             }
-            v.getContext().startActivity(intent);
         }
     }
 
 
     @Override
     public void onScroll(int currIndex, float percent) {
-        if (pos == currIndex + 1) {
-            animate(currPercent = percent);
-        } else if (pos > currIndex + 1 && currPercent > 0) {
-            animate(currPercent = 0);
-        } else if (pos < currIndex + 1 && currPercent < 1) {
-            animate(currPercent = 1);
+        if (d != null) {
+            if (pos == currIndex + 1) {
+                animate(currPercent = percent);
+            } else if (pos > currIndex + 1 && currPercent > 0) {
+                animate(currPercent = 0);
+            } else if (pos < currIndex + 1 && currPercent < 1) {
+                animate(currPercent = 1);
+            }
         }
     }
 

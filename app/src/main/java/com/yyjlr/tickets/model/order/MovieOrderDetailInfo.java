@@ -18,6 +18,15 @@ public class MovieOrderDetailInfo {
     private String movieImg;//电影图片
     private String validCode;//取票码
     private String serialNumber;//序列号
+    private String state;//子订单状态
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public Long getEndTime() {
         return endTime;

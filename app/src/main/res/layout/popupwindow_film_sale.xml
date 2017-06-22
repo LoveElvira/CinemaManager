@@ -17,30 +17,88 @@
             android:orientation="vertical">
 
             <!--<com.yyjlr.tickets.viewutils.MaterialRippleLayout-->
-                <!--style="@style/WrapWrap"-->
-                <!--app:mrl_rippleAlpha="0.2"-->
-                <!--app:mrl_rippleColor="@color/bg_shadow"-->
-                <!--app:mrl_rippleHover="true"-->
-                <!--app:mrl_rippleOverlay="true">-->
+            <!--style="@style/WrapWrap"-->
+            <!--app:mrl_rippleAlpha="0.2"-->
+            <!--app:mrl_rippleColor="@color/bg_shadow"-->
+            <!--app:mrl_rippleHover="true"-->
+            <!--app:mrl_rippleOverlay="true">-->
 
-                <ImageView
-                    android:id="@+id/content_film_sale__cancel"
-                    android:layout_width="@dimen/size_25"
-                    android:layout_height="@dimen/size_25"
-                    android:src="@mipmap/sale_cancel" />
+            <ImageView
+                android:id="@+id/content_film_sale__cancel"
+                android:layout_width="@dimen/size_25"
+                android:layout_height="@dimen/size_25"
+                android:src="@mipmap/sale_cancel" />
             <!--</com.yyjlr.tickets.viewutils.MaterialRippleLayout>-->
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="@dimen/size_20"
-                android:background="@color/gray_cbcbcb" />
+                android:background="@color/gray_f4f4f4" />
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/content_film_sale__listview"
-            style="@style/MatchWrap"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/content_film_sale__cancel_"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/size_15">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/content_film_sale__sale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_10"
+                    android:text="卖品"
+                    android:textColor="@color/black_363636" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/size_10"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:background="@color/gray_929292" />
+
+                <TextView
+                    android:id="@+id/content_film_sale__package"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_10"
+                    android:text="套餐"
+                    android:textColor="@color/gray_929292" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_dcdcdc" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/content_film_sale__listview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/content_film_sale__confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_30"
+                android:layout_marginRight="@dimen/size_30"
+                android:layout_marginTop="@dimen/size_10"
+                android:background="@drawable/radius_blue_4"
+                android:gravity="center"
+                android:padding="@dimen/size_15"
+                android:text="@string/text_confirm"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

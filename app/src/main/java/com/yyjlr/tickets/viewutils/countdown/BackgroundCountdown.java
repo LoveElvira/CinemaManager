@@ -10,7 +10,7 @@ import android.graphics.RectF;
 import android.view.View;
 
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.utils.Utils;
+import com.yyjlr.tickets.helputils.Utils;
 
 /**
  * Background Countdown

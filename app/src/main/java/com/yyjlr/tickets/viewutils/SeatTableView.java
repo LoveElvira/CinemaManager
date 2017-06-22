@@ -6,7 +6,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -26,15 +25,12 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.model.FilmSeatEntity;
+import com.yyjlr.tickets.helputils.BitmapUtils;
 import com.yyjlr.tickets.model.seat.SeatInfo;
 import com.yyjlr.tickets.model.seat.SeatTypeInfo;
-import com.yyjlr.tickets.utils.BitmapUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -330,6 +326,7 @@ public class SeatTableView extends View {
     private List<SeatInfo> oldSeatList = new ArrayList<>();
     private List<SeatTypeInfo> seatType = new ArrayList<>();
     float[] m = new float[9];
+    private Toast toast;//提示
     /**
      * 监听手势进行缩放
      */
@@ -425,12 +422,17 @@ public class SeatTableView extends View {
                                 remove(index);
                                 if (seatChecker != null) {
                                     seatChecker.unCheck(newSeatList.get(id));
-                                    if (newSeatList.get(id).getType().equals("1")) {
-                                        remove(isHave(getID(i, j + 1)));
-                                        seatChecker.unCheck(newSeatList.get(getID(i, j + 1)));
-                                    } else if (newSeatList.get(id).getType().equals("2")) {
-                                        remove(isHave(getID(i, j - 1)));
-                                        seatChecker.unCheck(newSeatList.get(getID(i, j - 1)));
+                                    if (newSeatList.size() > getID(i, j + 1) &&
+                                            getID(i, j - 1) >= 0) {
+                                        if (newSeatList.get(id).getType().equals("1")
+                                                && newSeatList.get(getID(i, j + 1)).getType().equals("2-1")) {
+                                            remove(isHave(getID(i, j + 1)));
+                                            seatChecker.unCheck(newSeatList.get(getID(i, j + 1)));
+                                        } else if (newSeatList.get(id).getType().equals("2")
+                                                && newSeatList.get(getID(i, j - 1)).getType().equals("1-1")) {
+                                            remove(isHave(getID(i, j - 1)));
+                                            seatChecker.unCheck(newSeatList.get(getID(i, j - 1)));
+                                        }
                                     }
                                 }
                             } else {
@@ -441,37 +443,41 @@ public class SeatTableView extends View {
                                     return super.onSingleTapConfirmed(e);
                                 } else {
                                     addChooseSeat(i, j);
-                                    if (newSeatList.get(id).getType().equals("1")) {
-                                        addChooseSeat(i, j + 1);
-                                        if (seatChecker != null) {
-                                            if (selects.size() > maxSelected) {
-                                                remove(isHave(getID(i, j)));
-                                                remove(isHave(getID(i, j + 1)));
-                                                toast.show();
+                                    if (newSeatList.size() > getID(i, j + 1)
+                                            && getID(i, j - 1) >= 0) {
+                                        if (newSeatList.get(id).getType().equals("1")
+                                                && newSeatList.get(getID(i, j + 1)).getType().equals("2")) {
+                                            addChooseSeat(i, j + 1);
+                                            if (seatChecker != null) {
+                                                if (selects.size() > maxSelected) {
+                                                    remove(isHave(getID(i, j)));
+                                                    remove(isHave(getID(i, j + 1)));
+                                                    toast.show();
+                                                    return super.onSingleTapConfirmed(e);
+                                                }
+                                                seatChecker.checked(newSeatList.get(id));
+                                                seatChecker.checked(newSeatList.get(i * column + j + 1));
                                                 return super.onSingleTapConfirmed(e);
                                             }
-                                            seatChecker.checked(newSeatList.get(id));
-                                            seatChecker.checked(newSeatList.get(i * column + j + 1));
-                                        }
-                                    } else if (newSeatList.get(i * column + j).getType().equals("2")) {
-                                        addChooseSeat(i, j - 1);
-                                        if (seatChecker != null) {
-                                            if (selects.size() > maxSelected) {
-                                                remove(isHave(getID(i, j)));
-                                                remove(isHave(getID(i, j - 1)));
-                                                toast.show();
+                                        } else if (newSeatList.get(i * column + j).getType().equals("2")
+                                                && newSeatList.get(getID(i, j - 1)).getType().equals("1")) {
+                                            addChooseSeat(i, j - 1);
+                                            if (seatChecker != null) {
+                                                if (selects.size() > maxSelected) {
+                                                    remove(isHave(getID(i, j)));
+                                                    remove(isHave(getID(i, j - 1)));
+                                                    toast.show();
+                                                    return super.onSingleTapConfirmed(e);
+                                                }
+                                                seatChecker.checked(newSeatList.get(id));
+                                                seatChecker.checked(newSeatList.get(i * column + j - 1));
                                                 return super.onSingleTapConfirmed(e);
                                             }
-                                            seatChecker.checked(newSeatList.get(id));
-                                            seatChecker.checked(newSeatList.get(i * column + j - 1));
-                                        }
-                                    } else {
-                                        if (seatChecker != null) {
-                                            seatChecker.checked(newSeatList.get(id));
                                         }
                                     }
-
-
+                                    if (seatChecker != null) {
+                                        seatChecker.checked(newSeatList.get(id));
+                                    }
                                 }
                             }
                             isNeedDrawSeatBitmap = true;
@@ -1001,7 +1007,7 @@ public class SeatTableView extends View {
         return SEAT_TYPE_ROAD; //空白 过道  没有座位
     }
 
-    private int getID(int row, int column) {
+    public int getID(int row, int column) {
         return row * this.column + (column);
     }
 
@@ -1597,7 +1603,8 @@ public class SeatTableView extends View {
         } else if (type.equals("4")) {
             newSeatList.get(id).setType("4-1");
         }
-
+        isNeedDrawSeatBitmap = true;
+        isDrawOverviewBitmap = true;
         invalidate();
     }
 
@@ -1622,42 +1629,46 @@ public class SeatTableView extends View {
         if (index >= 0) {
             remove(index);
         }
+        isNeedDrawSeatBitmap = true;
+        isDrawOverviewBitmap = true;
         invalidate();
     }
 
-    //专座推荐 0 普通 1 情侣首座 2 情侣次座 3 特殊人群 4 vip专座
+    //专座推荐不包含情侣座 0 普通 1 情侣首座 2 情侣次座 3 特殊人群 4 vip专座
     public boolean selectSeatRecommend(int num) {
         boolean isSelect = false;
         List<List<Map<String, Integer>>> seatRecommendListTwo = new ArrayList<>();
         //最小的绝对值
         int minNum = 100;
         int bestNum = 0;
-        int centerRow = lineNumbers.size() * 2 / 3;//最佳行数 2/3 得位置
+        int centerRow = (row * 2 / 3) - 1;//最佳行数 2/3 得位置
         Log.i("ee", "-最佳-------------------" + centerRow + "----------------" + seatRecommendListTwo.size());
         int centerColumn = column / 2;
+        //最佳行数以下的最佳位置
         for (int i = centerRow; i < row; i++) {
             List<List<Map<String, Integer>>> seatRecommendListOne = new ArrayList<>();
-
+            List<List<SeatInfo>> seatInfoListOne = new ArrayList<>();
             //筛选出所有的可能性 包括 不可选的位置
             for (int j = 0; j < column; j++) {
 
-                int n = 0;
                 List<Map<String, Integer>> list = new ArrayList<Map<String, Integer>>();
-                for (int k = j; k < column && n < num; k++, n++) {
+                List<SeatInfo> seatInfoList = new ArrayList<>();
+                for (int k = j, n = 0; k < column && n < num; k++, n++) {
                     Map<String, Integer> map = new HashMap<String, Integer>();
                     map.put("row", i);
                     map.put("col", k);
                     int id = getID(i, k);
-                    Log.i("ee", "------newSeatList.get(id).getType()---------" + newSeatList.get(id).getType().toString());
-
+                    Log.i("ee", i + "------bottom---------" + j);
                     if (newSeatList.get(id).getType().equals("0")) {
                         list.add(map);
+                        seatInfoList.add(newSeatList.get(id));
                     } else if (!newSeatList.get(id).getType().equals("0")) {
                         break;
                     }
                 }
                 if (list.size() == num) {
                     seatRecommendListOne.add(list);
+                    seatInfoListOne.add(seatInfoList);
                 }
             }
             Log.i("ee", "------seatRecommendListOne---------" + seatRecommendListOne.toString());
@@ -1671,10 +1682,11 @@ public class SeatTableView extends View {
                 for (int k = 0; k < seatRecommendListOne.get(j).size(); k++) {
                     min += Math.abs(centerColumn - seatRecommendListOne.get(j).get(k).get("col"));
                 }
-
-                if (min < minNum) {
-                    minNum = min;
-                    bestNum = j;
+                if (isSelectSeat(seatInfoListOne.get(j), false)) {//判断是否符合选座规则
+                    if (min < minNum) {
+                        minNum = min;
+                        bestNum = j;
+                    }
                 }
             }
             Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
@@ -1687,74 +1699,83 @@ public class SeatTableView extends View {
 
         }
 
-        if (seatRecommendListTwo.size() <= 0) {
-            for (int i = 0; i < centerRow; i++) {//上半部分
-                List<List<Map<String, Integer>>> seatRecommendListOne = new ArrayList<List<Map<String, Integer>>>();
+//        if (seatRecommendListTwo.size() <= 0) {
+        for (int i = centerRow - 1; i >= 0; i--) {//上半部分
+            List<List<Map<String, Integer>>> seatRecommendListOne = new ArrayList<List<Map<String, Integer>>>();
+            List<List<SeatInfo>> seatInfoListOne = new ArrayList<>();
+            //筛选出所有的可能性 包括 不可选的位置
+            for (int j = 0; j < column; j++) {
 
-                //筛选出所有的可能性 包括 不可选的位置
-                for (int j = 0; j < column; j++) {
+                List<Map<String, Integer>> list = new ArrayList<Map<String, Integer>>();
+                List<SeatInfo> seatInfoList = new ArrayList<>();
+                for (int k = j, n = 0; k < column && n < num; k++, n++) {
+                    Map<String, Integer> map = new HashMap<String, Integer>();
+                    map.put("row", i);
+                    map.put("col", k);
+                    int id = getID(i, k);
+                    Log.i("ee", i + "------top---------" + j);
 
-                    int n = 0;
-                    List<Map<String, Integer>> list = new ArrayList<Map<String, Integer>>();
-                    for (int k = j; k < column && n < num; k++, n++) {
-                        Map<String, Integer> map = new HashMap<String, Integer>();
-                        map.put("row", i);
-                        map.put("col", k);
-                        int id = getID(i, k);
-                        Log.i("ee", "------newSeatList.get(id).getType()---------" + newSeatList.get(id).getType().toString());
-
-                        if (newSeatList.get(id).getType().equals("0")) {
-                            list.add(map);
-                        } else if (!newSeatList.get(id).getType().equals("0")) {
-                            break;
-                        }
+                    if (newSeatList.get(id).getType().equals("0")) {
+                        list.add(map);
+                        seatInfoList.add(newSeatList.get(id));
+                    } else if (!newSeatList.get(id).getType().equals("0")) {
+                        break;
                     }
-                    if (list.size() == num) {
-                        seatRecommendListOne.add(list);
-                    }
-
+                }
+                if (list.size() == num) {
+                    seatRecommendListOne.add(list);
+                    seatInfoListOne.add(seatInfoList);
                 }
 
-                Log.i("ee", "------seatRecommendListOne---------" + seatRecommendListOne.toString());
+            }
 
-                //最小的绝对值
-                minNum = 100;
-                bestNum = 0;
-                //取完每一行的可能性之后 选出最佳位置
-                for (int j = 0; j < seatRecommendListOne.size(); j++) {
+            Log.i("ee", "------seatRecommendListOne---------" + seatRecommendListOne.toString());
 
-                    int min = 0;
-                    for (int k = 0; k < seatRecommendListOne.get(j).size(); k++) {
-                        min += Math.abs(centerColumn - seatRecommendListOne.get(j).get(k).get("col"));
-                    }
+            //最小的绝对值
+            minNum = 100;
+            bestNum = 0;
+            //取完每一行的可能性之后 选出最佳位置
+            for (int j = 0; j < seatRecommendListOne.size(); j++) {
 
+                int min = 0;
+                for (int k = 0; k < seatRecommendListOne.get(j).size(); k++) {
+                    min += Math.abs(centerColumn - seatRecommendListOne.get(j).get(k).get("col"));
+                }
+                if (isSelectSeat(seatInfoListOne.get(j), false)) {//判断是否符合选座规则
                     if (min < minNum) {
                         minNum = min;
                         bestNum = j;
                     }
                 }
+            }
 
-                if (seatRecommendListOne.size() > 0) {
-                    Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
-                    //存放每一行的最佳位置
-                    seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
-                }
+            if (seatRecommendListOne.size() > 0) {
+                Log.i("ee", "------seatRecommendListTwo---------" + seatRecommendListTwo.toString());
+                //存放每一行的最佳位置
+                seatRecommendListTwo.add(seatRecommendListOne.get(bestNum));
             }
         }
+//        }
 
         //最小的绝对值
         minNum = 100;
-        bestNum = 0;
-        //取完每一行的可能性之后 选出最佳位置
+        bestNum = 0;//最佳列
+        int bestRow = 0;//最佳行
+        int minNumRow = 0;//最佳行
+        //取完全部每一行的可能性之后 选出最佳位置
         for (int j = 0; j < seatRecommendListTwo.size(); j++) {
 
-            int min = 0;
+            int minColumn = 0;
+            int minRow = 0;
             for (int k = 0; k < seatRecommendListTwo.get(j).size(); k++) {
-                min += Math.abs(centerColumn - seatRecommendListTwo.get(j).get(k).get("col"));
+                minColumn += Math.abs(centerColumn - seatRecommendListTwo.get(j).get(k).get("col"));
+                minRow += Math.abs(centerRow - seatRecommendListTwo.get(j).get(k).get("row"));
+                minColumn = minColumn + minRow;
             }
 
-            if (min < minNum) {
-                minNum = min;
+
+            if (minColumn < minNum) {
+                minNum = minColumn;
                 bestNum = j;
             }
         }
@@ -1769,157 +1790,321 @@ public class SeatTableView extends View {
             }
             isSelect = true;
         }
+        isNeedDrawSeatBitmap = true;
+        isDrawOverviewBitmap = true;
         invalidate();
         return isSelect;
     }
 
-
-    //判断是否符合选择规则
-    public boolean isSelect(int row, int col, boolean flag, List<SeatInfo> seatList) {
-
-        boolean leftOne = isSelectSeat(row, col - 1, 0, flag, seatList);
-        boolean leftTwo = isSelectSeat(row, col - 2, 0, flag, seatList);
-        boolean rightOne = isSelectSeat(row, col + 1, 2, flag, seatList);
-        boolean rightTwo = isSelectSeat(row, col + 2, 2, flag, seatList);
-
-        Log.i("ee", leftOne + "--" + leftTwo + "--" + rightOne + "--" + rightTwo);
-
-        if (leftOne && leftTwo && rightOne && !rightTwo) {
-            return false;
+    //判断选座是否可以选
+    public boolean isSelectSeat(List<SeatInfo> sortList, boolean isShowToast) {
+        int num = 0;
+        for (int i = 0; i < sortList.size(); i++) {
+            int row = sortList.get(i).getgRow() - 1;
+            int column = sortList.get(i).getgCol() - 1;
+            if (i + 1 < sortList.size()) {
+                if (column + 2 == sortList.get(i + 1).getgCol() - 1
+                        && row == sortList.get(i + 1).getgRow() - 1) {
+                    showShortToast("中间座位不要留空", isShowToast);
+                    return false;
+                }
+                //判断是否为连续的座位
+                if (column + 1 == sortList.get(i + 1).getgCol() - 1
+                        && row == sortList.get(i + 1).getgRow() - 1) {
+                    num++;
+                }
+            }
         }
 
-        if (leftOne && !leftTwo && rightOne && !rightTwo) {
-            return false;
+        if (num == sortList.size() - 1) {//证明为连续座位 只需判断第一个和最后一个
+            int rowTop = sortList.get(0).getgRow() - 1;
+            int columnTop = sortList.get(0).getgCol() - 1;
+//            boolean top = isSelect(rowTop, columnTop);
+
+            int rowEnd = sortList.get(num).getgRow() - 1;
+            int columnEnd = sortList.get(num).getgCol() - 1;
+//            boolean end = isSelect(rowEnd, columnEnd);//连续座位FALSE
+
+            boolean leftOne = true;
+            boolean leftTwo = true;
+            boolean rightOne = true;
+            boolean rightTwo = true;
+
+            //左半部分
+            if (isSelectSeat(rowTop, columnTop - 1, 0, true) == -1) {
+                leftOne = false;
+                leftTwo = false;
+            } else {
+                leftOne = isSelectSeat(rowTop, columnTop - 1, 0, true) == 0 ? true : false;
+                leftTwo = isSelectSeat(rowTop, columnTop - 2, 0, true) == 0 ? true : false;
+            }
+
+            //右半部分
+            if (isSelectSeat(rowEnd, columnEnd + 1, 2, true) == -1) {
+                rightOne = false;
+                rightTwo = false;
+            } else {
+                rightOne = isSelectSeat(rowEnd, columnEnd + 1, 2, true) == 0 ? true : false;
+                rightTwo = isSelectSeat(rowEnd, columnEnd + 2, 2, true) == 0 ? true : false;
+            }
+
+            if (isSelect(leftOne, leftTwo, rightOne, rightTwo)) {
+                return true;
+            } else {
+                showShortToast("旁边座位不能留空", isShowToast);
+                return false;
+            }
+
+//            Log.i("ee----", top + "-------------------" + end);
+//            if (top && end) {
+//                return true;
+//            } else if (!top) {
+//                showShortToast("左边座位不能留空");
+//            } else if (!end) {
+//                showShortToast("右边座位不能留空");
+//            }
+
+        } else {//零散的座位
+            List<Boolean> list = new ArrayList<>();
+            for (int i = 0; i < sortList.size(); i++) {
+                int row = sortList.get(i).getgRow() - 1;
+                int column = sortList.get(i).getgCol() - 1;
+                list.add(isSelect(row, column));//零散座位TRUE
+            }
+            Log.i("ee----", list.toString() + "-------------------");
+            for (int i = 0; i < list.size(); i++) {
+                if (!list.get(i)) {
+                    if (i < 2) {
+                        showShortToast("旁边座位不能留空", isShowToast);
+//                        showShortToast("左边座位不能留空", isShowToast);
+                        return false;
+                    } else {
+                        showShortToast("旁边座位不能留空", isShowToast);
+//                        showShortToast("右边座位不能留空", isShowToast);
+                        return false;
+                    }
+                }
+            }
         }
-
-        if (leftOne && !leftTwo && rightOne && rightTwo) {
-            Log.i("ee", "------------------------");
-            return false;
-        }
-
-//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1 2
-//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
-//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-//        //向左查看均存在座位 本身 1 2不可选  向右查看均存在座位 本身 1 2
-//        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
-//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
-//            return false;
-//        }
-//
-//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1 2不可选
-//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
-//                && isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
-//            return false;
-//        }
-//
-//        //左 2 不可选 1可选 右 1不可选 2可选
-//        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
-//                && !isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-//
-//
-//        //向左查看 不 均存在座位 本身 1不可选 2不可选  向右查看均存在座位 本身 1 2
-//        if (!isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
-//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-//
-//        //向左查看均存在座位 本身 1 2  向右查看 不 均存在座位 本身 1不可选 2不可选
-//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
-//                && !isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-//
-//        //向左查看均存在座位 本身 1不可选 2  向右查看均存在座位 本身 1 2
-//        if (!isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
-//                && isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-//
-//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1不可选  2
-//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
-//                && !isSelectSeat(row, col + 1, 2) && isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-//
-//        //向左查看均存在座位 本身 1 2  向右查看均存在座位 本身 1不可选 2不可选
-//        if (isSelectSeat(row, col - 1, 0) && isSelectSeat(row, col - 2, 0)
-//                && !isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-//
-//        //向左查看均存在座位 本身 1 2不可选 向右查看均存在座位 本身 1 2不可选
-//        if (isSelectSeat(row, col - 1, 0) && !isSelectSeat(row, col - 2, 0)
-//                && isSelectSeat(row, col + 1, 2) && !isSelectSeat(row, col + 2, 2)) {
-//            return true;
-//        }
-
-
         return true;
     }
 
-    private boolean addIsHave(int col) {
+
+    //判断是否符合选择规则
+
+    public boolean isSelect(int row, int col) {
+
+//        int leftCount = 0;
+//        //左边有多少座位
+//        for (int i = col; i >= 0; i--) {
+//            int id = getID(row, col);
+//            if (isSelect(oldSeatList.get(id).getType())) {
+//                leftCount++;
+//            }
+//        }
+//
+//        int rightCount = 0;
+//        //右边有多少座位
+//        for (int i = col; i < column; i++) {
+//            int id = getID(row, col);
+//            if (isSelect(oldSeatList.get(id).getType())) {
+//                rightCount++;
+//            }
+//        }
+//
+//        if (leftCount <= rightCount) {
+//            return "左";
+//        }
+        boolean leftOne = true;
+        boolean leftTwo = true;
+        boolean rightOne = true;
+        boolean rightTwo = true;
+
+//        if (isScattered) {//TRUE 是零散的座位
+        if (isSelectSeat(row, col - 1, 0, true) == -1) {
+            leftOne = false;
+            leftTwo = false;
+        } else {
+            leftOne = isSelectSeat(row, col - 1, 0, true) == 0 ? true : false;
+            leftTwo = isSelectSeat(row, col - 2, 0, true) == 0 ? true : false;
+        }
+
+        if (isSelectSeat(row, col + 1, 2, true) == -1) {
+            rightOne = false;
+            rightTwo = false;
+        } else {
+            rightOne = isSelectSeat(row, col + 1, 2, true) == 0 ? true : false;
+            rightTwo = isSelectSeat(row, col + 2, 2, true) == 0 ? true : false;
+        }
+
+        if (rightTwo == false) {
+            rightOne = isSelectSeat(row, col + 1, 2, false) == 0 ? true : false;
+        }
+
+        if (leftTwo == false) {
+            leftOne = isSelectSeat(row, col - 1, 0, false) == 0 ? true : false;
+        }
+//        } else {//FALSE 是连续的座位
+//        if (isSelectSeat(row, col - 1, 0, false) == -1) {
+//            leftOne = false;
+//            leftTwo = false;
+//        } else {
+//            leftOne = isSelectSeat(row, col - 1, 0, false) == 0 ? true : false;
+//            leftTwo = isSelectSeat(row, col - 2, 0, false) == 0 ? true : false;
+//        }
+//
+//        if (isSelectSeat(row, col + 1, 2, false) == -1) {
+//            rightOne = false;
+//            rightTwo = false;
+//        } else {
+//            rightOne = isSelectSeat(row, col + 1, 2, false) == 0 ? true : false;
+//            rightTwo = isSelectSeat(row, col + 2, 2, false) == 0 ? true : false;
+//        }
+
+//        }
+
+        Log.i("ee", leftTwo + "--" + leftOne + "--" + rightOne + "--" + rightTwo);
+        return isSelect(leftOne, leftTwo, rightOne, rightTwo);
+    }
+
+    private boolean isSelect(boolean leftOne,
+                             boolean leftTwo,
+                             boolean rightOne,
+                             boolean rightTwo) {
+        if (!leftOne || !rightOne) {
+
+            return true;
+
+        } else {
+            if (leftOne && !leftTwo && rightOne && rightTwo) {
+                return false;
+            }
+
+            if (leftOne && leftTwo && rightOne && !rightTwo) {
+                return false;
+            }
+
+            if (leftOne && !leftTwo && rightOne && !rightTwo) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isSelect(String type) {
+        if ("0".equals(type))
+            return true;
+        else if ("1".equals(type))
+            return true;
+        else if ("2".equals(type))
+            return true;
+        else if ("3".equals(type))
+            return true;
+        else if ("4".equals(type))
+            return true;
+        else if ("0-1".equals(type))
+            return true;
+        else if ("1-1".equals(type))
+            return true;
+        else if ("2-1".equals(type))
+            return true;
+        else if ("3-1".equals(type))
+            return true;
+        else if ("4-1".equals(type))
+            return true;
+        return false;
+    }
+
+    private boolean addIsHave(int col, int id) {
         Log.i("ee", column + "--------------" + col);
         if (col >= column) {
             return false;
         }
+//        if (oldSeatList.get(id).getType().equals("-1")) {//过道
+//            return false;
+//        }
         return true;
     }
 
-    private boolean lostIsHave(int col) {
+    private boolean lostIsHave(int col, int id) {
         if (col < 0) {
             return false;
         }
+//        if (oldSeatList.get(id).getType().equals("-1")) {//过道
+//            return false;
+//        }
         return true;
     }
 
-    private boolean isSelectSeat(int row, int col, int flag, boolean isNewDate, List<SeatInfo> seatList) {
+
+    private int isSelectSeat(int row, int col, int flag, boolean two) {
         boolean isTrue = false;
+        int isType = -1;
+        int id = getID(row, col);
         if (flag == 0) {//真的话  向左
-            isTrue = lostIsHave(col);
-            if (!isTrue)
-                return true;
+            isTrue = lostIsHave(col, id);
+//            if (!isTrue)
+//                return true;
         } else if (flag == 2) {//假的话 向右
-            isTrue = addIsHave(col);
-            if (!isTrue)
-                return true;
+            isTrue = addIsHave(col, id);
+//            if (!isTrue)
+//                return true;
         }
 
         if (isTrue) {//判断那个位置是否可选
-            int id = getID(row, col);
 
-            if (isNewDate) {
-//                Log.i("ee", "newSeatList.getId()---" + newSeatList.get(id).getType());
-//                if ((newSeatList.get(id).getType().equals("0-1"))
-//                        || (newSeatList.get(id).getType().equals("1-1"))
-//                        || (newSeatList.get(id).getType().equals("2-1"))
-//                        || (newSeatList.get(id).getType().equals("3-1"))
-//                        || (newSeatList.get(id).getType().equals("4-1"))
-//                        ) {
-//                    isTrue = true;
-//                } else {
-//                    isTrue = false;
-//                }
-            } else {
-                Log.i("ee", "oldSeatList.getId()---" + seatList.get(id).getType());
-                if ((seatList.get(id).getType().equals("0"))
-                        || (seatList.get(id).getType().equals("1"))
-                        || (seatList.get(id).getType().equals("2"))
-                        || (seatList.get(id).getType().equals("3"))
-                        || (seatList.get(id).getType().equals("4"))) {
-                    isTrue = true;
+            Log.i("ee", "oldSeatList.getId()---" + oldSeatList.get(id).getType());
+//            if (!isSpecial) {
+            if (two) {
+                if (isSelect(oldSeatList.get(id).getType())
+                        /*(oldSeatList.get(id).getType().equals("0"))
+                        || (oldSeatList.get(id).getType().equals("1"))
+                        || (oldSeatList.get(id).getType().equals("2"))
+                        || (oldSeatList.get(id).getType().equals("3"))
+                        || (oldSeatList.get(id).getType().equals("4"))
+                        || (oldSeatList.get(id).getType().equals("0-1"))
+                        || (oldSeatList.get(id).getType().equals("1-1"))
+                        || (oldSeatList.get(id).getType().equals("2-1"))
+                        || (oldSeatList.get(id).getType().equals("3-1"))
+                        || (oldSeatList.get(id).getType().equals("4-1"))*/) {
+//                isTrue = true;
+                    isType = 0;
                 } else {
-                    isTrue = false;
+//                isTrue = false;
+                    if (oldSeatList.get(id).getType().equals("-1")) {
+                        isType = -1;
+                    } else {
+                        isType = 1;
+                    }
+
+                }
+            } else {
+                if ((oldSeatList.get(id).getType().equals("0"))
+                        || (oldSeatList.get(id).getType().equals("1"))
+                        || (oldSeatList.get(id).getType().equals("2"))
+                        || (oldSeatList.get(id).getType().equals("3"))
+                        || (oldSeatList.get(id).getType().equals("4"))) {
+//                isTrue = true;
+                    isType = 0;
+                } else {
+//                isTrue = false;
+                    if (oldSeatList.get(id).getType().equals("-1")) {
+                        isType = -1;
+                    } else {
+                        isType = 1;
+                    }
+
                 }
             }
             /*else if (newSeatList.get(id).getType().equals("0-1")) {
                 isTrue = true;
             }*/
         }
-        return isTrue;
+        return isType;
+    }
+
+    public int getColumn() {
+        return this.column;
     }
 
     public void clear() {
@@ -1930,4 +2115,11 @@ public class SeatTableView extends View {
         requestLayout();
     }
 
+    private void showShortToast(String msg, boolean isShowToast) {
+        toast = Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        if (isShowToast) {
+            toast.show();
+        }
+    }
 }

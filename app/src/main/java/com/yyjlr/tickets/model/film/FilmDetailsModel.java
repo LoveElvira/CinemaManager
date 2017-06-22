@@ -18,7 +18,7 @@ public class FilmDetailsModel {
     private String moviePortrait; //影片竖版图片
     private String movieDesc; //剧情介绍
     private int interest; //关注数
-    private int score; // 评分，10分制
+    private float score; // 评分，10分制
     private int isFavority;  // 是否收藏,1:是；0：否
     private ShareInfo share;//分享
     private List<String> tags;//标签 "动画/喜剧/动作","97分钟"
@@ -91,11 +91,11 @@ public class FilmDetailsModel {
         this.interest = interest;
     }
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
 

@@ -25,6 +25,7 @@ import com.yyjlr.tickets.activity.setting.SettingOrderActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.OrderCompleteAdapter;
+import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.order.MyOrderBean;
 import com.yyjlr.tickets.model.order.MyOrderInfo;
@@ -46,30 +47,21 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
  * 订单未完成
  */
 
-public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderCompleteAdapter.SlidingViewClickListener {
+public class CompleteOrderContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderCompleteAdapter.SlidingViewClickListener {
 
-    private static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
-
-    private View view;
-    private CustomDialog customDialog;
     private OrderCompleteAdapter completeAdapter;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
-    private View notLoadingView;
     private TextView loadMore;
     private ImageView headerImage;
     private ProgressBar headerProgressBar;
     private TextView headerSta/*, headerTime*/;
     private boolean hasMore = false;
     private String pagable = "0";
-    private int delayMillis = 1000;
     private String type = "1";//订单类别,1:已完成；2：未完成
-
 
     private List<MyOrderInfo> orderList;
     private List<MyOrderInfo> orderLists;
-
 
     public CompleteOrderContent(Context context) {
         this(context, null);
@@ -78,7 +70,6 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
     public CompleteOrderContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_listview, this);
-        lastClickTime = 0;
         initView();
     }
 
@@ -143,6 +134,13 @@ public class CompleteOrderContent extends LinearLayout implements SuperSwipeRefr
                         }
                         completeAdapter.setOnLoadMoreListener(CompleteOrderContent.this);
                         completeAdapter.setOnRecyclerViewItemChildClickListener(CompleteOrderContent.this);
+                    } else {
+                        orderLists.clear();
+                        orderList = new ArrayList<>();
+                        orderLists.addAll(orderList);
+                        completeAdapter = new OrderCompleteAdapter(orderList, CompleteOrderContent.this);
+                        listView.setAdapter(completeAdapter);
+                        completeAdapter.notifyDataSetChanged();
                     }
                 }
             }

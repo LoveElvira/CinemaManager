@@ -4,18 +4,27 @@ package com.yyjlr.tickets.model.film;
  * Created by Richie on 2016/8/11.
  */
 public class MovieInfo {
-    private int movieId;//电影id
+    private long movieId;//电影id
     private String movieName;//电影名称
     private String movieImage;//电影海报
     private String director;//导演
     private String actors;//主演
     private String showTime;//上影时间
+    private String presell;  //是否预售，0否，1是
 
-    public int getMovieId() {
+    public String getPresell() {
+        return presell;
+    }
+
+    public void setPresell(String presell) {
+        this.presell = presell;
+    }
+
+    public long getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(int movieId) {
+    public void setMovieId(long movieId) {
         this.movieId = movieId;
     }
 
