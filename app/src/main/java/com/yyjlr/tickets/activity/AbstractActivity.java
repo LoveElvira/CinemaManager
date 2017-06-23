@@ -309,7 +309,7 @@ public class AbstractActivity extends AppCompatActivity {
     }
 
     //获取APP设置信息
-    protected void getAppConfig() {
+    protected void getAppConfig(final boolean isFirst) {
         final RequestNull requestNull = new RequestNull();
         OkHttpClientManager.postAsyn(Config.GET_APP_CONFIG, new OkHttpClientManager.ResultCallback<AppConfigEntity>() {
 
@@ -325,8 +325,10 @@ public class AbstractActivity extends AppCompatActivity {
                 BaseLinearLayout.appConfig = response;
                 SharePrefUtil.save(Constant.FILE_NAME, "appConfig", response, AbstractActivity.this);
                 setWindowStatusBarColor();
-                setResult(CODE_RESULT, new Intent().putExtra("isUpdate", true));
-                SelectCinemaActivity.activity.finish();
+                if (!isFirst) {
+                    setResult(CODE_RESULT, new Intent().putExtra("isUpdate", true));
+                    SelectCinemaActivity.activity.finish();
+                }
             }
 
             @Override

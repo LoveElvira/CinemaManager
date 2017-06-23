@@ -61,11 +61,11 @@ public class SplashActivity extends AbstractActivity implements View.OnClickList
 //        Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "33040301", SplashActivity.this);
         Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "50120255", SplashActivity.this);
         dealStatusBar(view);
+        getAppConfig(true);
         initView();
         if (!"0".equals(isFirstEnter)) {
             getAdvert();
         }
-//        getAppConfig();
         initListener();
     }
 

@@ -187,7 +187,7 @@ public class EventContent extends BaseLinearLayout implements BaseAdapter.OnRecy
                 intent.setClass(getContext(), LoginActivity.class);
             } else {
                 intent.setClass(getContext(), EventActivity.class);
-                intent.putExtra("eventId", activityList.get(position).getActivityId());
+                intent.putExtra("eventId", activityLists.get(position).getActivityId());
                 intent.putExtra("position", position);
             }
             Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x09);

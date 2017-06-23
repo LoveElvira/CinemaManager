@@ -85,7 +85,7 @@ public class VoucherPayContent extends BaseLinearLayout implements View.OnClickL
         confirmPrice.setText(ChangeUtils.save2Decimal(price));
     }
 
-    public void setConfirmClickable(){
+    public void setConfirmClickable() {
         confirm.setClickable(false);
         confirm.setBackgroundColor(getResources().getColor(R.color.gray_c7c7c7));
     }
@@ -192,7 +192,9 @@ public class VoucherPayContent extends BaseLinearLayout implements View.OnClickL
                         }
                     }
                 } else {
-                    Toast.makeText(getContext(), info.getInfo().getErrMsg().toString(), Toast.LENGTH_SHORT).show();
+                    if ("500".equals(info.getCode())) {
+                        Toast.makeText(getContext(), "服务器开小差~", Toast.LENGTH_SHORT).show();
+                    }
                     if ("410".equals(info.getCode())) {
                         Application.getInstance().getCurrentActivity().setResult(0x10, new Intent()
                                 .putExtra("isCancel", true)

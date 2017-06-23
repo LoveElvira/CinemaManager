@@ -831,17 +831,17 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
                 phone.setText("");
                 break;
             case R.id.content_sale_bill__confirm_order:
-
                 List<GoodInfo> goodInfoList = new ArrayList<>();
-                for (int i = 0; i < goodList.size(); i++) {
-                    if (goodList.get(i).getSelected() == 1) {
-                        GoodInfo goodInfo = new GoodInfo();
-                        goodInfo.setId(goodList.get(i).getGoodsId() + "");
-                        goodInfo.setNum(goodList.get(i).getNum() + "");
-                        goodInfoList.add(goodInfo);
+                if (goodList != null) {
+                    for (int i = 0; i < goodList.size(); i++) {
+                        if (goodList.get(i).getSelected() == 1) {
+                            GoodInfo goodInfo = new GoodInfo();
+                            goodInfo.setId(goodList.get(i).getGoodsId() + "");
+                            goodInfo.setNum(goodList.get(i).getNum() + "");
+                            goodInfoList.add(goodInfo);
+                        }
                     }
                 }
-
                 String num = phone.getText().toString().trim();
                 if (isMobileNum(num)) {
                     confirmOrder(goodInfoList);

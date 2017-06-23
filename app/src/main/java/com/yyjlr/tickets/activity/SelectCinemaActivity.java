@@ -292,7 +292,7 @@ public class SelectCinemaActivity extends AbstractActivity implements View.OnCli
                 builder.dismiss();
                 SharePrefUtil.putString(Constant.FILE_NAME, "appDomain", cinemaLists.get(position).getId() + "", SelectCinemaActivity.this);
                 Constant.AppDomain = cinemaLists.get(position).getId() + "";
-                getAppConfig();
+                getAppConfig(false);
 
             }
         });
