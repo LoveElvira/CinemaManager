@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
-                    android:text="*兑换券不能和优惠活动同时使用"
+                    android:text="※兑换券不能和优惠活动同时使用"
                     android:textColor="@color/gray_929292"
                     android:textSize="@dimen/text_11" />
 

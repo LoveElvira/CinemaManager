@@ -1,0 +1,102 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <include layout="@layout/base_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_gray"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:padding="@dimen/size_12"
+            android:text="选择完毕后，要进行app重启（自己重启）"
+            android:textColor="@color/red_c80f0f"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/select_url__test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:background="@color/white"
+            android:padding="@dimen/size_12"
+            android:text="测试环境"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
+
+        <TextView
+            android:id="@+id/select_url__formal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_2"
+            android:background="@color/white"
+            android:padding="@dimen/size_12"
+            android:text="正式环境"
+            android:textColor="@color/black_363636"
+            android:textSize="@dimen/text_14" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size_12"
+                android:text="自定义环境:"
+                android:textColor="@color/black_363636"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size_12"
+                android:text="*格式：  http:192.168.1.1:8080"
+                android:textColor="@color/red_c80f0f"
+                android:textSize="@dimen/text_12" />
+
+            <EditText
+                android:id="@+id/select_url__edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="请输入相应IP地址"
+                android:padding="@dimen/size_12"
+                android:textColor="@color/black_363636"
+                android:textColorHint="@color/gray_929292"
+                android:textSize="@dimen/text_13" />
+
+
+            <TextView
+                android:id="@+id/select_url__confrim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_20"
+                android:layout_marginLeft="@dimen/size_50"
+                android:layout_marginRight="@dimen/size_50"
+                android:layout_marginTop="@dimen/size_20"
+                android:background="@drawable/radius_orange_4"
+                android:gravity="center"
+                android:padding="@dimen/size_12"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

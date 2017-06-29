@@ -1,5 +1,7 @@
 package com.yyjlr.tickets;
 
+import com.yyjlr.tickets.helputils.SharePrefUtil;
+
 /**
  * Created by Elvira on 2016/10/10.
  * 网络连接路径
@@ -8,17 +10,23 @@ package com.yyjlr.tickets;
 public class Config {
 
     public static final boolean DEBUG = true;
+    public static String URL = "http://139.196.51.15";
+
+    public static final String URL_SERVICE = URL + "/cgi";//测试环境
+    public static final String URL_SERVICE_UPLOAD = URL + "/uploadFile";//上传文件
+
+
 //    public static final String URL_SERVICE = "http://192.168.1.57:8080/cgi";//小强本地
 //    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.57:8080/uploadFile";//上传文件
 
-    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
-    public static final String URL_SERVICE_UPLOAD = "http://139.196.51.15/uploadFile";//上传文件
+//    public static final String URL_SERVICE = "http://139.196.51.15/cgi";//测试环境
+//    public static final String URL_SERVICE_UPLOAD = "http://139.196.51.15/uploadFile";//上传文件
 
 //    public static final String URL_SERVICE = "http://192.168.1.53:8080/cgi";//唐静本地
 //    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.53:8080/uploadFile";//唐静本地
 
-//    public static final String URL_SERVICE = "http://192.168.1.108:8080/cgi";//万多杨本地
-//    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.108:8080/uploadFile";//万多杨本地
+//    public static final String URL_SERVICE = "http://192.168.1.72:8080/cgi";//万多杨本地
+//    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.72:8080/uploadFile";//万多杨本地
 
 //    public static final String URL_SERVICE = "http://139.196.249.63/cgi";//正式环境
 //    public static final String URL_SERVICE_UPLOAD = "http://139.196.249.63/uploadFile";//上传文件

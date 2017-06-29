@@ -25,6 +25,7 @@ import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.LoginActivity;
+import com.yyjlr.tickets.activity.SelectConnectActivity;
 import com.yyjlr.tickets.activity.setting.SettingAccountActivity;
 import com.yyjlr.tickets.activity.setting.SettingCouponActivity;
 import com.yyjlr.tickets.activity.setting.SettingFollowActivity;
@@ -57,6 +58,9 @@ import static com.yyjlr.tickets.R.mipmap.phone;
 public class MySettingContent extends BaseLinearLayout implements View.OnClickListener {
 
     private TextView title;
+    private ImageView rightImage;
+    private TextView rightUrl;
+
     private CircleImageView headImage;
     private ImageView sex;
     private TextView userName;
@@ -78,6 +82,15 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
         bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText("我的");
+
+        rightImage = (ImageView) findViewById(R.id.base_toolbar__right);
+        rightImage.setAlpha(0.0f);
+        rightUrl = (TextView) findViewById(R.id.base_toolbar__right_text);
+        rightImage.setVisibility(View.GONE);
+        rightUrl.setVisibility(View.VISIBLE);
+        rightUrl.setText("环境");
+        rightUrl.setOnClickListener(this);
+
         headImage = (CircleImageView) findViewById(R.id.fragment_setting__head_img);
         sex = (ImageView) findViewById(R.id.fragment_setting__sex);
         userName = (TextView) findViewById(R.id.fragment_setting__username);
@@ -294,6 +307,12 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+
+        if (view.getId() == R.id.base_toolbar__right_text) {
+            Application.getInstance().getCurrentActivity().startActivity(new Intent(Application.getInstance().getCurrentActivity(), SelectConnectActivity.class));
+            return;
+        }
+
         long currentTime = Calendar.getInstance().getTimeInMillis();
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;

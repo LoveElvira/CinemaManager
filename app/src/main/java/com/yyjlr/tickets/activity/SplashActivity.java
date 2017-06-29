@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
 import com.yyjlr.tickets.AppManager;
+import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.MainActivity;
@@ -58,7 +59,8 @@ public class SplashActivity extends AbstractActivity implements View.OnClickList
         //public static String AppDomain = "33040301";//正式 影院ID
         //public static String AppDomain = "50120255";//测试 影院ID
         //public static String AppDomain = "50120257";//xiaoqiang 影院ID
-//        Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "33040301", SplashActivity.this);
+        //Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "33040301", SplashActivity.this);
+        Config.URL = SharePrefUtil.getString(Constant.FILE_NAME, "url", "http://139.196.51.15",SplashActivity.this);
         Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "50120255", SplashActivity.this);
         dealStatusBar(view);
         getAppConfig(true);
