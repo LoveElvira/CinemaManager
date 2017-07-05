@@ -116,13 +116,15 @@ public class OkHttpClientManager {
         //影院ID
         requestData.setAppDomain(Constant.AppDomain);
 
-        Log.i("appdomain", Constant.AppDomain);
-
         requestData.setCmd(cmd);
         requestData.setParameters(requestMainDataData);
         requestData.setAppVersion(Constant.AppVersion);
         //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
         String url = Config.URL_SERVICE;
+
+        Log.i("ee", "url----" + url);
+        Log.i("ee", "appdomain----" + Constant.AppDomain);
+
         Request request = buildPostRequest(url, requestData);
         deliveryResult(callback, request, resultVOClass, context);
     }

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content">
 
             <View
-                android:layout_width="106dp"
+                android:layout_width="100dp"
                 android:layout_height="136dp"
                 android:layout_marginLeft="17dp"
                 android:alpha="0.15"
@@ -26,9 +26,9 @@
                 android:id="@+id/content_film_details__image"
                 android:layout_width="@dimen/size_100"
                 android:layout_height="@dimen/size_130"
-                android:layout_marginLeft="@dimen/size_20"
+                android:layout_marginLeft="@dimen/size_17"
                 android:layout_marginTop="3dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitCenter" />
 
         </FrameLayout>
 

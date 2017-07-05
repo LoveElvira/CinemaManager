@@ -100,6 +100,11 @@
                 android:layout_height="@dimen/size_300"
                 android:background="@color/white" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_200"
+                android:background="@color/black" />
+
             <ImageView
                 android:id="@+id/content_film_details__bgimage"
                 android:layout_width="match_parent"

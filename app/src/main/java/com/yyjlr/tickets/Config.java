@@ -12,8 +12,8 @@ public class Config {
     public static final boolean DEBUG = true;
     public static String URL = "http://139.196.51.15";
 
-    public static final String URL_SERVICE = URL + "/cgi";//测试环境
-    public static final String URL_SERVICE_UPLOAD = URL + "/uploadFile";//上传文件
+    public static String URL_SERVICE = URL + "/cgi";//测试环境
+    public static String URL_SERVICE_UPLOAD = URL + "/uploadFile";//上传文件
 
 
 //    public static final String URL_SERVICE = "http://192.168.1.57:8080/cgi";//小强本地

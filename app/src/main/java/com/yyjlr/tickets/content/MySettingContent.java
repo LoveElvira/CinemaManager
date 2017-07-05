@@ -179,7 +179,6 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
                             return;
                         }
                         switch (modelList.get(finalI).getModNo()) {
-
                             case 1://我的账号
                                 intent.setClass(Application.getInstance().getCurrentActivity(), SettingAccountActivity.class);
                                 Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x06);
