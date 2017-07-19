@@ -124,7 +124,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
     private List<VoucherModle> voucherLists = null;
     private List<String> selectVoucherList = null;
 
-    private List<CouponInfo> couponList;
+    private List<CouponInfo> couponList = null;
 
     private int positions = -1;
     private int position = 0;
@@ -481,6 +481,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                             for (int i = 0; i < response.getCouponList().size(); i++) {
                                 VoucherModle modle = new VoucherModle();
                                 modle.setCouponNumber(response.getCouponList().get(i));
+                                modle.setType(3);
                                 modle.setOverTime(null);
                                 modle.setChecked(false);
                                 voucherLists.add(0, modle);
@@ -720,11 +721,13 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                 if (response != null) {
                     couponList = response.getCoupons();
                     if (couponList != null && couponList.size() > 0) {
-                        voucherList.clear();
+                        voucherList = new ArrayList<>();
                         for (int i = 0; i < couponList.size(); i++) {
                             VoucherModle modle = new VoucherModle();
+                            modle.setType(couponList.get(i).getType());
                             modle.setCouponNumber(couponList.get(i).getCouponNumber());
                             modle.setOverTime(couponList.get(i).getOverTime());
+                            modle.setDiscount(couponList.get(i).getDiscount());
                             modle.setChecked(false);
                             voucherList.add(modle);
                         }

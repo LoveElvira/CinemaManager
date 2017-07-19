@@ -11,16 +11,16 @@ public class CouponInfo {
      * "couponNumber":"1", //券号
      * "overTime":"54654622265"//到期时间
      */
-    private String type;
+    private int type;
     private long discount;
     private String couponNumber;
     private String overTime;
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

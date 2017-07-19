@@ -5,28 +5,10 @@ package com.yyjlr.tickets.model.coupon;
  * 兑换券
  */
 
-public class VoucherModle {
-    private String couponNumber;
-    private String overTime;
+public class VoucherModle extends CouponInfo {
     private boolean isChecked;
 
     public VoucherModle() {
-    }
-
-    public String getCouponNumber() {
-        return couponNumber;
-    }
-
-    public void setCouponNumber(String couponNumber) {
-        this.couponNumber = couponNumber;
-    }
-
-    public String getOverTime() {
-        return overTime;
-    }
-
-    public void setOverTime(String overTime) {
-        this.overTime = overTime;
     }
 
     public boolean isChecked() {
@@ -37,12 +19,4 @@ public class VoucherModle {
         isChecked = checked;
     }
 
-    @Override
-    public String toString() {
-        return "VoucherModle{" +
-                "couponNumber='" + couponNumber + '\'' +
-                ", overTime=" + overTime +
-                ", isChecked=" + isChecked +
-                '}';
-    }
 }

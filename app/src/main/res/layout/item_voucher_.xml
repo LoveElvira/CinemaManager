@@ -3,13 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/size_20"
-    android:layout_marginTop="-10dp"
-    android:layout_marginRight="@dimen/size_20">
+    android:layout_marginRight="@dimen/size_20"
+    android:layout_marginTop="-10dp">
 
     <LinearLayout
         android:id="@+id/item_voucher__layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -23,6 +26,7 @@
                 android:src="@mipmap/bg_voucher_blue_left" />
 
             <TextView
+                android:id="@+id/item_voucher__type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -30,6 +34,31 @@
                 android:text="电影票"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_16" />
+
+            <LinearLayout
+                android:id="@+id/item_voucher__type_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/item_voucher__price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="元"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_16" />
+
+            </LinearLayout>
+
 
         </RelativeLayout>
 
@@ -46,8 +75,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="@dimen/size_20"
+                android:orientation="vertical"
                 android:padding="@dimen/size_10">
 
                 <LinearLayout
@@ -78,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
                     android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_12"/>
+                    android:textSize="@dimen/text_12" />
 
             </LinearLayout>
 

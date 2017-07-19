@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/size_10"
+    android:layout_marginRight="@dimen/size_10"
+    android:layout_marginTop="-5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,26 +22,38 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/bg_voucher_blue_left" />
 
+            <TextView
+                android:id="@+id/item_coupon__type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ems="1"
+                android:text="兑换券"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16" />
+
             <LinearLayout
+                android:id="@+id/item_coupon__type_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/item_coupon__price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_30" />
+                    android:textSize="@dimen/text_20" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="元"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_20" />
+                    android:textSize="@dimen/text_16" />
 
             </LinearLayout>
 
@@ -72,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:text="兑换券号"
                         android:textColor="@color/black_363636"
-                        android:textSize="@dimen/text_15" />
+                        android:textSize="@dimen/text_13" />
 
                     <TextView
                         android:id="@+id/item_coupon__num"
@@ -80,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/size_10"
                         android:textColor="@color/black_363636"
-                        android:textSize="@dimen/text_15" />
+                        android:textSize="@dimen/text_13" />
 
                 </LinearLayout>
 
@@ -98,7 +113,8 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:text="※兑换券不能和优惠活动同时使用"
                     android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_11"
+                    android:visibility="gone" />
 
 
             </LinearLayout>

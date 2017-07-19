@@ -56,7 +56,8 @@ public class SettingCouponActivity extends AbstractActivity implements View.OnCl
         oldText = (TextView) findViewById(R.id.content_coupon__old_text);
         useLine = findViewById(R.id.content_coupon__use_line);
         noUseLine = findViewById(R.id.content_coupon__no_use_line);
-        oldLine = findViewById(R.id.content_coupon__old_line);
+        oldLine = findViewById(R.id
+                .content_coupon__old_line);
         useContent = (UseCouponContent) findViewById(R.id.content_coupon__use_content);
         noUseContent = (NoUseCouponContent) findViewById(R.id.content_coupon__no_use_content);
         oldContent = (OldCouponContent) findViewById(R.id.content_coupon__old_content);

@@ -22,8 +22,17 @@ public class NoUseCouponAdapter extends BaseAdapter<CouponInfo> {
         helper.setText(R.id.item_coupon__num, item.getCouponNumber())
                 .setText(R.id.item_coupon__price, ChangeUtils.saveDecimal(item.getDiscount()))
                 .setVisible(R.id.item_coupon__time, true)
+                .setVisible(R.id.item_coupon__type, false)
+                .setVisible(R.id.item_coupon__type_layout, false)
                 .setImageResource(R.id.item_coupon__left_bg, R.mipmap.bg_voucher_blue_left)
                 .setImageResource(R.id.item_coupon__right_bg, R.mipmap.bg_voucher_blue_right);
+
+        if (item.getType()==1) {
+            helper.setVisible(R.id.item_coupon__type, true);
+        } else if (item.getType()==2) {
+            helper.setVisible(R.id.item_coupon__type_layout, true)
+                    .setText(R.id.item_coupon__price, ChangeUtils.saveDecimal(item.getDiscount()));
+        }
 
         if (item.getOverTime() != null && !"".equals(item.getOverTime())) {
             helper.setText(R.id.item_coupon__time, item.getOverTime());

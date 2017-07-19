@@ -21,11 +21,24 @@ public class VoucherAdapter extends BaseAdapter<VoucherModle> {
         helper.setText(R.id.item_voucher__num, item.getCouponNumber())
                 .setVisible(R.id.item_voucher__time, false)
                 .setVisible(R.id.item_voucher__select, false)
+                .setVisible(R.id.item_voucher__type, false)
+                .setVisible(R.id.item_voucher__type_layout, false)
                 .setOnClickListener(R.id.item_voucher__layout, new OnItemChildClickListener());
+
+        if (item.getType()==1) {
+            helper.setVisible(R.id.item_voucher__type, true)
+                    .setText(R.id.item_voucher__type, "兑换券");
+        } else if (item.getType()==2) {
+            helper.setVisible(R.id.item_voucher__type_layout, true)
+                    .setText(R.id.item_voucher__price, ChangeUtils.saveDecimal(item.getDiscount()));
+        } else if (item.getType()==3) {
+            helper.setVisible(R.id.item_voucher__type, true)
+                    .setText(R.id.item_voucher__type, "电影票");
+        }
+
         if (item.isChecked()) {
             helper.setVisible(R.id.item_voucher__select, true);
         }
-
         if (item.getOverTime() != null && !"".equals(item.getOverTime())) {
             helper.setVisible(R.id.item_voucher__time, false)
                     .setText(R.id.item_voucher__time, item.getOverTime());
