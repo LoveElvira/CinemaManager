@@ -41,7 +41,7 @@ import java.util.Calendar;
 
 /**
  * Created by Elvira on 2016/7/28.
- * 我的页面
+ * 我的页面  废弃
  */
 public class MySettingOldContent extends BaseLinearLayout implements View.OnClickListener {
 

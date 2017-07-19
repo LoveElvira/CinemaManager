@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +29,7 @@ import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
+import com.yyjlr.tickets.activity.OldPaySelectActivity;
 import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.FilmSaleAdapter;
@@ -721,6 +721,8 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                 if (data.getBooleanExtra("isPay", false)) {
                     SaleCompleteActivity.this.finish();
                 }
+                break;
+            case CODE_REQUEST_DIALOG:
                 break;
         }
     }

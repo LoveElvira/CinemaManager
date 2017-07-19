@@ -125,6 +125,8 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
 //                } else {
 //                    startActivity(MainActivity.class);
 //                }
+                setResult(CODE_RESULT, new Intent()
+                        .putExtra("isFinish", true));
                 MainActivity.mySettingContent.updateView(true);
                 LoginActivity.this.finish();
             }

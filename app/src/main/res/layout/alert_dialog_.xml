@@ -16,6 +16,8 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="@dimen/size_15"
+        android:paddingLeft="@dimen/size_12"
+        android:paddingRight="@dimen/size_12"
         android:paddingTop="@dimen/size_12">
 
         <LinearLayout
@@ -48,6 +50,7 @@
             android:layout_marginBottom="@dimen/size_10"
             android:layout_weight="1"
             android:gravity="center"
+            android:lineSpacingMultiplier="1.2"
             android:textColor="@color/black_363636"
             android:textSize="@dimen/text_16" />
 

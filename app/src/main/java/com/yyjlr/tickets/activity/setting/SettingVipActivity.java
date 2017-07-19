@@ -74,7 +74,7 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
     }
 
     //动态添加会员卡信息
-    private View addVipCard(final MemberCard memberCard) {
+    private View addVipCard(final MemberCard memberCard, final int position) {
         View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_card_, null, false);
         LinearLayout parent = (LinearLayout) view.findViewById(R.id.item_card__item_layout);
         TextView cardNo = (TextView) view.findViewById(R.id.item_card__num);
@@ -97,7 +97,8 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
             public void onClick(View v) {
                 startActivityForResult(
                         new Intent(SettingVipActivity.this, RechargeActivity.class)
-                                .putExtra("cardNo", memberCard.getCardNo()),
+                                .putExtra("cardNo", memberCard.getCardNo())
+                                .putExtra("rechargePosition", position),
                         CODE_REQUEST_TWO);
             }
         });
@@ -133,8 +134,11 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                         cardLayout.setVisibility(View.VISIBLE);
                         noHaveVipLayout.setVisibility(View.GONE);
                         for (int i = 0; i < response.getMemberCardList().size(); i++) {
-                            cardLayout.addView(addVipCard(response.getMemberCardList().get(i)));
+                            cardLayout.addView(addVipCard(response.getMemberCardList().get(i), i));
                         }
+                    } else {
+                        cardLayout.setVisibility(View.GONE);
+                        noHaveVipLayout.setVisibility(View.VISIBLE);
                     }
                 } else {
                     cardLayout.setVisibility(View.GONE);
@@ -174,7 +178,7 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                         cardLayout.setVisibility(View.VISIBLE);
                         noHaveVipLayout.setVisibility(View.GONE);
                         for (int i = 0; i < response.getMemberCardList().size(); i++) {
-                            cardLayout.addView(addVipCard(response.getMemberCardList().get(i)));
+                            cardLayout.addView(addVipCard(response.getMemberCardList().get(i), i));
                         }
                     } else {
                         cardLayout.removeAllViews();
@@ -277,13 +281,16 @@ public class SettingVipActivity extends AbstractActivity implements View.OnClick
                 cardLayout.setVisibility(View.VISIBLE);
                 noHaveVipLayout.setVisibility(View.GONE);
                 for (int i = 0; i < memberCardList.size(); i++) {
-                    cardLayout.addView(addVipCard(memberCardList.get(i)));
+                    cardLayout.addView(addVipCard(memberCardList.get(i), i));
                 }
                 break;
             case CODE_REQUEST_TWO:
                 if (data.getBooleanExtra("isUpdate", false)) {
                     getCardList();
                 }
+                break;
+            case CODE_REQUEST_DIALOG:
+                getCardList();
                 break;
         }
     }

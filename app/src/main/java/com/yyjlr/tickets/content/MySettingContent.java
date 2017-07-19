@@ -111,6 +111,9 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
         if (isLogin.equals("1")) {
             getMyMessageNum();
         } else {
+            if (msgNum != null) {
+                msgNum.setVisibility(GONE);
+            }
             sex.setVisibility(GONE);
             headImage.setImageResource(R.mipmap.head_image_default);
             userName.setText("未登录");
@@ -131,6 +134,9 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
             }
             userName.setText(name);
         } else {
+            if (msgNum != null) {
+                msgNum.setVisibility(GONE);
+            }
             this.sex.setVisibility(GONE);
             this.headImage.setImageResource(R.mipmap.head_image_default);
             userName.setText("未登录");
@@ -287,7 +293,7 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
             @Override
             public void onResponse(MessageNumEntity response) {
                 if (response != null) {
-                    if (response.getUnreadmsg() != -1) {
+                    if (response.getUnreadmsg() != -1 && response.getUnreadmsg() != 0) {
                         if (msgNum != null) {
                             msgNum.setText(response.getUnreadmsg() + "");
                             msgNum.setVisibility(VISIBLE);

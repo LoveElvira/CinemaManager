@@ -28,7 +28,37 @@ public class IdRequest implements IRequestMainData {
 
     private List<String> couponList;//兑换券券号,字符串数组
 
+    /**
+     * orderId	是	订单ID（当orderId为空，默认会员卡充值，String型）
+     * payChannelNo	否	网上支付渠道：微信1，支付宝2（Integer型）
+     * source	否	支付源，app：从APP发起（默认）；h5：从H5页面发起
+     * openid	否	从H5页面发起，必须上传
+     * cardNo	否	会员卡卡号（有值默认会员卡支付，String类型）
+     * couponList	否	兑换券券号,字符串d数组
+     * amount	否	会员充值金额(充值时，要求：orderId为空，payChannelNo必填，cardNo必填)
+     */
+    private String payChannelNo;
+
+    private String payType;//网上支付 渠道ID
+
+
     public IdRequest() {
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
+    public String getPayChannelNo() {
+        return payChannelNo;
+    }
+
+    public void setPayChannelNo(String payChannelNo) {
+        this.payChannelNo = payChannelNo;
     }
 
     public String getGrade() {

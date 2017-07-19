@@ -157,7 +157,7 @@ public class SettingOrderActivity extends AbstractActivity implements View.OnCli
         switch (requestCode) {
             case CODE_REQUEST_ONE:
                 if (viewPager.getCurrentItem() == 1 && data.getBooleanExtra("isCancel", false)) {
-                    unCompleteOrderContent.cancelOrderSuccess(data.getIntExtra("position", -1));
+                    unCompleteOrderContent.cancelOrderSuccess(data.getIntExtra("position", -1),data.getBooleanExtra("isTimeOut", false));
                 }
                 break;
         }

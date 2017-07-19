@@ -32,7 +32,7 @@ public class WebviewActivity extends AbstractActivity implements View.OnClickLis
         bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
         initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
-        title.setText(getResources().getString(R.string.app_name));
+        title.setText(getIntent().getStringExtra("title") + "");
         back = (ImageView) findViewById(R.id.base_toolbar__left);
         back.setAlpha(1.0f);
         back.setImageResource(R.mipmap.left_arrow);

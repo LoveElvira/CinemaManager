@@ -345,4 +345,17 @@ public class SelectCinemaActivity extends AbstractActivity implements View.OnCli
             }
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode) {
+            case CODE_REQUEST_DIALOG:
+                pagable = "0";
+                getCinemaList(pagable);
+                break;
+        }
+    }
 }

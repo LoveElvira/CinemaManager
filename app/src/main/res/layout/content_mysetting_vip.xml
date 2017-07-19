@@ -12,7 +12,8 @@
     <RelativeLayout
         android:id="@+id/content_setting_vip__no_card_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ImageView
             style="@style/WrapWrap"

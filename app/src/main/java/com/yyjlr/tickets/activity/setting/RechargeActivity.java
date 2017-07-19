@@ -55,16 +55,19 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
     private LinearLayout delete;
     private List<SelectPay> payList;
     private int position;
+    private int rechargePosition = -1;
     private final int SDK_PAY_FLAG = 1;
     private int times = 0;//轮询检查订单状态
     private String cardNo;//卡号
     private String cardId = null;//轮询ID
+    private int rechargePrice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recharge);
         cardNo = getIntent().getStringExtra("cardNo");
+        rechargePosition = getIntent().getIntExtra("rechargePosition", -1);
         initView();
         getPay();
     }
@@ -145,11 +148,12 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
     //预支付数据
     private void beforePay() {
 //        customDialog.show();
+        rechargePrice = (Integer.parseInt(price.getText().toString().trim()) * 100);
         IdRequest idRequest = new IdRequest();
-        idRequest.setPayTypeId(payList.get(position).getId() + "");
+//        idRequest.setPayTypeId(payList.get(position).getId() + "");
         idRequest.setCardNo(cardNo);
-        idRequest.setAmount((Integer.parseInt(price.getText().toString().trim()) * 100) + "");
-        OkHttpClientManager.postAsyn(Config.BEFORE_PAY_ORDER, new OkHttpClientManager.ResultCallback<AlipayResponse>() {
+        idRequest.setAmount(rechargePrice + "");
+        OkHttpClientManager.postAsyn(Config.BEFORE_PAY, new OkHttpClientManager.ResultCallback<AlipayResponse>() {
 
             @Override
             public void onError(Request request, Error info) {
@@ -277,6 +281,8 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
 
     private void startActivity(boolean isUpdate) {
         setResult(CODE_RESULT, new Intent()
+                .putExtra("rechargePrice", rechargePrice)
+                .putExtra("rechargePosition",rechargePosition)
                 .putExtra("isUpdate", isUpdate));
         RechargeActivity.this.finish();
     }
@@ -321,6 +327,18 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
             }
             payList.get(position).setChecked(1);
             RechargeActivity.this.adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode){
+            case CODE_REQUEST_DIALOG:
+                getPay();
+                break;
         }
     }
 }

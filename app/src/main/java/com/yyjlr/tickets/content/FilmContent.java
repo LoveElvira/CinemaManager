@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * Created by Elvira on 2016/7/28.
- * 影片页面
+ * 影片页面  废弃
  */
 public class FilmContent extends BaseLinearLayout implements View.OnClickListener {
 

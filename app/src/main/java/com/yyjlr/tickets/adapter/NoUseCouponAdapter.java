@@ -25,8 +25,8 @@ public class NoUseCouponAdapter extends BaseAdapter<CouponInfo> {
                 .setImageResource(R.id.item_coupon__left_bg, R.mipmap.bg_voucher_blue_left)
                 .setImageResource(R.id.item_coupon__right_bg, R.mipmap.bg_voucher_blue_right);
 
-        if (item.getOverTime() != 0) {
-            helper.setText(R.id.item_coupon__time, "有效期至" + ChangeUtils.changeYearDot(item.getOverTime()));
+        if (item.getOverTime() != null && !"".equals(item.getOverTime())) {
+            helper.setText(R.id.item_coupon__time, item.getOverTime());
         } else {
             helper.setVisible(R.id.item_coupon__time, false);
         }

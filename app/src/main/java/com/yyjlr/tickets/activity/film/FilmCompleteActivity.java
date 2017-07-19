@@ -923,6 +923,14 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
                         .putExtra("isPay", data.getBooleanExtra("isPay", false)));
                 FilmCompleteActivity.this.finish();
                 break;
+            case CODE_REQUEST_DIALOG:
+                if (movieOrderBean != null) {
+                    initData();
+                } else {
+                    position = getIntent().getIntExtra("position", -1);
+                    getOrderInfo();
+                }
+                break;
         }
     }
 

@@ -242,4 +242,16 @@ public class FilmScheduleActivity extends AbstractActivity implements BaseAdapte
                 break;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode){
+            case CODE_REQUEST_DIALOG:
+                getFilmPlan();
+                break;
+        }
+    }
 }

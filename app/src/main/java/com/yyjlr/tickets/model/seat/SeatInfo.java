@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by Richie on 2016/8/18.
+ * a
  */
 public class SeatInfo {
     private String id;

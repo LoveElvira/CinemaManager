@@ -402,6 +402,9 @@ public class SettingAccountActivity extends BasePhotoActivity implements View.On
                         SettingAccountActivity.this.finish();
                     }
                     break;
+                case CODE_REQUEST_DIALOG:
+                    getMyInfo();
+                    break;
             }
         }
 

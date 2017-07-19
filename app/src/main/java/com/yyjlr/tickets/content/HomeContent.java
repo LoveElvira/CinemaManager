@@ -67,7 +67,7 @@ import static com.yyjlr.tickets.Application.getInstance;
 
 /**
  * Created by Elvira on 2016/7/28.
- * 首页
+ * 首页  废弃
  */
 public class HomeContent extends BaseLinearLayout implements View.OnClickListener, BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener {
 

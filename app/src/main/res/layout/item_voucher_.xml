@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/size_20"
+    android:layout_marginTop="-10dp"
+    android:layout_marginRight="@dimen/size_20">
 
     <LinearLayout
+        android:id="@+id/item_voucher__layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -25,7 +29,7 @@
                 android:ems="1"
                 android:text="电影票"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_20" />
+                android:textSize="@dimen/text_16" />
 
         </RelativeLayout>
 
@@ -42,8 +46,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:orientation="vertical"
+                android:layout_marginTop="@dimen/size_20"
                 android:padding="@dimen/size_10">
 
                 <LinearLayout
@@ -56,25 +60,25 @@
                         android:layout_height="wrap_content"
                         android:text="兑换券号"
                         android:textColor="@color/black_363636"
-                        android:textSize="@dimen/text_15" />
+                        android:textSize="@dimen/text_13" />
 
                     <TextView
+                        android:id="@+id/item_voucher__num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/size_10"
-                        android:text="12334674156"
                         android:textColor="@color/black_363636"
-                        android:textSize="@dimen/text_15" />
+                        android:textSize="@dimen/text_13" />
 
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/item_voucher__time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
-                    android:text="有效期至2017.06.06"
                     android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_13" />
+                    android:textSize="@dimen/text_12"/>
 
             </LinearLayout>
 
@@ -83,10 +87,11 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:id="@+id/item_voucher__select"
+        android:layout_width="@dimen/size_40"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@mipmap/coupon_select"
-        android:layout_marginTop="@dimen/size_7"/>
+        android:layout_marginTop="@dimen/size_13"
+        android:src="@mipmap/coupon_select" />
 
 </RelativeLayout>

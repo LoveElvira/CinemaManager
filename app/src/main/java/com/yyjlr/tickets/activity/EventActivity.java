@@ -316,7 +316,8 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                 case R.id.content_event__join:
                     if (eventModel.getJumpUrl() != null && !"".equals(eventModel.getJumpUrl())) {
                         startActivity(new Intent(EventActivity.this, WebviewActivity.class)
-                                .putExtra("url", eventModel.getJumpUrl()));
+                                .putExtra("url", eventModel.getJumpUrl())
+                                .putExtra("title", eventModel.getActivityName()));
                     } else {
                         showShortToast("参加功能正在开放中");
                     }
@@ -409,4 +410,15 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode) {
+            case CODE_REQUEST_DIALOG:
+                getEventInfo();
+                break;
+        }
+    }
 }

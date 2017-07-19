@@ -20,7 +20,7 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.PaySelectActivity;
+import com.yyjlr.tickets.activity.OldPaySelectActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.adapter.BaseAdapter;
 import com.yyjlr.tickets.adapter.PayAdapter;
@@ -29,15 +29,11 @@ import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.ResponseStatus;
 import com.yyjlr.tickets.model.pay.AlipayResponse;
 import com.yyjlr.tickets.model.pay.PayResult;
-import com.yyjlr.tickets.model.pay.PayModel;
 import com.yyjlr.tickets.model.pay.SelectPay;
 import com.yyjlr.tickets.requestdata.IdRequest;
-import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
-import com.yyjlr.tickets.viewutils.CustomDialog;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +114,7 @@ public class OnLinePayContent extends BaseLinearLayout implements View.OnClickLi
                     Application.getInstance().getCurrentActivity().setResult(0x10, new Intent()
                             .putExtra("isCancel", true)
                             .putExtra("position", positions));
-                    PaySelectActivity.activity.finish();
+                    OldPaySelectActivity.activity.finish();
                 }
 //                customDialog.dismiss();
             }

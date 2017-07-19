@@ -22,7 +22,7 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.PaySelectActivity;
+import com.yyjlr.tickets.activity.OldPaySelectActivity;
 import com.yyjlr.tickets.activity.VipBoundActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.content.BaseLinearLayout;
@@ -210,7 +210,7 @@ public class VipPayContent extends BaseLinearLayout implements View.OnClickListe
                     Application.getInstance().getCurrentActivity().setResult(0x10, new Intent()
                             .putExtra("isCancel", true)
                             .putExtra("position", position));
-                    PaySelectActivity.activity.finish();
+                    OldPaySelectActivity.activity.finish();
                 }
 //                customDialog.dismiss();
             }

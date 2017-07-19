@@ -17,7 +17,6 @@
             android:layout_marginLeft="@dimen/size_10"
             android:layout_marginRight="@dimen/size_10"
             android:layout_weight="1.5"
-            android:text="名称"
             android:textColor="@color/black_363636"
             android:textSize="@dimen/text_12" />
 
@@ -35,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/size_10"
             android:layout_weight="1"
-            android:text="50元"
             android:textColor="@color/black_363636"
             android:textSize="@dimen/text_12" />
 
@@ -70,7 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/size_10"
             android:layout_weight="1"
-            android:text="50元"
             android:textColor="@color/black_363636"
             android:textSize="@dimen/text_12" />
 

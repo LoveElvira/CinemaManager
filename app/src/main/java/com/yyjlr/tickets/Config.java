@@ -95,6 +95,12 @@ public class Config {
     public static final String GET_MY_COUPON = "user/coupon";//我的优惠券
     public static final String GET_PAY_COUPON = "coupon/gain";//获取优惠券
     public static final String GET_CINEMA_STATUS = "cinema/warm";//影院运营状态
+    public static final String CHECK_PAY_PRICE = "newPay/queryFactAmount";//订单实际价格查询接口
+    public static final String BEFORE_PAY = "newPay/newPayData";//订单预支付接口
+    public static final String GET_APP_VERSION = "app/version/current";//获取最新APP版本
+    public static final String GET_NEW_PAY = "pay/newChannel";//获取支付方式（新版）
+    public static final String CHECK_COUPON_USABLE = "pay/couponIsUsable";//检查兑换券是否可以用
+    public static final String GET_COUPONS = "coupon/availableCoupon";//获取用户未使用的优惠券
 
 
 }

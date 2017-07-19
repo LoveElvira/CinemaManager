@@ -47,7 +47,7 @@ public class SettingCouponActivity extends AbstractActivity implements View.OnCl
         bgTitle = (ImageView) findViewById(R.id.base_toolbar__bg);
         initBgTitle(bgTitle);
         title = (TextView) findViewById(R.id.base_toolbar__text);
-        title.setText(getResources().getText(R.string.text_login));
+        title.setText("我的优惠券");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
 

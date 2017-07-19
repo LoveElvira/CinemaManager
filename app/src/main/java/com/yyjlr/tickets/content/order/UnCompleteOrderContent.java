@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +20,7 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
+import com.yyjlr.tickets.activity.OldPaySelectActivity;
 import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.activity.film.FilmCompleteActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
@@ -156,8 +156,12 @@ public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwi
         }, pagableRequest, MyOrderBean.class, Application.getInstance().getCurrentActivity());
     }
 
-    public void cancelOrderSuccess(int position) {
-        orderLists.get(position).setOrderStatus(4);
+    public void cancelOrderSuccess(int position,boolean isTimeOut) {
+        if (isTimeOut){
+            orderLists.get(position).setOrderStatus(9);
+        }else{
+            orderLists.get(position).setOrderStatus(4);
+        }
         unCompleteAdapter.notifyItemChanged(position);
     }
 

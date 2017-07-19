@@ -322,6 +322,17 @@ public class PackageDetailsActivity extends AbstractActivity implements View.OnC
         xinlangweibo.setOnClickListener(this);
         qqkongjian.setOnClickListener(this);
         cancel.setOnClickListener(this);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode){
+            case CODE_REQUEST_DIALOG:
+                getPackageDetail();
+                break;
+        }
     }
 }

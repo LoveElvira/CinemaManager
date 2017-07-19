@@ -6,8 +6,17 @@ package com.yyjlr.tickets.model;
 
 public class ResponseId {
     private int orderId;//订单id
+    private int orderType;
 
     public ResponseId() {
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
     }
 
     public int getOrderId() {

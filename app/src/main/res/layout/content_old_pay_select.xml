@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yyjlr.tickets.activity.OldPaySelectActivity"
+    tools:showIn="@layout/activity_pay_select">
+
+    <com.yyjlr.tickets.viewutils.ScrollView style="@style/MatchMatch">
+
+        <LinearLayout
+            style="@style/MatchMatch"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/content_pay_select__time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/size_12"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="剩余支付时间："
+                    android:textColor="@color/gray_929292"
+                    android:textSize="@dimen/text_13" />
+
+                <!-- app:isShowMillisecond="true"-->
+                <com.yyjlr.tickets.viewutils.countdown.CountdownView
+                    android:id="@+id/content_pay_select__time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:isShowMinute="true"
+                    app:isShowSecond="true"
+                    app:suffixGravity="center"
+                    app:suffixTextColor="@color/black_363636"
+                    app:suffixTextSize="@dimen/text_16"
+                    app:timeTextColor="@color/black_363636"
+                    app:timeTextSize="@dimen/text_16" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MatchAuto"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/wave"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="订单总金额"
+                            android:textColor="@color/black_363636"
+                            android:textSize="@dimen/text_12" />
+
+                        <TextView
+                            android:id="@+id/content_pay_select__price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginRight="@dimen/size_5"
+                            android:text="0"
+                            android:textColor="@color/red_de2500"
+                            android:textSize="@dimen/text_18" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="元"
+                            android:textColor="@color/black_363636"
+                            android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_marginRight="@dimen/size_10"
+                        android:background="@drawable/line_dash"
+                        android:layerType="software" />
+
+                    <LinearLayout
+                        android:id="@+id/content_pay_select__add_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/size_10"
+                        android:paddingTop="@dimen/size_10" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/content_pay_select__online_pay_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/content_pay_select__online_pay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/size_10"
+                            android:text="网上支付"
+                            android:textColor="@color/orange_ff7a0f" />
+
+                        <View
+                            android:id="@+id/content_pay_select__online_pay_line"
+                            android:layout_width="@dimen/size_10"
+                            android:layout_height="@dimen/size_2"
+                            android:background="@color/orange_ff7a0f" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_pay_select__card_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <TextView
+                            android:id="@+id/content_pay_select__card"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/size_10"
+                            android:text="会员卡支付"
+                            android:textColor="@color/gray_cbcbcb" />
+
+                        <View
+                            android:id="@+id/content_pay_select__card_line"
+                            android:layout_width="@dimen/size_10"
+                            android:layout_height="@dimen/size_2"
+                            android:background="@color/orange_ff7a0f"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_pay_select__voucher_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <TextView
+                            android:id="@+id/content_pay_select__voucher"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/size_10"
+                            android:text="兑换券支付"
+                            android:textColor="@color/gray_cbcbcb" />
+
+                        <View
+                            android:id="@+id/content_pay_select__voucher_line"
+                            android:layout_width="@dimen/size_10"
+                            android:layout_height="@dimen/size_2"
+                            android:background="@color/orange_ff7a0f"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <com.yyjlr.tickets.viewutils.LockableViewPager
+                    android:id="@+id/content_pay_select__viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.yyjlr.tickets.viewutils.ScrollView>
+</LinearLayout>

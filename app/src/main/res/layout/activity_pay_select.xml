@@ -8,4 +8,5 @@
     <include layout="@layout/base_toolbar" />
 
     <include layout="@layout/content_pay_select" />
+    <!--<include layout="@layout/content_old_pay_select" />-->
 </android.support.design.widget.CoordinatorLayout>

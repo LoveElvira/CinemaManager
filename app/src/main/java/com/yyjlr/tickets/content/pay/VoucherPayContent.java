@@ -18,23 +18,15 @@ import com.squareup.okhttp.Request;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
-import com.yyjlr.tickets.activity.PaySelectActivity;
-import com.yyjlr.tickets.activity.VipBoundActivity;
+import com.yyjlr.tickets.activity.OldPaySelectActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
 import com.yyjlr.tickets.content.BaseLinearLayout;
 import com.yyjlr.tickets.helputils.ChangeUtils;
-import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.pay.CouponInfo;
 import com.yyjlr.tickets.model.pay.CouponList;
 import com.yyjlr.tickets.requestdata.IdRequest;
-import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.service.VoucherError;
-import com.yyjlr.tickets.service.VoucherErrorInfo;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -199,7 +191,7 @@ public class VoucherPayContent extends BaseLinearLayout implements View.OnClickL
                         Application.getInstance().getCurrentActivity().setResult(0x10, new Intent()
                                 .putExtra("isCancel", true)
                                 .putExtra("position", position));
-                        PaySelectActivity.activity.finish();
+                        OldPaySelectActivity.activity.finish();
                     }
                 }
 //                if ("101".equals(info.getCode())) {

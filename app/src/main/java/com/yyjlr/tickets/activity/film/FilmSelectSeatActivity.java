@@ -24,12 +24,14 @@ import com.yyjlr.tickets.Constant;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.activity.LoginActivity;
+import com.yyjlr.tickets.activity.OldPaySelectActivity;
 import com.yyjlr.tickets.adapter.SeatTypeAdapter;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.ResponeNull;
 import com.yyjlr.tickets.model.ResponseId;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
+import com.yyjlr.tickets.model.order.ConfirmOrderBean;
 import com.yyjlr.tickets.model.seat.SeatBean;
 import com.yyjlr.tickets.model.seat.SeatInfo;
 import com.yyjlr.tickets.model.seat.SeatTypeInfo;
@@ -261,7 +263,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
                 if (response != null && response.getOrderId() != 0) {
                     customDialog.dismiss();
-                    showCancelOrder(response.getOrderId());
+                    showCancelOrder(response);
                 } else {
                     getSeatPlan();
                 }
@@ -434,7 +436,8 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     /**
      * show Dialog 是否确定 取消订单
      */
-    private void showCancelOrder(final int orderId) {
+    private void showCancelOrder(final ResponseId responseId) {
+        final int orderId = responseId.getOrderId();
         LayoutInflater inflater = LayoutInflater.from(Application.getInstance().getCurrentActivity());
         View layout = inflater.inflate(R.layout.alert_dialog, null);
         final AlertDialog builder = new AlertDialog.Builder(Application.getInstance().getCurrentActivity()).create();
@@ -453,11 +456,19 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             @Override
             public void onClick(View v) {
                 builder.dismiss();
-                AddMovieOrderBean addMovieOrderBean = null;
-                startActivity(new Intent(getBaseContext(), FilmCompleteActivity.class)
-                        .putExtra("orderId", orderId + "")
-                        .putExtra("movieOrderBean", addMovieOrderBean)
-                        .putExtra("isNoPay", true));
+                if (responseId.getOrderType() == 1) {
+                    AddMovieOrderBean addMovieOrderBean = null;
+                    startActivity(new Intent(getBaseContext(), FilmCompleteActivity.class)
+                            .putExtra("orderId", orderId + "")
+                            .putExtra("movieOrderBean", addMovieOrderBean)
+                            .putExtra("isNoPay", true));
+                } else {
+                    ConfirmOrderBean confirmOrderBean = null;
+                    startActivity(new Intent(getBaseContext(), OldPaySelectActivity.class)
+                            .putExtra("orderId", orderId + "")
+                            .putExtra("position", 0)
+                            .putExtra("orderBean", confirmOrderBean));
+                }
                 FilmSelectSeatActivity.this.finish();
             }
         });
@@ -574,6 +585,15 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                     seatSelectList = new ArrayList<>();
                     seatSelectList_1 = new ArrayList<>();
                     addSelectSeatText();
+                }
+                break;
+            case CODE_REQUEST_DIALOG:
+                if (isFirst) {
+                    CheckNoPayOrder();
+                } else {
+                    customDialog = new CustomDialog(this, "加载中...");
+                    customDialog.show();
+                    getSeatPlan();
                 }
                 break;
         }

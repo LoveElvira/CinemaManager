@@ -4,16 +4,21 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -36,6 +41,7 @@ import com.yyjlr.tickets.content.SaleContent;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
 import com.yyjlr.tickets.model.AppConfigEntity;
 import com.yyjlr.tickets.model.CinemaStatusEntity;
+import com.yyjlr.tickets.model.appversion.AppVersion;
 import com.yyjlr.tickets.requestdata.RequestNull;
 import com.yyjlr.tickets.service.DownLoadReceive;
 import com.yyjlr.tickets.service.Error;
@@ -83,12 +89,14 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
     private boolean isFirstSale;
     private boolean isHot = true;
     private String isError = "https://";
+    private AppVersion appVersion;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         customDialog = new CustomDialog(MainActivity.this, "切换中...");
         isUpdateCinema = false;
         isUpdateFilm = true;
@@ -340,18 +348,6 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
                 break;
             case CODE_REQUEST_TWO://更新cinema ID
                 if (data.getBooleanExtra("isUpdate", false)) {
-//                    customDialog.show();
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                Thread.sleep(2000);
-//                                customDialog.dismiss();
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }).start();
                     isUpdateCinema = true;
                     isUpdateFilm = true;
                     isUpdateSale = true;
@@ -417,111 +413,111 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
 
     //检查更新
     private void checkUpdate() {
-//        RequestNull requestNull = new RequestNull();
-//        OkHttpClientManager.postAsyn(Config.GET_APP_VERSION, new OkHttpClientManager.ResultCallback<AppVersion>() {
-//            @Override
-//            public void onError(Request request, Error info) {
-//                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
-//            }
-//
-//            @Override
-//            public void onResponse(AppVersion response) {
-//                appVersion = response;
-//                if (appVersion == null)
-//                    return;
-//                PackageInfo pi = null;
-//                PackageManager pm = getPackageManager();
-//                try {
-//                    pi = pm.getPackageInfo(getPackageName(), 0);
-//                } catch (PackageManager.NameNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                String versionName = appVersion.getAndroid().getVersion().replace(".", "");
-//                String versionNameLocal = pi.versionName.replace(".", "");
-//                if (Float.parseFloat(versionName) > Float.parseFloat((versionNameLocal))) {
-//                    SharePrefUtil.putString(Constant.FILE_NAME, "app_update", "true", MainActivity.this);
-//
-//                    //提示更新
-//                    showUpdataDialog();
-//                }
-//            }
-//
-//            @Override
-//            public void onOtherError(Request request, Exception exception) {
-//                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
-//            }
-//        }, requestNull, AppVersion.class);
+        RequestNull requestNull = new RequestNull();
+        OkHttpClientManager.postAsyn(Config.GET_APP_VERSION, new OkHttpClientManager.ResultCallback<AppVersion>() {
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("xxxxxx", "onError , Error = " + info.getInfo());
+            }
+
+            @Override
+            public void onResponse(AppVersion response) {
+                if (response != null) {
+                    appVersion = response;
+                    if (appVersion == null)
+                        return;
+                    PackageInfo pi = null;
+                    PackageManager pm = getPackageManager();
+                    try {
+                        pi = pm.getPackageInfo(getPackageName(), 0);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String versionName = appVersion.getAndroid().getVersion().replace(".", "");
+                    String versionNameLocal = pi.versionName.replace(".", "");
+                    if (Float.parseFloat(versionName) > Float.parseFloat((versionNameLocal))) {
+                        SharePrefUtil.putString(Constant.FILE_NAME, "app_update", "true", MainActivity.this);
+
+                        //提示更新
+                        showUpdataDialog();
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+            }
+        }, requestNull, AppVersion.class, MainActivity.this);
     }
 
     //提示更新的dailog
     private void showUpdataDialog() {
-//        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-//        View layout = inflater.inflate(R.layout.alert_dialog, null);
-//        final AlertDialog builder = new AlertDialog.Builder(MainActivity.this).create();
-//        builder.setView(layout);
-//        builder.setCancelable(false);
-//        builder.show();
-//        TextView title = (TextView) layout.findViewById(R.id.alert_dialog_title);
-//        TextView message = (TextView) layout.findViewById(R.id.alert_dialog_message);
-//        TextView submit = (TextView) layout.findViewById(R.id.alert_dialog__submit);
-//        title.setText(appVersion.getAndroid().getTitle());
-//        submit.setText("确定");
-//        message.setText(appVersion.getAndroid().getDesc().toString());
-//        layout.findViewById(R.id.alert_dialog__cancel).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                builder.dismiss();
-//            }
-//        });
-//        submit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String netType = GetNetworkType();
-//                if ("wifi".equalsIgnoreCase(netType)) {
-//                    downLoadApk();
-//                    builder.dismiss();
-//                } else {
-//                    builder.dismiss();
-//                    showNetWorkDialog();
-//                }
-//            }
-//        });
-//        if (appVersion.getAndroid().getForcedUpdate() == 0) {
-//            //当点取消按钮时进行登录
-//            layout.findViewById(R.id.alert_dialog__cancel).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    builder.dismiss();
-//                }
-//            });
-//        }
-//    }
-//
-//    //提示更新的dailog 非wifi
-//    private void showNetWorkDialog() {
-//        final AlertDialog.Builder builer = new AlertDialog.Builder(this);
-//        builer.setTitle("更新提示");
-//
-//        builer.setMessage("当前使用的是移动网络(非wifi),是否确认下载?");
-//        //当点确定按钮时从服务器上下载 新的apk 然后安装
-//        builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//                downLoadApk();
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        //当点取消按钮时进行登录
-//        builer.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//                showUpdataDialog();
-//            }
-//        });
-//
-//        AlertDialog dialog = builer.create();
-//        dialog.setCancelable(false);
-//        dialog.show();
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        View layout = inflater.inflate(R.layout.alert_dialog, null);
+        final AlertDialog builder = new AlertDialog.Builder(MainActivity.this).create();
+        builder.setView(layout);
+        builder.setCancelable(false);
+        builder.show();
+        TextView title = (TextView) layout.findViewById(R.id.alert_dialog_title);
+        TextView message = (TextView) layout.findViewById(R.id.alert_dialog_message);
+        TextView submit = (TextView) layout.findViewById(R.id.alert_dialog__submit);
+        TextView cancel = (TextView) layout.findViewById(R.id.alert_dialog__cancel);
+        title.setText(appVersion.getAndroid().getTitle());
+        submit.setText("确定");
+        message.setText(appVersion.getAndroid().getDesc().toString());
+        if (appVersion.getAndroid().getForcedUpdate() == 0) {
+            //当点取消按钮时进行登录
+            cancel.setVisibility(View.VISIBLE);
+        } else {
+            cancel.setVisibility(View.GONE);
+        }
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String netType = GetNetworkType();
+                if ("wifi".equalsIgnoreCase(netType)) {
+                    downLoadApk();
+                    builder.dismiss();
+                } else {
+                    builder.dismiss();
+                    showNetWorkDialog();
+                }
+            }
+        });
+    }
+
+    //提示更新的dailog 非wifi
+    private void showNetWorkDialog() {
+        final AlertDialog.Builder builer = new AlertDialog.Builder(this);
+        builer.setTitle("更新提示");
+
+        builer.setMessage("当前使用的是移动网络(非wifi),是否确认下载?");
+        //当点确定按钮时从服务器上下载 新的apk 然后安装
+        builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                downLoadApk();
+                dialog.dismiss();
+            }
+        });
+
+        //当点取消按钮时进行登录
+        builer.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                showUpdataDialog();
+            }
+        });
+
+        AlertDialog dialog = builer.create();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     //下载apk
@@ -531,8 +527,8 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
             @Override
             public void run() {
                 try {
-//                    String apkUrl = appVersion.getAndroid().getUpdateUrl();
-                    String apkUrl = "";
+                    String apkUrl = appVersion.getAndroid().getUpdateUrl();
+//                    String apkUrl = "";
                     // String apkUrl = "http://dsapp.asc-wines.com/downloadapp/ds-app.apk";
                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
                     request.setDestinationInExternalPublicDir("download", "sfc.apk");
@@ -578,7 +574,7 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
                     } else {//门店维护中
                         showShortToast(response.getMessage());
                         SharePrefUtil.putBoolean(Constant.FILE_NAME, "isFirstAction", false, Application.getInstance().getCurrentActivity());
-                        homeContent.showSelectCinemaPopupWindow(true,response.getMessage());
+                        homeContent.showSelectCinemaPopupWindow(true, response.getMessage());
                     }
                 }
             }

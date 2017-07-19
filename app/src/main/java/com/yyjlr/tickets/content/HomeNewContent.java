@@ -208,15 +208,15 @@ public class HomeNewContent extends BaseLinearLayout implements View.OnClickList
 
         boolean isFirstAction = SharePrefUtil.getBoolean(Constant.FILE_NAME, "isFirstAction", true, Application.getInstance().getCurrentActivity());
         if (isFirstAction) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (hasWindowFocus()) {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (hasWindowFocus()) {
                         showSelectCinemaPopupWindow(false, "");
                         SharePrefUtil.putBoolean(Constant.FILE_NAME, "isFirstAction", false, Application.getInstance().getCurrentActivity());
-                    }
-                }
-            }, 1000);
+//                    }
+//                }
+//            }, 1000);
         }
     }
 
@@ -235,7 +235,7 @@ public class HomeNewContent extends BaseLinearLayout implements View.OnClickList
     PopupWindow mPopupWindow;
 
     public void showSelectCinemaPopupWindow(final boolean isForce, final String msg) {
-        View parent = LayoutInflater.from(getContext()).inflate(R.layout.fragment_new_home_, null);
+        View parent = LayoutInflater.from(getContext()).inflate(R.layout.activity_main, null);
         View view = LayoutInflater.from(getContext()).inflate(
                 R.layout.popupwindows_select_cinema, null);
 

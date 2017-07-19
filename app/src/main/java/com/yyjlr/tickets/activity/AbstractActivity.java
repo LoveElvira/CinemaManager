@@ -59,7 +59,6 @@ public class AbstractActivity extends AppCompatActivity {
 
     public static final int CODE_RESULT = 0x10;
 
-
     protected int TOTAL_COUNTER = 20;
 
     protected static final int PAGE_SIZE = 10;

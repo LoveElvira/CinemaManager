@@ -37,7 +37,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by Elvira on 2016/7/28.
- * 抢票页面
+ * 抢票页面  废弃
  */
 public class GrabTicketContent extends BaseLinearLayout {
     private TicketFrameLayout ticketFrameLayout;

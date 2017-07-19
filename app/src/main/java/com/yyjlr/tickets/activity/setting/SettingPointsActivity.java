@@ -1,5 +1,6 @@
 package com.yyjlr.tickets.activity.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -236,4 +237,17 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+
+        switch (requestCode){
+            case CODE_REQUEST_DIALOG:
+                pagable = "0";
+                getPoints(pagable);
+                break;
+        }
+    }
 }

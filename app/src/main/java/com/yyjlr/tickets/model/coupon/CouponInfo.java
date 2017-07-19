@@ -14,7 +14,7 @@ public class CouponInfo {
     private String type;
     private long discount;
     private String couponNumber;
-    private long overTime;
+    private String overTime;
 
     public String getType() {
         return type;
@@ -40,11 +40,11 @@ public class CouponInfo {
         this.couponNumber = couponNumber;
     }
 
-    public long getOverTime() {
+    public String getOverTime() {
         return overTime;
     }
 
-    public void setOverTime(long overTime) {
+    public void setOverTime(String overTime) {
         this.overTime = overTime;
     }
 }

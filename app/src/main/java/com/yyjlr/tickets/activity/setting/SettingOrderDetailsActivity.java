@@ -12,11 +12,10 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
-import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
-import com.yyjlr.tickets.activity.PaySelectActivity;
+import com.yyjlr.tickets.activity.OldPaySelectActivity;
 import com.yyjlr.tickets.activity.film.FilmCompleteActivity;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
@@ -29,7 +28,6 @@ import com.yyjlr.tickets.service.Error;
 import com.yyjlr.tickets.service.OkHttpClientManager;
 import com.yyjlr.tickets.viewutils.CustomDialog;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -221,7 +219,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
 
             if (movieOrderDetailInfo.getSerialNumber() != null && !"".equals(movieOrderDetailInfo.getSerialNumber())) {
                 filmCodeLayout.setVisibility(View.VISIBLE);
-                getFilmCode.setText(movieOrderDetailInfo.getValidCode());
+                getFilmCode.setText(movieOrderDetailInfo.getSerialNumber());
             }
 
             if (movieOrderDetailInfo.getMovieImg() != null && !"".equals(movieOrderDetailInfo.getMovieImg())) {
@@ -240,17 +238,17 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
             }
             if (orderDetailBean.getGoodsDetail().getTicketCode() != null
                     && !"".equals(orderDetailBean.getGoodsDetail().getTicketCode())) {
-                goodNumLayout.setVisibility(View.VISIBLE);
-                getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketCode());
-//                goodCodeLayout.setVisibility(View.VISIBLE);
-//                getGoodNum.setText(orderDetailBean.getGoodsDetail().getTicketCode());
+//                goodNumLayout.setVisibility(View.VISIBLE);
+//                getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketCode());
+                goodCodeLayout.setVisibility(View.VISIBLE);
+                getGoodNum.setText(orderDetailBean.getGoodsDetail().getTicketCode());
             }
             if (orderDetailBean.getGoodsDetail().getTicketNo() != null
                     && !"".equals(orderDetailBean.getGoodsDetail().getTicketNo())) {
-                goodCodeLayout.setVisibility(View.VISIBLE);
-                getGoodNum.setText(orderDetailBean.getGoodsDetail().getTicketNo());
-//                goodNumLayout.setVisibility(View.VISIBLE);
-//                getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketNo());
+//                goodCodeLayout.setVisibility(View.VISIBLE);
+//                getGoodNum.setText(orderDetailBean.getGoodsDetail().getTicketNo());
+                goodNumLayout.setVisibility(View.VISIBLE);
+                getGoodCode.setText(orderDetailBean.getGoodsDetail().getTicketNo());
             }
 //            getGoodNum.setText(orderDetailBean.getGoodsDetail().getFetchCode());
 
@@ -383,7 +381,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
                 } else {
                     ConfirmOrderBean confirmOrderBean = null;
                     startActivity(new Intent(SettingOrderDetailsActivity.this,
-                            PaySelectActivity.class)
+                            OldPaySelectActivity.class)
                             .putExtra("orderId", orderId)
                             .putExtra("orderBean", confirmOrderBean));
                 }
@@ -401,5 +399,18 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+
+        switch (requestCode){
+            case CODE_REQUEST_DIALOG:
+                getOrderInfo();
+                break;
+        }
     }
 }

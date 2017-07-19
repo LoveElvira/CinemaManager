@@ -392,13 +392,19 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
         if (resultCode != CODE_RESULT)
             return;
 
-        if (requestCode == CODE_REQUEST_ONE) {
-            int position = data.getIntExtra("position", -1);
-            if (!"1".equals(messageInfoLists.get(position).getIsRead())) {
-                messageInfoLists.get(position).setIsRead("1");
-                adapter.notifyItemChanged(position);
-                isRead = true;
-            }
+        switch (requestCode) {
+            case CODE_REQUEST_ONE:
+                int position = data.getIntExtra("position", -1);
+                if (!"1".equals(messageInfoLists.get(position).getIsRead())) {
+                    messageInfoLists.get(position).setIsRead("1");
+                    adapter.notifyItemChanged(position);
+                    isRead = true;
+                }
+                break;
+            case CODE_REQUEST_DIALOG:
+                pagable = "0";
+                getMessage(pagable);
+                break;
         }
     }
 

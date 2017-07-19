@@ -119,7 +119,8 @@
             android:textSize="@dimen/text_15" />
     </LinearLayout>
 
-    <RelativeLayout style="@style/MatchMatch">
+    <RelativeLayout style="@style/MatchMatch"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/content_login__layout"

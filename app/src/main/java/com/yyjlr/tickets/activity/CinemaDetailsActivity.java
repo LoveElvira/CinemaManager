@@ -426,4 +426,16 @@ public class CinemaDetailsActivity extends AbstractActivity implements View.OnCl
         COLLAPSED,
         INTERNEDIATE
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode){
+            case CODE_REQUEST_DIALOG:
+               getCinemaInfo();
+                break;
+        }
+    }
 }
