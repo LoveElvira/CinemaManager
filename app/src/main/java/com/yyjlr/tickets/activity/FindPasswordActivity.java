@@ -1,9 +1,11 @@
 package com.yyjlr.tickets.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,7 +124,9 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
                 customDialog.dismiss();
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.PHONE, phoneNum.getText().toString().trim(), FindPasswordActivity.this);
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, password.getText().toString().trim(), FindPasswordActivity.this);
-                startActivity(LoginActivity.class);
+
+                setResult(RESULT_OK, new Intent());
+
                 FindPasswordActivity.this.finish();
             }
 
@@ -174,6 +178,7 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
             lastClickTime = currentTime;
             switch (view.getId()) {
                 case R.id.base_toolbar__left:
+                    setResult(RESULT_OK, new Intent());
                     FindPasswordActivity.this.finish();
                     break;
                 case R.id.content_find_pwd__getcode:
@@ -212,4 +217,15 @@ public class FindPasswordActivity extends AbstractActivity implements View.OnCli
             getCode.setText(millisUntilFinished / 1000 + "秒");
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setResult(RESULT_OK, new Intent());
+            FindPasswordActivity.this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

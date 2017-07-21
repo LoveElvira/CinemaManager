@@ -33,7 +33,7 @@
                 android:ems="1"
                 android:text="电影票"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_16" />
+                android:textSize="@dimen/text_15" />
 
             <LinearLayout
                 android:id="@+id/item_voucher__type_layout"
@@ -48,14 +48,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_20" />
+                    android:textSize="@dimen/text_18" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="元"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_16" />
+                    android:textSize="@dimen/text_15" />
 
             </LinearLayout>
 
@@ -75,7 +75,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_20"
+                android:layout_centerInParent="true"
                 android:orientation="vertical"
                 android:padding="@dimen/size_10">
 
@@ -89,15 +89,15 @@
                         android:layout_height="wrap_content"
                         android:text="兑换券号"
                         android:textColor="@color/black_363636"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
                         android:id="@+id/item_voucher__num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_marginLeft="@dimen/size_5"
                         android:textColor="@color/black_363636"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                 </LinearLayout>
 
@@ -106,8 +106,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
+                    android:textColor="@color/red_de2500"
+                    android:textSize="@dimen/text_11" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="※兑换券不能和优惠活动同时使用"
                     android:textColor="@color/gray_929292"
-                    android:textSize="@dimen/text_12" />
+                    android:textSize="@dimen/text_10" />
 
             </LinearLayout>
 

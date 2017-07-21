@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -166,9 +167,39 @@ public class LoginActivity extends AbstractActivity implements View.OnClickListe
                 case R.id.content_login__xinlang:
                     break;
                 case R.id.content_login__forger_password:
-                    startActivity(FindPasswordActivity.class);
+                    startActivityForResult(new Intent(LoginActivity.this, FindPasswordActivity.class), CODE_REQUEST_ONE);
                     break;
             }
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setResult(CODE_RESULT, new Intent()
+                    .putExtra("isFinish", true));
+            LoginActivity.this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != CODE_RESULT)
+            return;
+        switch (requestCode) {
+            case CODE_REQUEST_ONE://
+                String userName = SharePrefUtil.getString(Constant.FILE_NAME, Constant.PHONE, "", LoginActivity.this);
+                String passWord = SharePrefUtil.getString(Constant.FILE_NAME, Constant.PASSWORD, "", LoginActivity.this);
+                phoneNum.setText(userName);
+                password.setText(passWord);
+//                setResult(CODE_RESULT, new Intent()
+//                        .putExtra("isFinish", true));
+//                LoginActivity.this.finish();
+                break;
         }
     }
 }

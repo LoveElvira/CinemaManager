@@ -31,16 +31,16 @@ public class VoucherAdapter extends BaseAdapter<VoucherModle> {
         } else if (item.getType()==2) {
             helper.setVisible(R.id.item_voucher__type_layout, true)
                     .setText(R.id.item_voucher__price, ChangeUtils.saveDecimal(item.getDiscount()));
-        } else if (item.getType()==3) {
+        } else if (item.getType()==3) {//自己添加的兑换券
             helper.setVisible(R.id.item_voucher__type, true)
-                    .setText(R.id.item_voucher__type, "电影票");
+                    .setText(R.id.item_voucher__type, "兑换券");
         }
 
         if (item.isChecked()) {
             helper.setVisible(R.id.item_voucher__select, true);
         }
         if (item.getOverTime() != null && !"".equals(item.getOverTime())) {
-            helper.setVisible(R.id.item_voucher__time, false)
+            helper.setVisible(R.id.item_voucher__time, true)
                     .setText(R.id.item_voucher__time, item.getOverTime());
         }
 

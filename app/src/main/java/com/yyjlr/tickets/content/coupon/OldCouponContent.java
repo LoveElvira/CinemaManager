@@ -91,7 +91,7 @@ public class OldCouponContent extends BaseLinearLayout implements BaseAdapter.Re
     private void getCoupon(final String pagables) {
         PagableRequest pagableRequest = new PagableRequest();
         pagableRequest.setPagable(pagables);
-        pagableRequest.setStatus("1");
+        pagableRequest.setStatus("3");
         OkHttpClientManager.postAsyn(Config.GET_MY_COUPON, new OkHttpClientManager.ResultCallback<CouponBean>() {
 
             @Override

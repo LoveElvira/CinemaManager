@@ -2,6 +2,7 @@ package com.yyjlr.tickets.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -31,8 +33,10 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
+import com.yyjlr.tickets.AppManager;
 import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
+import com.yyjlr.tickets.MainActivity;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.setting.RechargeActivity;
 import com.yyjlr.tickets.activity.setting.SettingOrderDetailsActivity;
@@ -133,7 +137,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
     private long payType = 0;
     private String cardNo = "";
     private boolean isConfirmVoucher;
-    private boolean hasMore = false;
+    private boolean hasMore = true;
     private String pagable = "0";
 
 
@@ -142,6 +146,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_select);
         customDialog = new CustomDialog(this, "请稍后...");
+        AppManager.getInstance().initWidthHeight(this);
         initView();
         voucherLists = new ArrayList<>();
         voucherDefaultList = new ArrayList<>();
@@ -490,7 +495,8 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                         }
                     } else {
                         getPay(0);
-                        mPopupWindow.dismiss();
+                        builder.dismiss();
+//                        mPopupWindow.dismiss();
                         voucherSelectNum.setText("已选择" + selectVoucherList.size() + "张兑换券");
                     }
 
@@ -798,8 +804,10 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                         PaySelectActivity.this,
                         VipBoundActivity.class), CODE_REQUEST_THREE);
                 break;
+            case R.id.content_film_sale__cancel_:
             case R.id.content_select_coupon__cancel:
-                mPopupWindow.dismiss();
+                builder.dismiss();
+//                mPopupWindow.dismiss();
                 break;
             case R.id.content_select_coupon__add://添加兑换券
                 List<String> list = new ArrayList<>();
@@ -831,7 +839,8 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                     }
                 } else {
                     getPay(-1);
-                    mPopupWindow.dismiss();
+                    builder.dismiss();
+//                    mPopupWindow.dismiss();
                     voucherSelectNum.setText("选择兑换券支付");
                 }
                 break;
@@ -1013,34 +1022,84 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         }
     }
 
-    private PopupWindow mPopupWindow;
+    //    private PopupWindow mPopupWindow;
+    private AlertDialog builder;
 
     //弹出 选择兑换券
     private void showSelectVoucher() {
         isConfirmVoucher = false;
-        View parent = View
-                .inflate(PaySelectActivity.this, R.layout.activity_pay_select, null);
+//        View parent = View
+//                .inflate(PaySelectActivity.this, R.layout.activity_pay_select, null);
         View view = View
                 .inflate(PaySelectActivity.this, R.layout.popupwindows_select_coupon, null);
         view.startAnimation(AnimationUtils.loadAnimation(PaySelectActivity.this,
                 R.anim.fade_in));
-        mPopupWindow = new PopupWindow(view);
-        mPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setContentView(view);
-        // 设置背景颜色变暗
+//        mPopupWindow = new PopupWindow(view);
+//        mPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+//        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+//        mPopupWindow.setFocusable(true);
+//        mPopupWindow.setOutsideTouchable(true);
+//        mPopupWindow.setContentView(view);
+//        // 设置背景颜色变暗
         final WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.6f;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         getWindow().setAttributes(lp);
 
-        mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//        mPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+//        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//            @Override
+//            public void onDismiss() {
+//
+//                Log.i("ee", voucherDefaultList.toString() + "\n" + voucherLists.toString());
+//
+//                if (isConfirmVoucher) {
+//                    voucherDefaultList = new ArrayList<>();
+//                } else {
+//                    for (int i = 0; i < voucherLists.size(); i++) {
+//                        for (int j = 0; j < voucherDefaultList.size(); j++) {
+//                            if (i == voucherDefaultList.get(j).getPosition()) {
+//                                voucherLists.get(i).setChecked(voucherDefaultList.get(j).isChecked());
+//                            }
+//                        }
+//                    }
+//                }
+//                Log.i("ee", voucherDefaultList.toString() + "\n" + voucherLists.toString());
+//                lp.alpha = 1.0f;
+//                PaySelectActivity.this.getWindow().setAttributes(lp);
+//            }
+//        });
+
+
+        builder = new AlertDialog.Builder(PaySelectActivity.this, R.style.CustomDialog_).create();
+        builder.setView(view);
+        builder.setCancelable(true);
+
+
+//        Window dialogWindow = builder.getWindow();
+//        // 设置背景颜色变暗
+//        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+//        lp.alpha = 0.6f;
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//        getWindow().setAttributes(lp);
+//
+//        dialogWindow.setGravity(Gravity.BOTTOM);
+
+        builder.show();
+
+        Window window = builder.getWindow();
+        window.setGravity(Gravity.BOTTOM); // 此处可以设置dialog显示的位置
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = AppManager.getInstance().getWidth();   //设置宽度充满屏幕
+        params.height = AppManager.getInstance().getHeight() / 4 * 3;
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        window.setAttributes(params);
+
+
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void onDismiss() {
+            public void onDismiss(DialogInterface dialog) {
 
                 Log.i("ee", voucherDefaultList.toString() + "\n" + voucherLists.toString());
 
@@ -1061,6 +1120,8 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             }
         });
 
+
+        LinearLayout cancelLayout = (LinearLayout) view.findViewById(R.id.content_film_sale__cancel_);
         ImageView cancel = (ImageView) view.findViewById(R.id.content_select_coupon__cancel);
         editNum = (EditText) view.findViewById(R.id.content_select_coupon__edit);
         TextView add = (TextView) view.findViewById(R.id.content_select_coupon__add);
@@ -1072,10 +1133,13 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         voucherAdapter = new VoucherAdapter(voucherLists);
         voucherListView.setAdapter(voucherAdapter);
         voucherAdapter.setOnRecyclerViewItemChildClickListener(this);
-        getCoupon(pagable);
+        if (hasMore) {
+            getCoupon(pagable);
+        }
         add.setOnClickListener(this);
         confirm.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        cancelLayout.setOnClickListener(this);
     }
 
     /**
