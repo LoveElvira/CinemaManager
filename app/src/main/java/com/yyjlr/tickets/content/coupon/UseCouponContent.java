@@ -136,9 +136,12 @@ public class UseCouponContent extends BaseLinearLayout implements SuperSwipeRefr
                         adapter.setOnRecyclerViewItemChildClickListener(UseCouponContent.this);
                     } else {
                         if (adapter != null) {
+                            couponLists.clear();
                             couponList = new ArrayList<>();
+                            couponLists.addAll(couponList);
                             adapter = new UseCouponAdapter(couponList);
                             listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }

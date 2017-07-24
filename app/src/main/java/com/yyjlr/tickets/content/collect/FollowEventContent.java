@@ -139,9 +139,12 @@ public class FollowEventContent extends BaseLinearLayout implements SuperSwipeRe
                         adapter.setOnRecyclerViewItemChildClickListener(FollowEventContent.this);
                     }else {
                         if (adapter != null) {
+                            followEventInfoLists.clear();
                             followEventInfoList = new ArrayList<>();
-                            adapter = new FollowGrabAdapter(followEventInfoList);
+                            followEventInfoLists.addAll(followEventInfoList);
+                            adapter = new FollowGrabAdapter(followEventInfoList,FollowEventContent.this);
                             listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }

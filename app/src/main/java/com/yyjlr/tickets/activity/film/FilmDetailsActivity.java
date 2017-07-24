@@ -445,7 +445,8 @@ public class FilmDetailsActivity extends AbstractActivity implements View.OnClic
                 }
                 break;
             case R.id.content_film_details__share://分享
-                sharePopupWindow();
+                showShortToast("此功能暂未开放");
+//                sharePopupWindow();
                 break;
             case R.id.content_film_details__select_seat://选座购票
                 startActivity(new Intent(getBaseContext(), FilmScheduleActivity.class).putExtra("filmId", filmDetailsModel.getMovieId() + ""));

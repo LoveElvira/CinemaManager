@@ -868,16 +868,21 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
     }
 
     private boolean isPay() { //纯支付宝
-        if ("支付宝".equals(onlineList.get(position).getName()) && onlineList.get(position).getChecked() == 1) {
+        if (onlineList != null && onlineList.size() > 0) {
+            if ("支付宝".equals(onlineList.get(position).getName()) && onlineList.get(position).getChecked() == 1) {
 //            beforePayOnline(onlineList.get(position).getId() + "", 0);
-            return true;
-        } else {
-            if ("微信".equals(onlineList.get(position).getName())) {
-                showShortToast("微信支付暂未开放");
-            }
+                return true;
+            } else {
+                if ("微信".equals(onlineList.get(position).getName())) {
+                    showShortToast("微信支付暂未开放");
+                }
 //            else {
 //                Toast.makeText(getBaseContext(), "请选择支付方式", Toast.LENGTH_SHORT).show();
 //            }
+                return false;
+            }
+        } else {
+//            showShortToast("请选择支付方式");
             return false;
         }
     }

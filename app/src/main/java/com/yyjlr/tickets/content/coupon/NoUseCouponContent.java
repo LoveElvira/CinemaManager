@@ -135,9 +135,12 @@ public class NoUseCouponContent extends BaseLinearLayout implements SuperSwipeRe
                         adapter.setOnRecyclerViewItemChildClickListener(NoUseCouponContent.this);
                     } else {
                         if (adapter != null) {
+                            couponLists.clear();
                             couponList = new ArrayList<>();
+                            couponLists.addAll(couponList);
                             adapter = new NoUseCouponAdapter(couponList);
                             listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }

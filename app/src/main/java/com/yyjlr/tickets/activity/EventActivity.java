@@ -311,7 +311,8 @@ public class EventActivity extends AbstractActivity implements View.OnClickListe
                     }
                     break;
                 case R.id.content_event__share:
-                    sharePopupWindow();
+                    showShortToast("此功能暂未开放");
+//                    sharePopupWindow();
                     break;
                 case R.id.content_event__join:
                     if (eventModel.getJumpUrl() != null && !"".equals(eventModel.getJumpUrl())) {

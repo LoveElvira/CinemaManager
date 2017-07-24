@@ -139,9 +139,12 @@ public class FollowFilmContent extends BaseLinearLayout implements SuperSwipeRef
                         adapter.setOnRecyclerViewItemChildClickListener(FollowFilmContent.this);
                     } else {
                         if (adapter != null) {
+                            movieInfoLists.clear();
                             movieInfoList = new ArrayList<>();
-                            adapter = new FollowFilmAdapter(movieInfoList);
+                            movieInfoLists.addAll(movieInfoList);
+                            adapter = new FollowFilmAdapter(movieInfoList, FollowFilmContent.this);
                             listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }

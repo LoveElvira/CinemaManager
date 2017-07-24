@@ -135,9 +135,12 @@ public class OldCouponContent extends BaseLinearLayout implements BaseAdapter.Re
                         adapter.setOnRecyclerViewItemChildClickListener(OldCouponContent.this);
                     } else {
                         if (adapter != null) {
+                            couponLists.clear();
                             couponList = new ArrayList<>();
+                            couponLists.addAll(couponList);
                             adapter = new UseCouponAdapter(couponList);
                             listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }
