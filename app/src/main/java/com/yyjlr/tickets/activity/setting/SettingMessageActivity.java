@@ -44,6 +44,7 @@ import java.util.List;
  */
 public class SettingMessageActivity extends AbstractActivity implements SwipeRefreshLayout.OnRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, SuperSwipeRefreshLayout.OnPullRefreshListener, View.OnClickListener {
 
+    private LinearLayout noDate;
     private RecyclerView listView;
     private SuperSwipeRefreshLayout refresh;//刷新
     private TextView title;
@@ -103,6 +104,8 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
         selectAll.setOnClickListener(this);
         delete.setOnClickListener(this);
 
+        noDate = (LinearLayout) findViewById(R.id.content_setting_message__no_date);
+
         listView = (RecyclerView) findViewById(R.id.content_setting_message__listview);
 //        messageEntityList = Application.getiDataService().getMessageList();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Application.getInstance().getCurrentActivity());
@@ -131,36 +134,51 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
 
             @Override
             public void onResponse(MyMessageBean response) {
-                messageInfoList = response.getMessages();
-                if (messageInfoList != null && messageInfoList.size() > 0) {
-                    if ("0".equals(pagables)) {//第一页
-                        messageInfoLists.clear();
-                        messageInfoLists.addAll(messageInfoList);
-                        Log.i("ee", messageInfoLists.size() + "----" + messageInfoList.size());
-                        adapter = new MessageAdapter(messageInfoList);
-                        adapter.openLoadAnimation();
-                        listView.setAdapter(adapter);
-                        adapter.openLoadMore(messageInfoList.size(), true);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
-                        } else {
-                            hasMore = false;
-                        }
-                        pagable = response.getPagable();
-                    } else {
-                        messageInfoLists.addAll(messageInfoList);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
+                if (response != null) {
+                    messageInfoList = response.getMessages();
+                    if (messageInfoList != null && messageInfoList.size() > 0) {
+                        refresh.setVisibility(View.VISIBLE);
+                        noDate.setVisibility(View.GONE);
+                        if ("0".equals(pagables)) {//第一页
+                            messageInfoLists.clear();
+                            messageInfoLists.addAll(messageInfoList);
+                            Log.i("ee", messageInfoLists.size() + "----" + messageInfoList.size());
+                            adapter = new MessageAdapter(messageInfoList);
+                            adapter.openLoadAnimation();
+                            listView.setAdapter(adapter);
+                            adapter.openLoadMore(messageInfoList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
                             pagable = response.getPagable();
-                            adapter.notifyDataChangedAfterLoadMore(messageInfoList, true);
                         } else {
-                            adapter.notifyDataChangedAfterLoadMore(messageInfoList, true);
-                            hasMore = false;
-                            pagable = "";
+                            messageInfoLists.addAll(messageInfoList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                adapter.notifyDataChangedAfterLoadMore(messageInfoList, true);
+                            } else {
+                                adapter.notifyDataChangedAfterLoadMore(messageInfoList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
                         }
+                        adapter.setOnLoadMoreListener(SettingMessageActivity.this);
+                        adapter.setOnRecyclerViewItemChildClickListener(SettingMessageActivity.this);
+                    } else {
+                        if (adapter != null) {
+                            messageInfoLists.clear();
+                            messageInfoList = new ArrayList<>();
+                            messageInfoLists.addAll(messageInfoList);
+                            adapter = new MessageAdapter(messageInfoList);
+                            listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
+                        refresh.setVisibility(View.GONE);
+                        noDate.setVisibility(View.VISIBLE);
                     }
-                    adapter.setOnLoadMoreListener(SettingMessageActivity.this);
-                    adapter.setOnRecyclerViewItemChildClickListener(SettingMessageActivity.this);
                 }
             }
 
@@ -370,11 +388,17 @@ public class SettingMessageActivity extends AbstractActivity implements SwipeRef
                     messageInfoLists.get(i).setDelete(false);
                     messageInfoLists.get(i).setIsSelect(0);
                 }
-                adapter = new MessageAdapter(messageInfoLists);
-                adapter.openLoadAnimation();
-                listView.setAdapter(adapter);
-                adapter.openLoadMore(messageInfoLists.size(), true);
-                adapter.notifyDataSetChanged();
+                if (messageInfoLists.size() > 0) {
+                    adapter = new MessageAdapter(messageInfoLists);
+                    adapter.openLoadAnimation();
+                    listView.setAdapter(adapter);
+                    adapter.openLoadMore(messageInfoLists.size(), true);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    refresh.setVisibility(View.GONE);
+                    noDate.setVisibility(View.VISIBLE);
+                }
+
             }
 
             @Override

@@ -46,6 +46,8 @@ import java.util.List;
 
 public class FollowFilmContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowFilmAdapter.SlidingViewClickListener {
 
+    private LinearLayout noDate;
+    private ImageView noDateImage;
     private FollowFilmAdapter adapter = null;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
@@ -77,6 +79,11 @@ public class FollowFilmContent extends BaseLinearLayout implements SuperSwipeRef
     }
 
     private void initView() {
+
+        noDate = (LinearLayout) findViewById(R.id.content_listview__no_date);
+        noDateImage = (ImageView) findViewById(R.id.content_listview__no_date_image);
+        noDateImage.setBackgroundResource(R.mipmap.no_collect);
+
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
         refresh.setHeaderView(createHeaderView());// add headerView
         refresh.setTargetScrollWithLayout(true);
@@ -109,6 +116,8 @@ public class FollowFilmContent extends BaseLinearLayout implements SuperSwipeRef
                 if (response != null) {
                     movieInfoList = response.getMovieList();
                     if (movieInfoList != null && movieInfoList.size() > 0) {
+                        noDate.setVisibility(GONE);
+                        refresh.setVisibility(VISIBLE);
                         if ("0".equals(pagables)) {//第一页
                             movieInfoLists.clear();
                             movieInfoLists.addAll(movieInfoList);
@@ -146,6 +155,8 @@ public class FollowFilmContent extends BaseLinearLayout implements SuperSwipeRef
                             listView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }
+                        noDate.setVisibility(VISIBLE);
+                        refresh.setVisibility(GONE);
                     }
                 }
             }

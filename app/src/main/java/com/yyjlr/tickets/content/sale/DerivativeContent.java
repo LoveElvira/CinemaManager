@@ -20,5 +20,6 @@ public class DerivativeContent extends BaseLinearLayout {
     public DerivativeContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.fragment_derivative, this);
+
     }
 }

@@ -64,6 +64,8 @@ import static com.yyjlr.tickets.Application.getInstance;
 
 public class PackageContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, View.OnClickListener {
 
+    private LinearLayout noDate;
+    private ImageView noDateImage;
     private RecyclerView listView;//列表
     private SuperSwipeRefreshLayout refresh;//刷新
     private SalePackageAdapter salePackageAdapter = null;
@@ -94,6 +96,9 @@ public class PackageContent extends BaseLinearLayout implements SuperSwipeRefres
     }
 
     private void initView() {
+        noDate = (LinearLayout) findViewById(R.id.content_listview__no_date);
+        noDateImage = (ImageView) findViewById(R.id.content_listview__no_date_image);
+        noDateImage.setBackgroundResource(R.mipmap.no_sale);
 
         isFirst = true;
         listView = (RecyclerView) findViewById(R.id.content_listview__listview);
@@ -120,6 +125,8 @@ public class PackageContent extends BaseLinearLayout implements SuperSwipeRefres
         if (isFirst) {
             isFirst = false;
             pagable = "0";
+            refresh.setVisibility(VISIBLE);
+            noDate.setVisibility(GONE);
             getPackage(pagable, "");
         }
     }
@@ -146,6 +153,8 @@ public class PackageContent extends BaseLinearLayout implements SuperSwipeRefres
                 if (response != null) {
                     goodInfoList = response.getGoodsList();
                     if (goodInfoList != null && goodInfoList.size() > 0) {
+                        refresh.setVisibility(VISIBLE);
+                        noDate.setVisibility(GONE);
                         if ("0".equals(pagables)) {//第一页
                             goodInfoLists.clear();
                             goodInfoLists.addAll(goodInfoList);
@@ -176,11 +185,14 @@ public class PackageContent extends BaseLinearLayout implements SuperSwipeRefres
                         salePackageAdapter.setOnRecyclerViewItemChildClickListener(PackageContent.this);
                     } else {
                         if (salePackageAdapter != null) {
-                            goodInfoList = new ArrayList<>();
                             goodInfoLists.clear();
+                            goodInfoList = new ArrayList<>();
+                            goodInfoLists.addAll(goodInfoList);
                             salePackageAdapter = new SalePackageAdapter(goodInfoList);
                             listView.setAdapter(salePackageAdapter);
                         }
+                        refresh.setVisibility(GONE);
+                        noDate.setVisibility(VISIBLE);
                     }
                 }
             }

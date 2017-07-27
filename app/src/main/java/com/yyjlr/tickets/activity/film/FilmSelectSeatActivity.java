@@ -25,6 +25,7 @@ import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.activity.LoginActivity;
 import com.yyjlr.tickets.activity.OldPaySelectActivity;
+import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.adapter.SeatTypeAdapter;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.helputils.SharePrefUtil;
@@ -78,6 +79,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
     private String planId = "";
     public static Activity activity;
     private boolean isFirst = false;
+    private boolean isClicke = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
         activity = this;
         planId = getIntent().getStringExtra("planId");
         isFirst = getIntent().getBooleanExtra("isFirst", false);
+        isClicke = false;
         initView();
     }
 
@@ -153,6 +156,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
                 showShortToast(info.getInfo().toString());
+                isClicke = false;
                 customDialog.dismiss();
             }
 
@@ -188,7 +192,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                     seatTypeAdapter = new SeatTypeAdapter(seatTypeList);
                     seatTypeListView.setAdapter(seatTypeAdapter);
                 }
-
+                isClicke = true;
                 customDialog.dismiss();
             }
 
@@ -196,6 +200,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
 //                showShortToast(exception.getMessage());
+                isClicke = false;
                 customDialog.dismiss();
             }
         }, idRequest, SeatBean.class, FilmSelectSeatActivity.this);
@@ -464,7 +469,7 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
                             .putExtra("isNoPay", true));
                 } else {
                     ConfirmOrderBean confirmOrderBean = null;
-                    startActivity(new Intent(getBaseContext(), OldPaySelectActivity.class)
+                    startActivity(new Intent(getBaseContext(), PaySelectActivity.class)
                             .putExtra("orderId", orderId + "")
                             .putExtra("position", 0)
                             .putExtra("orderBean", confirmOrderBean));
@@ -484,31 +489,33 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.base_toolbar__left:
-                FilmSelectSeatActivity.this
-                        .finish();
-                break;
-            case R.id.content_film_seat__seat_recommend_one://1人座
-                seatRecommend(1);
-                break;
-            case R.id.content_film_seat__seat_recommend_two://2人座
-                seatRecommend(2);
-                break;
-            case R.id.content_film_seat__seat_recommend_three://3人座
-                seatRecommend(3);
-                break;
-            case R.id.content_film_seat__seat_recommend_four://4人座
-                seatRecommend(4);
-                break;
-            case R.id.content_film_seat__confirm_seat://确定选座
-                String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
-                if (!isLogin.equals("1")) {
-                    startActivity(new Intent(FilmSelectSeatActivity.this, LoginActivity.class)
-                            .putExtra("pager", "FilmSelectSeatActivity"));
-                } else {
 
-                    if (seatSelectList.size() > 0) {
+        if (view.getId() == R.id.base_toolbar__left) {
+            FilmSelectSeatActivity.this
+                    .finish();
+        }
+        if (isClicke) {
+            switch (view.getId()) {
+                case R.id.content_film_seat__seat_recommend_one://1人座
+                    seatRecommend(1);
+                    break;
+                case R.id.content_film_seat__seat_recommend_two://2人座
+                    seatRecommend(2);
+                    break;
+                case R.id.content_film_seat__seat_recommend_three://3人座
+                    seatRecommend(3);
+                    break;
+                case R.id.content_film_seat__seat_recommend_four://4人座
+                    seatRecommend(4);
+                    break;
+                case R.id.content_film_seat__confirm_seat://确定选座
+                    String isLogin = SharePrefUtil.getString(Constant.FILE_NAME, "flag", "", Application.getInstance().getCurrentActivity());
+                    if (!isLogin.equals("1")) {
+                        startActivity(new Intent(FilmSelectSeatActivity.this, LoginActivity.class)
+                                .putExtra("pager", "FilmSelectSeatActivity"));
+                    } else {
+
+                        if (seatSelectList.size() > 0) {
 //                        List<Boolean> list = new ArrayList<Boolean>();
 //                        for (int i = 0; i < seatSelectList.size(); i++) {
 //                            int row = seatSelectList.get(i).getgRow() - 1;
@@ -521,13 +528,14 @@ public class FilmSelectSeatActivity extends AbstractActivity implements View.OnC
 //                            showShortToast("旁边座位不要留空");
 //                            return;
 //                        } else {
-                        sortList();
+                            sortList();
 //                        }
-                    } else {
-                        showShortToast("请先选择座位");
+                        } else {
+                            showShortToast("请先选择座位");
+                        }
                     }
-                }
-                break;
+                    break;
+            }
         }
     }
 

@@ -137,7 +137,8 @@
         <activity
             android:name=".activity.PaySelectActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activity.setting.SettingPhotoActivity"
             android:screenOrientation="portrait"

@@ -53,7 +53,7 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
     private EditText price;//充值金额
     private TextView confirm;
     private LinearLayout delete;
-    private List<SelectPay> payList;
+    private List<SelectPay> payList = null;
     private int position;
     private int rechargePosition = -1;
     private final int SDK_PAY_FLAG = 1;
@@ -61,11 +61,13 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
     private String cardNo;//卡号
     private String cardId = null;//轮询ID
     private int rechargePrice = 0;
+    private boolean isConfirm = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recharge);
+        isConfirm = false;
         cardNo = getIntent().getStringExtra("cardNo");
         rechargePosition = getIntent().getIntExtra("rechargePosition", -1);
         initView();
@@ -117,7 +119,7 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
     //获取支付数据
     private void getPay() {
         IdRequest idRequest = new IdRequest();
-        OkHttpClientManager.postAsyn(Config.GET_PAY, new OkHttpClientManager.ResultCallback<PayModel>() {
+        OkHttpClientManager.postAsyn(Config.GET_NEW_PAY, new OkHttpClientManager.ResultCallback<PayModel>() {
 
             @Override
             public void onError(Request request, Error info) {
@@ -146,11 +148,11 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
     }
 
     //预支付数据
-    private void beforePay() {
+    private void beforePay(long id) {
 //        customDialog.show();
         rechargePrice = (Integer.parseInt(price.getText().toString().trim()) * 100);
         IdRequest idRequest = new IdRequest();
-//        idRequest.setPayTypeId(payList.get(position).getId() + "");
+        idRequest.setPayChannelNo(id + "");
         idRequest.setCardNo(cardNo);
         idRequest.setAmount(rechargePrice + "");
         OkHttpClientManager.postAsyn(Config.BEFORE_PAY, new OkHttpClientManager.ResultCallback<AlipayResponse>() {
@@ -218,6 +220,7 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             showShortToast("支付失败");
+                            isConfirm = false;
                         }
                     }
                     break;
@@ -282,7 +285,7 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
     private void startActivity(boolean isUpdate) {
         setResult(CODE_RESULT, new Intent()
                 .putExtra("rechargePrice", rechargePrice)
-                .putExtra("rechargePosition",rechargePosition)
+                .putExtra("rechargePosition", rechargePosition)
                 .putExtra("isUpdate", isUpdate));
         RechargeActivity.this.finish();
     }
@@ -299,11 +302,14 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
                 case R.id.content_recharge__confirm://确认支付
                     String amount = price.getText().toString().trim();
                     if (!"".equals(amount) && Integer.parseInt(amount) > 0) {
-
-                        if ("支付宝".equals(payList.get(position).getName()) && payList.get(position).getChecked() == 1) {
-                            beforePay();
-                        } else {
-                            showShortToast("请选择支付方式");
+                        if (!isConfirm) {
+                            if (payList != null && "支付宝".equals(payList.get(position).getName()) && payList.get(position).getChecked() == 1) {
+                                beforePay(payList.get(position).getId());
+                                isConfirm = true;
+                            } else {
+                                showShortToast("请选择支付方式");
+                                isConfirm = false;
+                            }
                         }
                     } else {
                         showShortToast("充值金额必须大于0");
@@ -335,7 +341,7 @@ public class RechargeActivity extends AbstractActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != CODE_RESULT)
             return;
-        switch (requestCode){
+        switch (requestCode) {
             case CODE_REQUEST_DIALOG:
                 getPay();
                 break;

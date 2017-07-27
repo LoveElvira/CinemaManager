@@ -49,6 +49,7 @@ public class EventContent extends BaseLinearLayout implements BaseAdapter.OnRecy
     private RelativeLayout parentView;
     private LinearLayout noDate;
 
+    private LinearLayout listViewLayout;
     private RecyclerView listView;//列表
     private SuperSwipeRefreshLayout refresh;//刷新
     private EventAdapter adapter;
@@ -78,6 +79,7 @@ public class EventContent extends BaseLinearLayout implements BaseAdapter.OnRecy
         title = (TextView) findViewById(R.id.base_toolbar__text);
         title.setText(getResources().getText(R.string.text_grab_title));
         noDate = (LinearLayout) findViewById(R.id.fragment_grab__no_date);
+        listViewLayout = (LinearLayout) findViewById(R.id.content_listview__layout);
         listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
         refresh.setHeaderView(createHeaderView());// add headerView
@@ -96,6 +98,7 @@ public class EventContent extends BaseLinearLayout implements BaseAdapter.OnRecy
 
         if (isFirst) {
             isFirst = false;
+            listViewLayout.setVisibility(VISIBLE);
             noDate.setVisibility(GONE);
             initBgTitle(bgTitle);
             pagable = "0";
@@ -159,9 +162,13 @@ public class EventContent extends BaseLinearLayout implements BaseAdapter.OnRecy
                         adapter.setOnLoadMoreListener(EventContent.this);
                         adapter.setOnRecyclerViewItemChildClickListener(EventContent.this);
                     } else {
+                        activityLists.clear();
                         activityList = new ArrayList<>();
+                        activityLists.addAll(activityList);
                         adapter = new EventAdapter(activityList);
                         listView.setAdapter(adapter);
+                        listViewLayout.setVisibility(GONE);
+                        noDate.setVisibility(VISIBLE);
                     }
                 }
 

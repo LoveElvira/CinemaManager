@@ -69,6 +69,7 @@ import com.yyjlr.tickets.viewutils.CustomDialog;
 import com.yyjlr.tickets.viewutils.countdown.CountdownView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -139,12 +140,14 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
     private boolean isConfirmVoucher;
     private boolean hasMore = true;
     private String pagable = "0";
+    private boolean isConfirm = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_select);
+        isConfirm = false;
         customDialog = new CustomDialog(this, "请稍后...");
         AppManager.getInstance().initWidthHeight(this);
         initView();
@@ -318,6 +321,13 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             noCardLayout.setVisibility(View.VISIBLE);
             haveCardListView.setVisibility(View.GONE);
             if (payModel.getMemberCardList() != null && payModel.getMemberCardList().size() > 0) {
+
+                for (int i = 0; i < payModel.getMemberCardList().size(); i++) {
+                    if (payModel.getMemberCardList().get(i).getChecked() == 1) {
+                        cardNo = payModel.getMemberCardList().get(i).getCardNo();
+                    }
+                }
+
                 memberCardList = payModel.getMemberCardList();
                 haveCardListView.setVisibility(View.VISIBLE);
                 noCardLayout.setVisibility(View.GONE);
@@ -332,7 +342,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             voucherPosition = cardPosition + 1;
         }
 
-        payPrice.setText(ChangeUtils.save2Decimal(payModel.getPaySummary().getCashAmount()));
+        payPrice.setText("¥ " + ChangeUtils.save2Decimal(payModel.getPaySummary().getCashAmount()));
 
     }
 
@@ -374,13 +384,19 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         switch (status) {
             case 0://兑换券
                 idRequest.setCouponList(selectVoucherList);
+                cardNo = "";
                 break;
             case 1://会员卡
                 idRequest.setCardNo(cardNo);
                 break;
             case 2:
                 idRequest.setPayType(payType + "");
+                cardNo = "";
                 break;
+            case -1:
+                cardNo = "";
+                break;
+
         }
 
         OkHttpClientManager.postAsyn(Config.GET_NEW_PAY, new OkHttpClientManager.ResultCallback<PayModel>() {
@@ -599,6 +615,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             Toast.makeText(getBaseContext(), "支付失败", Toast.LENGTH_SHORT).show();
+                            isConfirm = false;
                         }
                     }
                     break;
@@ -611,6 +628,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
 
     //订单状态查询接口
     private void checkOrderStatus() {
+        customDialog.show();
         IdRequest idRequest = new IdRequest();
         idRequest.setOrderId(orderId);
         OkHttpClientManager.postAsyn(Config.CHECK_PAY_ORDER_STATUS, new OkHttpClientManager.ResultCallback<ResponseStatus>() {
@@ -619,7 +637,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo());
                 Toast.makeText(getBaseContext(), info.getInfo().toString(), Toast.LENGTH_SHORT).show();
-                //                customDialog.dismiss();
+                customDialog.dismiss();
             }
 
             @Override
@@ -627,6 +645,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                 Log.i("ee", new Gson().toJson(response));
                 if (response.getState() == 1) {//付款成功
                     Log.i("ee", "------------1111------------");
+                    customDialog.dismiss();
                     startActivity();
 //                    Toast.makeText(Application.getInstance().getCurrentActivity(), "支付成功", Toast.LENGTH_SHORT).show();
 
@@ -634,6 +653,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                     Log.i("ee", "-----------2222-------------");
                     times++;
                     if (times == 20) {
+                        customDialog.dismiss();
                         startActivity();
                         Toast.makeText(Application.getInstance().getCurrentActivity(), "支付失败", Toast.LENGTH_SHORT).show();
                         return;
@@ -656,7 +676,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
 //                Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                //                customDialog.dismiss();
+                customDialog.dismiss();
             }
         }, idRequest, ResponseStatus.class, Application.getInstance().getCurrentActivity());
     }
@@ -778,92 +798,103 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         Log.i("ee", "-------------3333-----------");
 //        customDialog.dismiss();
         PaySelectActivity.this.startActivityForResult(new Intent(getBaseContext(), SettingOrderDetailsActivity.class)
-                .putExtra("orderId", orderId), CODE_REQUEST_FOUR);
+                .putExtra("orderId", orderId)
+                .putExtra("position", positions), CODE_REQUEST_FOUR);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.base_toolbar__left:
-                if (isClick) {
-                    showCancelPay();
-                } else {
-                    setResult(CODE_RESULT, new Intent()
-                            .putExtra("isCancel", true)
-                            .putExtra("isTimeOut", true)
-                            .putExtra("position", positions));
-                    PaySelectActivity.activity.finish();
-                }
-                break;
-            case R.id.content_pay_select__select_voucher_layout://选择兑换券
-                showSelectVoucher();
-                break;
-            case R.id.content_pay_select__no_vip_layout://绑定会员卡
-                PaySelectActivity.this.startActivityForResult(new Intent(
-                        PaySelectActivity.this,
-                        VipBoundActivity.class), CODE_REQUEST_THREE);
-                break;
-            case R.id.content_film_sale__cancel_:
-            case R.id.content_select_coupon__cancel:
-                builder.dismiss();
-//                mPopupWindow.dismiss();
-                break;
-            case R.id.content_select_coupon__add://添加兑换券
-                List<String> list = new ArrayList<>();
-                String num = editNum.getText().toString().trim();
-                if (num != null) {
-                    list.add(num);
-                }
-                for (int i = 0; i < voucherLists.size(); i++) {
-                    if ((voucherLists.get(i).getCouponNumber()).equals(num)) {
-                        showShortToast("不能重复添加同一张兑换券");
-                        return;
-                    }
-                }
-                checkedCoupon(true, list);
-                break;
-            case R.id.content_select_coupon__confirm://确认兑换券
-                isConfirmVoucher = true;
-                selectVoucherList = new ArrayList<>();
-                for (int i = 0; i < voucherLists.size(); i++) {
-                    if (voucherLists.get(i).isChecked()) {
-                        selectVoucherList.add(voucherLists.get(i).getCouponNumber());
-                    }
-                }
-                if (selectVoucherList.size() > 0) {
-                    if (selectVoucherList.size() > payModel.getShowCouponNum()) {
-                        showShortToast("最多可使用" + payModel.getShowCouponNum() + "张兑换券");
-                    } else {
-                        checkedCoupon(false, null);
-                    }
-                } else {
-                    getPay(-1);
+
+        if (v.getId() == R.id.base_toolbar__left) {
+            if (isClick) {
+                showCancelPay();
+            } else {
+                setResult(CODE_RESULT, new Intent()
+                        .putExtra("isCancel", true)
+                        .putExtra("isTimeOut", true)
+                        .putExtra("position", positions));
+                PaySelectActivity.activity.finish();
+            }
+        }
+
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            switch (v.getId()) {
+                case R.id.content_pay_select__select_voucher_layout://选择兑换券
+                    showSelectVoucher();
+                    break;
+                case R.id.content_pay_select__no_vip_layout://绑定会员卡
+                    PaySelectActivity.this.startActivityForResult(new Intent(
+                            PaySelectActivity.this,
+                            VipBoundActivity.class), CODE_REQUEST_THREE);
+                    break;
+                case R.id.content_film_sale__cancel_:
+                case R.id.content_select_coupon__cancel:
                     builder.dismiss();
+//                mPopupWindow.dismiss();
+                    break;
+                case R.id.content_select_coupon__add://添加兑换券
+                    List<String> list = new ArrayList<>();
+                    String num = editNum.getText().toString().trim();
+                    if (num != null) {
+                        list.add(num);
+                    }
+                    for (int i = 0; i < voucherLists.size(); i++) {
+                        if ((voucherLists.get(i).getCouponNumber()).equals(num)) {
+                            showShortToast("不能重复添加同一张兑换券");
+                            return;
+                        }
+                    }
+                    checkedCoupon(true, list);
+                    break;
+                case R.id.content_select_coupon__confirm://确认兑换券
+                    isConfirmVoucher = true;
+                    selectVoucherList = new ArrayList<>();
+                    for (int i = 0; i < voucherLists.size(); i++) {
+                        if (voucherLists.get(i).isChecked()) {
+                            selectVoucherList.add(voucherLists.get(i).getCouponNumber());
+                        }
+                    }
+                    if (selectVoucherList.size() > 0) {
+                        if (selectVoucherList.size() > payModel.getShowCouponNum()) {
+                            showShortToast("最多可使用" + payModel.getShowCouponNum() + "张兑换券");
+                        } else {
+                            checkedCoupon(false, null);
+                        }
+                    } else {
+                        getPay(-1);
+                        builder.dismiss();
 //                    mPopupWindow.dismiss();
-                    voucherSelectNum.setText("选择兑换券支付");
-                }
-                break;
-            case R.id.content_pay_select__confirm://确认支付
-                //兑换券+支付宝
-                if (selectVoucherList != null && selectVoucherList.size() > 0) {
-                    if (isPay()) {
-                        beforePayOnline(onlineList.get(position).getId() + "", 1);
-                    } else {//纯兑换券
-                        beforePayVipOrCoupon(0);
+                        voucherSelectNum.setText("选择兑换券支付");
                     }
-                } else if (memberCardList != null && memberCardList.size() > 0) { //会员卡+支付宝
-                    if (isPay()) {
-                        beforePayOnline(onlineList.get(position).getId() + "", 2);
-                    } else {//纯会员卡
-                        beforePayVipOrCoupon(1);
+                    break;
+                case R.id.content_pay_select__confirm://确认支付
+                    if (!isConfirm) {
+                        isConfirm = true;
+                        //兑换券+支付宝
+                        if (selectVoucherList != null && selectVoucherList.size() > 0) {
+                            if (isPay()) {
+                                beforePayOnline(onlineList.get(position).getId() + "", 1);
+                            } else {//纯兑换券
+                                beforePayVipOrCoupon(0);
+                            }
+                        } else if (memberCardList != null && memberCardList.size() > 0 && !"".equals(cardNo)) { //会员卡+支付宝
+                            if (isPay()) {
+                                beforePayOnline(onlineList.get(position).getId() + "", 2);
+                            } else {//纯会员卡
+                                beforePayVipOrCoupon(1);
+                            }
+                        } else if (isPay()) {
+                            beforePayOnline(onlineList.get(position).getId() + "", 0);
+                        } else {
+                            showShortToast("请选择支付方式");
+                            isConfirm = false;
+                        }
                     }
-                } else if (isPay()) {
-                    beforePayOnline(onlineList.get(position).getId() + "", 0);
-                } else {
-                    showShortToast("请选择支付方式");
-                }
-                break;
+                    break;
+            }
         }
     }
 
@@ -921,6 +952,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
                 setResult(CODE_RESULT, new Intent()
                         .putExtra("isCancel", false)
                         .putExtra("position", position)
+                        .putExtra("orderType", data.getIntExtra("orderType", -1))
                         .putExtra("isPay", data.getBooleanExtra("isPay", false)));
                 PaySelectActivity.this.finish();
                 break;
@@ -1100,6 +1132,7 @@ public class PaySelectActivity extends AbstractActivity implements View.OnClickL
         params.height = AppManager.getInstance().getHeight() / 4 * 3;
         window.getDecorView().setPadding(0, 0, 0, 0);
         window.setAttributes(params);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 
         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {

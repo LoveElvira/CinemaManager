@@ -59,9 +59,11 @@ public class SplashActivity extends AbstractActivity implements View.OnClickList
         //public static String AppDomain = "33040301";//正式 影院ID
         //public static String AppDomain = "50120255";//测试 影院ID
         //public static String AppDomain = "50120257";//xiaoqiang 影院ID
-        //Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "33040301", SplashActivity.this);
-        Config.URL = SharePrefUtil.getString(Constant.FILE_NAME, "url", "http://139.196.51.15", SplashActivity.this);
-        Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "50120255", SplashActivity.this);
+        Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "33040301", SplashActivity.this);//正式
+        Config.URL = SharePrefUtil.getString(Constant.FILE_NAME, "url", "http://139.196.249.63", SplashActivity.this);//正式
+//        Config.URL = SharePrefUtil.getString(Constant.FILE_NAME, "url", "http://192.168.1.74:8080", SplashActivity.this);//本地
+//        Config.URL = SharePrefUtil.getString(Constant.FILE_NAME, "url", "http://139.196.51.15", SplashActivity.this);
+//        Constant.AppDomain = SharePrefUtil.getString(Constant.FILE_NAME, "appDomain", "50120255", SplashActivity.this);
         Config.URL_SERVICE = Config.URL + "/cgi";
         Config.URL_SERVICE_UPLOAD = Config.URL + "/uploadFile";
         dealStatusBar(view);

@@ -9,7 +9,7 @@
     <com.yyjlr.tickets.viewutils.grabticket.TicketFrameLayout
         android:id="@+id/fragment_grab__layout"
         style="@style/MatchMatch"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <include layout="@layout/content_listview" />
 
@@ -25,8 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/size_20"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/ticket_no_date" />
+            android:src="@mipmap/ticket_no_date_" />
 
     </LinearLayout>
 </LinearLayout>

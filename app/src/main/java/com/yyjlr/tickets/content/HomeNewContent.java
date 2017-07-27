@@ -212,8 +212,8 @@ public class HomeNewContent extends BaseLinearLayout implements View.OnClickList
 //                @Override
 //                public void run() {
 //                    if (hasWindowFocus()) {
-                        showSelectCinemaPopupWindow(false, "");
-                        SharePrefUtil.putBoolean(Constant.FILE_NAME, "isFirstAction", false, Application.getInstance().getCurrentActivity());
+            showSelectCinemaPopupWindow(false, "");
+            SharePrefUtil.putBoolean(Constant.FILE_NAME, "isFirstAction", false, Application.getInstance().getCurrentActivity());
 //                    }
 //                }
 //            }, 1000);
@@ -297,6 +297,7 @@ public class HomeNewContent extends BaseLinearLayout implements View.OnClickList
                         isUpdateCinema = true;
                         getAppConfig();
                         mPopupWindow.dismiss();
+                        mainActivity.updateVisibility();
                     } else {
                         showTip(cinemaLists.get(position).getMessage());
                     }

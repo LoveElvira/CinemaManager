@@ -28,6 +28,7 @@ import com.yyjlr.tickets.adapter.OrderUncompleteAdapter;
 import com.yyjlr.tickets.content.order.CompleteOrderContent;
 import com.yyjlr.tickets.content.order.UnCompleteOrderContent;
 import com.yyjlr.tickets.content.sale.PackageContent;
+import com.yyjlr.tickets.helputils.ImageFileUtils;
 import com.yyjlr.tickets.model.OrderEntity;
 import com.yyjlr.tickets.model.order.MyOrderBean;
 import com.yyjlr.tickets.model.order.MyOrderInfo;
@@ -156,8 +157,21 @@ public class SettingOrderActivity extends AbstractActivity implements View.OnCli
             return;
         switch (requestCode) {
             case CODE_REQUEST_ONE:
-                if (viewPager.getCurrentItem() == 1 && data.getBooleanExtra("isCancel", false)) {
-                    unCompleteOrderContent.cancelOrderSuccess(data.getIntExtra("position", -1),data.getBooleanExtra("isTimeOut", false));
+//                if (viewPager.getCurrentItem() == 1 && data.getBooleanExtra("isCancel", false)) {
+//                    unCompleteOrderContent.cancelOrderSuccess(data.getIntExtra("position", -1), data.getBooleanExtra("isTimeOut", false));
+//                }
+//                break;
+//            case CODE_REQUEST_TWO:
+                int orderType = data.getIntExtra("orderType", -1);
+                if (viewPager.getCurrentItem() == 1) {
+                    if (data.getBooleanExtra("isCancel", false)) {
+                        unCompleteOrderContent.cancelOrderSuccess(data.getIntExtra("position", -1), data.getBooleanExtra("isTimeOut", false));
+                    } else {
+                        unCompleteOrderContent.cancelOrderSuccess(data.getIntExtra("position", -1), orderType);
+                    }
+                }
+                if (orderType == 3) {
+                    completeOrderContent.refreshOrder();
                 }
                 break;
         }

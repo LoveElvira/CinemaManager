@@ -65,6 +65,8 @@ import static com.yyjlr.tickets.Application.getInstance;
 
 public class SaleContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.OnRecyclerViewItemChildClickListener, BaseAdapter.RequestLoadMoreListener, View.OnClickListener {
 
+    private LinearLayout noDate;
+    private ImageView noDateImage;
     private RecyclerView listView;//列表
     private SuperSwipeRefreshLayout refresh;//刷新
     private SaleAdapter saleAdapter = null;
@@ -95,6 +97,10 @@ public class SaleContent extends BaseLinearLayout implements SuperSwipeRefreshLa
     }
 
     private void initView() {
+
+        noDate = (LinearLayout) findViewById(R.id.content_listview__no_date);
+        noDateImage = (ImageView) findViewById(R.id.content_listview__no_date_image);
+        noDateImage.setBackgroundResource(R.mipmap.no_sale);
 
         listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
@@ -139,6 +145,8 @@ public class SaleContent extends BaseLinearLayout implements SuperSwipeRefreshLa
         if (isFirst) {
             isFirst = false;
             pagable = "0";
+            refresh.setVisibility(VISIBLE);
+            noDate.setVisibility(GONE);
             getSale(pagable, "");
         }
     }
@@ -205,6 +213,8 @@ public class SaleContent extends BaseLinearLayout implements SuperSwipeRefreshLa
                 if (response != null) {
                     goodInfoList = response.getGoodsList();
                     if (goodInfoList != null && goodInfoList.size() > 0) {
+                        refresh.setVisibility(VISIBLE);
+                        noDate.setVisibility(GONE);
                         if ("0".equals(pagables)) {//第一页
                             goodInfoLists.clear();
                             goodInfoLists.addAll(goodInfoList);
@@ -235,11 +245,14 @@ public class SaleContent extends BaseLinearLayout implements SuperSwipeRefreshLa
                         saleAdapter.setOnRecyclerViewItemChildClickListener(SaleContent.this);
                     } else {
                         if (saleAdapter != null) {
-                            goodInfoList = new ArrayList<>();
                             goodInfoLists.clear();
+                            goodInfoList = new ArrayList<>();
+                            goodInfoLists.addAll(goodInfoList);
                             saleAdapter = new SaleAdapter(goodInfoList);
                             listView.setAdapter(saleAdapter);
                         }
+                        refresh.setVisibility(GONE);
+                        noDate.setVisibility(VISIBLE);
                     }
                 }
             }

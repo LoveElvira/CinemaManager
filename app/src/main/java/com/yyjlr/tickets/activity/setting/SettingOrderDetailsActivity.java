@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
+import com.yyjlr.tickets.Application;
 import com.yyjlr.tickets.Config;
 import com.yyjlr.tickets.R;
 import com.yyjlr.tickets.activity.AbstractActivity;
 import com.yyjlr.tickets.activity.OldPaySelectActivity;
+import com.yyjlr.tickets.activity.PaySelectActivity;
 import com.yyjlr.tickets.activity.film.FilmCompleteActivity;
 import com.yyjlr.tickets.helputils.ChangeUtils;
 import com.yyjlr.tickets.model.order.AddMovieOrderBean;
@@ -65,12 +67,14 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     private int status = -1;//订单状态
     private LinearLayout payLayout;//支付信息
     private String orderId = "";
+    private int position = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
         orderId = getIntent().getStringExtra("orderId");
+        position = getIntent().getIntExtra("position", -1);
         initView();
         getOrderInfo();
     }
@@ -152,6 +156,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
                 break;
             case 4:
                 statusText.setText("已取消");
+                bottomPayLayout.setVisibility(View.GONE);
                 break;
             case 5:
                 statusText.setText("待退款");
@@ -171,6 +176,7 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
                 break;
             case 9:
                 statusText.setText("超时失效");
+                bottomPayLayout.setVisibility(View.GONE);
                 break;
         }
 
@@ -353,7 +359,9 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         switch (view.getId()) {
             case R.id.base_toolbar__left:
                 setResult(CODE_RESULT, new Intent()
-                        .putExtra("isPay", true));
+                        .putExtra("isPay", true)
+                        .putExtra("position", position)
+                        .putExtra("orderType", status));
                 SettingOrderDetailsActivity.this.finish();
                 break;
             case R.id.item_order_sale_details__more_layout:
@@ -373,19 +381,18 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
             case R.id.content_order_details__confirm_pay:
                 if (orderDetailBean.getOrderType() == 1) {
                     AddMovieOrderBean movieOrderBean = null;
-                    startActivity(new Intent(SettingOrderDetailsActivity.this,
-                            FilmCompleteActivity.class)
+                    Application.getInstance().getCurrentActivity().startActivityForResult(new Intent(getBaseContext(), FilmCompleteActivity.class)
                             .putExtra("orderId", orderId)
                             .putExtra("movieOrderBean", movieOrderBean)
-                            .putExtra("isNoPay", true));
+                            .putExtra("position", position)
+                            .putExtra("isNoPay", true), 0x06);
                 } else {
                     ConfirmOrderBean confirmOrderBean = null;
-                    startActivity(new Intent(SettingOrderDetailsActivity.this,
-                            OldPaySelectActivity.class)
+                    Application.getInstance().getCurrentActivity().startActivityForResult(new Intent(getBaseContext(), PaySelectActivity.class)
                             .putExtra("orderId", orderId)
-                            .putExtra("orderBean", confirmOrderBean));
+                            .putExtra("position", position)
+                            .putExtra("orderBean", confirmOrderBean), 0x06);
                 }
-
                 break;
         }
     }
@@ -394,7 +401,9 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             setResult(CODE_RESULT, new Intent()
-                    .putExtra("isPay", true));
+                    .putExtra("isPay", true)
+                    .putExtra("position", position)
+                    .putExtra("orderType", status));
             SettingOrderDetailsActivity.this.finish();
             return true;
         }
@@ -407,8 +416,8 @@ public class SettingOrderDetailsActivity extends AbstractActivity implements Vie
         if (resultCode != CODE_RESULT)
             return;
 
-        switch (requestCode){
-            case CODE_REQUEST_DIALOG:
+        switch (requestCode) {
+            case CODE_REQUEST_ONE:
                 getOrderInfo();
                 break;
         }

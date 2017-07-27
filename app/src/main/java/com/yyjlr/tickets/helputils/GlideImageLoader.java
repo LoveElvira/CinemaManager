@@ -17,8 +17,8 @@ public class GlideImageLoader extends ImageLoader {
     public void displayImage(Context context, Object path, ImageView imageView) {
         Picasso.with(context)
                 .load(path.toString())
-                .placeholder(R.mipmap.bg)
-                .error(R.mipmap.bg)
+//                .placeholder(R.mipmap.bg)
+//                .error(R.mipmap.bg)
                 .into(imageView);
     }
 }

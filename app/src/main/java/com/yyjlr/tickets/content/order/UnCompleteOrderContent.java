@@ -2,6 +2,7 @@ package com.yyjlr.tickets.content.order;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +52,8 @@ import java.util.List;
 
 public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderUncompleteAdapter.SlidingViewClickListener {
 
+    private LinearLayout noDate;
+    private ImageView noDateImage;
     private OrderUncompleteAdapter unCompleteAdapter;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
@@ -76,6 +80,9 @@ public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwi
     }
 
     private void initView() {
+        noDate = (LinearLayout) findViewById(R.id.content_listview__no_date);
+        noDateImage = (ImageView) findViewById(R.id.content_listview__no_date_image);
+        noDateImage.setBackgroundResource(R.mipmap.no_order);
         listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
         refresh.setHeaderView(createHeaderView());// add headerView
@@ -109,6 +116,8 @@ public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwi
                 if (response != null) {
                     orderList = response.getOrders();
                     if (orderList != null && orderList.size() > 0) {
+                        noDate.setVisibility(GONE);
+                        refresh.setVisibility(VISIBLE);
                         if ("0".equals(pagables)) {//第一页
                             orderLists.clear();
                             orderLists.addAll(orderList);
@@ -138,12 +147,16 @@ public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwi
                         unCompleteAdapter.setOnLoadMoreListener(UnCompleteOrderContent.this);
                         unCompleteAdapter.setOnRecyclerViewItemChildClickListener(UnCompleteOrderContent.this);
                     } else {
-                        orderLists.clear();
-                        orderList = new ArrayList<>();
-                        orderLists.addAll(orderList);
-                        unCompleteAdapter = new OrderUncompleteAdapter(orderList, UnCompleteOrderContent.this);
-                        listView.setAdapter(unCompleteAdapter);
-                        unCompleteAdapter.notifyDataSetChanged();
+                        if (unCompleteAdapter != null) {
+                            orderLists.clear();
+                            orderList = new ArrayList<>();
+                            orderLists.addAll(orderList);
+                            unCompleteAdapter = new OrderUncompleteAdapter(orderList, UnCompleteOrderContent.this);
+                            listView.setAdapter(unCompleteAdapter);
+                            unCompleteAdapter.notifyDataSetChanged();
+                        }
+                        noDate.setVisibility(VISIBLE);
+                        refresh.setVisibility(GONE);
                     }
                 }
             }
@@ -156,14 +169,26 @@ public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwi
         }, pagableRequest, MyOrderBean.class, Application.getInstance().getCurrentActivity());
     }
 
-    public void cancelOrderSuccess(int position,boolean isTimeOut) {
-        if (isTimeOut){
+    public void cancelOrderSuccess(int position, boolean isTimeOut) {
+        if (isTimeOut) {
             orderLists.get(position).setOrderStatus(9);
-        }else{
+        } else {
             orderLists.get(position).setOrderStatus(4);
         }
         unCompleteAdapter.notifyItemChanged(position);
     }
+
+    public void cancelOrderSuccess(int position, int orderType) {
+        if (orderType == 3) {
+            orderLists.remove(position);
+            unCompleteAdapter.remove(position);
+            unCompleteAdapter.notifyDataSetChanged();
+        } else {
+            orderLists.get(position).setOrderStatus(orderType);
+            unCompleteAdapter.notifyItemChanged(position);
+        }
+    }
+
 
     //取消订单
     private void cancelOrder(final int position) {
@@ -335,9 +360,10 @@ public class UnCompleteOrderContent extends BaseLinearLayout implements SuperSwi
                 case R.id.item_order_nocomplete__ll_layout:
                     intent.setClass(getContext(), SettingOrderDetailsActivity.class);
                     intent.putExtra("orderId", orderLists.get(position).getOrderId() + "");
+                    intent.putExtra("position", position);
                     break;
             }
-            Application.getInstance().getCurrentActivity().startActivity(intent);
+            Application.getInstance().getCurrentActivity().startActivityForResult(intent, 0x07);
         }
     }
 

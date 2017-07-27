@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +40,8 @@ import static com.yyjlr.tickets.Application.getInstance;
 
 public class SettingPointsActivity extends AbstractActivity implements View.OnClickListener, BaseAdapter.RequestLoadMoreListener {
 
+    private LinearLayout noDate;
+    private LinearLayout pointsLayout;
     private RecyclerView listView;//列表
     //private SwipeRefreshLayout refresh;//刷新
     private List<PointsEntity> pointsEntityList;
@@ -74,6 +77,9 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left);
         leftArrow.setAlpha(1.0f);
         leftArrow.setOnClickListener(this);
+
+        noDate = (LinearLayout) findViewById(R.id.content_setting_points__no_date);
+        pointsLayout = (LinearLayout) findViewById(R.id.content_setting_points__layout);
 
         presentPoints = (TextView) findViewById(R.id.content_setting_points__precent_points);
         historyPoints = (TextView) findViewById(R.id.content_setting_points__history_points);
@@ -116,44 +122,46 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
             @Override
             public void onResponse(PointList response) {
                 customDialog.dismiss();
-                pointDetailList = response.getPointsDetail();
-                if (response.getNewPoints() != null) {
-                    presentPoints.setText(response.getNewPoints());
-                }
-
-                if (response.getOldPoints() != null) {
-                    historyPoints.setText(response.getOldPoints());
-                }
-
-                if (pointDetailList != null && pointDetailList.size() > 0) {
-                    if ("0".equals(pagables)) {//第一页
-                        pointDetailLists.clear();
-                        pointDetailLists.addAll(pointDetailList);
-                        Log.i("ee", pointDetailLists.size() + "----" + pointDetailList.size());
-                        adapter = new PointsAdapter(pointDetailList);
-                        adapter.openLoadAnimation();
-                        listView.setAdapter(adapter);
-                        adapter.openLoadMore(pointDetailList.size(), true);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
-                        } else {
-                            hasMore = false;
-                        }
-                        pagable = response.getPagable();
-                    } else {
-                        pointDetailLists.addAll(pointDetailList);
-                        if (response.getHasMore() == 1) {
-                            hasMore = true;
-                            pagable = response.getPagable();
-                            adapter.notifyDataChangedAfterLoadMore(pointDetailList, true);
-                        } else {
-                            adapter.notifyDataChangedAfterLoadMore(pointDetailList, true);
-                            hasMore = false;
-                            pagable = "";
-                        }
+                if (response != null) {
+                    pointDetailList = response.getPointsDetail();
+                    if (response.getNewPoints() != null) {
+                        presentPoints.setText(response.getNewPoints());
                     }
-                    adapter.setOnLoadMoreListener(SettingPointsActivity.this);
+
+                    if (response.getOldPoints() != null) {
+                        historyPoints.setText(response.getOldPoints());
+                    }
+
+                    if (pointDetailList != null && pointDetailList.size() > 0) {
+                        if ("0".equals(pagables)) {//第一页
+                            pointDetailLists.clear();
+                            pointDetailLists.addAll(pointDetailList);
+                            Log.i("ee", pointDetailLists.size() + "----" + pointDetailList.size());
+                            adapter = new PointsAdapter(pointDetailList);
+                            adapter.openLoadAnimation();
+                            listView.setAdapter(adapter);
+                            adapter.openLoadMore(pointDetailList.size(), true);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
+                            pagable = response.getPagable();
+                        } else {
+                            pointDetailLists.addAll(pointDetailList);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                pagable = response.getPagable();
+                                adapter.notifyDataChangedAfterLoadMore(pointDetailList, true);
+                            } else {
+                                adapter.notifyDataChangedAfterLoadMore(pointDetailList, true);
+                                hasMore = false;
+                                pagable = "";
+                            }
+                        }
+                        adapter.setOnLoadMoreListener(SettingPointsActivity.this);
 //                    adapter.setOnRecyclerViewItemChildClickListener(SettingPointsActivity.this);
+                    }
                 }
             }
 
@@ -243,7 +251,7 @@ public class SettingPointsActivity extends AbstractActivity implements View.OnCl
         if (resultCode != CODE_RESULT)
             return;
 
-        switch (requestCode){
+        switch (requestCode) {
             case CODE_REQUEST_DIALOG:
                 pagable = "0";
                 getPoints(pagable);

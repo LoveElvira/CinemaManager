@@ -86,8 +86,7 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
         rightImage = (ImageView) findViewById(R.id.base_toolbar__right);
         rightImage.setAlpha(0.0f);
         rightUrl = (TextView) findViewById(R.id.base_toolbar__right_text);
-        rightImage.setVisibility(View.GONE);
-        rightUrl.setVisibility(View.VISIBLE);
+        rightUrl.setVisibility(View.GONE);
         rightUrl.setText("环境");
         rightUrl.setOnClickListener(this);
 
@@ -297,6 +296,10 @@ public class MySettingContent extends BaseLinearLayout implements View.OnClickLi
                         if (msgNum != null) {
                             msgNum.setText(response.getUnreadmsg() + "");
                             msgNum.setVisibility(VISIBLE);
+                        }
+                    } else {
+                        if (msgNum != null) {
+                            msgNum.setVisibility(GONE);
                         }
                     }
                 }

@@ -62,8 +62,8 @@
 
     <com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout
         android:id="@+id/content_setting_message__refresh"
-        android:layout_above="@+id/content_setting_message__delete_layout"
-        style="@style/MatchMatch">
+        style="@style/MatchMatch"
+        android:layout_above="@+id/content_setting_message__delete_layout">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/content_setting_message__listview"
@@ -71,5 +71,21 @@
             android:layout_marginTop="@dimen/size_5" />
     </com.yyjlr.tickets.viewutils.SuperSwipeRefreshLayout>
 
+    <LinearLayout
+        android:id="@+id/content_setting_message__no_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/content_setting_message__delete_layout"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/content_setting_message__no_date_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_20"
+            android:src="@mipmap/no_message" />
+
+    </LinearLayout>
 
 </RelativeLayout>

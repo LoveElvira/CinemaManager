@@ -348,12 +348,7 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
                 break;
             case CODE_REQUEST_TWO://更新cinema ID
                 if (data.getBooleanExtra("isUpdate", false)) {
-                    isUpdateCinema = true;
-                    isUpdateFilm = true;
-                    isUpdateSale = true;
-                    isUpdateEvent = true;
-                    isUpdateMy = true;
-                    initVisibility(0);
+                    updateVisibility();
                 }
                 break;
             case CODE_REQUEST_THREE:
@@ -372,6 +367,15 @@ public class MainActivity extends AbstractActivity implements View.OnClickListen
                 break;
 
         }
+    }
+
+    public void updateVisibility(){
+        isUpdateCinema = true;
+        isUpdateFilm = true;
+        isUpdateSale = true;
+        isUpdateEvent = true;
+        isUpdateMy = true;
+        initVisibility(0);
     }
 
 //    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

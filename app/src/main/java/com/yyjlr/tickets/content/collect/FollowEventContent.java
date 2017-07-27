@@ -46,6 +46,8 @@ import java.util.List;
 
 public class FollowEventContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, FollowGrabAdapter.SlidingViewClickListener {
 
+    private LinearLayout noDate;
+    private ImageView noDateImage;
     private CustomDialog customDialog;
     private FollowGrabAdapter adapter = null;
     private SuperSwipeRefreshLayout refresh;//刷新
@@ -77,6 +79,11 @@ public class FollowEventContent extends BaseLinearLayout implements SuperSwipeRe
     }
 
     private void initView() {
+
+        noDate = (LinearLayout) findViewById(R.id.content_listview__no_date);
+        noDateImage = (ImageView) findViewById(R.id.content_listview__no_date_image);
+        noDateImage.setBackgroundResource(R.mipmap.no_collect);
+
         listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
         refresh.setHeaderView(createHeaderView());// add headerView
@@ -109,6 +116,8 @@ public class FollowEventContent extends BaseLinearLayout implements SuperSwipeRe
                 if (response != null) {
                     followEventInfoList = response.getActivities();
                     if (followEventInfoList != null && followEventInfoList.size() > 0) {
+                        noDate.setVisibility(GONE);
+                        refresh.setVisibility(VISIBLE);
                         if ("0".equals(pagables)) {//第一页
                             followEventInfoLists.clear();
                             followEventInfoLists.addAll(followEventInfoList);
@@ -137,15 +146,17 @@ public class FollowEventContent extends BaseLinearLayout implements SuperSwipeRe
                         }
                         adapter.setOnLoadMoreListener(FollowEventContent.this);
                         adapter.setOnRecyclerViewItemChildClickListener(FollowEventContent.this);
-                    }else {
+                    } else {
                         if (adapter != null) {
                             followEventInfoLists.clear();
                             followEventInfoList = new ArrayList<>();
                             followEventInfoLists.addAll(followEventInfoList);
-                            adapter = new FollowGrabAdapter(followEventInfoList,FollowEventContent.this);
+                            adapter = new FollowGrabAdapter(followEventInfoList, FollowEventContent.this);
                             listView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }
+                        noDate.setVisibility(VISIBLE);
+                        refresh.setVisibility(GONE);
                     }
                 }
             }

@@ -92,8 +92,8 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
     private String orderId = "";
     private boolean isNoPay = false;
     private int position = -1;
-    private GoodMoreList packageList;
-    private GoodMoreList saleList;
+    private GoodMoreList packageList = null;
+    private GoodMoreList saleList = null;
     private int type = 0;//0 卖品单品 1 卖品套餐
 
 
@@ -525,13 +525,13 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
         goodMoreLists = new ArrayList<>();
         pagable = "0";
         type = 0;
-        getGoodMore(pagable, 1, true);
         getGoodMore(pagable, 0, true);
     }
 
 
     //获取更多卖品列表
     private void getGoodMore(final String pagables, final int type, final boolean isFirst) {
+        customDialog.show();
         PagableRequest pagableRequest = new PagableRequest();
         pagableRequest.setPagable(pagables);
         pagableRequest.setType(type + "");
@@ -540,6 +540,7 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                customDialog.dismiss();
                 showShortToast(info.getInfo());
             }
 
@@ -558,11 +559,13 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
                         resetGoodMoreList(goodMoreList, pagables, response);
                     }
                 }
+                customDialog.dismiss();
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
 //                showShortToast(exception.getMessage());
             }
         }, pagableRequest, GoodMoreList.class, Application.getInstance().getCurrentActivity());
@@ -875,13 +878,17 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
                     saleLayout.setTextColor(getResources().getColor(R.color.gray_929292));
                     pagable = "0";
                     type = 1;
-                    if (packageList.getGoodsList() != null && packageList.getGoodsList().size() > 0) {
-                        resetGoodMoreList(packageList.getGoodsList(), pagable, packageList);
+                    if (packageList == null) {
+                        getGoodMore(pagable, 1, true);
                     } else {
-                        List<RecommendGoodsInfo> goodsInfoList = new ArrayList<>();
-                        filmSaleAdapter = new FilmSaleAdapter(goodsInfoList);
-                        listView.setAdapter(filmSaleAdapter);
-                        filmSaleAdapter.notifyDataSetChanged();
+                        if (packageList.getGoodsList() != null && packageList.getGoodsList().size() > 0) {
+                            resetGoodMoreList(packageList.getGoodsList(), pagable, packageList);
+                        } else {
+                            List<RecommendGoodsInfo> goodsInfoList = new ArrayList<>();
+                            filmSaleAdapter = new FilmSaleAdapter(goodsInfoList);
+                            listView.setAdapter(filmSaleAdapter);
+                            filmSaleAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
 //                    getGoodMore(pagable, type, false);
@@ -920,6 +927,7 @@ public class FilmCompleteActivity extends AbstractActivity implements BaseAdapte
                 setResult(CODE_RESULT, new Intent()
                         .putExtra("isCancel", data.getBooleanExtra("isCancel", false))
                         .putExtra("position", data.getIntExtra("position", -1))
+                        .putExtra("orderType", data.getIntExtra("orderType", -1))
                         .putExtra("isPay", data.getBooleanExtra("isPay", false)));
                 FilmCompleteActivity.this.finish();
                 break;

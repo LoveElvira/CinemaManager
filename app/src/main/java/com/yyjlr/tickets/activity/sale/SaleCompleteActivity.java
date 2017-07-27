@@ -401,13 +401,14 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
         goodMoreLists = new ArrayList<>();
         pagable = "0";
         type = 0;
-        getGoodMore(pagable, 1, true);
         getGoodMore(pagable, 0, true);
+//        getGoodMore(pagable, 1, true);
     }
 
 
     //获取更多卖品列表
     private void getGoodMore(final String pagables, final int type, final boolean isFirst) {
+        customDialog.show();
         PagableRequest pagableRequest = new PagableRequest();
         pagableRequest.setPagable(pagables);
         pagableRequest.setType(type + "");
@@ -416,6 +417,7 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
             @Override
             public void onError(Request request, Error info) {
                 Log.e("xxxxxx", "onError , Error = " + info.getInfo().toString());
+                customDialog.dismiss();
                 showShortToast(info.getInfo());
             }
 
@@ -432,13 +434,16 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                     goodMoreList = response.getGoodsList();
                     if (goodMoreList != null && goodMoreList.size() > 0) {
                         resetGoodMoreList(goodMoreList, pagables, response);
+
                     }
                 }
+                customDialog.dismiss();
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("xxxxxx", "onError , e = " + exception.getMessage());
+                customDialog.dismiss();
 //                showShortToast(exception.getMessage());
             }
         }, pagableRequest, GoodMoreList.class, Application.getInstance().getCurrentActivity());
@@ -695,13 +700,17 @@ public class SaleCompleteActivity extends AbstractActivity implements BaseAdapte
                     saleLayout.setTextColor(getResources().getColor(R.color.gray_929292));
                     pagable = "0";
                     type = 1;
-                    if (packageList.getGoodsList() != null && packageList.getGoodsList().size() > 0) {
-                        resetGoodMoreList(packageList.getGoodsList(), pagable, packageList);
+                    if (packageList == null) {
+                        getGoodMore(pagable, 1, true);
                     } else {
-                        List<RecommendGoodsInfo> goodsInfoList = new ArrayList<>();
-                        filmSaleAdapter = new FilmSaleAdapter(goodsInfoList);
-                        listView.setAdapter(filmSaleAdapter);
-                        filmSaleAdapter.notifyDataSetChanged();
+                        if (packageList.getGoodsList() != null && packageList.getGoodsList().size() > 0) {
+                            resetGoodMoreList(packageList.getGoodsList(), pagable, packageList);
+                        } else {
+                            List<RecommendGoodsInfo> goodsInfoList = new ArrayList<>();
+                            filmSaleAdapter = new FilmSaleAdapter(goodsInfoList);
+                            listView.setAdapter(filmSaleAdapter);
+                            filmSaleAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
 //                    getGoodMore(pagable, type, false);

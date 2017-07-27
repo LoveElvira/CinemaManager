@@ -10,7 +10,9 @@ import com.yyjlr.tickets.helputils.SharePrefUtil;
 public class Config {
 
     public static final boolean DEBUG = true;
-    public static String URL = "http://139.196.51.15";
+//    public static String URL = "http://192.168.1.74:8080";//小强本地
+//        public static String URL = "http://139.196.51.15";//测试
+    public static String URL = "http://139.196.249.63";//正式
 
     public static String URL_SERVICE = URL + "/cgi";//测试环境
     public static String URL_SERVICE_UPLOAD = URL + "/uploadFile";//上传文件

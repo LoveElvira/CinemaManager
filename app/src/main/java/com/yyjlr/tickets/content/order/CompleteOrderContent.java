@@ -49,6 +49,8 @@ import static android.nfc.tech.MifareUltralight.PAGE_SIZE;
 
 public class CompleteOrderContent extends BaseLinearLayout implements SuperSwipeRefreshLayout.OnPullRefreshListener, BaseAdapter.RequestLoadMoreListener, BaseAdapter.OnRecyclerViewItemChildClickListener, OrderCompleteAdapter.SlidingViewClickListener {
 
+    private LinearLayout noDate;
+    private ImageView noDateImage;
     private OrderCompleteAdapter completeAdapter;
     private SuperSwipeRefreshLayout refresh;//刷新
     private RecyclerView listView;
@@ -74,6 +76,10 @@ public class CompleteOrderContent extends BaseLinearLayout implements SuperSwipe
     }
 
     private void initView() {
+
+        noDate = (LinearLayout) findViewById(R.id.content_listview__no_date);
+        noDateImage = (ImageView) findViewById(R.id.content_listview__no_date_image);
+        noDateImage.setBackgroundResource(R.mipmap.no_order);
         listView = (RecyclerView) findViewById(R.id.content_listview__listview);
         refresh = (SuperSwipeRefreshLayout) findViewById(R.id.content_listview__refresh);
         refresh.setHeaderView(createHeaderView());// add headerView
@@ -85,6 +91,11 @@ public class CompleteOrderContent extends BaseLinearLayout implements SuperSwipe
         notLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.not_loading, (ViewGroup) listView.getParent(), false);
         orderLists = new ArrayList<>();
 
+        getOrder(pagable, type);
+    }
+
+    public void refreshOrder() {
+        pagable = "0";
         getOrder(pagable, type);
     }
 
@@ -106,6 +117,8 @@ public class CompleteOrderContent extends BaseLinearLayout implements SuperSwipe
                 if (response != null) {
                     orderList = response.getOrders();
                     if (orderList != null && orderList.size() > 0) {
+                        noDate.setVisibility(GONE);
+                        refresh.setVisibility(VISIBLE);
                         if ("0".equals(pagables)) {//第一页
                             orderLists.clear();
                             orderLists.addAll(orderList);
@@ -135,12 +148,16 @@ public class CompleteOrderContent extends BaseLinearLayout implements SuperSwipe
                         completeAdapter.setOnLoadMoreListener(CompleteOrderContent.this);
                         completeAdapter.setOnRecyclerViewItemChildClickListener(CompleteOrderContent.this);
                     } else {
-                        orderLists.clear();
-                        orderList = new ArrayList<>();
-                        orderLists.addAll(orderList);
-                        completeAdapter = new OrderCompleteAdapter(orderList, CompleteOrderContent.this);
-                        listView.setAdapter(completeAdapter);
-                        completeAdapter.notifyDataSetChanged();
+                        if (completeAdapter != null) {
+                            orderLists.clear();
+                            orderList = new ArrayList<>();
+                            orderLists.addAll(orderList);
+                            completeAdapter = new OrderCompleteAdapter(orderList, CompleteOrderContent.this);
+                            listView.setAdapter(completeAdapter);
+                            completeAdapter.notifyDataSetChanged();
+                        }
+                        noDate.setVisibility(VISIBLE);
+                        refresh.setVisibility(GONE);
                     }
                 }
             }
